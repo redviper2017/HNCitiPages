@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_home"
+        app:showAsAction="always"
+        android:enabled="true"
+        android:icon="@drawable/home_ic"
+        android:title="Home" />
+    <item
+        android:id="@+id/navigation_visitsection"
+        app:showAsAction="always"
+        android:enabled="true"
+        android:icon="@drawable/visit_ic"
+        android:title="Trending" />
+    <item
+        android:id="@+id/navigation_supportedsection"
+        app:showAsAction="always"
+        android:enabled="true"
+        android:icon="@drawable/support_icon"
+        android:title="Supported" />
+    <item
+        android:id="@+id/navigation_noticeboard"
+        app:showAsAction="always"
+        android:enabled="true"
+        android:icon="@drawable/profile_ic"
+        android:title="Noticeboard" />
+</menu>
