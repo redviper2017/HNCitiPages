@@ -1,18 +1,37 @@
 package hn.techcom.com.hnapp.Fragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Model.SupporterProfile;
+import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.Api;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SupportedSectionFragment extends Fragment {
 
-    private static final String TAG = "SupportedProfileSectionFragment";
+    private static final String TAG = "SupportedProfileSection";
+
+    private RecyclerView supportedProfileAvatars;
+
+    static ArrayList<SupporterProfile> userSupportedProfiles;
 
     public SupportedSectionFragment() {
         // Required empty public constructor
@@ -29,7 +48,35 @@ public class SupportedSectionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_supported_profile_section, container, false);
+
+        supportedProfileAvatars = view.findViewById(R.id.recyclerview_supported_avatars_supportsection);
+
+
+        //function calls
+        setSupportedProfileAvatars();
+
+
         // Inflate the layout for this fragment
         return view;
     }
+
+    public void setSupportedProfileAvatars() {
+        //here the user id is 1 which will come from local db
+        String url = "http://hn.techcomengine.com/api/users/support/list/1/";
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<List<SupporterProfile>> call = service.getSupportedProfiles(url);
+        call.enqueue(new Callback<List<SupporterProfile>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<SupporterProfile>> call,@NonNull Response<List<SupporterProfile>> response) {
+                ArrayList<SupporterProfile> userSupportedProfiles = new ArrayList<>(Objects.requireNonNull(response.body()));
+                Log.d(TAG,"this user is supported by = "+userSupportedProfiles.get(0).getFullName());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<SupporterProfile>> call,@NonNull Throwable t) {
+                Log.d(TAG,"request failed = "+"True: "+t.getMessage());
+            }
+        });
+    }
+
 }

@@ -10,4 +10,6 @@
     <color name="colorSurface">#FFFFFF</color>
     <color name="colorOnSurface">#1C164F</color>
     <color name="colorOnSecondary">#FFFFFF</color>
+
+    <color name="colorTextTitle">#1C164F</color>
 </resources>

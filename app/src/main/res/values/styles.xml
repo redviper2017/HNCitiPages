@@ -3,7 +3,6 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
 
 
-
         <item name="colorAccent">@color/colorAccent</item>
 
         <!-- App Theme Colors -->
@@ -12,8 +11,10 @@
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnPrimary">@color/colorOnSurface</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
+
 
     </style>
 
