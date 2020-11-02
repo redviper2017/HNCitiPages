@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Adapters.AvatarLoaderAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Model.SupporterProfile;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
@@ -53,23 +55,25 @@ public class SupportedSectionFragment extends Fragment {
 
 
         //function calls
-        setSupportedProfileAvatars();
+        getSupportedProfiles();
 
 
         // Inflate the layout for this fragment
         return view;
     }
 
-    public void setSupportedProfileAvatars() {
+    // this function retrieves the list of supported profiles by the current user
+    public void getSupportedProfiles() {
         //here the user id is 1 which will come from local db
-        String url = "http://hn.techcomengine.com/api/users/support/list/1/";
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<SupporterProfile>> call = service.getSupportedProfiles(url);
+        Call<List<SupporterProfile>> call = service.getSupportedProfiles("1");
         call.enqueue(new Callback<List<SupporterProfile>>() {
             @Override
             public void onResponse(@NonNull Call<List<SupporterProfile>> call,@NonNull Response<List<SupporterProfile>> response) {
-                ArrayList<SupporterProfile> userSupportedProfiles = new ArrayList<>(Objects.requireNonNull(response.body()));
+                userSupportedProfiles = new ArrayList<>(Objects.requireNonNull(response.body()));
                 Log.d(TAG,"this user is supported by = "+userSupportedProfiles.get(0).getFullName());
+
+                setSupportedProfileAvatars(userSupportedProfiles);
             }
 
             @Override
@@ -77,6 +81,25 @@ public class SupportedSectionFragment extends Fragment {
                 Log.d(TAG,"request failed = "+"True: "+t.getMessage());
             }
         });
+    }
+
+    public void setSupportedProfileAvatars(ArrayList<SupporterProfile> userSupportedProfiles){
+        ArrayList<String> avatarList = new ArrayList<>();
+        ArrayList<String> nameList = new ArrayList<>();
+        for (SupporterProfile supporterProfile : userSupportedProfiles){
+            avatarList.add(supporterProfile.getProfileImgUrl());
+            nameList.add(supporterProfile.getFullName());
+        }
+        Log.d(TAG,"avatar list size = "+avatarList.size());
+        AvatarLoaderAdapter adapter = new AvatarLoaderAdapter(avatarList,nameList);
+        LinearLayoutManager horizontalLayout = new LinearLayoutManager(
+                getContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+        );
+        supportedProfileAvatars.setHasFixedSize(true);
+        supportedProfileAvatars.setLayoutManager(horizontalLayout);
+        supportedProfileAvatars.setAdapter(adapter);
     }
 
 }

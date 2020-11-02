@@ -4,12 +4,12 @@
 
     <!-- Custom Colors -->
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#F2F2F2</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorSecondary">#EF7125</color>
     <color name="colorBackground">#F2F2F2</color>
     <color name="colorSurface">#FFFFFF</color>
     <color name="colorOnSurface">#1C164F</color>
     <color name="colorOnSecondary">#FFFFFF</color>
-
+    <color name="colorText">#000000</color>
     <color name="colorTextTitle">#1C164F</color>
 </resources>
