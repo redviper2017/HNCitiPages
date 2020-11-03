@@ -83,6 +83,7 @@ public class SupportedSectionFragment extends Fragment {
         });
     }
 
+    // this function sets data to the recyclerview
     public void setSupportedProfileAvatars(ArrayList<SupporterProfile> userSupportedProfiles){
         ArrayList<String> avatarList = new ArrayList<>();
         ArrayList<String> nameList = new ArrayList<>();
