@@ -22,6 +22,7 @@
                 android:layout_margin="20dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/circleimageview_postedBy_image"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/profile_ic"
@@ -35,6 +36,7 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textview_postedby_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="John Doe"
@@ -42,6 +44,7 @@
                         android:textSize="18sp" />
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textview_postedfrom_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -49,6 +52,7 @@
                         android:textSize="14sp" />
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textview_postedat_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -56,6 +60,7 @@
                         android:textSize="14sp" />
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_support_post"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -77,9 +82,19 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textview_post_body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lorem_ipsum_body" />
+                    android:text="@string/lorem_ipsum_body"
+                    android:justificationMode="inter_word"/>
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/image_slider_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"/>
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatImageButton
@@ -87,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="20dp"
-                android:background="null"
+                android:background="#00000000"
                 android:src="@drawable/more_icon" />
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
