@@ -1,5 +1,6 @@
 package hn.techcom.com.hnapp.Adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.textview.MaterialTextView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -19,10 +21,12 @@ import hn.techcom.com.hnapp.R;
 public class PostLoaderAdapter extends RecyclerView.Adapter<PostLoaderAdapter.ViewHolder> {
 
     private ArrayList<Post> postList;
+    private Context context;
     private static final String TAG = "PostLoaderAdapter";
 
-    public PostLoaderAdapter(ArrayList<Post> postList) {
+    public PostLoaderAdapter(ArrayList<Post> postList, Context context) {
         this.postList = postList;
+        this.context = context;
     }
 
     @NonNull
@@ -36,12 +40,44 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<PostLoaderAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String fullname = postList.get(position).getUser().getFirstName() + " " + postList.get(position).getUser().getLastName();
+        String location = postList.get(position).getUser().getCity() + ", " + postList.get(position).getUser().getCountry();
+
+        Picasso.get()
+                .load(postList.get(position).getUser().getProfileImgUrl())
+                .fit()
+                .centerInside()
+                .into(holder.userImage);
+        holder.userName.setText(fullname);
+        holder.userLocation.setText(location);
+        holder.postTime.setText(postList.get(position).getCreatedOn());
+        holder.postBody.setText(postList.get(position).getText());
+
+        if (postList.get(position).getCategory().equals("I")){
+            holder.imageSliderView.setVisibility(View.VISIBLE);
+            ImageLoaderAdapter adapter = new ImageLoaderAdapter(context,getPostedImageUrls(postList));
+            holder.imageSliderView.setAdapter(adapter);
+        }
+        else
+            holder.imageSliderView.setVisibility(View.GONE);
+
+        if (postList.get(position).getSupport().equals(true))
+            holder.supportButton.setText(context.getResources().getString(R.string.supporting));
+        else
+            holder.supportButton.setText(context.getResources().getString(R.string.support));
 
     }
 
     @Override
     public int getItemCount() {
         return postList.size();
+    }
+
+    public ArrayList<String> getPostedImageUrls(ArrayList<Post> postList){
+        ArrayList<String> imageList = new ArrayList<>();
+        for (Post post : postList)
+            imageList.add(post.getImageUrl());
+        return imageList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
