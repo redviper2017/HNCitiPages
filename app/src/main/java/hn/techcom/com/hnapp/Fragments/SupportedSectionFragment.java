@@ -84,7 +84,7 @@ public class SupportedSectionFragment extends Fragment {
                 if (getSupportedProfilePosts()){
                     setSupportedProfilePosts();
                 }
-                setSupportedProfileAvatars(userSupportedProfiles);
+//                setSupportedProfileAvatars(userSupportedProfiles);
             }
 
             @Override
@@ -160,7 +160,7 @@ public class SupportedSectionFragment extends Fragment {
         });
         Collections.reverse(userSupportedProfilePosts);
 
-        PostLoaderAdapter adapter = new PostLoaderAdapter(userSupportedProfilePosts,getContext());
+        PostLoaderAdapter adapter = new PostLoaderAdapter(userSupportedProfilePosts,userSupportedProfiles,getContext());
 
         supportedProfilePostsList.setHasFixedSize(true);
         supportedProfilePostsList.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -17,72 +18,56 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Models.Post;
+import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.R;
 
-public class PostLoaderAdapter extends RecyclerView.Adapter<PostLoaderAdapter.ViewHolder> {
+public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static int TYPE_SUPPORTED_PROFILES = 1;
+    private static int TYPE_POSTS = 2;
 
     private ArrayList<Post> postList;
+    private ArrayList<SupporterProfile> userSupportedProfiles;
     private Context context;
+
     private static final String TAG = "PostLoaderAdapter";
 
-    public PostLoaderAdapter(ArrayList<Post> postList, Context context) {
+    public PostLoaderAdapter(ArrayList<Post> postList, ArrayList<SupporterProfile> userSupportedProfiles, Context context) {
         this.postList = postList;
+        this.userSupportedProfiles = userSupportedProfiles;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.row_post, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view;
+        //for top item avatar list
+        if (viewType == TYPE_SUPPORTED_PROFILES){
+            view = LayoutInflater.from(context).inflate(R.layout.row_first_post, parent, false);
+            return new SupportedProfilesHolder(view);
+        }
+        //for all item posts
+        else {
+            view = LayoutInflater.from(context).inflate(R.layout.row_post,parent,false);
+            return new PostsHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String fullname = postList.get(position).getUser().getFirstName() + " " + postList.get(position).getUser().getLastName();
-        String location = postList.get(position).getUser().getCity() + ", " + postList.get(position).getUser().getCountry();
-
-        Picasso.get()
-                .load("http://hn.techcomengine.com" + postList.get(position).getUser().getProfileImgUrl())
-                .fit()
-                .centerInside()
-                .into(holder.userImage);
-        holder.userName.setText(fullname);
-        holder.userLocation.setText(location);
-        holder.postTime.setText(postList.get(position).getCreatedOn());
-        holder.postBody.setText(postList.get(position).getText());
-
-        if (postList.get(position).getType().equals("I")) {
-            holder.imageSliderView.setVisibility(View.VISIBLE);
-
-
-            for (Post post : postList) {
-                ArrayList<String> imageList = new ArrayList<>();
-                if (post.getType().equals("I")) {
-                    imageList.add(post.getImageUrl());
-                    ImageLoaderAdapter adapter = new ImageLoaderAdapter(context, imageList);
-                    holder.imageSliderView.setAdapter(adapter);
-                }
-            }
-
-            if (postList.get(position).getType().equals("I")){
-                ArrayList<String> imageList = new ArrayList<>();
-                imageList.add(postList.get(position).getImageUrl());
-                ImageLoaderAdapter adapter = new ImageLoaderAdapter(context, imageList);
-                holder.imageSliderView.setAdapter(adapter);
-            }
-
-
-        } else
-            holder.imageSliderView.setVisibility(View.GONE);
-
-        if (postList.get(position).getSupport().equals(true))
-            holder.supportButton.setText(context.getResources().getString(R.string.supporting));
+    public int getItemViewType(int position) {
+        if (position == 0)
+            return TYPE_SUPPORTED_PROFILES;
         else
-            holder.supportButton.setText(context.getResources().getString(R.string.support));
+            return TYPE_POSTS;
+    }
 
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (getItemViewType(position) == TYPE_SUPPORTED_PROFILES)
+            ((SupportedProfilesHolder) holder).setRecyclerView(userSupportedProfiles);
+        else
+            ((PostsHolder) holder).setPostView(postList.get(position));
     }
 
     @Override
@@ -90,29 +75,77 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<PostLoaderAdapter.Vi
         return postList.size();
     }
 
-    public ArrayList<String> getPostedImageUrls(ArrayList<Post> postList) {
-        ArrayList<String> imageList = new ArrayList<>();
-        for (Post post : postList)
-            imageList.add(post.getImageUrl());
-        return imageList;
+    class SupportedProfilesHolder extends RecyclerView.ViewHolder {
+        private RecyclerView recyclerView;
+
+        SupportedProfilesHolder(@NonNull View itemView) {
+            super(itemView);
+            recyclerView = itemView.findViewById(R.id.recyclerview_supported_avatars_supportsection);
+        }
+
+        void setRecyclerView(ArrayList<SupporterProfile> userSupportedProfiles) {
+            ArrayList<String> avatarList = new ArrayList<>();
+            ArrayList<String> nameList = new ArrayList<>();
+            for (SupporterProfile supportingProfile : userSupportedProfiles) {
+                avatarList.add(supportingProfile.getProfileImgUrl());
+                nameList.add(supportingProfile.getFullName());
+            }
+            Log.d(TAG, "avatar list size = " + avatarList.size());
+            AvatarLoaderAdapter adapter = new AvatarLoaderAdapter(avatarList, nameList);
+            LinearLayoutManager horizontalLayout = new LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+            );
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(horizontalLayout);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class PostsHolder extends RecyclerView.ViewHolder {
 
-        public CircleImageView userImage;
-        public MaterialTextView userName, userLocation, postTime, supportButton, postBody;
-        public ViewPager imageSliderView;
+        private CircleImageView userImage;
+        private MaterialTextView userName, userLocation, postTime, supportButton, postBody;
+        private ViewPager imageSliderView;
 
-
-        public ViewHolder(@NonNull View itemView) {
+        public PostsHolder(@NonNull View itemView) {
             super(itemView);
-            this.userImage = itemView.findViewById(R.id.circleimageview_postedBy_image);
-            this.userName = itemView.findViewById(R.id.textview_postedby_name);
-            this.userLocation = itemView.findViewById(R.id.textview_postedfrom_location);
-            this.postTime = itemView.findViewById(R.id.textview_postedat_time);
-            this.supportButton = itemView.findViewById(R.id.text_support_post);
-            this.postBody = itemView.findViewById(R.id.textview_post_body);
+
+            userImage = itemView.findViewById(R.id.circleimageview_postedBy_image);
+            userName = itemView.findViewById(R.id.textview_postedby_name);
+            userLocation = itemView.findViewById(R.id.textview_postedfrom_location);
+            postTime = itemView.findViewById(R.id.textview_postedat_time);
+            supportButton = itemView.findViewById(R.id.text_support_post);
+            postBody = itemView.findViewById(R.id.textview_post_body);
             imageSliderView = itemView.findViewById(R.id.image_slider_post);
+        }
+
+        void setPostView(Post post) {
+            String fullname = post.getUser().getFirstName() + " " + post.getUser().getLastName();
+            String location = post.getUser().getCity() + ", " + post.getUser().getCountry();
+
+            Picasso.get()
+                    .load("http://hn.techcomengine.com" + post.getUser().getProfileImgUrl())
+                    .fit()
+                    .centerInside()
+                    .into(userImage);
+            userName.setText(fullname);
+            userLocation.setText(location);
+            postTime.setText(post.getCreatedOn());
+            postBody.setText(post.getText());
+
+            if (post.getType().equals("I")) {
+                imageSliderView.setVisibility(View.VISIBLE);
+
+                ArrayList<String> imageList = new ArrayList<>();
+
+                imageList.add(post.getImageUrl());
+                ImageLoaderAdapter adapter = new ImageLoaderAdapter(context, imageList);
+                imageSliderView.setAdapter(adapter);
+            }
+            else
+                imageSliderView.setVisibility(View.GONE);
         }
     }
 }
