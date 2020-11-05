@@ -1,4 +1,4 @@
-package hn.techcom.com.hnapp.Model;
+package hn.techcom.com.hnapp.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

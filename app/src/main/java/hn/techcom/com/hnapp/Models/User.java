@@ -1,9 +1,15 @@
-package hn.techcom.com.hnapp.Model;
+package hn.techcom.com.hnapp.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SupporterProfile {
+public class User {
+    @SerializedName("first_name")
+    @Expose
+    private String firstName;
+    @SerializedName("last_name")
+    @Expose
+    private String lastName;
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -16,18 +22,28 @@ public class SupporterProfile {
     @SerializedName("full_name")
     @Expose
     private String fullName;
-    @SerializedName("location")
+    @SerializedName("city")
     @Expose
-    private String location;
-    @SerializedName("post_count")
+    private String city;
+    @SerializedName("country")
     @Expose
-    private Integer postCount;
-    @SerializedName("follower_count")
-    @Expose
-    private Integer followerCount;
-    @SerializedName("following_count")
-    @Expose
-    private Integer followingCount;
+    private String country;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public Integer getId() {
         return id;
@@ -61,36 +77,19 @@ public class SupporterProfile {
         this.fullName = fullName;
     }
 
-    public String getLocation() {
-        return location;
+    public String getCity() {
+        return city;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public Integer getPostCount() {
-        return postCount;
+    public String getCountry() {
+        return country;
     }
 
-    public void setPostCount(Integer postCount) {
-        this.postCount = postCount;
+    public void setCountry(String country) {
+        this.country = country;
     }
-
-    public Integer getFollowerCount() {
-        return followerCount;
-    }
-
-    public void setFollowerCount(Integer followerCount) {
-        this.followerCount = followerCount;
-    }
-
-    public Integer getFollowingCount() {
-        return followingCount;
-    }
-
-    public void setFollowingCount(Integer followingCount) {
-        this.followingCount = followingCount;
-    }
-
 }

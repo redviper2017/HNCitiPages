@@ -1,15 +1,9 @@
-package hn.techcom.com.hnapp.Model;
+package hn.techcom.com.hnapp.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
-    @SerializedName("first_name")
-    @Expose
-    private String firstName;
-    @SerializedName("last_name")
-    @Expose
-    private String lastName;
+public class SupporterProfile {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -22,28 +16,18 @@ public class User {
     @SerializedName("full_name")
     @Expose
     private String fullName;
-    @SerializedName("city")
+    @SerializedName("location")
     @Expose
-    private String city;
-    @SerializedName("country")
+    private String location;
+    @SerializedName("post_count")
     @Expose
-    private String country;
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    private Integer postCount;
+    @SerializedName("follower_count")
+    @Expose
+    private Integer followerCount;
+    @SerializedName("following_count")
+    @Expose
+    private Integer followingCount;
 
     public Integer getId() {
         return id;
@@ -77,19 +61,36 @@ public class User {
         this.fullName = fullName;
     }
 
-    public String getCity() {
-        return city;
+    public String getLocation() {
+        return location;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public String getCountry() {
-        return country;
+    public Integer getPostCount() {
+        return postCount;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setPostCount(Integer postCount) {
+        this.postCount = postCount;
     }
+
+    public Integer getFollowerCount() {
+        return followerCount;
+    }
+
+    public void setFollowerCount(Integer followerCount) {
+        this.followerCount = followerCount;
+    }
+
+    public Integer getFollowingCount() {
+        return followingCount;
+    }
+
+    public void setFollowingCount(Integer followingCount) {
+        this.followingCount = followingCount;
+    }
+
 }

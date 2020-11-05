@@ -3,14 +3,13 @@ package hn.techcom.com.hnapp.Utils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
-import hn.techcom.com.hnapp.Model.SupporterProfile;
+import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import retrofit2.Call;
 import retrofit2.Callback;

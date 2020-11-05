@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import hn.techcom.com.hnapp.Model.Post;
+import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.R;
 
 public class PostLoaderAdapter extends RecyclerView.Adapter<PostLoaderAdapter.ViewHolder> {
