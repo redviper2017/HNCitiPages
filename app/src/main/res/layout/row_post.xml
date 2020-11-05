@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
@@ -23,8 +24,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/circleimageview_postedBy_image"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@drawable/profile_ic"
                     app:civ_border_width="0dp" />
 
@@ -41,7 +42,8 @@
                         android:layout_height="wrap_content"
                         android:text="John Doe"
                         android:textColor="@color/colorSecondary"
-                        android:textSize="18sp" />
+                        android:textSize="14sp"
+                        android:fontFamily="@font/roboto"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/textview_postedfrom_location"
@@ -49,7 +51,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="Johannesburg, South Africa"
-                        android:textSize="14sp" />
+                        android:textSize="12sp"
+                        android:fontFamily="@font/roboto"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/textview_postedat_time"
@@ -57,7 +60,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="10/15/2020 - 01:06 am"
-                        android:textSize="14sp" />
+                        android:textSize="12sp"
+                        android:fontFamily="@font/roboto"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/text_support_post"
@@ -68,7 +72,8 @@
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:text="Support"
-                        android:textColor="@color/colorSecondary" />
+                        android:textColor="@color/colorSecondary"
+                        android:fontFamily="@font/roboto"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -85,16 +90,16 @@
                     android:id="@+id/textview_post_body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/lorem_ipsum_body"
-                    android:justificationMode="inter_word"/>
+                    android:justificationMode="inter_word"
+                    android:fontFamily="@font/roboto"/>
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/image_slider_post"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_height="250dp"
+                    android:layout_marginBottom="10dp"/>
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatImageButton

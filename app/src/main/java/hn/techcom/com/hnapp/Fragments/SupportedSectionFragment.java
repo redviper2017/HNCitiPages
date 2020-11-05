@@ -37,7 +37,7 @@ public class SupportedSectionFragment extends Fragment {
     private RecyclerView supportedProfileAvatars, supportedProfilePostsList;
 
     static ArrayList<SupporterProfile> userSupportedProfiles;
-    static ArrayList<Post> userSupportedProfilePosts;
+    static ArrayList<Post> userSupportedProfilePosts = new ArrayList<>();
 
     //currently its hard coded but later on it will taken from local db based on currently logged in user's username
     private String currentUserUsername = "redviper";
@@ -81,8 +81,9 @@ public class SupportedSectionFragment extends Fragment {
                 userSupportedProfiles = new ArrayList<>(Objects.requireNonNull(response.body()));
                 Log.d(TAG, "this user is supported by = " + userSupportedProfiles.get(0).getFullName());
 
-                getSupportedProfilePosts();
-
+                if (getSupportedProfilePosts()){
+                    setSupportedProfilePosts();
+                }
                 setSupportedProfileAvatars(userSupportedProfiles);
             }
 
@@ -127,7 +128,7 @@ public class SupportedSectionFragment extends Fragment {
             public void onResponse(@NonNull Call<List<Post>> call,@NonNull Response<List<Post>> response) {
                 if (response.body() != null) {
                     Log.d(TAG, "first post from "+ username + " = "+response.body().get(0).getText());
-                    userSupportedProfilePosts = new ArrayList<>(Objects.requireNonNull(response.body()));
+                    userSupportedProfilePosts.addAll(response.body());
                 }
             }
 
@@ -139,12 +140,13 @@ public class SupportedSectionFragment extends Fragment {
     }
 
     // this function retrieves the list of supported user's posts
-    public void getSupportedProfilePosts() {
+    public boolean getSupportedProfilePosts() {
         Log.d(TAG, "this user is supporting  =  " + userSupportedProfiles.get(0).getUsername());
         for(SupporterProfile supportingProfile : userSupportedProfiles){
             getPostsByUser(supportingProfile.getUsername());
         }
-        setSupportedProfilePosts();
+        return true;
+//        setSupportedProfilePosts();
     }
 
     // this function sets all posts by users supported by the logged in user

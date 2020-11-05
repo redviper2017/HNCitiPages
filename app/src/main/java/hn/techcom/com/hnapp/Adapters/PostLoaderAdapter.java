@@ -1,6 +1,7 @@
 package hn.techcom.com.hnapp.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<PostLoaderAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.row_post,parent,false);
+        View view = layoutInflater.inflate(R.layout.row_post, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -44,7 +45,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<PostLoaderAdapter.Vi
         String location = postList.get(position).getUser().getCity() + ", " + postList.get(position).getUser().getCountry();
 
         Picasso.get()
-                .load(postList.get(position).getUser().getProfileImgUrl())
+                .load("http://hn.techcomengine.com" + postList.get(position).getUser().getProfileImgUrl())
                 .fit()
                 .centerInside()
                 .into(holder.userImage);
@@ -53,12 +54,28 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<PostLoaderAdapter.Vi
         holder.postTime.setText(postList.get(position).getCreatedOn());
         holder.postBody.setText(postList.get(position).getText());
 
-        if (postList.get(position).getCategory().equals("I")){
+        if (postList.get(position).getType().equals("I")) {
             holder.imageSliderView.setVisibility(View.VISIBLE);
-            ImageLoaderAdapter adapter = new ImageLoaderAdapter(context,getPostedImageUrls(postList));
-            holder.imageSliderView.setAdapter(adapter);
-        }
-        else
+
+
+            for (Post post : postList) {
+                ArrayList<String> imageList = new ArrayList<>();
+                if (post.getType().equals("I")) {
+                    imageList.add(post.getImageUrl());
+                    ImageLoaderAdapter adapter = new ImageLoaderAdapter(context, imageList);
+                    holder.imageSliderView.setAdapter(adapter);
+                }
+            }
+
+            if (postList.get(position).getType().equals("I")){
+                ArrayList<String> imageList = new ArrayList<>();
+                imageList.add(postList.get(position).getImageUrl());
+                ImageLoaderAdapter adapter = new ImageLoaderAdapter(context, imageList);
+                holder.imageSliderView.setAdapter(adapter);
+            }
+
+
+        } else
             holder.imageSliderView.setVisibility(View.GONE);
 
         if (postList.get(position).getSupport().equals(true))
@@ -73,7 +90,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<PostLoaderAdapter.Vi
         return postList.size();
     }
 
-    public ArrayList<String> getPostedImageUrls(ArrayList<Post> postList){
+    public ArrayList<String> getPostedImageUrls(ArrayList<Post> postList) {
         ArrayList<String> imageList = new ArrayList<>();
         for (Post post : postList)
             imageList.add(post.getImageUrl());

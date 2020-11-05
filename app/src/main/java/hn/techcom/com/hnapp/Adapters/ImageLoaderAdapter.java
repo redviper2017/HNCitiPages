@@ -1,6 +1,7 @@
 package hn.techcom.com.hnapp.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +13,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import hn.techcom.com.hnapp.Models.Post;
 
 public class ImageLoaderAdapter extends PagerAdapter {
 
@@ -38,8 +41,10 @@ public class ImageLoaderAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageView = new ImageView(context);
 
+        Log.d("ImageLoaderAdapter","view pager image url = "+imageList.get(position));
+
         Picasso.get()
-                .load(imageList.get(position))
+                .load("http://hn.techcomengine.com"+imageList.get(position))
                 .fit()
                 .centerInside()
                 .into(imageView);
