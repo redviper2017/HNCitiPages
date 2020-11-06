@@ -62,18 +62,6 @@
                         android:fontFamily="@font/roboto"
                         android:text="10/15/2020 - 01:06 am"
                         android:textSize="12sp" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/text_support_post"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/outlined_rectangle"
-                        android:fontFamily="@font/roboto"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:text="Support"
-                        android:textColor="@color/colorSecondary" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -107,6 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
                         android:layout_centerVertical="true"
                         android:background="#00000000"
                         android:src="@drawable/arrow_backward_ic" />
@@ -114,10 +103,9 @@
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/image_slider_post"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
+                        android:layout_height="300dp"
                         android:layout_toEndOf="@id/imagebutton_back_imageslider"
-                        android:layout_toStartOf="@id/imagebutton_next_imageslider"
-                        android:layout_marginEnd="10dp">
+                        android:layout_toStartOf="@id/imagebutton_next_imageslider">
 
 
                         <com.google.android.material.tabs.TabLayout
@@ -135,6 +123,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="10dp"
                         android:layout_centerVertical="true"
                         android:background="#00000000"
                         android:src="@drawable/arrow_forward_ic" />

@@ -109,7 +109,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     class PostsHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView userImage;
-        private MaterialTextView userName, userLocation, postTime, supportButton, postBody, postLikes, postComments;
+        private MaterialTextView userName, userLocation, postTime,  postBody, postLikes, postComments;
         private ViewPager imageSliderView;
         private ImageButton prevImageButton, nextImageButton;
         private TabLayout indicatorLayout;
@@ -122,7 +122,6 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             userName = itemView.findViewById(R.id.textview_postedby_name);
             userLocation = itemView.findViewById(R.id.textview_postedfrom_location);
             postTime = itemView.findViewById(R.id.textview_postedat_time);
-            supportButton = itemView.findViewById(R.id.text_support_post);
             postBody = itemView.findViewById(R.id.textview_post_body);
             imageSliderView = itemView.findViewById(R.id.image_slider_post);
             indicatorLayout = itemView.findViewById(R.id.tab_indicator_image_slider_post);
