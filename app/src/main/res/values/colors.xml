@@ -12,4 +12,6 @@
     <color name="colorOnSecondary">#FFFFFF</color>
     <color name="colorText">#000000</color>
     <color name="colorTextTitle">#1C164F</color>
+    <color name="colorIconDisabled">#606770</color>
+    <color name="colorDivider">#E5E5E5</color>
 </resources>

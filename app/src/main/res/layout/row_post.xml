@@ -40,28 +40,28 @@
                         android:id="@+id/textview_postedby_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto"
                         android:text="John Doe"
                         android:textColor="@color/colorSecondary"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/roboto"/>
+                        android:textSize="14sp" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/textview_postedfrom_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:fontFamily="@font/roboto"
                         android:text="Johannesburg, South Africa"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/roboto"/>
+                        android:textSize="12sp" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/textview_postedat_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:fontFamily="@font/roboto"
                         android:text="10/15/2020 - 01:06 am"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/roboto"/>
+                        android:textSize="12sp" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/text_support_post"
@@ -69,19 +69,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/outlined_rectangle"
+                        android:fontFamily="@font/roboto"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:text="Support"
-                        android:textColor="@color/colorSecondary"
-                        android:fontFamily="@font/roboto"/>
+                        android:textColor="@color/colorSecondary" />
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_below="@id/linear_layout_postBy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/linear_layout_postBy"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:orientation="vertical">
@@ -90,17 +90,90 @@
                     android:id="@+id/textview_post_body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/lorem_ipsum_body"
+                    android:fontFamily="@font/roboto"
                     android:justificationMode="inter_word"
-                    android:fontFamily="@font/roboto"/>
+                    android:text="@string/lorem_ipsum_body" />
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/image_slider_post"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:layout_marginBottom="10dp"
-                    android:visibility="gone"/>
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/colorDivider"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="null"
+                            android:src="@drawable/like_ic" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="null"
+                            android:src="@drawable/favorite_ic" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="null"
+                            android:src="@drawable/comment_ic" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="null"
+                            android:src="@drawable/follow_ic" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentEnd="true">
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_post_likes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/roboto"
+                            android:text="25 likes"
+                            android:textSize="14sp"
+                            android:textColor="@color/colorIconDisabled"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/textview_post_comments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/roboto"
+                            android:text="10 comments"
+                            android:textSize="14sp"
+                            android:textColor="@color/colorIconDisabled"/>
+                    </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatImageButton
