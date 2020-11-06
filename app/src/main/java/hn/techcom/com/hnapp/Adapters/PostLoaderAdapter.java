@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
@@ -109,6 +110,8 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private MaterialTextView userName, userLocation, postTime, supportButton, postBody, postLikes, postComments;
         private ViewPager imageSliderView;
 
+        private TabLayout indicatorLayout;
+
         public PostsHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -119,6 +122,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             supportButton = itemView.findViewById(R.id.text_support_post);
             postBody = itemView.findViewById(R.id.textview_post_body);
             imageSliderView = itemView.findViewById(R.id.image_slider_post);
+            indicatorLayout = itemView.findViewById(R.id.tab_indicator_image_slider_post);
             postLikes = itemView.findViewById(R.id.textview_post_likes);
             postComments = itemView.findViewById(R.id.textview_post_comments);
         }
@@ -162,9 +166,11 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                 imageList.add(post.getImageUrl());
                 imageList.add(post.getImageUrl());
+                imageList.add(post.getImageUrl());
 
                 ImageLoaderAdapter adapter = new ImageLoaderAdapter(context, imageList);
                 imageSliderView.setAdapter(adapter);
+                indicatorLayout.setupWithViewPager(imageSliderView, true);
             } else
                 imageSliderView.setVisibility(View.GONE);
         }
