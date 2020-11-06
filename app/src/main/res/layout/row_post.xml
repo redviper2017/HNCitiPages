@@ -94,27 +94,58 @@
                     android:justificationMode="inter_word"
                     android:text="@string/lorem_ipsum_body" />
 
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/image_slider_post"
+                <RelativeLayout
+                    android:id="@+id/relativelayout_image_slider"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:visibility="gone" >
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tab_indicator_image_slider_post"
-                        android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_back_imageslider"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:tabBackground="@drawable/tab_imageslider_indicator"
-                        app:tabGravity="center"
-                        app:tabIndicatorHeight="0dp"
-                        android:layout_gravity="bottom"/>
-                </androidx.viewpager.widget.ViewPager>
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:background="#00000000"
+                        android:src="@drawable/arrow_backward_ic" />
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/image_slider_post"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_toEndOf="@id/imagebutton_back_imageslider"
+                        android:layout_toStartOf="@id/imagebutton_next_imageslider"
+                        android:layout_marginEnd="10dp">
+
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tab_indicator_image_slider_post"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            app:tabBackground="@drawable/tab_imageslider_indicator"
+                            app:tabGravity="center"
+                            app:tabIndicatorHeight="0dp" />
+                    </androidx.viewpager.widget.ViewPager>
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_next_imageslider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="#00000000"
+                        android:src="@drawable/arrow_forward_ic" />
+
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="20dp"
-                    android:background="@color/colorDivider"/>
+                    android:background="@color/colorDivider" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -163,8 +194,9 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_alignParentEnd="true">
+                        android:layout_alignParentEnd="true"
+                        android:orientation="horizontal">
+
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/textview_post_likes"
                             android:layout_width="wrap_content"
@@ -172,19 +204,19 @@
                             android:layout_marginTop="5dp"
                             android:fontFamily="@font/roboto"
                             android:text="25 likes"
-                            android:textSize="14sp"
-                            android:textColor="@color/colorIconDisabled"/>
+                            android:textColor="@color/colorIconDisabled"
+                            android:textSize="14sp" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/textview_post_comments"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:layout_marginStart="10dp"
+                            android:layout_marginTop="5dp"
                             android:fontFamily="@font/roboto"
                             android:text="10 comments"
-                            android:textSize="14sp"
-                            android:textColor="@color/colorIconDisabled"/>
+                            android:textColor="@color/colorIconDisabled"
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

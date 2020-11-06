@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -109,8 +111,9 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private CircleImageView userImage;
         private MaterialTextView userName, userLocation, postTime, supportButton, postBody, postLikes, postComments;
         private ViewPager imageSliderView;
-
+        private ImageButton prevImageButton, nextImageButton;
         private TabLayout indicatorLayout;
+        private RelativeLayout imageSliderLayout;
 
         public PostsHolder(@NonNull View itemView) {
             super(itemView);
@@ -123,6 +126,9 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             postBody = itemView.findViewById(R.id.textview_post_body);
             imageSliderView = itemView.findViewById(R.id.image_slider_post);
             indicatorLayout = itemView.findViewById(R.id.tab_indicator_image_slider_post);
+            prevImageButton = itemView.findViewById(R.id.imagebutton_back_imageslider);
+            nextImageButton = itemView.findViewById(R.id.imagebutton_next_imageslider);
+            imageSliderLayout = itemView.findViewById(R.id.relativelayout_image_slider);
             postLikes = itemView.findViewById(R.id.textview_post_likes);
             postComments = itemView.findViewById(R.id.textview_post_comments);
         }
@@ -160,7 +166,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             postComments.setText(commentText);
 
             if (post.getType().equals("I")) {
-                imageSliderView.setVisibility(View.VISIBLE);
+                imageSliderLayout.setVisibility(View.VISIBLE);
 
                 ArrayList<String> imageList = new ArrayList<>();
 
@@ -172,7 +178,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 imageSliderView.setAdapter(adapter);
                 indicatorLayout.setupWithViewPager(imageSliderView, true);
             } else
-                imageSliderView.setVisibility(View.GONE);
+                imageSliderLayout.setVisibility(View.GONE);
         }
     }
 }
