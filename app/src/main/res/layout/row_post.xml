@@ -82,14 +82,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/linear_layout_postBy"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textview_post_body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:fontFamily="@font/roboto"
                     android:justificationMode="inter_word"
                     android:text="@string/lorem_ipsum_body" />
@@ -98,7 +99,6 @@
                     android:id="@+id/relativelayout_image_slider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
@@ -127,7 +127,7 @@
                             android:layout_gravity="bottom"
                             app:tabBackground="@drawable/tab_imageslider_indicator"
                             app:tabGravity="center"
-                            app:tabIndicatorHeight="0dp" />
+                            app:tabIndicatorHeight="0dp"/>
                     </androidx.viewpager.widget.ViewPager>
 
                     <ImageButton

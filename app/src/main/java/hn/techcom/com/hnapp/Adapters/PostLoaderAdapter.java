@@ -177,8 +177,40 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 ImageLoaderAdapter adapter = new ImageLoaderAdapter(context, imageList);
                 imageSliderView.setAdapter(adapter);
                 indicatorLayout.setupWithViewPager(imageSliderView, true);
-            } else
+
+                if (post.getText().equals(""))
+                    postBody.setVisibility(View.GONE);
+
+            }
+            else
                 imageSliderLayout.setVisibility(View.GONE);
+
+            imageSliderView.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    switch (position){
+                        case 0:
+                            prevImageButton.setVisibility(View.INVISIBLE);
+                            break;
+                        case 2:
+                            nextImageButton.setVisibility(View.INVISIBLE);
+                            break;
+                        default:
+                            prevImageButton.setVisibility(View.VISIBLE);
+                            nextImageButton.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
         }
     }
 }
