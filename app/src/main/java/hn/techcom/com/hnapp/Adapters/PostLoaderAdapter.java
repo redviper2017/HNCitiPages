@@ -18,11 +18,13 @@ import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Transitions.DepthPageTransformer;
 
 public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -176,6 +178,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 ImageLoaderAdapter adapter = new ImageLoaderAdapter(context, imageList);
                 imageSliderView.setAdapter(adapter);
                 indicatorLayout.setupWithViewPager(imageSliderView, true);
+                imageSliderView.setPageTransformer(true, new DepthPageTransformer());
 
                 if (post.getText().equals(""))
                     postBody.setVisibility(View.GONE);
@@ -184,19 +187,43 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             else
                 imageSliderLayout.setVisibility(View.GONE);
 
+            nextImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    nextImageButton.setImageResource(R.drawable.arrow_forward_selected_ic);
+                    imageSliderView.setCurrentItem(imageSliderView.getCurrentItem()+1);
+                }
+            });
+
+            prevImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    prevImageButton.setImageResource(R.drawable.arrow_backward_selected_ic);
+
+                    imageSliderView.setCurrentItem(imageSliderView.getCurrentItem()-1);
+                }
+            });
+
             imageSliderView.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                     switch (position){
                         case 0:
                             prevImageButton.setVisibility(View.INVISIBLE);
+
+//                            nextImageButton.setImageResource(R.drawable.arrow_forward_ic);
                             break;
                         case 2:
                             nextImageButton.setVisibility(View.INVISIBLE);
+
+//                            prevImageButton.setImageResource(R.drawable.arrow_backward_ic);
                             break;
                         default:
                             prevImageButton.setVisibility(View.VISIBLE);
                             nextImageButton.setVisibility(View.VISIBLE);
+
+//                            prevImageButton.setImageResource(R.drawable.arrow_backward_ic);
+//                            nextImageButton.setImageResource(R.drawable.arrow_forward_ic);
                     }
                 }
 
