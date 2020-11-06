@@ -43,13 +43,13 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         //for top item avatar list
-        if (viewType == TYPE_SUPPORTED_PROFILES){
+        if (viewType == TYPE_SUPPORTED_PROFILES) {
             view = LayoutInflater.from(context).inflate(R.layout.row_first_post, parent, false);
             return new SupportedProfilesHolder(view);
         }
         //for all item posts
         else {
-            view = LayoutInflater.from(context).inflate(R.layout.row_post,parent,false);
+            view = LayoutInflater.from(context).inflate(R.layout.row_post, parent, false);
             return new PostsHolder(view);
         }
     }
@@ -106,7 +106,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     class PostsHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView userImage;
-        private MaterialTextView userName, userLocation, postTime, supportButton, postBody;
+        private MaterialTextView userName, userLocation, postTime, supportButton, postBody, postLikes, postComments;
         private ViewPager imageSliderView;
 
         public PostsHolder(@NonNull View itemView) {
@@ -119,11 +119,29 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             supportButton = itemView.findViewById(R.id.text_support_post);
             postBody = itemView.findViewById(R.id.textview_post_body);
             imageSliderView = itemView.findViewById(R.id.image_slider_post);
+            postLikes = itemView.findViewById(R.id.textview_post_likes);
+            postComments = itemView.findViewById(R.id.textview_post_comments);
         }
 
         void setPostView(Post post) {
             String fullname = post.getUser().getFirstName() + " " + post.getUser().getLastName();
             String location = post.getUser().getCity() + ", " + post.getUser().getCountry();
+
+            String likeText = "";
+            if (post.getLikeCount() > 1)
+                likeText = post.getLikeCount() + " likes";
+            else if (post.getLikeCount() == 0)
+                postLikes.setVisibility(View.GONE);
+            else
+                likeText = post.getLikeCount() + " like";
+
+            String commentText = "";
+            if (post.getCommentCount() > 1)
+                commentText = post.getCommentCount() + " comments";
+            else if (post.getCommentCount() == 0)
+                postComments.setVisibility(View.GONE);
+            else
+                commentText = post.getCommentCount() + " comment";
 
             Picasso.get()
                     .load("http://hn.techcomengine.com" + post.getUser().getProfileImgUrl())
@@ -134,6 +152,8 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             userLocation.setText(location);
             postTime.setText(post.getCreatedOn());
             postBody.setText(post.getText());
+            postLikes.setText(likeText);
+            postComments.setText(commentText);
 
             if (post.getType().equals("I")) {
                 imageSliderView.setVisibility(View.VISIBLE);
@@ -141,10 +161,11 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 ArrayList<String> imageList = new ArrayList<>();
 
                 imageList.add(post.getImageUrl());
+                imageList.add(post.getImageUrl());
+
                 ImageLoaderAdapter adapter = new ImageLoaderAdapter(context, imageList);
                 imageSliderView.setAdapter(adapter);
-            }
-            else
+            } else
                 imageSliderView.setVisibility(View.GONE);
         }
     }

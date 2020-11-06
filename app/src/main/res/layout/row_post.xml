@@ -120,30 +120,34 @@
                         android:orientation="horizontal">
 
                         <ImageButton
+                            android:id="@+id/imagebutton_like_post"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="null"
+                            android:background="#00000000"
                             android:src="@drawable/like_ic" />
 
                         <ImageButton
+                            android:id="@+id/imagebutton_favorite_post"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:background="null"
+                            android:background="#00000000"
                             android:src="@drawable/favorite_ic" />
 
                         <ImageButton
+                            android:id="@+id/imagebutton_comment_post"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:background="null"
+                            android:background="#00000000"
                             android:src="@drawable/comment_ic" />
 
                         <ImageButton
+                            android:id="@+id/imagebutton_follow_post"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:background="null"
+                            android:background="#00000000"
                             android:src="@drawable/follow_ic" />
                     </LinearLayout>
 
