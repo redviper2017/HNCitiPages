@@ -196,6 +196,9 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         .fit()
                         .centerInside()
                         .into(userImage);
+            }else{
+                userImage.setImageResource(0);
+                userImage.setImageResource(R.drawable.dummy_profile_avatar);
             }
             userName.setText(fullname);
             userLocation.setText(location);
