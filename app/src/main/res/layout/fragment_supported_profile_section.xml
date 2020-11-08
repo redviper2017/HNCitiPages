@@ -35,7 +35,7 @@
             android:textColor="@color/colorTextTitle"/>
     </LinearLayout>
 
-    <androidx.appcompat.widget.SearchView
+    <EditText
         android:id="@+id/searchview_supportedsection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -45,6 +45,10 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:drawableStart="@drawable/search_ic"
+        android:drawablePadding="5dp"
+        android:hint="Search..."
         android:background="@drawable/rounded_corner_rectangle"/>
 
 <!--    <androidx.recyclerview.widget.RecyclerView-->

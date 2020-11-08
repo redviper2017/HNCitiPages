@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
@@ -17,7 +19,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.logging.Handler;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -26,12 +33,12 @@ import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Transitions.DepthPageTransformer;
 
-public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private static int TYPE_SUPPORTED_PROFILES = 1;
     private static int TYPE_POSTS = 2;
 
-    private ArrayList<Post> postList;
+    private ArrayList<Post> postList, tempList;
     private ArrayList<SupporterProfile> userSupportedProfiles;
     private Context context;
 
@@ -39,6 +46,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public PostLoaderAdapter(ArrayList<Post> postList, ArrayList<SupporterProfile> userSupportedProfiles, Context context) {
         this.postList = postList;
+        this.tempList = postList;
         this.userSupportedProfiles = userSupportedProfiles;
         this.context = context;
     }
@@ -80,6 +88,34 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return postList.size();
     }
 
+    //This method will filter the list
+    //here we are passing the filtered data
+    //and assigning it to the list with notifydatasetchanged method
+    public void filterList(ArrayList<Post> filterdNames) {
+        this.postList = filterdNames;
+        notifyDataSetChanged();
+    }
+
+    //function to convert server UTC time to local
+    public String utcToLocalTime(String utcTime) {
+        Log.d(TAG, "time got from server = " + utcTime);
+        SimpleDateFormat oldFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        oldFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date value = null;
+        String dueDateAsNormal = "";
+        try {
+            value = oldFormatter.parse(utcTime);
+            SimpleDateFormat newFormatter = new SimpleDateFormat("MM/dd/yyyy - hh:mm a", Locale.getDefault());
+
+            newFormatter.setTimeZone(TimeZone.getDefault());
+            dueDateAsNormal = newFormatter.format(value);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "time returned from all post adapter = " + dueDateAsNormal);
+        return dueDateAsNormal;
+    }
+
     class SupportedProfilesHolder extends RecyclerView.ViewHolder {
         private RecyclerView recyclerView;
 
@@ -111,7 +147,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     class PostsHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView userImage;
-        private MaterialTextView userName, userLocation, postTime,  postBody, postLikes, postComments;
+        private MaterialTextView userName, userLocation, postTime, postBody, postLikes, postComments;
         private ViewPager imageSliderView;
         private ImageButton prevImageButton, nextImageButton;
         private TabLayout indicatorLayout;
@@ -154,14 +190,16 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             else
                 commentText = post.getCommentCount() + " comment";
 
-            Picasso.get()
-                    .load("http://hn.techcomengine.com" + post.getUser().getProfileImgUrl())
-                    .fit()
-                    .centerInside()
-                    .into(userImage);
+            if (post.getUser().getProfileImgUrl() != null) {
+                Picasso.get()
+                        .load("http://hn.techcomengine.com" + post.getUser().getProfileImgUrl())
+                        .fit()
+                        .centerInside()
+                        .into(userImage);
+            }
             userName.setText(fullname);
             userLocation.setText(location);
-            postTime.setText(post.getCreatedOn());
+            postTime.setText(utcToLocalTime(post.getCreatedOn()));
             postBody.setText(post.getText());
             postLikes.setText(likeText);
             postComments.setText(commentText);
@@ -183,15 +221,14 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if (post.getText().equals(""))
                     postBody.setVisibility(View.GONE);
 
-            }
-            else
+            } else
                 imageSliderLayout.setVisibility(View.GONE);
 
             nextImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 //                    nextImageButton.setImageResource(R.drawable.arrow_forward_selected_ic);
-                    imageSliderView.setCurrentItem(imageSliderView.getCurrentItem()+1);
+                    imageSliderView.setCurrentItem(imageSliderView.getCurrentItem() + 1);
                 }
             });
 
@@ -200,14 +237,14 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 public void onClick(View v) {
 //                    prevImageButton.setImageResource(R.drawable.arrow_backward_selected_ic);
 
-                    imageSliderView.setCurrentItem(imageSliderView.getCurrentItem()-1);
+                    imageSliderView.setCurrentItem(imageSliderView.getCurrentItem() - 1);
                 }
             });
 
             imageSliderView.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    switch (position){
+                    switch (position) {
                         case 0:
                             prevImageButton.setVisibility(View.INVISIBLE);
 
