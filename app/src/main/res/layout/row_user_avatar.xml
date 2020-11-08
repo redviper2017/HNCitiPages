@@ -11,7 +11,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:civ_border_width="0dp"
-        android:src="@drawable/profile_ic"/>
+        android:src="@drawable/dummy_profile_avatar"/>
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textview_row_avatar"
         android:layout_width="60dp"

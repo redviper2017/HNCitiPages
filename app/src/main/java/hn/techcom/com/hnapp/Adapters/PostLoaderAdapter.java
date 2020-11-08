@@ -149,7 +149,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private CircleImageView userImage;
         private MaterialTextView userName, userLocation, postTime, postBody, postLikes, postComments;
         private ViewPager imageSliderView;
-        private ImageButton prevImageButton, nextImageButton;
+        private ImageButton prevImageButton, nextImageButton, likeImageButton, favoriteImageButton, followImageButton;
         private TabLayout indicatorLayout;
         private RelativeLayout imageSliderLayout;
 
@@ -165,6 +165,9 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             indicatorLayout = itemView.findViewById(R.id.tab_indicator_image_slider_post);
             prevImageButton = itemView.findViewById(R.id.imagebutton_back_imageslider);
             nextImageButton = itemView.findViewById(R.id.imagebutton_next_imageslider);
+            likeImageButton = itemView.findViewById(R.id.imagebutton_like_post);
+            favoriteImageButton = itemView.findViewById(R.id.imagebutton_favorite_post);
+            followImageButton = itemView.findViewById(R.id.imagebutton_follow_post);
             imageSliderLayout = itemView.findViewById(R.id.relativelayout_image_slider);
             postLikes = itemView.findViewById(R.id.textview_post_likes);
             postComments = itemView.findViewById(R.id.textview_post_comments);
@@ -277,6 +280,15 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                 }
             });
+            
+            if(post.getSupport())
+                followImageButton.setImageResource(R.drawable.support_icon_selected);
+
+            if(post.getLiked())
+                likeImageButton.setImageResource(R.drawable.like_ic_selected);
+
+            if(post.getFavorite())
+                favoriteImageButton.setImageResource(R.drawable.favorite_ic_selected);
         }
     }
 }
