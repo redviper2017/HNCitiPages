@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_share_text"
+        android:icon="@drawable/text_post_ic"
+        android:title="Share Story"
+        android:enabled="true"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/navigation_share_image"
+        android:icon="@drawable/image_post_ic"
+        android:title="Share Photo"
+        android:enabled="true"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/navigation_share_video"
+        android:icon="@drawable/video_post_ic"
+        android:title="Share Video"
+        android:enabled="true"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/navigation_share_audio"
+        android:icon="@drawable/audio_post_icon"
+        android:title="Share Audio"
+        android:enabled="true"
+        app:showAsAction="always"/>
+</menu>

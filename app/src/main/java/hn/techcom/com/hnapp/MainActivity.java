@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Fragments.SharePostBottomSheetFragment;
 import hn.techcom.com.hnapp.Fragments.SupportedSectionFragment;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Models.Post;
@@ -32,8 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
     static ArrayList<SupporterProfile> userSupportedProfiles;
     static ArrayList<Post> userSupportedProfilePosts = new ArrayList<>();
+
     //currently its hard coded but later on it will taken from local db based on currently logged in user's username
     private String currentUserUsername = "redviper";
+
     private static final String TAG = "MainActivity";
 
     @Override
@@ -49,6 +53,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(bottomAppBar);
 
         getSupportedProfiles();
+
+        newPostFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharePostBottomSheetFragment shareSheetFragment = new SharePostBottomSheetFragment();
+                shareSheetFragment.show(getSupportFragmentManager(), shareSheetFragment.getTag());
+            }
+        });
     }
 
     @Override
