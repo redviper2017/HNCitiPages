@@ -34,17 +34,17 @@ public class SharePostBottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-//                switch (item.getItemId()) {
-//
+                switch (item.getItemId()) {
+
 //                    case R.id.navigation_share_text:
 //                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ShareTextFragment()).commit();
 //                        dismiss();
 //                        break;
-//                    case R.id.navigation_share_image:
-//                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ShareImageFragment()).commit();
-//                        dismiss();
-//                        break;
-//                }
+                    case R.id.navigation_share_image:
+                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new ImagePostFragment()).commit();
+                        dismiss();
+                        break;
+                }
 
                 return true;
             }

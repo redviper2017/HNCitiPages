@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Fragments.HomeFragment;
 import hn.techcom.com.hnapp.Fragments.SharePostBottomSheetFragment;
 import hn.techcom.com.hnapp.Fragments.SupportedSectionFragment;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
@@ -33,12 +34,20 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     static ArrayList<SupporterProfile> userSupportedProfiles;
+    static ArrayList<Post> globalPosts = new ArrayList<>();
     static ArrayList<Post> userSupportedProfilePosts = new ArrayList<>();
 
     //currently its hard coded but later on it will taken from local db based on currently logged in user's username
     private String currentUserUsername = "redviper";
 
     private static final String TAG = "MainActivity";
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Fragment fragment = new HomeFragment(globalPosts);
+        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +86,26 @@ public class MainActivity extends AppCompatActivity {
             case R.id.navigation_supportedsection:
                 fragmentSelected = new SupportedSectionFragment(userSupportedProfiles,userSupportedProfilePosts);
                 break;
+            case R.id.navigation_home:
+                fragmentSelected = new HomeFragment(globalPosts);
+                break;
         }
         // Begin the transaction
         getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragmentSelected)).commit();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        //if the current fragment loaded is the home fragment then follow default behavior
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.framelayout_main);
+        if(f instanceof HomeFragment)
+            super.onBackPressed();
+        else {
+            Fragment fragment = new HomeFragment(globalPosts);
+            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
+        }
+
     }
 
     // this function retrieves the list of supported profiles by the current user
