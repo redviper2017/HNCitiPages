@@ -110,6 +110,7 @@
                 android:layout_gravity="center">
 
                 <LinearLayout
+                    android:id="@+id/button_upload_from_file"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -140,6 +141,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/button_upload_from_gallery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -155,6 +157,7 @@
                         android:orientation="horizontal">
 
                         <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/gallery_image_preview"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:src="@drawable/dummy_image" />
@@ -172,6 +175,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/button_upload_from_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
