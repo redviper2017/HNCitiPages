@@ -1,4 +1,4 @@
-package hn.techcom.com.hnapp;
+package hn.techcom.com.hnapp.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +27,7 @@ import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.QUser;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
+import hn.techcom.com.hnapp.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
