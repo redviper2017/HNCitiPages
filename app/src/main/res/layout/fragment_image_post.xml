@@ -38,13 +38,14 @@
     </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_main_image_post"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
         app:cardElevation="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_screentitle_shareimage">
@@ -53,9 +54,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
@@ -65,9 +66,10 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/roboto"
-                android:text="Select the type of post you're sharing"
+                android:text="@string/select_post_type"
                 android:textSize="14sp" />
 
+            <!-- Post Type Spinner Layout -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,18 +80,18 @@
                     android:id="@+id/spinner_post_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorTextTitle"
+                    android:dropDownVerticalOffset="40dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:spinnerMode="dropdown"
-                    android:dropDownVerticalOffset="50dp"
-                    android:backgroundTint="@color/colorTextTitle"
-                    android:popupBackground="@color/colorPrimary"/>
+                    android:popupBackground="@color/colorPrimary"
+                    android:spinnerMode="dropdown" />
             </LinearLayout>
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/image_slider_post"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="250dp"
                 android:layout_marginBottom="20dp"
                 android:background="@color/colorBackground">
 
@@ -105,9 +107,11 @@
             </androidx.viewpager.widget.ViewPager>
 
             <LinearLayout
+                android:id="@+id/layout_image_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/button_upload_from_file"
@@ -136,8 +140,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
-                        android:text="FILE"
-                        android:fontFamily="@font/roboto"/>
+                        android:fontFamily="@font/roboto"
+                        android:text="FILE" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -169,8 +173,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
-                        android:text="GALLERY"
-                        android:fontFamily="@font/roboto"/>
+                        android:fontFamily="@font/roboto"
+                        android:text="GALLERY" />
 
                 </LinearLayout>
 
@@ -200,12 +204,63 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
-                        android:text="CAMERA"
-                        android:fontFamily="@font/roboto"/>
+                        android:fontFamily="@font/roboto"
+                        android:text="CAMERA" />
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_caption_image_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/caption"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_corner_rectangle_filled"
+                    android:lines="4"
+                    android:maxLines="10"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
         </LinearLayout>
+
     </com.google.android.material.card.MaterialCardView>
+
+    <!-- Post Button Layout -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/button_post_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintTop_toBottomOf="@id/card_main_image_post">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_button"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="POST"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:padding="10dp"/>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

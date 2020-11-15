@@ -6,4 +6,6 @@
     <string name="supporting">Supporting</string>
     <string name="support">Support</string>
     <string name="home">Home</string>
+    <string name="select_post_type">Select the type of post you\'re sharing</string>
+    <string name="caption">Give a caption</string>
 </resources>

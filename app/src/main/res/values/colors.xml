@@ -14,4 +14,12 @@
     <color name="colorTextTitle">#1C164F</color>
     <color name="colorIconDisabled">#606770</color>
     <color name="colorDivider">#E5E5E5</color>
+
+    <!-- Custom Gradient Colors -->
+    <color name="colorStartLinearGradient">#F04F34</color>
+    <color name="colorCenterLinearGradient">#9F1F63</color>
+    <color name="colorEndLinearGradient">#262262</color>
+
+    <!-- Custom Drawable Background Colors -->
+    <color name="colorBackgroundFill">#E5E5E5</color>
 </resources>
