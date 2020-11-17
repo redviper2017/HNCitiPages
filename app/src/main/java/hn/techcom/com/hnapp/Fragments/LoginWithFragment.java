@@ -24,8 +24,6 @@ import java.util.Objects;
 import hn.techcom.com.hnapp.Activities.MainActivity;
 import hn.techcom.com.hnapp.R;
 
-import static android.content.ContentValues.TAG;
-
 public class LoginWithFragment extends Fragment implements View.OnClickListener{
 
     private static final int RC_SIGN_IN = 1;
@@ -56,10 +54,12 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener{
 
         //Hooks
         MaterialCardView loginWithGmailButton = view.findViewById(R.id.button_login_with_gmail);
+        MaterialCardView loginWithPhone = view.findViewById(R.id.button_login_with_phone);
 
 
         //Click listeners
         loginWithGmailButton.setOnClickListener(this);
+        loginWithPhone.setOnClickListener(this);
 
         // Inflate the layout for this fragment
         return view;
@@ -84,6 +84,12 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         if(view.getId() == R.id.button_login_with_gmail)
             signIn();
+        else if (view.getId() == R.id.button_login_with_phone)
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.framelayout_login, new LoginWithPhoneFragment(), "findThisFragment")
+                    .addToBackStack(null)
+                    .commit();
+
     }
 
     private void signIn() {

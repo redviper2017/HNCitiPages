@@ -30,4 +30,10 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="MyTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:textColorHint">@color/colorText</item>
+        <item name="boxStrokeColor">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorText</item>
+    </style>
+
 </resources>

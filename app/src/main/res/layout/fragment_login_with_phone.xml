@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.LoginWithPhone">
+    tools:context=".Fragments.LoginWithPhoneFragment">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -23,29 +23,183 @@
             android:layout_height="wrap_content"
             android:src="@drawable/hncitipageslogo" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <LinearLayout
+            android:id="@+id/layout_phone_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:text="Sign in with phone"
-            android:textColor="@color/colorCenterLinearGradient"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <com.google.android.material.textview.MaterialTextView
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="Sign in with phone"
+                android:textColor="@color/colorCenterLinearGradient"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto"
+                android:justificationMode="none"
+                android:text="Please enter the phone number below with which you have registered your account."
+                android:textSize="14sp"
+                tools:targetApi="o" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/MyTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:hint="Phone"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxStrokeWidth="1dp"
+                app:hintTextColor="@color/colorText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/phone_ic"
+                    android:drawableTint="@color/colorCenterLinearGradient"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/button_get_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="10dp"
+                app:layout_constraintTop_toBottomOf="@id/card_main_image_post">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/gradient_button"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Get verification code"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    app:fontFamily="@font/roboto" />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_code_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/roboto"
-            android:justificationMode="none"
-            android:text="Please enter the phone number below with which you have registered your account."
-            android:textSize="14sp"
-            tools:targetApi="o" />
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="Enter verification code"
+                android:textColor="@color/colorCenterLinearGradient"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto"
+                android:justificationMode="none"
+                android:text="Please enter the verification code that you have just received in your number."
+                android:textSize="14sp"
+                tools:targetApi="o" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/first_otp_box"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/rectangled_otp"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textAlignment="center"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/second_otp_box"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/rectangled_otp"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textAlignment="center"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/third_otp_box"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/rectangled_otp"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textAlignment="center"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fourth_otp_box"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/rectangled_otp"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textAlignment="center"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fifth_otp_box"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rectangled_otp"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/button_login_with_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="10dp"
+                app:layout_constraintTop_toBottomOf="@id/card_main_image_post">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/gradient_button"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Sign in"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    app:fontFamily="@font/roboto" />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
