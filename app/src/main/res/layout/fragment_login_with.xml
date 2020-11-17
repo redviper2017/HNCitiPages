@@ -53,11 +53,11 @@
             android:justificationMode="inter_word"
             tools:targetApi="o" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_login_with_gmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="15dp"
             app:layout_constraintTop_toBottomOf="@id/card_main_image_post">
@@ -73,7 +73,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
                 android:padding="10dp"/>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                 android:background="@color/colorBackgroundFill"/>
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_login_with_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
                 android:padding="10dp"/>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 
