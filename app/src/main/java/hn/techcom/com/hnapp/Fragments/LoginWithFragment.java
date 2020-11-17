@@ -21,6 +21,7 @@ import com.google.android.material.card.MaterialCardView;
 
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Activities.MainActivity;
 import hn.techcom.com.hnapp.R;
 
 import static android.content.ContentValues.TAG;
@@ -79,6 +80,12 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.button_login_with_gmail)
+            signIn();
+    }
+
     private void signIn() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -87,7 +94,8 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener{
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.d(TAG, "signInResult:success =" + account.getFamilyName());
+            Log.d(TAG, "signInResult:success user =" + "name: " + account.getDisplayName() + " email: " + account.getEmail() + " photo url: " + account.getPhotoUrl());
+            updateUi();
             // Signed in successfully, show authenticated UI.
 //            updateUI(account);
         } catch (ApiException e) {
@@ -98,9 +106,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.button_login_with_gmail)
-            signIn();
+    private void updateUi() {
+        startActivity(new Intent(getActivity(), MainActivity.class));
     }
 }

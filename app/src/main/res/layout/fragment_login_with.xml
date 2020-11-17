@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/terms_agree"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:fontFamily="@font/roboto"
             android:justificationMode="none"
             tools:targetApi="o"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:text="click here."
             android:textStyle="bold"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textColor="@color/colorStartLinearGradient"
             android:fontFamily="@font/roboto"
             android:justificationMode="inter_word"
@@ -60,7 +60,8 @@
             android:layout_marginTop="50dp"
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="15dp"
-            app:layout_constraintTop_toBottomOf="@id/card_main_image_post">
+            app:layout_constraintTop_toBottomOf="@id/card_main_image_post"
+            app:cardElevation="10dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -68,11 +69,12 @@
                 android:background="@drawable/gradient_button"
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
-                android:text="Use Gmail"
+                android:text="Sign in with Google"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:drawableStart="@drawable/google_ic"/>
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
@@ -113,7 +115,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             app:cardCornerRadius="15dp"
-            app:layout_constraintTop_toBottomOf="@id/card_main_image_post">
+            app:layout_constraintTop_toBottomOf="@id/card_main_image_post"
+            app:cardElevation="10dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -121,11 +124,12 @@
                 android:background="@drawable/gradient_button_inverse"
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
-                android:text="Use Phone"
+                android:text="Sign in with Phone"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:drawableStart="@drawable/phone_ic"/>
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
