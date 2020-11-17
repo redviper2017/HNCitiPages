@@ -29,17 +29,29 @@
             android:text="@string/connect_to_your_city_and_its_people"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:textColor="@color/colorTextTitle"
+            android:textColor="@color/colorCenterLinearGradient"
             android:fontFamily="@font/roboto"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/terms_agree"
+            android:textSize="12sp"
+            android:fontFamily="@font/roboto"
+            android:justificationMode="none"
+            tools:targetApi="o"
+            android:layout_marginTop="20dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="click here."
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:textColor="@color/colorStartLinearGradient"
             android:fontFamily="@font/roboto"
             android:justificationMode="inter_word"
-            tools:targetApi="o"
-            android:layout_marginTop="10dp"/>
+            tools:targetApi="o" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/button_login_with_gmail"
