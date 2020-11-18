@@ -5,6 +5,7 @@ import java.util.List;
 import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.QUser;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
+import hn.techcom.com.hnapp.Models.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,4 +21,7 @@ public interface GetDataService {
     //Fetch All Posts By Single User With Current User's (QUser = Query User) perspective
     @POST("posts/{posts_by_username}/")
     Call<List<Post>> getAllPostsBy(@Path("posts_by_username") String posts_by_username, @Body QUser queryUser);
+
+    @GET("users/validate/")
+    Call<User> getUser(@Path("user_name") String user_name);
 }

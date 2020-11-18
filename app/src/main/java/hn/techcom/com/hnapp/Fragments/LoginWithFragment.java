@@ -2,14 +2,13 @@ package hn.techcom.com.hnapp.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -18,17 +17,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Activities.MainActivity;
 import hn.techcom.com.hnapp.R;
 
-public class LoginWithFragment extends Fragment implements View.OnClickListener{
+public class LoginWithFragment extends Fragment implements View.OnClickListener {
 
     private static final int RC_SIGN_IN = 1;
     private GoogleSignInClient googleSignInClient;
     private static final String TAG = "LoginWithFragment";
+
+    private MaterialTextView createAccountButton;
 
     public LoginWithFragment() {
         // Required empty public constructor
@@ -44,7 +46,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener{
                 .requestEmail()
                 .build();
 
-        googleSignInClient = GoogleSignIn.getClient(Objects.requireNonNull(getContext()),gso);
+        googleSignInClient = GoogleSignIn.getClient(Objects.requireNonNull(getContext()), gso);
     }
 
     @Override
@@ -55,11 +57,13 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener{
         //Hooks
         MaterialCardView loginWithGmailButton = view.findViewById(R.id.button_login_with_gmail);
         MaterialCardView loginWithPhone = view.findViewById(R.id.button_login_with_phone);
+        createAccountButton = view.findViewById(R.id.create_account_button);
 
 
         //Click listeners
         loginWithGmailButton.setOnClickListener(this);
         loginWithPhone.setOnClickListener(this);
+        createAccountButton.setOnClickListener(this);
 
         // Inflate the layout for this fragment
         return view;
@@ -69,7 +73,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener{
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d(TAG,"request code = "+resultCode);
+        Log.d(TAG, "request code = " + resultCode);
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -82,14 +86,16 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.button_login_with_gmail)
+        if (view.getId() == R.id.button_login_with_gmail)
             signIn();
         else if (view.getId() == R.id.button_login_with_phone)
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.framelayout_login, new LoginWithPhoneFragment(), "findThisFragment")
                     .addToBackStack(null)
                     .commit();
-
+        else if (view.getId() == R.id.create_account_button) {
+            createAccountButton.setTextColor(getResources().getColor(R.color.colorCenterLinearGradient));
+        }
     }
 
     private void signIn() {
@@ -114,5 +120,10 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener{
 
     private void updateUi() {
         startActivity(new Intent(getActivity(), MainActivity.class));
+    }
+
+    private boolean checkIfNewUser(String username){
+        //get user data from server if exists
+        return false;
     }
 }
