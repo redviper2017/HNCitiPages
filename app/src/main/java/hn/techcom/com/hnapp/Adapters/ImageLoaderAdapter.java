@@ -40,6 +40,7 @@ public class ImageLoaderAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageView = new ImageView(context);
+        imageView.setAdjustViewBounds(true);
 
         Log.d("ImageLoaderAdapter","view pager image url = "+imageList.get(position));
 

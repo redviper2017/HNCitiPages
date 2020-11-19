@@ -15,6 +15,7 @@
         <item name="colorOnSurface">@color/colorOnSurface</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="android:textColor">@color/colorText</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearanceOverlay.Demo</item>
 
     </style>
 
@@ -34,6 +35,11 @@
         <item name="android:textColorHint">@color/colorText</item>
         <item name="boxStrokeColor">@color/colorAccent</item>
         <item name="android:textColor">@color/colorText</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Demo" parent="">
+        <item name="cornerSize">20dp</item>
+        <item name="cornerFamily">rounded</item>
     </style>
 
 </resources>

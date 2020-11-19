@@ -10,4 +10,37 @@
     <string name="caption">Give a caption</string>
     <string name="connect_to_your_city_and_its_people">Connect to your city and its people.</string>
     <string name="terms_agree">By Signing up for HN CitiPages, you agree to our Terms and Conditions. To learn more about our Privacy Policy,</string>
+    <string name="terms_and_conditions">Terms and conditions</string>
+    <string name="please_read_carefully_the_following_terms_and_conditions_for_using_hn_citipages">Please read carefully the following terms and conditions for using HN CitiPages.</string>
+    <string name="basic_terms_of_use">Basic Terms of Use</string>
+    <string name="terms_basic">i) In order to use the HN Citipages app you must be at least 13 years and older.
+        \n\nii) By using HN Citipages, you agree to have the app automatically assigning you to your area through geotechnology in order for you to be connected to the area or location you registering in the app from.
+        \n\niii) Nudity is not promoted in the app or any sexually seductive pictures, even if a picture includes an incompletely nude individual(s) or promotes sex. You are not supposed to post any pictures of such nature in the HN Citipages app.
+        \n\niv) You are responsible for any action that happens through your username.
+        \n\nv) The security of your password is your responsibility.
+        \n\nvi) You must not, in any case, exude any negative posts towards another user. No bullying, discrimination, abuse of any kind, threats, harassment, impersonation/mocking, or defaming of any sort is allowed in HN Citipages. Do not insult/irritate/annoy/blackmail/intimidate any user.
+        \n\nvii) You are not allowed to use the services provided by HN Citipages for unauthorised or illegal cause. All international users are advised to comply with the local online laws or regulations set by the government of the country they reside in.
+        \n\nviii) You are responsible for everything you post in HN Citipages; text, pictures, data/information and url links.
+        \n\nix) You must not create a mockup of HN Citipages app or image to send false messages or content about the app or to drag down the app.
+        \n\nx) You are not allowed to invade the private API of HN Citipages apart from using the app itself or its public services.
+        \n\nxi) You must not hijack information/content from HN Citipages without crediting the app.
+        \n\nxii) You must not modify content taken from the app without the consent of either HN Citipages or the user that originally posted it.
+        \n\nxiii) The creation of unwanted email sent to HN Citipages, spam, is forbidden. You are advised not to send spam to users.
+        \n\nxiv) You must not use the HN Citipages app or any urls linked or owned by HN Citipages under your name without asking for permission from the HN Citipages management. For any permission or whatsoever contact HN Citipages, contacts are found under “Contact Us”.
+        \n\nxv) You must not transfer any bugs or viruses or whatever file or code or content of any nature that might temper with the functionality of HN Citipages.
+        \n\nxvi) You must not break any laws of your country when using the services of HN Citipages.
+        \n\nxvii) You must not supply any fake news under the “news” or “emergency” without solid proof. Defaming any users is forbidden by the app.</string>
+    <string name="terms_general_conditions">We hold the right to upgrade or terminate the HN Citipages at any given time for any reason without alerting any user.
+    \n\nii) We hold the right to modify these terms and conditions at any time and if the changes affect the initial agreement in any way then the users will be notified through email.
+    \n\niii) We hold the right to suspend or expel any user at any given time for any given reason.
+    \n\niv) We hold the right to delete inactive usernames, usernames that mislead the masses or usernames that go against the rules set by the HN Citipages app found under the Terms and Conditions of the app.
+    \n\nv) We hold the right to remove any content by users that is found to be against any basic terms set by HN CItipages.
+    \n\nvi) We have the right to remove usernames that have original individuals or businesses that have trademarked them and such usernames have been reported by the original owners of the trademarked names to be removed or reclaimed.</string>
+    <string name="terms_proprietary_rights">HN Citipages does not claim ownership of any content that is posted by users. As mentioned in the Basic Terms of Use, users are responsible for everything they post.
+    \n\nii) HN Citipages only owns the original content that is shared through the “HN Thoughts” section found in the menu of the app.
+    \n\niii) HN Citipages revenues are supported by advertising services therefore by using HN Citipages you hereby agree to allow the app to make some ads that are directed to your city/town/country visible to you at any given moment.
+    \n\niv) As mentioned in the Basic Terms of Use, you are responsible for anything you post on HN Citipages, should you post any content that needs royalties paid or needs any sort of payment needed by you or the original content producer then you will be responsible.
+    \n\nv) HN Citipages content is visible and made clear through captions or through the “Hlumelo Nyaluza” or “Human Navigator” usernames or accounts. It is also protected by law. As mentioned in the Basic Terms of Use, failure to use the HN Citipages’ original content without the consent of the HN Citipages Company you will either be suspended or expelled from the app.
+    \n\nvi) Although HN Citipages is a public platform, sometimes the app will be offline due to upgrades or maybe due to technical errors that the app will foresee in the mere future but the app will be brought back online every time.
+    \n\nvii) The users will be alerted via email should HN Citipages close down or change the platform’s name to something else.</string>
 </resources>
