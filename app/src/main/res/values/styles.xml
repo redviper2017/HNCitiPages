@@ -35,6 +35,7 @@
         <item name="android:textColorHint">@color/colorText</item>
         <item name="boxStrokeColor">@color/colorAccent</item>
         <item name="android:textColor">@color/colorText</item>
+        <item name="colorControlActivated">@color/colorCenterLinearGradient</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.Demo" parent="">
