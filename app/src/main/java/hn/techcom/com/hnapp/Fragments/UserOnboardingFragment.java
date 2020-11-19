@@ -19,7 +19,7 @@ import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CU
 
 public class UserOnboardingFragment extends Fragment implements View.OnClickListener {
 
-    private FloatingActionButton nextButton, prevButton;
+    private View nextButton, prevButton;
     private ViewPager viewPager;
 
     public UserOnboardingFragment() {

@@ -6,7 +6,7 @@
             android:shape="ring"
             android:thickness="4dp"
             android:useLevel="false">
-            <solid android:color="@color/colorSecondary"/>
+            <gradient android:angle="360" android:type="linear" android:startColor="@color/colorStartLinearGradient" android:endColor="@color/colorCenterLinearGradient"/>
         </shape>
     </item>
 </layer-list>
