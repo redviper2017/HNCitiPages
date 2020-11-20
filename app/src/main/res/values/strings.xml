@@ -10,7 +10,7 @@
     <string name="caption">Give a caption</string>
     <string name="connect_to_your_city_and_its_people">Connect to your city and its people.</string>
     <string name="terms_agree">By Signing up for HN CitiPages, you agree to our Terms and Conditions. To learn more about our Privacy Policy,</string>
-    <string name="terms_and_conditions">Terms and conditions</string>
+    <string name="terms_and_conditions">HN CitiPages terms and conditions</string>
     <string name="please_read_carefully_the_following_terms_and_conditions_for_using_hn_citipages">Please read carefully the following terms and conditions for using HN CitiPages.</string>
     <string name="basic_terms_of_use">Basic Terms of Use</string>
     <string name="terms_basic">i) In order to use the HN Citipages app you must be at least 13 years and older.
@@ -43,4 +43,8 @@
     \n\nv) HN Citipages content is visible and made clear through captions or through the “Hlumelo Nyaluza” or “Human Navigator” usernames or accounts. It is also protected by law. As mentioned in the Basic Terms of Use, failure to use the HN Citipages’ original content without the consent of the HN Citipages Company you will either be suspended or expelled from the app.
     \n\nvi) Although HN Citipages is a public platform, sometimes the app will be offline due to upgrades or maybe due to technical errors that the app will foresee in the mere future but the app will be brought back online every time.
     \n\nvii) The users will be alerted via email should HN Citipages close down or change the platform’s name to something else.</string>
+    <string name="sign_in_with_phone">Sign in with phone</string>
+    <string name="phone">Phone</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="gender">Gender</string>
 </resources>

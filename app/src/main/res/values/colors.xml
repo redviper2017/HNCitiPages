@@ -3,10 +3,10 @@
     <color name="colorAccent" tools:override="true">#9F1F63</color>
 
     <!-- Custom Colors -->
-    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimary">#9F1F63</color>
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorSecondary">#EF7125</color>
-    <color name="colorBackground">#F2F2F2</color>
+    <color name="colorBackground">#FFFFFF</color>
     <color name="colorSurface">#FFFFFF</color>
     <color name="colorOnSurface">#1C164F</color>
     <color name="colorOnSecondary">#FFFFFF</color>

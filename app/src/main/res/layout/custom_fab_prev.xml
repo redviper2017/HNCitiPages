@@ -12,5 +12,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/arrow_backward_selected_ic"
-        app:tint="@color/colorPrimary"/>
+        app:tint="@color/colorSurface"/>
 </LinearLayout>

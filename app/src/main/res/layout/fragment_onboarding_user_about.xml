@@ -3,13 +3,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.OnboardingUserAboutFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="About Fragment Form"
-        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:text="Your basic details."
+            android:textColor="@color/colorCenterLinearGradient"
+            android:textSize="45sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/roboto"
+            android:justificationMode="none"
+            android:text="Please enter your basic information below."
+            android:textSize="20sp"
+            tools:targetApi="o" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/MyTextInputLayout"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxStrokeWidth="1dp"
+            app:hintTextColor="@color/colorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:hint="Full name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/person_ic"
+                android:drawableTint="@color/colorCenterLinearGradient"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_dob"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_textview_shape"
+            android:layout_marginTop="20dp"
+            android:text="@string/date_of_birth"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:drawableEnd="@drawable/calender_ic"/>
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/MyTextInputLayout"-->
+<!--            app:boxCornerRadiusBottomStart="20dp"-->
+<!--            app:boxCornerRadiusTopEnd="20dp"-->
+<!--            app:boxStrokeWidth="1dp"-->
+<!--            app:hintTextColor="@color/colorText"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:hint="Date of birth">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/text_dob"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:drawableEnd="@drawable/calender_ic"-->
+<!--                android:drawableTint="@color/colorCenterLinearGradient"-->
+<!--                android:inputType="textPersonName" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_textview_shape">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_gender"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@id/image_gender_icon"
+                android:backgroundTint="@color/colorCenterLinearGradient"
+                android:dropDownVerticalOffset="40dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:popupBackground="@color/colorSurface"
+                android:spinnerMode="dropdown"
+                android:background="@android:color/transparent"/>
+
+            <ImageView
+                android:id="@+id/image_gender_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/gender_ic"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"/>
+        </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>
