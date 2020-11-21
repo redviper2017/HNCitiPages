@@ -49,4 +49,5 @@
     <string name="gender">Gender</string>
     <string name="map_key" translatable="false">AIzaSyBw_CVmodX6buyvo28yMPj40MJhyGACmMU</string>
     <string name="get_my_current_location">Get my current location</string>
+    <string name="confirm_your_location">Confirm your location</string>
 </resources>

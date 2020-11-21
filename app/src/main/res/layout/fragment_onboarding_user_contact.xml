@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
-            android:text="Your mobile number."
+            android:text="Your mobile number"
             android:textColor="@color/colorCenterLinearGradient"
             android:textSize="45sp"
             android:textStyle="bold" />
@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
-            android:text="Your email address."
+            android:text="Your email address"
             android:textColor="@color/colorCenterLinearGradient"
             android:textSize="45sp"
             android:textStyle="bold" />

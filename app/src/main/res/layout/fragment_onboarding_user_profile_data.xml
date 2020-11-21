@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
-            android:text="You're almost done!"
+            android:text="You're almost done"
             android:textColor="@color/colorCenterLinearGradient"
             android:textSize="45sp"
             android:textStyle="bold" />

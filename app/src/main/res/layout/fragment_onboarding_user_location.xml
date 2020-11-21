@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.OnboardingUserLocationFragment">
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
-            android:text="Confirm your location."
+            android:text="@string/confirm_your_location"
             android:textColor="@color/colorCenterLinearGradient"
             android:textSize="45sp"
             android:textStyle="bold" />
@@ -29,7 +29,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/roboto"
             android:justificationMode="none"
-            android:text="Please select your current location from the map if the below fields are empty."
+            android:text="Please click the button on map to confirm location"
             android:textSize="20sp"
             tools:targetApi="o" />
 
@@ -59,41 +59,40 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/myMap"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp" />
+                android:layout_gravity="center" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/button_get_current_location"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
-                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-              >
+                android:layout_centerInParent="true"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="10dp">
 
                 <com.google.android.material.textview.MaterialTextView
-                    app:fontFamily="@font/roboto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/gradient_button"
+                    android:drawableStart="@drawable/location_current_ic"
+                    android:drawablePadding="10dp"
                     android:fontFamily="@font/roboto"
                     android:gravity="center"
                     android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
                     android:paddingTop="5dp"
+                    android:paddingEnd="15dp"
                     android:paddingBottom="5dp"
                     android:text="@string/get_my_current_location"
-                    android:textSize="14sp"
                     android:textAlignment="center"
                     android:textColor="@color/colorSurface"
-                    android:drawableStart="@drawable/location_current_ic"
-                    android:drawablePadding="10dp"/>
+                    android:textSize="14sp"
+                    app:fontFamily="@font/roboto" />
             </com.google.android.material.card.MaterialCardView>
         </RelativeLayout>
 
