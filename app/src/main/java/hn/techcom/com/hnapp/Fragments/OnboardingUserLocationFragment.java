@@ -1,66 +1,47 @@
 package hn.techcom.com.hnapp.Fragments;
 
+import android.location.Location;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+
+import java.util.Objects;
+
 import hn.techcom.com.hnapp.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link OnboardingUserLocationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class OnboardingUserLocationFragment extends Fragment {
+public class OnboardingUserLocationFragment extends Fragment{
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    Location currentLocation;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    private static final int REQUEST_CODE = 101;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private GoogleMap mMap;
+    private SupportMapFragment mapFragment;
 
     public OnboardingUserLocationFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OnboardingUserLocationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static OnboardingUserLocationFragment newInstance(String param1, String param2) {
-        OnboardingUserLocationFragment fragment = new OnboardingUserLocationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_onboarding_user_location, container, false);
+
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_onboarding_user_location, container, false);
+        return view;
     }
+
 }
