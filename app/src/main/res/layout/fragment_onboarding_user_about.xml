@@ -85,10 +85,12 @@
 <!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <RelativeLayout
+            android:id="@+id/layout_gender"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/custom_textview_shape">
+            android:background="@drawable/custom_textview_shape"
+            android:tag="notselected">
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spinner_gender"
