@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.R;
 
 import static android.app.Activity.RESULT_CANCELED;
