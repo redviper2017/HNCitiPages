@@ -25,4 +25,10 @@
         android:title="Share Audio"
         android:enabled="true"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/navigation_share_event"
+        android:icon="@drawable/audio_post_icon"
+        android:title="Share Event"
+        android:enabled="true"
+        app:showAsAction="always"/>
 </menu>
