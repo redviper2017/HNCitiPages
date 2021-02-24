@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "1022009655122",
+    "firebase_url": "https://hncitipages-463de.firebaseio.com",
+    "project_id": "hncitipages-463de",
+    "storage_bucket": "hncitipages-463de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022009655122:android:6a2310fbd86694f0",
+        "android_client_info": {
+          "package_name": "hn.techcom.com.hnapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1022009655122-h6our4jjud7tpbnap39prdfsctjvlaaf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hn.techcom.com.hnapp",
+            "certificate_hash": "22ee2d415c4b8e13368c4001b230e0bfc1176cb2"
+          }
+        },
+        {
+          "client_id": "1022009655122-j5fnc2h7uve4aqlpofnteull5i4f0lmh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hn.techcom.com.hnapp",
+            "certificate_hash": "041324fce2cbcdac28bdccd0773adcc0156582da"
+          }
+        },
+        {
+          "client_id": "1022009655122-04k8s9iqa8em4olr4lm5jtsmvvhjmat0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD88-XqrXTKKg2IETSiOHc1QEYfjvSDmFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1022009655122-04k8s9iqa8em4olr4lm5jtsmvvhjmat0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

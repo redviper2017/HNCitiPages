@@ -22,7 +22,13 @@ import com.google.android.material.textview.MaterialTextView;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Activities.MainActivity;
+import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Models.Validate;
+import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginWithFragment extends Fragment implements View.OnClickListener {
 
@@ -102,8 +108,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
                     .replace(R.id.framelayout_login, new UserOnboardingFragment(), "UserOnboardingFragment")
                     .addToBackStack(null)
                     .commit();
-        }
-        else if(view.getId() == R.id.button_terms_click) {
+        } else if (view.getId() == R.id.button_terms_click) {
             termsButton.setTextColor(getResources().getColor(R.color.colorCenterLinearGradient));
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.framelayout_login, new TermsAndConditionsFragment(), "TermsAndConditionsFragment")
@@ -121,8 +126,11 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
             Log.d(TAG, "signInResult:success user =" + "name: " + account.getDisplayName() + " email: " + account.getEmail() + " photo url: " + account.getPhotoUrl());
-            updateUi();
+
+            emailValidation(account.getEmail());
+
             // Signed in successfully, show authenticated UI.
 //            updateUI(account);
         } catch (ApiException e) {
@@ -133,12 +141,49 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    private void updateUi() {
-        startActivity(new Intent(getActivity(), MainActivity.class));
+    private void updateUi(String userType) {
+        switch (userType) {
+            case "new":
+                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.framelayout_login, new UserOnboardingFragment(), "UserOnboardingFragment")
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case "old":
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                break;
+        }
     }
 
-    private boolean checkIfNewUser(String username){
+    private boolean checkIfNewUser(String username) {
         //get user data from server if exists
         return false;
+    }
+
+    public void emailValidation(String email) {
+        String baseUrl = "http://hn.techcomengine.com/api/users/email/validate/" + email + "/";
+        Log.d(TAG, "base url = " + baseUrl);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<Validate> call = service.validateEmail(baseUrl);
+        call.enqueue(new Callback<Validate>() {
+            @Override
+            public void onResponse(Call<Validate> call, Response<Validate> response) {
+                if (response.body() != null) {
+                    boolean doesEmailExists = response.body().getExisting();
+                    if (doesEmailExists) {
+                        Log.d(TAG, "this user is a returning user");
+                        updateUi("old");
+                    } else {
+                        Log.d(TAG, "this user is a new user");
+                        updateUi("new");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Validate> call, Throwable t) {
+                Log.d(TAG, "Email validation failed!");
+            }
+        });
     }
 }

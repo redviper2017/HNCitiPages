@@ -6,11 +6,13 @@ import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.QUser;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Models.User;
+import hn.techcom.com.hnapp.Models.Validate;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Url;
 
 public interface GetDataService {
 
@@ -22,6 +24,7 @@ public interface GetDataService {
     @POST("posts/{posts_by_username}/")
     Call<List<Post>> getAllPostsBy(@Path("posts_by_username") String posts_by_username, @Body QUser queryUser);
 
-    @GET("users/validate/")
-    Call<User> getUser(@Path("user_name") String user_name);
+    //Email validation
+    @GET()
+    Call<Validate> validateEmail(@Url String url);
 }
