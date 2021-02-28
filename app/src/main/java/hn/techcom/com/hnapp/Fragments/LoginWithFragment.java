@@ -46,7 +46,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
     private GoogleSignInClient googleSignInClient;
     private static final String TAG = "LoginWithFragment";
 
-    private MaterialTextView createAccountButton;
+//    private MaterialTextView createAccountButton;
     private MaterialTextView termsButton;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
@@ -84,14 +84,14 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
         MaterialCardView loginWithGmailButton = view.findViewById(R.id.button_login_with_gmail);
         MaterialCardView loginWithPhone = view.findViewById(R.id.button_login_with_phone);
         termsButton = view.findViewById(R.id.button_terms_click);
-        createAccountButton = view.findViewById(R.id.create_account_button);
+//        createAccountButton = view.findViewById(R.id.create_account_button);
 
 
         //Click listeners
         loginWithGmailButton.setOnClickListener(this);
         loginWithPhone.setOnClickListener(this);
         termsButton.setOnClickListener(this);
-        createAccountButton.setOnClickListener(this);
+//        createAccountButton.setOnClickListener(this);
 
         // Inflate the layout for this fragment
         return view;
@@ -121,13 +121,14 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
                     .replace(R.id.framelayout_login, new LoginWithPhoneFragment(), "LoginWithPhoneFragment")
                     .addToBackStack(null)
                     .commit();
-        else if (view.getId() == R.id.create_account_button) {
-            createAccountButton.setTextColor(getResources().getColor(R.color.colorCenterLinearGradient));
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.framelayout_login, new UserOnboardingFragment(), "UserOnboardingFragment")
-                    .addToBackStack(null)
-                    .commit();
-        } else if (view.getId() == R.id.button_terms_click) {
+//        else if (view.getId() == R.id.create_account_button) {
+//            createAccountButton.setTextColor(getResources().getColor(R.color.colorCenterLinearGradient));
+//            getActivity().getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.framelayout_login, new UserOnboardingFragment(), "UserOnboardingFragment")
+//                    .addToBackStack(null)
+//                    .commit();
+//        }
+        else if (view.getId() == R.id.button_terms_click) {
             termsButton.setTextColor(getResources().getColor(R.color.colorCenterLinearGradient));
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.framelayout_login, new TermsAndConditionsFragment(), "TermsAndConditionsFragment")
