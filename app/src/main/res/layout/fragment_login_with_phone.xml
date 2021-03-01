@@ -48,13 +48,16 @@
                 tools:targetApi="o" />
 
             <com.hbb20.CountryCodePicker
+                android:id="@+id/country_code_picker"
                 android:layout_marginTop="50dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ccp_autoDetectCountry="true"
                 app:ccp_textSize="20sp"
                 app:ccp_arrowSize="40dp"
-                app:ccp_arrowColor="@color/colorCenterLinearGradient"/>
+                app:ccp_flagBorderColor="@color/colorCenterLinearGradient"
+                app:ccp_arrowColor="@color/colorCenterLinearGradient"
+                app:ccpDialog_showCloseIcon="false"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -77,6 +80,7 @@
                 app:hintTextColor="@color/colorText">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditText_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/phone_ic"
