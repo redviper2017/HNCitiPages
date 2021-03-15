@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -36,7 +37,7 @@ import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 public class ImagePostFragment extends Fragment implements View.OnClickListener {
 
-    private CircleImageView galleryPreview;
+
 
     private View view;
 
@@ -61,9 +62,9 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener 
         this.view = view;
 
         Spinner spinner = view.findViewById(R.id.spinner_post_type);
-        galleryPreview = view.findViewById(R.id.gallery_image_preview);
-        LinearLayout uploadFromFileButton = view.findViewById(R.id.button_upload_from_file);
-        LinearLayout uploadFromGalleryButton = view.findViewById(R.id.button_upload_from_gallery);
+
+        LinearLayout uploadFromFileButton = view.findViewById(R.id.button_upload_from_gallery);
+
         LinearLayout uploadFromCameraButton = view.findViewById(R.id.button_upload_from_camera);
 
         String[] arrayPostType = new String[]{"Random",
@@ -79,10 +80,10 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener 
         spinner.setAdapter(adapter);
 
         uploadFromFileButton.setOnClickListener(this);
-        uploadFromGalleryButton.setOnClickListener(this);
+
         uploadFromCameraButton.setOnClickListener(this);
 
-        getLatestCameraImage();
+//        getLatestCameraImage();
 
         // Inflate the layout for this fragment
         return view;
@@ -97,8 +98,9 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener 
                     boolean storageAccessAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean cameraAccessAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
 
-                    if (storageAccessAccepted && cameraAccessAccepted)
-                        getLatestCameraImage();
+                    if (storageAccessAccepted && cameraAccessAccepted) {
+//                        getLatestCameraImage();
+                    }
                     else {
                         Snackbar.make(view, "Permission Denied, You cannot access location data and camera.", Snackbar.LENGTH_LONG).show();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -121,28 +123,28 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    public void getLatestCameraImage() {
-        if (checkPermission()) {
-            File dcimPath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/Camera");
-            if (dcimPath.exists()) {
-                Log.i("DCIM PATH", dcimPath.toString());
-
-                File[] files = dcimPath.listFiles();
-                Arrays.sort(files, new Comparator<File>() {
-                    public int compare(File f1, File f2) {
-                        return Long.compare(f1.lastModified(), f2.lastModified());
-                    }
-                });
-                Picasso.get()
-                        .load(files[files.length - 2])
-                        .into(galleryPreview);
-
-                Log.d("ImagePostFragment", "first file path = " + files[files.length - 2].getName());
-            }
-        } else {
-            requestPermission();
-        }
-    }
+//    public void getLatestCameraImage() {
+//        if (checkPermission()) {
+//            File dcimPath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/Camera");
+//            if (dcimPath.exists()) {
+//                Log.i("DCIM PATH", dcimPath.toString());
+//
+//                File[] files = dcimPath.listFiles();
+//                Arrays.sort(files, new Comparator<File>() {
+//                    public int compare(File f1, File f2) {
+//                        return Long.compare(f1.lastModified(), f2.lastModified());
+//                    }
+//                });
+//                Picasso.get()
+//                        .load(files[files.length - 2])
+//                        .into(galleryPreview);
+//
+//                Log.d("ImagePostFragment", "first file path = " + files[files.length - 2].getName());
+//            }
+//        } else {
+//            requestPermission();
+//        }
+//    }
 
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE);
@@ -174,14 +176,14 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.button_upload_from_file) {
+        if (v.getId() == R.id.button_upload_from_gallery) {
 
-        } else if (v.getId() == R.id.button_upload_from_gallery) {
-            getFromGallery();
-            Snackbar.make(view, "Permission already granted.", Snackbar.LENGTH_LONG).show();
+//            getFromGallery();
 
-        } else {
+            Toast.makeText(getContext(),"opening gallery app!",Toast.LENGTH_LONG).show();
 
+        } else if (v.getId() == R.id.button_upload_from_camera) {
+            Toast.makeText(getContext(),"opening camera app!",Toast.LENGTH_LONG).show();
         }
     }
 }

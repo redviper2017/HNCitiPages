@@ -92,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         // Begin the transaction
-        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragmentSelected)).commit();
+        if(fragmentSelected != null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragmentSelected)).commit();
         return true;
     }
 
