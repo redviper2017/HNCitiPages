@@ -57,31 +57,31 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_image_post, container, false);
+        View view = inflater.inflate(R.layout.fragment_image_post_2, container, false);
 
         this.view = view;
 
-        Spinner spinner = view.findViewById(R.id.spinner_post_type);
+//        Spinner spinner = view.findViewById(R.id.spinner_post_type);
+//
+//        LinearLayout uploadFromFileButton = view.findViewById(R.id.button_upload_from_gallery);
+//
+//        LinearLayout uploadFromCameraButton = view.findViewById(R.id.button_upload_from_camera);
 
-        LinearLayout uploadFromFileButton = view.findViewById(R.id.button_upload_from_gallery);
+//        String[] arrayPostType = new String[]{"Random",
+//                "Positive Thoughts",
+//                "Talent",
+//                "Culture",
+//                "News",
+//                "Emergency"};
 
-        LinearLayout uploadFromCameraButton = view.findViewById(R.id.button_upload_from_camera);
-
-        String[] arrayPostType = new String[]{"Random",
-                "Positive Thoughts",
-                "Talent",
-                "Culture",
-                "News",
-                "Emergency"};
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_dropdown_item, arrayPostType);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        uploadFromFileButton.setOnClickListener(this);
-
-        uploadFromCameraButton.setOnClickListener(this);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+//                android.R.layout.simple_spinner_dropdown_item, arrayPostType);
+//        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//        spinner.setAdapter(adapter);
+//
+//        uploadFromFileButton.setOnClickListener(this);
+//
+//        uploadFromCameraButton.setOnClickListener(this);
 
 //        getLatestCameraImage();
 
@@ -92,35 +92,35 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 200:
-                if (grantResults.length > 0) {
-                    boolean storageAccessAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean cameraAccessAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-
-                    if (storageAccessAccepted && cameraAccessAccepted) {
-//                        getLatestCameraImage();
-                    }
-                    else {
-                        Snackbar.make(view, "Permission Denied, You cannot access location data and camera.", Snackbar.LENGTH_LONG).show();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE)) {
-                                showMessageOKCancel("To use this feature you need to allow access to both the permissions",
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    requestPermissions(new String[]{READ_EXTERNAL_STORAGE, CAMERA},
-                                                            PERMISSION_REQUEST_CODE);
-                                                }
-                                            }
-                                        });
-                            }
-                        }
-                    }
-                }
-                break;
-        }
+//        switch (requestCode) {
+//            case 200:
+//                if (grantResults.length > 0) {
+//                    boolean storageAccessAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+//                    boolean cameraAccessAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+//
+//                    if (storageAccessAccepted && cameraAccessAccepted) {
+////                        getLatestCameraImage();
+//                    }
+//                    else {
+//                        Snackbar.make(view, "Permission Denied, You cannot access location data and camera.", Snackbar.LENGTH_LONG).show();
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                            if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE)) {
+//                                showMessageOKCancel("To use this feature you need to allow access to both the permissions",
+//                                        new DialogInterface.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(DialogInterface dialog, int which) {
+//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                                                    requestPermissions(new String[]{READ_EXTERNAL_STORAGE, CAMERA},
+//                                                            PERMISSION_REQUEST_CODE);
+//                                                }
+//                                            }
+//                                        });
+//                            }
+//                        }
+//                    }
+//                }
+//                break;
+//        }
     }
 
 //    public void getLatestCameraImage() {
