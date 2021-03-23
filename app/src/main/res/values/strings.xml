@@ -50,4 +50,14 @@
     <string name="map_key" translatable="false">AIzaSyBw_CVmodX6buyvo28yMPj40MJhyGACmMU</string>
     <string name="get_my_current_location">Get my current location</string>
     <string name="confirm_your_location">Confirm your location</string>
+    <string name="file_provider" translatable="false">hn.techcom.com.hnapp.fileprovider</string>
+    <plurals name="pick_multi">
+        <item quantity="one">One image selected</item>
+        <item quantity="other">%1$d images selected</item>
+    </plurals>
+    <plurals name="pick_multi_more">
+        <item quantity="one">Please select minimum one and maximum 4 images</item>
+        <item quantity="other">Please select %1$d more images…</item>
+    </plurals>
+    <string name="pick_multi_limit">You have more than %1$d images selected!</string>
 </resources>

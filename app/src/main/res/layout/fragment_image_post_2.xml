@@ -51,13 +51,16 @@
             android:layout_height="wrap_content">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/select_image_button"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardBackgroundColor="@color/colorOnSecondary"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="1dp"
-               android:layout_margin="5dp">
+                app:cardElevation="1dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -85,11 +88,11 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="200dp"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
                 app:cardBackgroundColor="@color/colorOnSecondary"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="1dp"
-                android:layout_margin="5dp">
+                app:cardElevation="1dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"

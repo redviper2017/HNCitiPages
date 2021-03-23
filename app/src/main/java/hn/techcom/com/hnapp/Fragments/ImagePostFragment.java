@@ -3,6 +3,7 @@ package hn.techcom.com.hnapp.Fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,17 +17,22 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.kroegerama.imgpicker.BottomSheetImagePicker;
+import com.kroegerama.imgpicker.ButtonType;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.R;
@@ -34,12 +40,15 @@ import hn.techcom.com.hnapp.R;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.content.ContentValues.TAG;
 
-public class ImagePostFragment extends Fragment implements View.OnClickListener {
+public class ImagePostFragment extends Fragment implements View.OnClickListener, BottomSheetImagePicker.OnImagesSelectedListener {
 
 
 
     private View view;
+
+    private CardView selectImageButton;
 
     String permissions[] = {"android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE"};
     int PERMISSION_REQUEST_CODE = 200;
@@ -59,7 +68,10 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_post_2, container, false);
 
-        this.view = view;
+
+        selectImageButton = view.findViewById(R.id.select_image_button);
+
+        ((CardView) selectImageButton).setOnClickListener(this);
 
 //        Spinner spinner = view.findViewById(R.id.spinner_post_type);
 //
@@ -182,8 +194,26 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener 
 
             Toast.makeText(getContext(),"opening gallery app!",Toast.LENGTH_LONG).show();
 
-        } else if (v.getId() == R.id.button_upload_from_camera) {
+        } else if (v.getId() == R.id.select_image_button) {
             Toast.makeText(getContext(),"opening camera app!",Toast.LENGTH_LONG).show();
+            new BottomSheetImagePicker.Builder(getString(R.string.file_provider))
+                    .multiSelect(1, 4)
+                    .multiSelectTitles(
+                            R.plurals.pick_multi,
+                            R.plurals.pick_multi_more,
+                            R.string.pick_multi_limit
+                    )
+                    .peekHeight(R.dimen.peekHeight)
+                    .columnSize(R.dimen.columnSize)
+                    .requestTag("multi")
+                    .show(getChildFragmentManager(), null);
+        }
+    }
+
+    @Override
+    public void onImagesSelected(@NonNull List<? extends Uri> uris, @Nullable String s) {
+        for(Uri uri: uris){
+            Log.d(TAG,"selected image uri = "+uri);
         }
     }
 }
