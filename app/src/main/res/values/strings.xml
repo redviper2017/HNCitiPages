@@ -60,4 +60,5 @@
         <item quantity="other">Please select %1$d more images…</item>
     </plurals>
     <string name="pick_multi_limit">You have more than %1$d images selected!</string>
+    <string name="pick_single">Please select your image</string>
 </resources>

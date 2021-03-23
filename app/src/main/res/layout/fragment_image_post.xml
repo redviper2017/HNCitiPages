@@ -120,7 +120,7 @@
                         android:visibility="visible">
 
                         <LinearLayout
-                            android:id="@+id/button_upload_from_gallery"
+                            android:id="@+id/button_upload_from_camera"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
