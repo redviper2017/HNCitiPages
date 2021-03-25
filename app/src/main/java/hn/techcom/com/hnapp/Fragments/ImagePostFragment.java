@@ -14,9 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +29,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.kroegerama.imgpicker.BottomSheetImagePicker;
 import com.kroegerama.imgpicker.ButtonType;
@@ -55,11 +59,16 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener,
 
 
     private static final int REQUEST_SINGLE_PERMISSION = 1;
-    private CardView selectImageButton, captureImageButton;
+    private MaterialCardView selectImageButton, captureImageButton;
+    private Spinner postTypeSpinner;
+    private ImageSwitcher imageSwitcher;
 
     private Sheriff sheriffPermission;
     private File imageFile;
     private String mCameraFileName;
+
+    private int position = 0;
+    private int[] images = {R.drawable.image_1,R.drawable.image_2};
 
 
     public ImagePostFragment() {
@@ -78,9 +87,32 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener,
 
         selectImageButton = view.findViewById(R.id.select_image_button);
         captureImageButton = view.findViewById(R.id.capture_image_button);
+        postTypeSpinner = view.findViewById(R.id.spinner_post_type);
+        imageSwitcher = view.findViewById(R.id.imageswitcher_image);
 
-        ((CardView) selectImageButton).setOnClickListener(this);
-        ((CardView) captureImageButton).setOnClickListener(this);
+        selectImageButton.setOnClickListener(this);
+        captureImageButton.setOnClickListener(this);
+
+        String[] arrayPostType = new String[]{"Random",
+                "Positive Thoughts",
+                "Talent",
+                "Culture",
+                "News",
+                "Emergency"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, arrayPostType);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        postTypeSpinner.setAdapter(adapter);
+
+        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView imageView= new ImageView(getContext());
+                imageView.setImageResource(images[position]);
+                return imageView;
+            }
+        });
 
         //Sherif permission object
         sheriffPermission = Sheriff.Builder()
