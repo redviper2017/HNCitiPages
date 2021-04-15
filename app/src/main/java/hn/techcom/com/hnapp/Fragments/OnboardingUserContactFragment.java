@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 
+import java.util.Objects;
 import java.util.Random;
 
 import hn.techcom.com.hnapp.Models.NewUser;
@@ -28,6 +29,7 @@ public class OnboardingUserContactFragment extends Fragment {
     private static final String TAG = "ContactFragment";
     private TextInputEditText emailText, phoneText;
     private CountryCodePicker countryCodePicker;
+    private NewUser newUser = null;
 
     public OnboardingUserContactFragment() {
         // Required empty public constructor
@@ -47,7 +49,8 @@ public class OnboardingUserContactFragment extends Fragment {
         countryCodePicker = view.findViewById(R.id.country_code_picker);
 
         // Shows layout based on user's sign-in method
-        String email = getNewUserFromSharedPreference();
+        newUser = getNewUserFromSharedPreference();
+        String email = newUser.getEmail();
 
         if(email != null){
             phoneLayout.setVisibility(View.VISIBLE);
@@ -64,16 +67,31 @@ public class OnboardingUserContactFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+
+        String currentPhoneFieldValue = countryCodePicker.getSelectedCountryCodeWithPlus() + Objects.requireNonNull(phoneText.getText()).toString();
+
         Log.d(TAG,"email = "+emailText.getText().toString());
-        Log.d(TAG,"phone = "+ countryCodePicker.getSelectedCountryCodeWithPlus() + phoneText.getText().toString());
+        Log.d(TAG,"phone = "+ currentPhoneFieldValue);
+
+        //adding user's phone number to shared preference
+        newUser.setMobileNumber(currentPhoneFieldValue);
+        storeNewUserToSharedPref();
     }
 
-    private String getNewUserFromSharedPreference() {
+    private NewUser getNewUserFromSharedPreference() {
         SharedPreferences pref = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = pref.getString("NewUser","");
         NewUser user = gson.fromJson(json, NewUser.class);
-        String userEmail = user.getEmail();
-        return userEmail;
+
+        return user;
+    }
+
+    private void storeNewUserToSharedPref() {
+        SharedPreferences.Editor editor = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(newUser);
+        editor.putString("NewUser",json);
+        editor.apply();
     }
 }

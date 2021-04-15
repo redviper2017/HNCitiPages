@@ -114,4 +114,20 @@ public class NewUser {
     public void setFirstImg(String firstImg) {
         this.firstImg = firstImg;
     }
+
+    @Override
+    public String toString() {
+        return "NewUser{" +
+                "hnid=" + hnid + "\n" +
+                "username=" + username + "\n" +
+                "email=" + email + "\n" +
+                "mobileNumber=" + mobileNumber + "\n" +
+                "fullName=" + fullName + "\n" +
+                "dateOfBirth=" + dateOfBirth + "\n" +
+                "gender=" + gender + "\n" +
+                "country=" + country + "\n" +
+                "city=" + city + "\n" +
+                "firstImg=" + firstImg + "\n" +
+                '}';
+    }
 }

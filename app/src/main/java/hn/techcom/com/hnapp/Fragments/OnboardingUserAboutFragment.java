@@ -1,6 +1,9 @@
 package hn.techcom.com.hnapp.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,17 +18,22 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textview.MaterialTextView;
+import com.google.gson.Gson;
 
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Models.NewUser;
 import hn.techcom.com.hnapp.R;
 
 public class OnboardingUserAboutFragment extends Fragment implements View.OnClickListener {
 
+    private static final String TAG = "AboutFragment";
     private MaterialTextView dateOfBirth;
     private RelativeLayout genderLayout;
 
     private String gender;
+
+    private NewUser newUser = null;
 
     public OnboardingUserAboutFragment() {
         // Required empty public constructor
@@ -95,8 +103,26 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        //getting stored user information so far from shared preference
+        newUser = getNewUserFromSharedPreference();
+        Log.d(TAG,"new user = "+newUser.toString());
+    }
+
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "datePicker");
+    }
+
+    private NewUser getNewUserFromSharedPreference() {
+        SharedPreferences pref = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = pref.getString("NewUser","");
+        NewUser user = gson.fromJson(json, NewUser.class);
+
+        return user;
     }
 }
