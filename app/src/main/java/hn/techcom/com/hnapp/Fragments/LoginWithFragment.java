@@ -1,7 +1,9 @@
 package hn.techcom.com.hnapp.Fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,11 +30,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.gson.Gson;
 
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Activities.MainActivity;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Models.NewUser;
+import hn.techcom.com.hnapp.Models.User;
 import hn.techcom.com.hnapp.Models.Validate;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
@@ -50,6 +55,8 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
     private MaterialTextView termsButton;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
+
+    private String newUserEmail = "";
 
     public LoginWithFragment() {
         // Required empty public constructor
@@ -200,6 +207,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
     private void updateUi(String userType) {
         switch (userType) {
             case "new":
+                storeNewUserToSharedPref();
                 Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction()
                         .replace(R.id.framelayout_login, new UserOnboardingFragment(), "UserOnboardingFragment")
                         .addToBackStack(null)
@@ -209,6 +217,17 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
                 startActivity(new Intent(getActivity(), MainActivity.class));
                 break;
         }
+    }
+
+    private void storeNewUserToSharedPref() {
+        NewUser user = new NewUser();
+        user.setEmail(newUserEmail);
+
+        SharedPreferences.Editor editor = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        editor.putString("NewUser",json);
+        editor.apply();
     }
 
     private boolean checkIfNewUser(String username) {
@@ -231,6 +250,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
                         updateUi("old");
                     } else {
                         Log.d(TAG, "this user is a new user");
+                        newUserEmail = email;
                         updateUi("new");
                     }
                 }

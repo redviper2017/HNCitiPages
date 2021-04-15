@@ -57,7 +57,8 @@
                 app:ccp_arrowSize="40dp"
                 app:ccp_flagBorderColor="@color/colorCenterLinearGradient"
                 app:ccp_arrowColor="@color/colorCenterLinearGradient"
-                app:ccpDialog_showCloseIcon="false"/>
+                app:ccpDialog_showCloseIcon="false"
+                android:background="@drawable/rounded_corner_rectangle_bordered"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
