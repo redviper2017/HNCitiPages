@@ -127,7 +127,7 @@
                     android:textColor="@color/colorSurface"
                     android:textSize="16sp"
                     android:padding="10dp"
-                    android:drawableStart="@drawable/camera_ic"/>
+                    android:drawableStart="@drawable/text_icon"/>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </LinearLayout>

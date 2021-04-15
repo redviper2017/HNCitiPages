@@ -21,12 +21,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hn.techcom.com.hnapp.Activities.MainActivity;
 import hn.techcom.com.hnapp.R;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -40,6 +42,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     private static final int Image_Capture_Code = 1;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private CircleImageView profileImage;
+    private MaterialCardView buttonCreateAccount;
 
     private FrameLayout frameLayout;
 
@@ -55,8 +58,10 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
         LinearLayout openImage = view.findViewById(R.id.fab_add_image);
         profileImage = view.findViewById(R.id.circleimageview_profile_onboarding);
         frameLayout = view.findViewById(R.id.frameLayout);
+        buttonCreateAccount = view.findViewById(R.id.button_create_account);
 
         openImage.setOnClickListener(this);
+        buttonCreateAccount.setOnClickListener(this);
 
         // Inflate the layout for this fragment
         return view;
@@ -73,6 +78,9 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
             } else {
                 requestPermission();
             }
+        }
+        if(view.getId() == R.id.button_create_account){
+            startActivity(new Intent(getContext(), MainActivity.class));
         }
     }
 

@@ -61,4 +61,24 @@
     </plurals>
     <string name="pick_multi_limit">You have more than %1$d images selected!</string>
     <string name="pick_single">Please select your image</string>
+    <string name="random">Random Posts</string>
+    <string name="culture">Culture</string>
+    <string name="emergency">Emergencies</string>
+    <string name="news">News</string>
+    <string name="positive_thought">Positive Thoughts</string>
+    <string name="talent">Talents</string>
+    <string name="posts_by_humman_navigators">My World</string>
+    <string name="supported_profile_s_posts">Supported CitiPagers</string>
+    <string name="my_supported_profiles">My Supported Profiles</string>
+    <string name="my_profile">My Profile</string>
+    <string name="view_profile">View Profile</string>
+    <string name="all_posts">All Posts</string>
+    <string name="today_s_post">Today\'s Post</string>
+    <string name="posts_by_hlumelo">HN Thoughts</string>
+    <string name="buy_a_copy">Get The Book</string>
+    <string name="notifications">Notifications</string>
+    <string name="favorites">Favourites</string>
+    <string name="about_us">About Us</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="human_navigation_app">Human Navigation App</string>
 </resources>

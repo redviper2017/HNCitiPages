@@ -217,7 +217,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
     }
 
     public void emailValidation(String email) {
-        String baseUrl = "http://hn.techcomengine.com/api/users/email/validate/" + email + "/";
+        String baseUrl = "http://167.99.13.238:8000/api/users/emailvalidate/" + email + "/";
         Log.d(TAG, "base url = " + baseUrl);
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<Validate> call = service.validateEmail(baseUrl);

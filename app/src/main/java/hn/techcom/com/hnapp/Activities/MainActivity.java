@@ -28,6 +28,7 @@ import hn.techcom.com.hnapp.Models.QUser;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.BottomSheetFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -89,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.navigation_home:
                 fragmentSelected = new HomeFragment(globalPosts);
+                break;
+            case android.R.id.home:
+                BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
+                bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
                 break;
         }
         // Begin the transaction

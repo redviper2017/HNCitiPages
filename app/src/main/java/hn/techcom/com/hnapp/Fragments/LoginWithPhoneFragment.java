@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.hbb20.CountryCodePicker;
@@ -30,7 +31,13 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import hn.techcom.com.hnapp.Activities.MainActivity;
+import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Models.Validate;
+import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginWithPhoneFragment extends Fragment implements View.OnClickListener {
 
@@ -143,7 +150,11 @@ public class LoginWithPhoneFragment extends Fragment implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                phoneValidation(user.getPhoneNumber());
+                            }
+//                            startActivity(new Intent(getActivity(), MainActivity.class));
                         }else{
                             Toast.makeText(getContext(),"Phone number verification failed! Please try again with a valid number",Toast.LENGTH_LONG).show();
                         }
@@ -193,6 +204,47 @@ public class LoginWithPhoneFragment extends Fragment implements View.OnClickList
         @Override
         public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
             // TODO Auto-generated method stub
+        }
+    }
+
+    public void phoneValidation(String phone) {
+        String baseUrl = "http://167.99.13.238:8000/api/users/phonevalidate/" + phone + "/";
+        Log.d(TAG, "base url = " + baseUrl);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<Validate> call = service.validateEmail(baseUrl);
+        call.enqueue(new Callback<Validate>() {
+            @Override
+            public void onResponse(Call<Validate> call, Response<Validate> response) {
+                if (response.body() != null) {
+                    boolean doesEmailExists = response.body().getExisting();
+                    if (doesEmailExists) {
+                        Log.d(TAG, "this user is a returning user");
+                        updateUi("old");
+                    } else {
+                        Log.d(TAG, "this user is a new user");
+                        updateUi("new");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Validate> call, Throwable t) {
+                Log.d(TAG, "Email validation failed!");
+            }
+        });
+    }
+
+    private void updateUi(String userType) {
+        switch (userType) {
+            case "new":
+                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.framelayout_login, new UserOnboardingFragment(), "UserOnboardingFragment")
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case "old":
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                break;
         }
     }
 }
