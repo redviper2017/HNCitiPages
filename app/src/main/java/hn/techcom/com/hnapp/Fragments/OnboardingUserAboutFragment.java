@@ -1,5 +1,6 @@
 package hn.techcom.com.hnapp.Fragments;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -17,9 +19,11 @@ import android.widget.Toast;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Models.NewUser;
@@ -29,6 +33,7 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
 
     private static final String TAG = "AboutFragment";
     private MaterialTextView dateOfBirth;
+    private TextInputEditText fullname;
     private RelativeLayout genderLayout;
 
     private String gender;
@@ -47,6 +52,7 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
         //Hooks
         Spinner spinner = view.findViewById(R.id.spinner_gender);
         dateOfBirth = view.findViewById(R.id.text_dob);
+        fullname = view.findViewById(R.id.textinputeditext_fullname);
         genderLayout = view.findViewById(R.id.layout_gender);
 
         //CLick listeners
@@ -100,6 +106,7 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
         if (v.getId() == R.id.text_dob) {
             showDatePickerDialog(v);
             dateOfBirth.setBackground(getResources().getDrawable(R.drawable.custom_textview_shape_selected));
+
         }
     }
 
@@ -109,12 +116,37 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
 
         //getting stored user information so far from shared preference
         newUser = getNewUserFromSharedPreference();
+
+        newUser.setFullName(Objects.requireNonNull(fullname.getText()).toString());
+        newUser.setDateOfBirth(dateOfBirth.getText().toString());
+        newUser.setGender(gender);
+
+        storeNewUserToSharedPref();
+
         Log.d(TAG,"new user = "+newUser.toString());
     }
 
     public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "datePicker");
+//        DialogFragment newFragment = new DatePickerFragment();
+//        newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "datePicker");
+//
+//
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        dateOfBirth.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                    }
+                }, year, month, day);
+        datePickerDialog.show();
     }
 
     private NewUser getNewUserFromSharedPreference() {
@@ -124,5 +156,13 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
         NewUser user = gson.fromJson(json, NewUser.class);
 
         return user;
+    }
+
+    private void storeNewUserToSharedPref() {
+        SharedPreferences.Editor editor = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(newUser);
+        editor.putString("NewUser",json);
+        editor.apply();
     }
 }

@@ -1,13 +1,16 @@
 package hn.techcom.com.hnapp.Fragments;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,12 +37,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Models.NewUser;
 import hn.techcom.com.hnapp.R;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -49,11 +54,14 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 public class OnboardingUserLocationFragment extends Fragment implements View.OnClickListener {
 
     private static final int PERMISSION_REQUEST_CODE = 200;
+    private static final String TAG = "LocationFragment";
     private MapView mMapView;
     private GoogleMap googleMap;
     private MaterialTextView city, country;
     private MaterialCardView getCurrentLocationButton;
     private FusedLocationProviderClient fusedLocationProviderClient;
+
+    private NewUser newUser = null;
 
     double latitude, longitude;
     private FrameLayout frameLayout;
@@ -98,6 +106,9 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+
+        newUser = getNewUserFromSharedPreference();
+        Log.d(TAG,"new user = "+newUser.toString());
     }
 
     @Override
@@ -260,5 +271,14 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
                 .setNegativeButton("Cancel", null)
                 .create()
                 .show();
+    }
+
+    private NewUser getNewUserFromSharedPreference() {
+        SharedPreferences pref = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = pref.getString("NewUser","");
+        NewUser user = gson.fromJson(json, NewUser.class);
+
+        return user;
     }
 }
