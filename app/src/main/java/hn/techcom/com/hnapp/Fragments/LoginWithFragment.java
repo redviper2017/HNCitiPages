@@ -68,6 +68,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
         FirebaseUser user = mAuth.getCurrentUser();
         //if user is logged in already
         if(user != null){
+            Log.d(TAG,"email= "+user.getEmail()+" and phone = "+user.getPhoneNumber());
             startActivity(new Intent(getContext(),MainActivity.class));
         }
     }

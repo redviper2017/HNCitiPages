@@ -36,7 +36,7 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
     private TextInputEditText fullname;
     private RelativeLayout genderLayout;
 
-    private String gender;
+    private String gender, genderCode;
 
     private NewUser newUser = null;
 
@@ -88,6 +88,19 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 gender = parent.getItemAtPosition(position).toString();
+
+                switch(gender){
+                    case "Male":
+                        genderCode = "M";
+                        break;
+                    case "Female":
+                        genderCode = "F";
+                        break;
+                    case "Other":
+                        genderCode = "O";
+                        break;
+                }
+
                 genderLayout.setBackground(getResources().getDrawable(R.drawable.custom_textview_shape));
             }
 
@@ -119,7 +132,7 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
 
         newUser.setFullName(Objects.requireNonNull(fullname.getText()).toString());
         newUser.setDateOfBirth(dateOfBirth.getText().toString());
-        newUser.setGender(gender);
+        newUser.setGender(genderCode);
 
         storeNewUserToSharedPref();
 

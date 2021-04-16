@@ -1,20 +1,28 @@
 package hn.techcom.com.hnapp.Fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +32,28 @@ import android.widget.LinearLayout;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Activities.MainActivity;
+import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Models.NewUser;
+import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -41,10 +65,18 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
 
     private static final int Image_Capture_Code = 1;
     private static final int PERMISSION_REQUEST_CODE = 200;
+    private static final String TAG = "ProfileDataFragment";
     private CircleImageView profileImage;
     private MaterialCardView buttonCreateAccount;
 
     private FrameLayout frameLayout;
+
+
+    private File newImageFile;
+    private String mCameraFileName;
+
+    private NewUser newUser = null;
+
 
     public OnboardingUserProfileDataFragment() {
         // Required empty public constructor
@@ -71,16 +103,30 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     public void onClick(View view) {
         if(view.getId() == R.id.fab_add_image){
             if (checkPermission()) {
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                Intent cInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cInt,Image_Capture_Code);
+                Date date = new Date();
+                DateFormat df = new SimpleDateFormat("-mm-ss");
+
+                String newImageFileName = df.format(date) + ".jpg";
+                String newImagePath = "/sdcard/" + newImageFileName;
+                newImageFile = new File(newImagePath);
+                mCameraFileName = newImageFile.toString();
+                Uri outuri = Uri.fromFile(newImageFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
+
+
+                startActivityForResult(cameraIntent,Image_Capture_Code);
 
             } else {
                 requestPermission();
             }
         }
         if(view.getId() == R.id.button_create_account){
-            startActivity(new Intent(getContext(), MainActivity.class));
+            registerNewUserAccount();
+//            startActivity(new Intent(getContext(), MainActivity.class));
         }
     }
 
@@ -88,11 +134,10 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Image_Capture_Code) {
-            if (resultCode == RESULT_OK) {
-                Bitmap bp = (Bitmap) data.getExtras().get("data");
-                profileImage.setImageBitmap(bp);
-            }
+        if (requestCode == Image_Capture_Code && resultCode == Activity.RESULT_OK) {
+           profileImage.setImageURI(Uri.fromFile(new File(mCameraFileName)));
+
+            Log.d(TAG,"new image file = "+newImageFile);
         }
     }
 
@@ -153,5 +198,61 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
                 .setNegativeButton("Cancel", null)
                 .create()
                 .show();
+    }
+
+    // function to create new user account
+    public void registerNewUserAccount(){
+        newUser = getNewUserFromSharedPreference();
+
+        RequestBody email = RequestBody.create(MediaType.parse("text/plain"), newUser.getEmail());
+        RequestBody mobile_number = RequestBody.create(MediaType.parse("text/plain"), newUser.getMobileNumber());
+        RequestBody full_name = RequestBody.create(MediaType.parse("text/plain"), newUser.getFullName());
+        RequestBody date_of_birth = RequestBody.create(MediaType.parse("text/plain"), newUser.getDateOfBirth());
+        RequestBody city = RequestBody.create(MediaType.parse("text/plain"), newUser.getCity());
+        RequestBody country = RequestBody.create(MediaType.parse("text/plain"), newUser.getCountry());
+        RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), newUser.getGender());
+
+//        MultipartBody.Part filePart = MultipartBody.Part.createFormData("first_img", newImageFile.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), newImageFile));
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<NewUser> call = service.registerNewUser(
+                email,
+                mobile_number,
+                full_name,
+                date_of_birth,
+                city,
+                country,
+                gender
+        );
+
+        call.enqueue(new Callback<NewUser>() {
+            @Override
+            public void onResponse(@NonNull Call<NewUser> call,@NonNull Response<NewUser> response) {
+
+//                    NewUser newRegisteredUser = response.body();
+                    Log.d(TAG,"new registered user = "+ response);
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<NewUser> call, @NonNull Throwable t) {
+                Log.d(TAG,"new registered user = "+ "Failed!!!");
+            }
+        });
+    }
+
+    private NewUser getNewUserFromSharedPreference() {
+        SharedPreferences pref = Objects.requireNonNull(getContext()).getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = pref.getString("NewUser","");
+        NewUser user = gson.fromJson(json, NewUser.class);
+
+        return user;
+    }
+
+    private void storeNewUserToSharedPref() {
+        SharedPreferences.Editor editor = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(newUser);
+        editor.putString("NewUser", json);
     }
 }

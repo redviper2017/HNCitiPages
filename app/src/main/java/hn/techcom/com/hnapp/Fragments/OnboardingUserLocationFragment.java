@@ -115,6 +115,13 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
     public void onPause() {
         super.onPause();
         mMapView.onPause();
+
+        newUser.setCountry(country.getText().toString());
+        newUser.setCity(city.getText().toString());
+
+        storeNewUserToSharedPref();
+
+        Log.d(TAG,"new user = "+newUser.toString());
     }
 
     @Override
@@ -280,5 +287,13 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
         NewUser user = gson.fromJson(json, NewUser.class);
 
         return user;
+    }
+
+    private void storeNewUserToSharedPref() {
+        SharedPreferences.Editor editor = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(newUser);
+        editor.putString("NewUser",json);
+        editor.apply();
     }
 }
