@@ -100,6 +100,14 @@
                 android:textSize="16sp"
                 app:fontFamily="@font/roboto" />
         </com.google.android.material.card.MaterialCardView>
+
+        <ProgressBar
+            android:id="@+id/registration_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </FrameLayout>

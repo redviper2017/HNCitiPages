@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         //set bottomAppBar
         setSupportActionBar(bottomAppBar);
 
-        getSupportedProfiles();
-
         newPostFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,72 +99,4 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragmentSelected)).commit();
         return true;
     }
-
-    @Override
-    public void onBackPressed() {
-        //if the current fragment loaded is the home fragment then follow default behavior
-        Fragment f = getSupportFragmentManager().findFragmentById(R.id.framelayout_main);
-        if(f instanceof HomeFragment)
-            super.onBackPressed();
-        else {
-            Fragment fragment = new HomeFragment(globalPosts);
-            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
-        }
-
-    }
-
-    // this function retrieves the list of supported profiles by the current user
-    public void getSupportedProfiles() {
-        //here the user id is 1 which will come from local db
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<SupporterProfile>> call = service.getSupportedProfiles("1");
-        call.enqueue(new Callback<List<SupporterProfile>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<SupporterProfile>> call, @NonNull Response<List<SupporterProfile>> response) {
-                userSupportedProfiles = new ArrayList<>(Objects.requireNonNull(response.body()));
-                Log.d(TAG, "this user is supported by = " + userSupportedProfiles.get(0).getFullName());
-                getSupportedProfilePosts();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<SupporterProfile>> call, @NonNull Throwable t) {
-                Log.d(TAG, "request failed = " + "True: " + t.getMessage());
-            }
-        });
-    }
-
-    // this function retrieves the list of posts by a single user
-    public void getPostsByUser(String username) {
-        Log.d(TAG, "getting posts of = " + username);
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-
-        QUser currentUser = new QUser();
-        currentUser.setUser(currentUserUsername);
-
-        Call<List<Post>> call = service.getAllPostsBy(username, currentUser);
-        call.enqueue(new Callback<List<Post>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
-                if (response.body() != null) {
-                    Log.d(TAG, "first post from " + username + " = " + response.body().get(0).getText());
-                    userSupportedProfilePosts.addAll(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Post>> call, @NonNull Throwable t) {
-
-            }
-        });
-    }
-
-    // this function retrieves the list of supported user's posts
-    public void getSupportedProfilePosts() {
-        Log.d(TAG, "this user is supporting  =  " + userSupportedProfiles.get(0).getUsername());
-
-        for(int i=0;i<userSupportedProfiles.size();i++){
-            getPostsByUser(userSupportedProfiles.get(i).getUsername());
-        }
-    }
-
 }

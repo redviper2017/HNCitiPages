@@ -48,6 +48,7 @@ public interface GetDataService {
             @Part("date_of_birth") RequestBody date_of_birth,
             @Part("city") RequestBody city,
             @Part("country") RequestBody country,
-            @Part("gender") RequestBody gender
+            @Part("gender") RequestBody gender,
+            @Part MultipartBody.Part first_img
     );
 }

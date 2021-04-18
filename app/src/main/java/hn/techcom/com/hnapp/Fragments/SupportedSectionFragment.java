@@ -66,7 +66,7 @@ public class SupportedSectionFragment extends Fragment {
         searchView = view.findViewById(R.id.searchview_supportedsection);
 
         //function calls
-        setSupportedProfilePosts();
+//        setSupportedProfilePosts();
 
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -81,7 +81,7 @@ public class SupportedSectionFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                filter(editable.toString().toLowerCase());
+//                filter(editable.toString().toLowerCase());
             }
         });
 

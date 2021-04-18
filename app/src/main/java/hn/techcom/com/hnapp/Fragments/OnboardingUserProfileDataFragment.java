@@ -28,6 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -77,6 +79,8 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
 
     private NewUser newUser = null;
 
+    private ProgressBar progressBar;
+
 
     public OnboardingUserProfileDataFragment() {
         // Required empty public constructor
@@ -91,6 +95,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
         profileImage = view.findViewById(R.id.circleimageview_profile_onboarding);
         frameLayout = view.findViewById(R.id.frameLayout);
         buttonCreateAccount = view.findViewById(R.id.button_create_account);
+        progressBar = view.findViewById(R.id.registration_progressbar);
 
         openImage.setOnClickListener(this);
         buttonCreateAccount.setOnClickListener(this);
@@ -125,6 +130,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
             }
         }
         if(view.getId() == R.id.button_create_account){
+            progressBar.setVisibility(View.VISIBLE);
             registerNewUserAccount();
 //            startActivity(new Intent(getContext(), MainActivity.class));
         }
@@ -212,7 +218,15 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
         RequestBody country = RequestBody.create(MediaType.parse("text/plain"), newUser.getCountry());
         RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), newUser.getGender());
 
-//        MultipartBody.Part filePart = MultipartBody.Part.createFormData("first_img", newImageFile.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), newImageFile));
+//        File file = new File(mCameraFileName);
+//
+//        Toast.makeText(getContext(),"image = "+file,Toast.LENGTH_LONG).show();
+//
+//        MultipartBody.Part filePart = MultipartBody.Part.createFormData(
+//                "first_img",
+//                file.getName(),
+//                RequestBody.create(MediaType.parse("image/*"), file)
+//        );
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<NewUser> call = service.registerNewUser(
                 email,
@@ -221,15 +235,25 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
                 date_of_birth,
                 city,
                 country,
-                gender
+                gender,
+                null //registration without image file
         );
 
         call.enqueue(new Callback<NewUser>() {
             @Override
             public void onResponse(@NonNull Call<NewUser> call,@NonNull Response<NewUser> response) {
 
-//                    NewUser newRegisteredUser = response.body();
-                    Log.d(TAG,"new registered user = "+ response);
+                Log.d(TAG,"new registered user = "+ response);
+                if (response.code() == 201) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(),"Registered Successfully!",Toast.LENGTH_LONG).show();
+                    newUser = response.body();
+                    storeNewUserToSharedPref();
+                    startActivity(new Intent(getActivity(),MainActivity.class));
+                }else {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(),"Registration Failed! Please try again changing the email or phone number",Toast.LENGTH_LONG).show();
+                }
 
             }
 

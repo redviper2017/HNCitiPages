@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -54,6 +55,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
 //    private MaterialTextView createAccountButton;
     private MaterialTextView termsButton;
     private GoogleSignInClient mGoogleSignInClient;
+    private ProgressBar progressBar;
     private FirebaseAuth mAuth;
 
     private String newUserEmail = "";
@@ -92,6 +94,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
         MaterialCardView loginWithGmailButton = view.findViewById(R.id.button_login_with_gmail);
         MaterialCardView loginWithPhone = view.findViewById(R.id.button_login_with_phone);
         termsButton = view.findViewById(R.id.button_terms_click);
+        progressBar = view.findViewById(R.id.signin_progressbar);
 //        createAccountButton = view.findViewById(R.id.create_account_button);
 
 
@@ -158,6 +161,7 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
     }
 
     private void signIn() {
+        progressBar.setVisibility(View.VISIBLE);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -247,9 +251,11 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
                 if (response.body() != null) {
                     boolean doesEmailExists = response.body().getExisting();
                     if (doesEmailExists) {
+                        progressBar.setVisibility(View.GONE);
                         Log.d(TAG, "this user is a returning user");
                         updateUi("old");
                     } else {
+                        progressBar.setVisibility(View.GONE);
                         Log.d(TAG, "this user is a new user");
                         newUserEmail = email;
                         updateUi("new");
