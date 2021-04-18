@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Activities.MainActivity;
+import hn.techcom.com.hnapp.Activities.OnboardingActivity;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Models.NewUser;
 import hn.techcom.com.hnapp.Models.User;
@@ -71,7 +72,8 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
         //if user is logged in already
         if(user != null){
             Log.d(TAG,"email= "+user.getEmail()+" and phone = "+user.getPhoneNumber());
-            startActivity(new Intent(getContext(),MainActivity.class));
+            emailValidation(user.getEmail());
+//            startActivity(new Intent(getContext(),MainActivity.class));
         }
     }
 
@@ -209,10 +211,11 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
         switch (userType) {
             case "new":
                 storeNewUserToSharedPref();
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.framelayout_login, new UserOnboardingFragment(), "UserOnboardingFragment")
-                        .addToBackStack(null)
-                        .commit();
+//                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.framelayout_login, new UserOnboardingFragment(), "UserOnboardingFragment")
+//                        .addToBackStack(null)
+//                        .commit();
+                startActivity(new Intent(getActivity(), OnboardingActivity.class));
                 break;
             case "old":
                 startActivity(new Intent(getActivity(), MainActivity.class));

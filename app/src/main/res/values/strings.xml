@@ -61,9 +61,8 @@
     </plurals>
     <string name="pick_multi_limit">You have more than %1$d images selected!</string>
     <string name="pick_single">Please select your image</string>
-    <string name="random">Random Posts</string>
+    <string name="random">Random</string>
     <string name="culture">Culture</string>
-    <string name="emergency">Emergencies</string>
     <string name="news">News</string>
     <string name="positive_thought">Positive Thoughts</string>
     <string name="talent">Talents</string>
@@ -81,4 +80,7 @@
     <string name="about_us">About Us</string>
     <string name="contact_us">Contact Us</string>
     <string name="human_navigation_app">Human Navigation App</string>
+    <string name="lifestyle">Lifestyle</string>
+    <string name="hustle">Hustle</string>
+    <string name="commedy">Commedy</string>
 </resources>

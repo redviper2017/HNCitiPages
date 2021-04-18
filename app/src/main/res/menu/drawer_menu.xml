@@ -74,13 +74,21 @@
                     android:icon="@drawable/ic_culture_posts_green_24dp"
                     android:title="@string/culture" />
                 <item
+                    android:id="@+id/nav_lifestyle_community"
+                    android:icon="@drawable/lifestyle_ic"
+                    android:title="@string/lifestyle" />
+                <item
+                    android:id="@+id/nav_hustle_community"
+                    android:icon="@drawable/hustle_ic"
+                    android:title="@string/hustle" />
+                <item
+                    android:id="@+id/nav_commedy_community"
+                    android:icon="@drawable/commedy_ic"
+                    android:title="@string/commedy" />
+                <item
                     android:id="@+id/nav_news_community"
                     android:icon="@drawable/ic_news_black_24dp"
                     android:title="@string/news" />
-                <item
-                    android:id="@+id/nav_emergency_community"
-                    android:icon="@drawable/ic_emergency_black_24dp"
-                    android:title="@string/emergency" />
             </group>
         </menu>
     </item>
