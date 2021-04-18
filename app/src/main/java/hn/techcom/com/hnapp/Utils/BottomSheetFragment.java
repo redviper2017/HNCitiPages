@@ -15,8 +15,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 import hn.techcom.com.hnapp.Activities.LoginActivity;
 import hn.techcom.com.hnapp.Activities.MainActivity;
+import hn.techcom.com.hnapp.Fragments.UserProfileFragment;
 import hn.techcom.com.hnapp.R;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment {
@@ -55,10 +58,10 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AllHNPostsFragment()).commit();
 //                        dismiss();
 //                        break;
-//                    case R.id.nav_visit_profile:
-//                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MyProfileFragment()).commit();
-//                        dismiss();
-//                        break;
+                    case R.id.nav_visit_profile:
+                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new UserProfileFragment()).commit();
+                        dismiss();
+                        break;
 //                    case R.id.nav_random_community:
 //                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new RandomPostsByHNCommunityFragment()).commit();
 //                        dismiss();

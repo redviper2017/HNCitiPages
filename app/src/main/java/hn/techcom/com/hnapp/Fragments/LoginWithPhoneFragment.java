@@ -31,6 +31,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import hn.techcom.com.hnapp.Activities.MainActivity;
+import hn.techcom.com.hnapp.Activities.OnboardingActivity;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Models.Validate;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
@@ -237,10 +238,7 @@ public class LoginWithPhoneFragment extends Fragment implements View.OnClickList
     private void updateUi(String userType) {
         switch (userType) {
             case "new":
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.framelayout_login, new UserOnboardingFragment(), "UserOnboardingFragment")
-                        .addToBackStack(null)
-                        .commit();
+                startActivity(new Intent(getActivity(), OnboardingActivity.class));
                 break;
             case "old":
                 startActivity(new Intent(getActivity(), MainActivity.class));

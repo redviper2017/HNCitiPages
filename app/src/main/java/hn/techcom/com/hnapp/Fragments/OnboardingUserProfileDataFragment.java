@@ -247,7 +247,12 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
                 if (response.code() == 201) {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getContext(),"Registered Successfully!",Toast.LENGTH_LONG).show();
+
                     newUser = response.body();
+                    Log.d(TAG,"new created user = "+newUser);
+
+
+
                     storeNewUserToSharedPref();
                     startActivity(new Intent(getActivity(),MainActivity.class));
                 }else {
@@ -277,6 +282,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
         SharedPreferences.Editor editor = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
         Gson gson = new Gson();
         String json = gson.toJson(newUser);
-        editor.putString("NewUser", json);
+        editor.putString("NewUser",json);
+        editor.apply();
     }
 }
