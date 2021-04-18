@@ -1,17 +1,22 @@
 package hn.techcom.com.hnapp.Utils;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
+import hn.techcom.com.hnapp.Activities.LoginActivity;
+import hn.techcom.com.hnapp.Activities.MainActivity;
 import hn.techcom.com.hnapp.R;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment {
@@ -106,9 +111,11 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SettingsFragment()).commit();
 //                        dismiss();
 //                        break;
-//                    case R.id.nav_sign_out:
-//                        MainActivity.session.logoutUser();
-//                        break;
+                    case R.id.nav_sign_out:
+//                        Toast.makeText(getContext(),"Signing out...", Toast.LENGTH_LONG).show();
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        break;
 //                    case R.id.nav_visit_supported_profile_posts:
 //                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SupportedProfileFragment()).commit();
 //                        dismiss();

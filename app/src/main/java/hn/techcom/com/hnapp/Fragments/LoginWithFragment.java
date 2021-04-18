@@ -172,15 +172,11 @@ public class LoginWithFragment extends Fragment implements View.OnClickListener 
 
             Log.d(TAG, "signInResult:success user =" + "name: " + account.getDisplayName() + " email: " + account.getEmail() + " photo url: " + account.getPhotoUrl());
             firebaseAuthWithGoogle(account.getIdToken());
-
-
-            // Signed in successfully, show authenticated UI.
-//            updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.d(TAG, "signInResult:failed code=" + e.getStatusCode());
-//            updateUI(null);
+
         }
     }
 

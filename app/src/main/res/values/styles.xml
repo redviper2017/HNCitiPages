@@ -31,6 +31,11 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!-- Splash screen theme -->
+    <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
     <style name="MyTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="android:textColorHint">@color/colorText</item>
         <item name="boxStrokeColor">@color/colorAccent</item>
