@@ -33,8 +33,10 @@ public class StoryPostFragment extends Fragment {
                 "Positive Thoughts",
                 "Talent",
                 "Culture",
-                "News",
-                "Emergency"};
+                "Lifestyle",
+                "Hustle",
+                "Commedy",
+                "News"};
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
