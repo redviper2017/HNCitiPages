@@ -24,7 +24,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".Activities.OnboardingActivity"></activity>
+        <activity android:name=".Activities.TermsActivity"></activity>
+        <activity android:name=".Activities.SignInActivity" />
+        <activity android:name=".Activities.OnboardingActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
