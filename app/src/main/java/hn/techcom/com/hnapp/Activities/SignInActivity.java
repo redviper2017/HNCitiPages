@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,6 +31,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 
 import java.util.Objects;
@@ -54,6 +57,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 1;
     private FirebaseAuth mAuth;
+    private Profile newUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,6 +206,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     if (response.body().getProfile() != null) {
                         Profile profile = response.body().getProfile();
                         Log.d(TAG,"validated profile hnid = " + profile.getHnid());
+                        newUser = profile;
                         updateUi("old");
                     }else {
                         Log.d(TAG, "validated profile hnid = " + null);
@@ -219,12 +224,21 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void updateUi(String userType){
         if (userType.equals("old")) {
+            storeNewUserToSharedPref();
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }else{
             startActivity(new Intent(this,OnboardingActivity.class));
             finish();
         }
+    }
+
+    private void storeNewUserToSharedPref() {
+        SharedPreferences.Editor editor = this.getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(newUser);
+        editor.putString("NewUser",json);
+        editor.apply();
     }
 
     public class GenericTextWatcher implements TextWatcher {

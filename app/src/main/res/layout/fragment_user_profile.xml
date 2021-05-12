@@ -50,20 +50,29 @@
             android:layout_gravity="center">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circleimageview_profile_onboarding"
+                android:id="@+id/circleimageview_user_profile"
                 android:layout_width="@dimen/_120sdp"
                 android:layout_height="@dimen/_120sdp"
                 android:src="@drawable/image_placeholder"
                 app:civ_border_color="@android:color/white"
                 app:civ_border_width="1dp" />
 
+            <ProgressBar
+                android:id="@+id/user_profile_photo_progressbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:layout_centerInParent="true"/>
+
             <include
                 android:id="@+id/fab_add_image"
                 layout="@layout/custom_fab_pick_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/circleimageview_profile_onboarding"
-                android:layout_alignEnd="@id/circleimageview_profile_onboarding"/>
+                android:layout_alignBottom="@id/circleimageview_user_profile"
+                android:layout_alignEnd="@id/circleimageview_user_profile"/>
         </RelativeLayout>
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textview_name_view_profile"
