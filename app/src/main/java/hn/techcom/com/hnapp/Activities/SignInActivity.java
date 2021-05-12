@@ -202,8 +202,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     if (response.body().getProfile() != null) {
                         Profile profile = response.body().getProfile();
                         Log.d(TAG,"validated profile hnid = " + profile.getHnid());
-                    }else
-                        Log.d(TAG,"validated profile hnid = " + null);
+                        updateUi("old");
+                    }else {
+                        Log.d(TAG, "validated profile hnid = " + null);
+                        updateUi("new");
+                    }
                 }
             }
 
@@ -212,6 +215,16 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 Log.d(TAG, "Email validation failed!");
             }
         });
+    }
+
+    private void updateUi(String userType){
+        if (userType.equals("old")) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }else{
+            startActivity(new Intent(this,OnboardingActivity.class));
+            finish();
+        }
     }
 
     public class GenericTextWatcher implements TextWatcher {
