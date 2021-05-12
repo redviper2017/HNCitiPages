@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,8 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
-import hn.techcom.com.hnapp.Activities.LoginActivity;
-import hn.techcom.com.hnapp.Activities.MainActivity;
+import hn.techcom.com.hnapp.Activities.SignInActivity;
 import hn.techcom.com.hnapp.Fragments.UserProfileFragment;
 import hn.techcom.com.hnapp.R;
 
@@ -117,7 +115,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
                     case R.id.nav_sign_out:
 //                        Toast.makeText(getContext(),"Signing out...", Toast.LENGTH_LONG).show();
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        startActivity(new Intent(getActivity(), SignInActivity.class));
                         break;
 //                    case R.id.nav_visit_supported_profile_posts:
 //                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SupportedProfileFragment()).commit();

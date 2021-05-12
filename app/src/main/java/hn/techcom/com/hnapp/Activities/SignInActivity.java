@@ -1,7 +1,6 @@
 package hn.techcom.com.hnapp.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -15,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -35,8 +33,14 @@ import com.hbb20.CountryCodePicker;
 
 import java.util.Objects;
 
-import hn.techcom.com.hnapp.Fragments.LoginWithPhoneFragment;
+import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Models.Profile;
+import hn.techcom.com.hnapp.Models.ValidationResponse;
+import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -172,7 +176,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             FirebaseUser user = mAuth.getCurrentUser();
                             progressBar.setVisibility(View.GONE);
 
-//                            emailValidation(user.getEmail());
+                            emailValidation(Objects.requireNonNull(user).getEmail());
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -184,6 +188,30 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         // ...
                     }
                 });
+    }
+
+    public void emailValidation(String email) {
+        String baseUrl = "http://167.99.13.238:8000/api/users/emailvalidate/" + email + "/";
+        Log.d(TAG, "base url = " + baseUrl);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<ValidationResponse> call = service.validateEmail(baseUrl);
+        call.enqueue(new Callback<ValidationResponse>() {
+            @Override
+            public void onResponse(Call<ValidationResponse> call, Response<ValidationResponse> response) {
+                if (response.body() != null) {
+                    if (response.body().getProfile() != null) {
+                        Profile profile = response.body().getProfile();
+                        Log.d(TAG,"validated profile hnid = " + profile.getHnid());
+                    }else
+                        Log.d(TAG,"validated profile hnid = " + null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ValidationResponse> call, Throwable t) {
+                Log.d(TAG, "Email validation failed!");
+            }
+        });
     }
 
     public class GenericTextWatcher implements TextWatcher {

@@ -8,6 +8,7 @@ import hn.techcom.com.hnapp.Models.QUser;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Models.User;
 import hn.techcom.com.hnapp.Models.Validate;
+import hn.techcom.com.hnapp.Models.ValidationResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -35,7 +36,7 @@ public interface GetDataService {
 
     // Email validation
     @GET()
-    Call<Validate> validateEmail(@Url String url);
+    Call<ValidationResponse> validateEmail(@Url String url);
 
 
     // Register New User

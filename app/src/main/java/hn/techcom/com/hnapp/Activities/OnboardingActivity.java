@@ -7,9 +7,6 @@ import android.os.Bundle;
 
 import java.util.Objects;
 
-import hn.techcom.com.hnapp.Fragments.LoginWithFragment;
-import hn.techcom.com.hnapp.Fragments.OnboardingUserAboutFragment;
-import hn.techcom.com.hnapp.Fragments.OnboardingUserContactFragment;
 import hn.techcom.com.hnapp.Fragments.UserOnboardingFragment;
 import hn.techcom.com.hnapp.R;
 
