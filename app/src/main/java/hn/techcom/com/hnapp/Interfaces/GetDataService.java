@@ -2,13 +2,11 @@ package hn.techcom.com.hnapp.Interfaces;
 
 import java.util.List;
 
-import hn.techcom.com.hnapp.Models.NewUser;
+import hn.techcom.com.hnapp.Models.NewPostResponse;
 import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.QUser;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
-import hn.techcom.com.hnapp.Models.User;
-import hn.techcom.com.hnapp.Models.Validate;
 import hn.techcom.com.hnapp.Models.ValidationResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -53,4 +51,17 @@ public interface GetDataService {
             @Part("gender") RequestBody gender,
             @Part MultipartBody.Part first_img
     );
+
+    //Share Story Post
+    @Multipart
+    @POST("posts/create/")
+    Call<NewPostResponse> shareStory(
+            @Part("user") RequestBody user,
+            @Part("city") RequestBody city,
+            @Part("country") RequestBody country,
+            @Part("posttype") RequestBody posttype,
+            @Part("category") RequestBody category,
+            @Part("text") RequestBody text
+    );
+
 }

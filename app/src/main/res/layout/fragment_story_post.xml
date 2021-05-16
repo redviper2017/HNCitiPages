@@ -93,7 +93,7 @@
             app:hintTextColor="@color/colorText">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditText_phone"
+                android:id="@+id/textInputEditText_story"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left|top"
@@ -109,7 +109,7 @@
             android:layout_marginTop="20dp">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/capture_image_button"
+                android:id="@+id/share_story_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="15dp"
@@ -130,6 +130,14 @@
                     android:padding="10dp"
                     android:drawableStart="@drawable/text_icon"/>
             </com.google.android.material.card.MaterialCardView>
+
+            <ProgressBar
+                android:id="@+id/share_story_progressbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
 
