@@ -27,7 +27,9 @@ import java.util.Calendar;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Models.NewUser;
+import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.Utils;
 
 public class OnboardingUserAboutFragment extends Fragment implements View.OnClickListener {
 
@@ -38,7 +40,9 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
 
     private String gender, genderCode;
 
-    private NewUser newUser = null;
+    private Profile userProfile = null;
+
+    private Utils myUtils;
 
     public OnboardingUserAboutFragment() {
         // Required empty public constructor
@@ -48,6 +52,8 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_onboarding_user_about, container, false);
+
+        myUtils = new Utils();
 
         //Hooks
         Spinner spinner = view.findViewById(R.id.spinner_gender);
@@ -128,22 +134,18 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
         super.onPause();
 
         //getting stored user information so far from shared preference
-        newUser = getNewUserFromSharedPreference();
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
 
-        newUser.setFullName(Objects.requireNonNull(fullname.getText()).toString());
-        newUser.setDateOfBirth(dateOfBirth.getText().toString());
-        newUser.setGender(genderCode);
+        userProfile.setFullName(Objects.requireNonNull(fullname.getText()).toString());
+        userProfile.setDateOfBirth(dateOfBirth.getText().toString());
+        userProfile.setGender(genderCode);
 
-        storeNewUserToSharedPref();
+        myUtils.storeNewUserToSharedPref(Objects.requireNonNull(getContext()),userProfile);
 
-        Log.d(TAG,"new user = "+newUser.toString());
+        Log.d(TAG,"new user = "+userProfile.toString());
     }
 
     public void showDatePickerDialog(View v) {
-//        DialogFragment newFragment = new DatePickerFragment();
-//        newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "datePicker");
-//
-//
         final Calendar cldr = Calendar.getInstance();
         int day = cldr.get(Calendar.DAY_OF_MONTH);
         int month = cldr.get(Calendar.MONTH);
@@ -160,22 +162,5 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
                     }
                 }, year, month, day);
         datePickerDialog.show();
-    }
-
-    private NewUser getNewUserFromSharedPreference() {
-        SharedPreferences pref = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = pref.getString("NewUser","");
-        NewUser user = gson.fromJson(json, NewUser.class);
-
-        return user;
-    }
-
-    private void storeNewUserToSharedPref() {
-        SharedPreferences.Editor editor = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(newUser);
-        editor.putString("NewUser",json);
-        editor.apply();
     }
 }

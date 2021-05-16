@@ -45,7 +45,9 @@ import java.util.Locale;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Models.NewUser;
+import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.Utils;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
@@ -61,7 +63,8 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
     private MaterialCardView getCurrentLocationButton;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
-    private NewUser newUser = null;
+    private Profile userProfile = null;
+    private Utils myUtils;
 
     double latitude, longitude;
     private FrameLayout frameLayout;
@@ -81,6 +84,8 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_onboarding_user_location, container, false);
+
+        myUtils = new Utils();
 
         //Hooks
         city = view.findViewById(R.id.city_onboarding);
@@ -107,8 +112,8 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
         super.onResume();
         mMapView.onResume();
 
-        newUser = getNewUserFromSharedPreference();
-        Log.d(TAG,"new user = "+newUser.toString());
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+        Log.d(TAG,"new user = "+userProfile.toString());
     }
 
     @Override
@@ -116,12 +121,12 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
         super.onPause();
         mMapView.onPause();
 
-        newUser.setCountry(country.getText().toString());
-        newUser.setCity(city.getText().toString());
+        userProfile.setCountry(country.getText().toString());
+        userProfile.setCity(city.getText().toString());
 
-        storeNewUserToSharedPref();
+        myUtils.storeNewUserToSharedPref(Objects.requireNonNull(getContext()),userProfile);
 
-        Log.d(TAG,"new user = "+newUser.toString());
+        Log.d(TAG,"new user = "+userProfile.toString());
     }
 
     @Override
@@ -278,22 +283,5 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
                 .setNegativeButton("Cancel", null)
                 .create()
                 .show();
-    }
-
-    private NewUser getNewUserFromSharedPreference() {
-        SharedPreferences pref = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = pref.getString("NewUser","");
-        NewUser user = gson.fromJson(json, NewUser.class);
-
-        return user;
-    }
-
-    private void storeNewUserToSharedPref() {
-        SharedPreferences.Editor editor = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(newUser);
-        editor.putString("NewUser",json);
-        editor.apply();
     }
 }

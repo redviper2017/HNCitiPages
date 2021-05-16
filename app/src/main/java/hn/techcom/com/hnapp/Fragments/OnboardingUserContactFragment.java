@@ -20,8 +20,10 @@ import java.util.Objects;
 import java.util.Random;
 
 import hn.techcom.com.hnapp.Models.NewUser;
+import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.User;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.Utils;
 
 
 public class OnboardingUserContactFragment extends Fragment {
@@ -29,7 +31,9 @@ public class OnboardingUserContactFragment extends Fragment {
     private static final String TAG = "ContactFragment";
     private TextInputEditText emailText, phoneText;
     private CountryCodePicker countryCodePicker;
-    private NewUser newUser = null;
+    private Profile userProfile = null;
+
+    private Utils myUtils;
 
     public OnboardingUserContactFragment() {
         // Required empty public constructor
@@ -40,6 +44,8 @@ public class OnboardingUserContactFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_onboarding_user_contact, container, false);
 
+        myUtils = new Utils();
+
         //hooks
         LinearLayout phoneLayout = view.findViewById(R.id.layout_phone_onboarding_contact);
         LinearLayout emailLayout = view.findViewById(R.id.layout_email_onboarding_contact);
@@ -49,8 +55,8 @@ public class OnboardingUserContactFragment extends Fragment {
         countryCodePicker = view.findViewById(R.id.country_code_picker);
 
         // Shows layout based on user's sign-in method
-        newUser = getNewUserFromSharedPreference();
-        String email = newUser.getEmail();
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+        String email = userProfile.getEmail();
 
         if(email != null){
             phoneLayout.setVisibility(View.VISIBLE);
@@ -74,24 +80,7 @@ public class OnboardingUserContactFragment extends Fragment {
         Log.d(TAG,"phone = "+ currentPhoneFieldValue);
 
         //adding user's phone number to shared preference
-        newUser.setMobileNumber(currentPhoneFieldValue);
-        storeNewUserToSharedPref();
-    }
-
-    private NewUser getNewUserFromSharedPreference() {
-        SharedPreferences pref = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = pref.getString("NewUser","");
-        NewUser user = gson.fromJson(json, NewUser.class);
-
-        return user;
-    }
-
-    private void storeNewUserToSharedPref() {
-        SharedPreferences.Editor editor = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(newUser);
-        editor.putString("NewUser",json);
-        editor.apply();
+        userProfile.setMobileNumber(currentPhoneFieldValue);
+        myUtils.storeNewUserToSharedPref(Objects.requireNonNull(getContext()),userProfile);
     }
 }

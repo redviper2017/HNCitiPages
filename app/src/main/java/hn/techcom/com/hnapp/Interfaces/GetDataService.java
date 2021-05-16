@@ -4,6 +4,7 @@ import java.util.List;
 
 import hn.techcom.com.hnapp.Models.NewUser;
 import hn.techcom.com.hnapp.Models.Post;
+import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.QUser;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Models.User;
@@ -42,7 +43,7 @@ public interface GetDataService {
     // Register New User
     @Multipart
     @POST("users/registration/")
-    Call<NewUser> registerNewUser(
+    Call<Profile> registerNewUser(
             @Part("email") RequestBody email,
             @Part("mobile_number") RequestBody mobile_number,
             @Part("full_name") RequestBody full_name,

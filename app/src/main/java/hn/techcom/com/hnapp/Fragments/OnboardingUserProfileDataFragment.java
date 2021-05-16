@@ -48,8 +48,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Activities.MainActivity;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Models.NewUser;
+import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.Utils;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -77,7 +79,8 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     private File newImageFile;
     private String mCameraFileName;
 
-    private NewUser newUser = null;
+    private Profile userProfile = null;
+    private Utils myUtils;
 
     private ProgressBar progressBar;
 
@@ -90,7 +93,9 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_onboarding_user_profile_data, container, false);
+        myUtils = new Utils();
 
+        //Hooks
         LinearLayout openImage = view.findViewById(R.id.fab_add_image);
         profileImage = view.findViewById(R.id.circleimageview_profile_onboarding);
         frameLayout = view.findViewById(R.id.frameLayout);
@@ -212,17 +217,17 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
 
     // function to create new user account
     public void registerNewUserAccount(){
-        newUser = getNewUserFromSharedPreference();
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
 
-        Log.d(TAG,"onboarding new user = "+newUser);
+        Log.d(TAG,"onboarding new user = "+userProfile);
 
-        RequestBody email = RequestBody.create(MediaType.parse("text/plain"), newUser.getEmail());
-        RequestBody mobile_number = RequestBody.create(MediaType.parse("text/plain"), newUser.getMobileNumber());
-        RequestBody full_name = RequestBody.create(MediaType.parse("text/plain"), newUser.getFullName());
-        RequestBody date_of_birth = RequestBody.create(MediaType.parse("text/plain"), newUser.getDateOfBirth());
-        RequestBody city = RequestBody.create(MediaType.parse("text/plain"), newUser.getCity());
-        RequestBody country = RequestBody.create(MediaType.parse("text/plain"), newUser.getCountry());
-        RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), newUser.getGender());
+        RequestBody email = RequestBody.create(MediaType.parse("text/plain"), userProfile.getEmail());
+        RequestBody mobile_number = RequestBody.create(MediaType.parse("text/plain"), userProfile.getMobileNumber());
+        RequestBody full_name = RequestBody.create(MediaType.parse("text/plain"), userProfile.getFullName());
+        RequestBody date_of_birth = RequestBody.create(MediaType.parse("text/plain"), userProfile.getDateOfBirth());
+        RequestBody city = RequestBody.create(MediaType.parse("text/plain"), userProfile.getCity());
+        RequestBody country = RequestBody.create(MediaType.parse("text/plain"), userProfile.getCountry());
+        RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), userProfile.getGender());
 
         File file = new File(android.os.Environment.getExternalStorageDirectory(), mCameraFileName);
 
@@ -234,7 +239,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
                 RequestBody.create(MediaType.parse("image/*"), newImageFile)
         );
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<NewUser> call = service.registerNewUser(
+        Call<Profile> call = service.registerNewUser(
                 email,
                 mobile_number,
                 full_name,
@@ -245,21 +250,21 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
                 filePart //registration without image file
         );
 
-        call.enqueue(new Callback<NewUser>() {
+        call.enqueue(new Callback<Profile>() {
             @Override
-            public void onResponse(@NonNull Call<NewUser> call,@NonNull Response<NewUser> response) {
+            public void onResponse(@NonNull Call<Profile> call,@NonNull Response<Profile> response) {
 
                 Log.d(TAG,"new registered user = "+ response);
                 if (response.code() == 201) {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getContext(),"Registered Successfully!",Toast.LENGTH_LONG).show();
 
-                    newUser = response.body();
-                    Log.d(TAG,"new created user = "+newUser);
+                    userProfile = response.body();
+                    Log.d(TAG,"new created user = "+userProfile);
 
 
 
-                    storeNewUserToSharedPref();
+                    myUtils.storeNewUserToSharedPref(Objects.requireNonNull(getContext()),userProfile);
                     startActivity(new Intent(getActivity(),MainActivity.class));
                 }else {
                     progressBar.setVisibility(View.GONE);
@@ -269,26 +274,9 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
             }
 
             @Override
-            public void onFailure(@NonNull Call<NewUser> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Profile> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(),"Registration Failed! Try again later.",Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private NewUser getNewUserFromSharedPreference() {
-        SharedPreferences pref = Objects.requireNonNull(getContext()).getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = pref.getString("NewUser","");
-        NewUser user = gson.fromJson(json, NewUser.class);
-
-        return user;
-    }
-
-    private void storeNewUserToSharedPref() {
-        SharedPreferences.Editor editor = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(newUser);
-        editor.putString("NewUser",json);
-        editor.apply();
     }
 }
