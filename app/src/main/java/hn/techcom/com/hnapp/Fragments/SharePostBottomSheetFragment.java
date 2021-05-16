@@ -34,16 +34,17 @@ public class SharePostBottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                switch (item.getItemId()) {
-
-                    case R.id.navigation_share_text:
-                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new StoryPostFragment()).commit();
-                        dismiss();
-                        break;
-                    case R.id.navigation_share_image:
-                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new ImagePostFragment()).commit();
-                        dismiss();
-                        break;
+                if(item.getItemId() == R.id.navigation_share_text){
+                    Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new StoryPostFragment()).commit();
+                    dismiss();
+                }
+                if(item.getItemId() == R.id.navigation_share_image){
+                    Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new ImagePostFragment()).commit();
+                    dismiss();
+                }
+                if(item.getItemId() == R.id.navigation_share_video){
+                    Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new VideoPostFragment()).commit();
+                    dismiss();
                 }
 
                 return true;

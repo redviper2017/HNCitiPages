@@ -7,9 +7,8 @@
     android:paddingStart="5dp"
     android:paddingEnd="5dp"
     android:background="@color/white">
-
     <LinearLayout
-        android:id="@+id/layout_screentitle_shareimage"
+        android:id="@+id/layout_screentitle_sharevideo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorSurface"
@@ -19,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_avatar_shareimage"
+            android:id="@+id/user_avatar_sharevideo"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="5dp"
@@ -29,16 +28,15 @@
             app:civ_border_width="0dp" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text_screen_title_shareimage"
+            android:id="@+id/text_screen_title_sharevideo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/playfair_display_bold"
-            android:text="Share Photo"
+            android:text="Share Video"
             android:textColor="@color/colorTextTitle"
             android:textSize="14sp" />
     </LinearLayout>
-
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textview_postedby_name"
         android:layout_width="match_parent"
@@ -49,8 +47,7 @@
         android:fontFamily="@font/roboto"
         android:text="@string/select_post_type"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/layout_screentitle_shareimage"/>
-
+        app:layout_constraintTop_toBottomOf="@id/layout_screentitle_sharevideo"/>
     <!-- Post Type Spinner Layout -->
     <LinearLayout
         android:id="@+id/layout_spinner_post_type"
@@ -73,24 +70,24 @@
             android:popupBackground="@color/colorSurface"
             android:spinnerMode="dropdown" />
     </LinearLayout>
-
-    <ImageSwitcher
-        android:id="@+id/imageswitcher_image"
+    <VideoView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/layout_spinner_post_type"
-        app:layout_constraintBottom_toTopOf="@+id/textinputlayout_caption"
         android:layout_marginTop="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginBottom="50dp"
-        android:layout_marginEnd="50dp"/>
-
+        android:layout_marginEnd="50dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintTop_toBottomOf="@id/layout_spinner_post_type"
+        app:layout_constraintBottom_toTopOf="@+id/textinputlayout_caption"
+        android:id="@+id/vv"/>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textinputlayout_caption"
         style="@style/MyTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/image_select_option_layout"
+        app:layout_constraintBottom_toTopOf="@id/video_select_option_layout"
         android:hint="Caption"
         app:boxCornerRadiusBottomStart="20dp"
         app:boxCornerRadiusTopEnd="20dp"
@@ -101,16 +98,15 @@
         app:hintTextColor="@color/colorText">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText_phone"
+            android:id="@+id/textInputEditText_video_caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left|top"
             android:inputType="textMultiLine"
             android:lines="5"/>
     </com.google.android.material.textfield.TextInputLayout>
-
     <LinearLayout
-        android:id="@+id/image_select_option_layout"
+        android:id="@+id/video_select_option_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -118,7 +114,7 @@
         android:layout_marginBottom="20dp">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/capture_image_button"
+            android:id="@+id/capture_video_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="15dp"
@@ -141,7 +137,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/select_image_button"
+            android:id="@+id/select_video_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="15dp"
@@ -164,4 +160,5 @@
                 android:drawableStart="@drawable/gallery_ic"/>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
