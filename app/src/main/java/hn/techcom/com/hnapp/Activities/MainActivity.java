@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -31,6 +32,7 @@ import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Utils.BottomSheetFragment;
+import hn.techcom.com.hnapp.Utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,16 +48,23 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    private Utils myUtils;
+
     @Override
     protected void onStart() {
         super.onStart();
 
+        myUtils = new Utils();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        if(user != null && ){}
 
-
-        Fragment fragment = new HomeFragment(globalPosts);
-        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
+        //Check if user is logged in and profile is locally stored
+        if(user == null || myUtils.getNewUserFromSharedPreference(this) == null){
+            startActivity(new Intent(this, SignInActivity.class));
+        }
+        else {
+            Fragment fragment = new HomeFragment(globalPosts);
+            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
+        }
     }
 
     @Override

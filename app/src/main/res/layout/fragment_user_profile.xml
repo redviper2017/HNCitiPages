@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.UserProfileFragment">
+    tools:context=".Fragments.UserProfileFragment"
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/layout_screentitle_view_profile"

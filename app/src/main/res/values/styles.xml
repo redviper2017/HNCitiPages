@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
 
@@ -16,7 +16,8 @@
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="android:textColor">@color/colorText</item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearanceOverlay.Demo</item>
-
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/white</item>
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
 
@@ -29,11 +30,6 @@
     <style name="SpinnerTheme">
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:textSize">14sp</item>
-    </style>
-
-    <!-- Splash screen theme -->
-    <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
     <style name="MyTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">

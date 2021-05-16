@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.OnboardingActivity">
+    tools:context=".Activities.OnboardingActivity"
+    android:background="@color/white">
 
     <FrameLayout
         android:id="@+id/framelayout_onboarding"

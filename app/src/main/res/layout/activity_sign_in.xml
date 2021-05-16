@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.SignInActivity">
+    tools:context=".Activities.SignInActivity"
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/layout_login_with_signin"
