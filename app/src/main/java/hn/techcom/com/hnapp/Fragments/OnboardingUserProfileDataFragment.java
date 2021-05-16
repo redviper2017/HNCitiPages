@@ -118,6 +118,10 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
                 String newImageFileName = df.format(date) + ".jpg";
                 String newImagePath = "/sdcard/" + newImageFileName;
                 newImageFile = new File(newImagePath);
+
+
+
+
                 mCameraFileName = newImageFile.toString();
                 Uri outuri = Uri.fromFile(newImageFile);
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
@@ -210,6 +214,8 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     public void registerNewUserAccount(){
         newUser = getNewUserFromSharedPreference();
 
+        Log.d(TAG,"onboarding new user = "+newUser);
+
         RequestBody email = RequestBody.create(MediaType.parse("text/plain"), newUser.getEmail());
         RequestBody mobile_number = RequestBody.create(MediaType.parse("text/plain"), newUser.getMobileNumber());
         RequestBody full_name = RequestBody.create(MediaType.parse("text/plain"), newUser.getFullName());
@@ -218,15 +224,15 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
         RequestBody country = RequestBody.create(MediaType.parse("text/plain"), newUser.getCountry());
         RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), newUser.getGender());
 
-//        File file = new File(mCameraFileName);
-//
-//        Toast.makeText(getContext(),"image = "+file,Toast.LENGTH_LONG).show();
-//
-//        MultipartBody.Part filePart = MultipartBody.Part.createFormData(
-//                "first_img",
-//                file.getName(),
-//                RequestBody.create(MediaType.parse("image/*"), file)
-//        );
+        File file = new File(android.os.Environment.getExternalStorageDirectory(), mCameraFileName);
+
+        Toast.makeText(getContext(),"image = "+file,Toast.LENGTH_LONG).show();
+
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData(
+                "first_img",
+                newImageFile.getName(),
+                RequestBody.create(MediaType.parse("image/*"), newImageFile)
+        );
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<NewUser> call = service.registerNewUser(
                 email,
@@ -236,7 +242,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
                 city,
                 country,
                 gender,
-                null //registration without image file
+                filePart //registration without image file
         );
 
         call.enqueue(new Callback<NewUser>() {
@@ -257,14 +263,14 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
                     startActivity(new Intent(getActivity(),MainActivity.class));
                 }else {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(),"Registration Failed! Please try again changing the email or phone number",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),response.toString(),Toast.LENGTH_LONG).show();
                 }
 
             }
 
             @Override
             public void onFailure(@NonNull Call<NewUser> call, @NonNull Throwable t) {
-                Log.d(TAG,"new registered user = "+ "Failed!!!");
+                Toast.makeText(getContext(),"Registration Failed! Try again later.",Toast.LENGTH_LONG).show();
             }
         });
     }

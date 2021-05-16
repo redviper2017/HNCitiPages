@@ -180,7 +180,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             FirebaseUser user = mAuth.getCurrentUser();
                             progressBar.setVisibility(View.GONE);
 
-                            emailValidation(Objects.requireNonNull(user).getEmail());
+                            emailValidation(Objects.requireNonNull(user).getEmail(), Objects.requireNonNull(user).getDisplayName());
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -194,7 +194,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 });
     }
 
-    public void emailValidation(String email) {
+    public void emailValidation(String email, String name) {
         String baseUrl = "http://167.99.13.238:8000/api/users/emailvalidate/" + email + "/";
         Log.d(TAG, "base url = " + baseUrl);
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
@@ -209,6 +209,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         newUser = profile;
                         updateUi("old");
                     }else {
+                        newUser = new Profile();
+                        newUser.setEmail(email);
+                        newUser.setFullName(name);
                         Log.d(TAG, "validated profile hnid = " + null);
                         updateUi("new");
                     }
@@ -224,13 +227,22 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void updateUi(String userType){
         if (userType.equals("old")) {
-            storeNewUserToSharedPref();
+            storeOldUserToSharedPref();
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }else{
+            storeNewUserToSharedPref();
             startActivity(new Intent(this,OnboardingActivity.class));
             finish();
         }
+    }
+
+    private void storeOldUserToSharedPref() {
+        SharedPreferences.Editor editor = this.getSharedPreferences("MY_PREF", Context.MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(newUser);
+        editor.putString("NewUser",json);
+        editor.apply();
     }
 
     private void storeNewUserToSharedPref() {
