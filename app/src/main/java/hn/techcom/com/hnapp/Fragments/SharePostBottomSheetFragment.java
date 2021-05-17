@@ -15,6 +15,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Activities.PostImageActivity;
 import hn.techcom.com.hnapp.Activities.PostStoryActivity;
 import hn.techcom.com.hnapp.Activities.PostVideoActivity;
 import hn.techcom.com.hnapp.R;
@@ -42,7 +43,7 @@ public class SharePostBottomSheetFragment extends BottomSheetDialogFragment {
                     dismiss();
                 }
                 if(item.getItemId() == R.id.navigation_share_image){
-                    Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new ImagePostFragment()).commit();
+                    startActivity(new Intent(getActivity(), PostImageActivity.class));
                     dismiss();
                 }
                 if(item.getItemId() == R.id.navigation_share_video){

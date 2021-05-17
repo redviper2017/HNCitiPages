@@ -77,4 +77,17 @@ public interface GetDataService {
             @Part MultipartBody.Part file
     );
 
+    //Share Image Post
+    @Multipart
+    @POST("posts/create/")
+    Call<NewPostResponse> shareImage(
+            @Part("user") RequestBody user,
+            @Part("city") RequestBody city,
+            @Part("country") RequestBody country,
+            @Part("posttype") RequestBody posttype,
+            @Part("category") RequestBody category,
+            @Part("text") RequestBody text,
+            @Part MultipartBody.Part file
+    );
+
 }
