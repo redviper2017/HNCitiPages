@@ -52,6 +52,7 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
 
     //Constants
     private static final int REQUEST_VIDEO_CAPTURE = 1;
+    private static final int REQUEST_VIDEO_PICK = 2;
     private static final int PERMISSION_REQUEST_CODE = 200;
 
     @Override
@@ -61,6 +62,7 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
 
         //Hooks
         MaterialCardView captureVideoButton = findViewById(R.id.capture_video_button);
+        MaterialCardView selectVideoButton    = findViewById(R.id.select_video_button);
         ImageButton backButton              = findViewById(R.id.image_button_back);
         CircleImageView userAvatar          = findViewById(R.id.user_avatar_sharevideo);
         postTypeSpinner                     = findViewById(R.id.spinner_post_type);
@@ -90,6 +92,7 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         //OnClick Listeners
         backButton.setOnClickListener(this);
         captureVideoButton.setOnClickListener(this);
+        selectVideoButton.setOnClickListener(this);
 
         //Setting up user avatar on top bar
         myUtils = new Utils();
@@ -110,7 +113,8 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
             if(checkPermission())
                 startVideoCaptureIntent();
             else requestPermission();
-
+        if(view.getId() == R.id.select_video_button)
+            startVideoPickIntent();
     }
 
     @Override
@@ -118,7 +122,13 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
             Log.d(TAG,"inside onActivityResult of PostVideoActivity = "+"YES");
-            videoview.setVideoURI(Uri.fromFile(newVideoFile));
+            videoview.setVideoURI(data.getData());
+            videoview.requestFocus();
+        }
+        if (requestCode == REQUEST_VIDEO_PICK && resultCode == RESULT_OK) {
+            Log.d(TAG,"multi video output = "+data.getData());
+            videoview.setVideoURI(data.getData());
+            videoview.requestFocus();
         }
     }
 
@@ -145,13 +155,7 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
                                             }
                                         });
                                 return;
-                            }
-                        }
-
-                    }
-                }
-
-
+                            } } } }
                 break;
         }
     }
@@ -184,6 +188,13 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
 
         takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
         startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+    }
+
+    public void startVideoPickIntent(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("video/*");
+
+        startActivityForResult(intent, REQUEST_VIDEO_PICK);
     }
 
     private void showMessageOKCancel(DialogInterface.OnClickListener okListener) {
