@@ -364,7 +364,7 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
                     imageCaption.setText("");
                     postCategorySpinner.setSelection(0);
                     imageview.setImageDrawable(ContextCompat.getDrawable(PostImageActivity.this,R.drawable.image_1));
-                    changeButtonsUI("upload");
+                    changeButtonsUI("select");
                 }
                 else{
                     progressBar.setVisibility(View.GONE);
@@ -372,7 +372,7 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
                     imageCaption.setText("");
                     postCategorySpinner.setSelection(0);
                     imageview.setImageDrawable(ContextCompat.getDrawable(PostImageActivity.this,R.drawable.image_1));
-                    changeButtonsUI("upload");
+                    changeButtonsUI("select");
                 }
             }
 
