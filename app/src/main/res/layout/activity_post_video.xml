@@ -57,7 +57,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/roboto"
-        android:text="@string/select_post_type"
+        android:text="@string/select_a_category_type_for_your_video"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/layout_screentitle_sharevideo"/>
     <!-- Post Type Spinner Layout -->
@@ -230,7 +230,7 @@
                 android:textColor="@color/colorSurface"
                 android:textSize="16sp"
                 android:padding="10dp"
-                android:drawableStart="@drawable/gallery_ic"/>
+                android:drawableStart="@drawable/delete_file_ic"/>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 

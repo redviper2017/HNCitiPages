@@ -184,8 +184,9 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         if(view.getId() == R.id.select_video_button)
             startVideoPickIntent();
         if(view.getId() == R.id.clear_video_button) {
+            videoCaption.setText("");
+            postCategorySpinner.setSelection(0);
             recreate();
-            changeButtonsUI("select");
         }
         if(view.getId() == R.id.share_video_button){
             if(!TextUtils.isEmpty(videoCaption.getText()))
