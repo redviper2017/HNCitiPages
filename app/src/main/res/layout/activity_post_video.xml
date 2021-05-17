@@ -53,7 +53,7 @@
         android:id="@+id/textview_postedby_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:layout_marginStart="25dp"
+        android:layout_marginStart="25dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/roboto"
@@ -117,13 +117,24 @@
             android:inputType="textMultiLine"
             android:lines="5"/>
     </com.google.android.material.textfield.TextInputLayout>
+    <ProgressBar
+        android:id="@+id/share_video_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/video_select_option_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <LinearLayout
         android:id="@+id/video_select_option_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        android:visibility="visible">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/capture_video_button"
@@ -131,8 +142,8 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="15dp"
             app:cardElevation="10dp"
-           android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp">
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -156,7 +167,7 @@
             app:cardElevation="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp">
+            android:layout_marginEnd="25dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -171,5 +182,56 @@
                 android:padding="10dp"
                 android:drawableStart="@drawable/gallery_ic"/>
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/share_video_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:visibility="gone">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_button"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:text="Share Video"
+                android:textAlignment="center"
+                android:textColor="@color/colorSurface"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:drawableStart="@drawable/gallery_ic"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/clear_video_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:visibility="gone">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_button"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:text="Clear Video"
+                android:textAlignment="center"
+                android:textColor="@color/colorSurface"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:drawableStart="@drawable/gallery_ic"/>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

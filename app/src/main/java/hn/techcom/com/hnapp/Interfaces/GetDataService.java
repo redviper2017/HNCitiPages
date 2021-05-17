@@ -64,4 +64,17 @@ public interface GetDataService {
             @Part("text") RequestBody text
     );
 
+    //Share Video Post
+    @Multipart
+    @POST("posts/create/")
+    Call<NewPostResponse> shareVideo(
+            @Part("user") RequestBody user,
+            @Part("city") RequestBody city,
+            @Part("country") RequestBody country,
+            @Part("posttype") RequestBody posttype,
+            @Part("category") RequestBody category,
+            @Part("text") RequestBody text,
+            @Part MultipartBody.Part file
+    );
+
 }
