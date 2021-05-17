@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingStart="5dp"
     android:paddingEnd="5dp"
-    android:background="@color/white">
-    <LinearLayout
+    android:background="@color/white"
+    tools:context=".Activities.PostVideoActivity">
+    <RelativeLayout
         android:id="@+id/layout_screentitle_sharevideo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -16,6 +17,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterButton
+            android:id="@+id/image_button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_back_ic"
+            android:background="@drawable/flag_transparent"
+            android:layout_alignParentEnd="true"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_avatar_sharevideo"
@@ -29,14 +38,17 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_screen_title_sharevideo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/playfair_display_bold"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/image_button_back"
+            android:layout_toEndOf="@id/user_avatar_sharevideo"
+            android:fontFamily="@font/sf_pro_rounded_regular"
             android:text="Share Video"
-            android:textColor="@color/colorTextTitle"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:textColor="@color/colorCenterLinearGradient"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textview_postedby_name"
         android:layout_width="match_parent"
@@ -160,5 +172,4 @@
                 android:drawableStart="@drawable/gallery_ic"/>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

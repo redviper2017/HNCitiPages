@@ -1,5 +1,6 @@
 package hn.techcom.com.hnapp.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Activities.PostVideoActivity;
 import hn.techcom.com.hnapp.R;
 
 public class SharePostBottomSheetFragment extends BottomSheetDialogFragment {
@@ -43,7 +45,7 @@ public class SharePostBottomSheetFragment extends BottomSheetDialogFragment {
                     dismiss();
                 }
                 if(item.getItemId() == R.id.navigation_share_video){
-                    Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new VideoPostFragment()).commit();
+                    startActivity(new Intent(getActivity(), PostVideoActivity.class));
                     dismiss();
                 }
 

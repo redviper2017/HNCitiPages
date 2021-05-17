@@ -151,11 +151,11 @@ public class ImagePostFragment extends Fragment implements View.OnClickListener,
     public void onClick(View v) {
         if (v.getId() == R.id.capture_image_button) {
 
-            Toast.makeText(getContext(), "opening gallery app!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "opening camera app!", Toast.LENGTH_LONG).show();
             sheriffPermission.requestPermissions();
 
         } else if (v.getId() == R.id.select_image_button) {
-            Toast.makeText(getContext(), "opening camera app!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "opening gallery app!", Toast.LENGTH_LONG).show();
             new BottomSheetImagePicker.Builder(getString(R.string.file_provider))
                     .multiSelect(1, 4)
                     .multiSelectTitles(
