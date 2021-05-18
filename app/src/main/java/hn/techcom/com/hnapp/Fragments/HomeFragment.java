@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
                         Log.d(TAG,"number of posts to show = "+postList.size());
 
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        postListAdapter = new PostListAdapter(recyclerView, postList);
+                        postListAdapter = new PostListAdapter(recyclerView, postList, getContext());
                         recyclerView.setAdapter(postListAdapter);
                     }
                 }

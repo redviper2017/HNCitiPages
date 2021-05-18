@@ -71,7 +71,7 @@
         android:layout_height="@dimen/_200sdp"
         android:scaleType="fitXY"
         android:src="@drawable/dummy_image_2"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
     <VideoView
         android:id="@+id/videoview_portrait_post"
         android:layout_width="match_parent"
@@ -79,6 +79,15 @@
         android:scaleType="fitXY"
         android:src="@drawable/dummy_image_2"
         android:visibility="gone"/>
+    <com.potyvideo.library.AndExoPlayerView
+        android:id="@+id/video_player_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:andexo_aspect_ratio="aspect_1_1"
+        app:andexo_full_screen="true"
+        app:andexo_play_when_ready="true"
+        app:andexo_show_controller="true"
+        app:andexo_resize_mode="Zoom" />
     <!-- Layout - text -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_post"
@@ -103,7 +112,7 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:fontFamily="@font/sf_pro_rounded_regular"
-        android:textSize="@dimen/_10ssp"
+        android:textSize="@dimen/_12ssp"
         android:layout_marginEnd="20dp"
         android:autoLink="all"
         android:ellipsize="end"

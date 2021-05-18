@@ -1,12 +1,15 @@
 package hn.techcom.com.hnapp.Adapters;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.VideoView;
 
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
+import com.potyvideo.library.AndExoPlayerView;
 import com.santalu.aspectratioimageview.AspectRatioImageView;
 import com.squareup.picasso.Picasso;
 
@@ -44,9 +48,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean isLoading;
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
+    private Context context;
 
-    public PostListAdapter(RecyclerView recyclerView, ArrayList<Result> allPosts){
+    public PostListAdapter(RecyclerView recyclerView, ArrayList<Result> allPosts, Context context){
         this.allPosts = allPosts;
+        this.context = context;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -318,6 +324,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public MaterialTextView name, location, text, likes, comments, seeMoreButton;
         public CircleImageView avatar;
         public VideoView landscapeVideoView, portraitVideoView;
+        private AndExoPlayerView videoPlayer;
 
         public VideoViewHolder(@NonNull View view) {
             super(view);
@@ -330,9 +337,53 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             avatar             = view.findViewById(R.id.avatar_post);
             landscapeVideoView = view.findViewById(R.id.videoview_landscape_post);
             portraitVideoView  = view.findViewById(R.id.videoview_portrait_post);
+            seeMoreButton      = view.findViewById(R.id.seemore_post);
+            videoPlayer        = view.findViewById(R.id.video_player_post);
         }
         void bind(Result post){
+            String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
 
+            name.setText(post.getUser().getFullName());
+            location.setText(address);
+            text.setText(post.getText());
+
+            //see more button toggle for large texts
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (text.getLayout() != null) {
+                        Log.d(TAG, "line count = " + text.getLayout().getLineCount());
+                        if (text.getLayout().getLineCount() > 9)
+                            seeMoreButton.setVisibility(View.VISIBLE);
+                        else
+                            seeMoreButton.setVisibility(View.GONE);
+                    }
+                }
+            },100);
+
+            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
+            Picasso
+                    .get()
+                    .load(profilePhotoUrl)
+                    .into(avatar);
+
+            String videoUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
+
+//            //Set MediaController  to enable play, pause, forward, etc options.
+//            MediaController mediaController = new MediaController(context);
+//
+//            //TODO: later toggle the imageview based on image aspect ratio
+//            landscapeVideoView.setVisibility(View.GONE);
+//            portraitVideoView.setVisibility(View.VISIBLE);
+//
+//            mediaController.setAnchorView(portraitVideoView);
+//            portraitVideoView.setMediaController(mediaController);
+//
+//            portraitVideoView.setVideoPath(videoUrl);
+//            portraitVideoView.requestFocus();
+
+            videoPlayer.setSource(videoUrl);
         }
     }
 
