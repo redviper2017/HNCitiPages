@@ -15,6 +15,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface GetDataService {
@@ -87,5 +88,9 @@ public interface GetDataService {
     //Get all latest global posts
     @GET("posts/get/{hnid}/all/anything/")
     Call<PostList> getLatestGlobalPosts(@Path("hnid") String hnid);
+
+    //Get global posts from a specified page
+    @GET() //i.e https://api.demo.com/Search?
+    Call<PostList> getGlobalPostsFromPage(@Url String url);
 
 }

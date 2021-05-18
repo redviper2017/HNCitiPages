@@ -71,17 +71,42 @@ public class HomeFragment extends Fragment {
 
         call.enqueue(new Callback<PostList>() {
             @Override
-            public void onResponse(Call<PostList> call, Response<PostList> response) {
+            public void onResponse(@NonNull Call<PostList> call, @NonNull Response<PostList> response) {
                 if(response.code() == 200){
                     PostList latestGlobalPostList = response.body();
                     if (latestGlobalPostList != null) {
                         Log.d(TAG,"next global post list url = "+latestGlobalPostList.getNext());
+
+                        getGlobalPostsFromNextPage(latestGlobalPostList.getNext());
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<PostList> call, Throwable t) {
+            public void onFailure(@NonNull Call<PostList> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    public void getGlobalPostsFromNextPage(String nextPageUrl){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getGlobalPostsFromPage(nextPageUrl);
+
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(@NonNull Call<PostList> call, @NonNull Response<PostList> response) {
+                if(response.code() == 200){
+                    PostList globalPostList = response.body();
+                    if (globalPostList != null) {
+                        Log.d(TAG,"next global post list url = "+globalPostList.getNext());
+                        Log.d(TAG,"previous global post list url = "+globalPostList.getPrevious());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PostList> call, @NonNull Throwable t) {
 
             }
         });
