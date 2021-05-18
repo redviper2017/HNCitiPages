@@ -32,6 +32,7 @@ import android.widget.VideoView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.potyvideo.library.AndExoPlayerView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -70,6 +71,7 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
     private ProgressBar progressBar;
     private String postCategory;
     private TextInputEditText videoCaption;
+    private AndExoPlayerView videoPlayer;
 
     //Constants
     private static final int REQUEST_VIDEO_CAPTURE = 1;
@@ -92,6 +94,7 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         videoview                  = findViewById(R.id.videoview);
         progressBar                = findViewById(R.id.share_video_progressbar);
         videoCaption               = findViewById(R.id.textInputEditText_video_caption);
+        videoPlayer                = findViewById(R.id.video_player);
 
         postCategory = "r";
 
@@ -111,10 +114,10 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         postCategorySpinner.setAdapter(adapter);
 
         //Set MediaController  to enable play, pause, forward, etc options.
-        MediaController mediaController = new MediaController(this);
-        mediaController.setAnchorView(videoview);
-
-        videoview.setMediaController(mediaController);
+//        MediaController mediaController = new MediaController(this);
+//        mediaController.setAnchorView(videoview);
+//
+//        videoview.setMediaController(mediaController);
 
         //OnClick Listeners
         backButton.setOnClickListener(this);
@@ -201,8 +204,9 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
             Log.d(TAG,"inside onActivityResult of PostVideoActivity = "+"YES");
-            videoview.setVideoURI(data.getData());
-            videoview.requestFocus();
+//            videoview.setVideoURI(data.getData());
+//            videoview.requestFocus();
+            videoPlayer.setSource(mVideoFileName);
 
             //Change visibility of function buttons
             changeButtonsUI("upload");
@@ -210,11 +214,13 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         }
         if (requestCode == REQUEST_VIDEO_PICK && resultCode == RESULT_OK) {
             Log.d(TAG,"multi video output = "+data.getData());
-            videoview.setVideoURI(data.getData());
-            videoview.requestFocus();
+//            videoview.setVideoURI(data.getData());
+//            videoview.requestFocus();
 
             String filePath = getRealPathFromURIPath(data.getData(), this);
             newVideoFile = new File(filePath);
+
+            videoPlayer.setSource(filePath);
 
             //Change visibility of function buttons
             changeButtonsUI("upload");
