@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical"
     android:layout_marginTop="5dp"
@@ -65,22 +65,19 @@
             android:layout_alignParentEnd="true"/>
     </RelativeLayout>
     <!-- Layout - landscape image -->
-    <com.santalu.aspectratioimageview.AspectRatioImageView
-        android:id="@+id/imageview_landscape_post"
+    <VideoView
+        android:id="@+id/videoview_landscape_post"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/dummy_image"
-        app:ari_ratio="0.6"
-        android:visibility="visible"/>
-    <!-- Layout - portrait image -->
-    <com.santalu.aspectratioimageview.AspectRatioImageView
-        android:id="@+id/imageview_portrait_post"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
+        android:layout_height="@dimen/_200sdp"
+        android:scaleType="fitXY"
         android:src="@drawable/dummy_image_2"
-        app:ari_ratio="1.1"
+        android:visibility="visible"/>
+    <VideoView
+        android:id="@+id/videoview_portrait_post"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_350sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/dummy_image_2"
         android:visibility="gone"/>
     <!-- Layout - text -->
     <com.google.android.material.textview.MaterialTextView
