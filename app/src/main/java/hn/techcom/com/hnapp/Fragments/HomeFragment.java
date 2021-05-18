@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
@@ -16,10 +18,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
-import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
+import hn.techcom.com.hnapp.Models.Result;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Utils.Utils;
@@ -31,9 +34,12 @@ public class HomeFragment extends Fragment {
     //Constants
     private static final String TAG = "HomeFragment";
 
+    private RecyclerView recyclerView;
+
     private Utils myUtils;
     private Profile userProfile;
     public  ArrayList<PostList> globalPostList;
+    private PostListAdapter postListAdapter;
 
     public HomeFragment() {}
 
@@ -45,6 +51,7 @@ public class HomeFragment extends Fragment {
         //Hooks
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_supportsection);
         CircleImageView userAvatar = view.findViewById(R.id.user_avatar_supportedsection);
+        recyclerView = view.findViewById(R.id.recyclerview_posts_supportsection);
 
         screenTitle.setText(R.string.home);
         globalPostList = new ArrayList<>();
@@ -77,6 +84,15 @@ public class HomeFragment extends Fragment {
                         Log.d(TAG,"next global post list url = "+latestGlobalPostList.getNext());
 
                         getGlobalPostsFromNextPage(latestGlobalPostList.getNext());
+
+                        ArrayList<Result> postList = new ArrayList<>();
+                        postList.addAll(latestGlobalPostList.getResults());
+
+                        Log.d(TAG,"number of posts to show = "+postList.size());
+
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        postListAdapter = new PostListAdapter(recyclerView, postList);
+                        recyclerView.setAdapter(postListAdapter);
                     }
                 }
             }

@@ -8,7 +8,7 @@ import java.util.List;
 public class Result {
     @SerializedName("user")
     @Expose
-    private User user;
+    private Profile user;
     @SerializedName("text")
     @Expose
     private String text;
@@ -40,11 +40,11 @@ public class Result {
     @Expose
     private List<File> files = null;
 
-    public User getUser() {
+    public Profile getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Profile user) {
         this.user = user;
     }
 
