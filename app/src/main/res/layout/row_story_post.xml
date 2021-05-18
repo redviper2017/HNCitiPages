@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
+    <!-- Layout - user info & options menu button -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/avatar_post"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:civ_border_width="0dp"
+            android:src="@drawable/profile_ic"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:focusable="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toEndOf="@id/avatar_post"
+            android:layout_toStartOf="@id/options_icon_post"
+            android:layout_centerVertical="true">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/name_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="John Doe"
+                android:textColor="@color/black"
+                android:fontFamily="@font/sf_pro_rounded_regular"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/location_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dhaka, Bangladesh"
+                android:fontFamily="@font/sf_pro_rounded_regular"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+        <androidx.constraintlayout.utils.widget.ImageFilterButton
+            android:id="@+id/options_icon_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/options_ic"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+    <!-- Layout - text -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lorem_ipsum_text"
+        android:textColor="@color/black"
+        android:fontFamily="@font/sf_pro_rounded_regular"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+        android:autoLink="all"/>
+
+    <!-- Layout - like,favorite,comment buttons; like count & comment count -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentStart="true">
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/outline_thumb_up_24_ic"
+                android:layout_marginStart="5dp"
+                android:background="@color/white"/>
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/outline_comment_24_ic"
+                android:layout_marginStart="15dp"
+                android:background="@color/white"/>
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/outline_favorite_24_ic"
+                android:layout_marginStart="15dp"
+                android:background="@color/white"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_like_count_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dummy_like_count_text"
+                android:fontFamily="@font/sf_pro_rounded_regular"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                android:clickable="true"
+                android:focusable="true" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_comment_count_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dummy_comment_count_text"
+                android:fontFamily="@font/sf_pro_rounded_regular"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                android:layout_marginStart="15dp"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

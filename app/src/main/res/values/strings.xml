@@ -88,4 +88,7 @@
     <string name="clear_post">Clear Post</string>
     <string name="share_pictures">Share Picture</string>
     <string name="select_a_category_type_for_your_picture">Select a category type for your picture</string>
+    <string name="lorem_ipsum_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tristique, odio nec laoreet rutrum, mauris dolor mattis neque, at placerat felis neque et dui. Nulla facilisi. In sodales eget justo in maximus. Duis maximus ante et tristique congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam a efficitur ligula, a ullamcorper massa. Praesent viverra dui orci, quis blandit lorem molestie sed. Nam elit odio, tristique vel pulvinar vel, facilisis sed ligula. Sed auctor enim turpis, et auctor enim varius pharetra. Morbi lacinia tortor sed ante sollicitudin, eu commodo tortor pellentesque. Proin malesuada nec turpis vel bibendum. Nulla venenatis lectus ac aliquam fermentum. Maecenas nec erat luctus, rutrum enim a, malesuada libero. Aenean finibus pellentesque fringilla. Quisque efficitur sollicitudin semper. Morbi ex erat, pretium vitae nisi eu, ullamcorper ultricies purus.</string>
+    <string name="dummy_like_count_text">641 likes</string>
+    <string name="dummy_comment_count_text">112 comments</string>
 </resources>

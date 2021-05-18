@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, SignInActivity.class));
         }
         else {
-            Fragment fragment = new HomeFragment(globalPosts);
+            Fragment fragment = new HomeFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
         }
     }
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentSelected = new SupportedSectionFragment(userSupportedProfiles,userSupportedProfilePosts);
                 break;
             case R.id.navigation_home:
-                fragmentSelected = new HomeFragment(globalPosts);
+                fragmentSelected = new HomeFragment();
                 break;
             case android.R.id.home:
                 BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();

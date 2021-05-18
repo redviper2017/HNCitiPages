@@ -33,11 +33,9 @@ public class HomeFragment extends Fragment {
 
     private Utils myUtils;
     private Profile userProfile;
-    public  ArrayList<Post> globalPosts = new ArrayList<>();
+    public  ArrayList<PostList> globalPostList;
 
-    public HomeFragment(ArrayList<Post> globalPosts) {
-        this.globalPosts = globalPosts;
-    }
+    public HomeFragment() {}
 
     @Nullable
     @Override
@@ -48,8 +46,9 @@ public class HomeFragment extends Fragment {
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_supportsection);
         CircleImageView userAvatar = view.findViewById(R.id.user_avatar_supportedsection);
 
-
         screenTitle.setText(R.string.home);
+        globalPostList = new ArrayList<>();
+
         //Setting up user avatar on top bar
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(getContext());
