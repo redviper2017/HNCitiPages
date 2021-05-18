@@ -1,30 +1,38 @@
 package hn.techcom.com.hnapp.Fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textview.MaterialTextView;
-import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-import hn.techcom.com.hnapp.Models.NewUser;
+import de.hdodenhof.circleimageview.CircleImageView;
+import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Models.Post;
+import hn.techcom.com.hnapp.Models.PostList;
+import hn.techcom.com.hnapp.Models.Profile;
+import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
-    private MaterialTextView screenTitle;
+    //Constants
+    private static final String TAG = "HomeFragment";
 
+    private Utils myUtils;
+    private Profile userProfile;
     public  ArrayList<Post> globalPosts = new ArrayList<>();
 
     public HomeFragment(ArrayList<Post> globalPosts) {
@@ -36,22 +44,46 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_supported_profile_section, container, false);
 
-        screenTitle = view.findViewById(R.id.text_screen_title_supportsection);
+        //Hooks
+        MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_supportsection);
+        CircleImageView userAvatar = view.findViewById(R.id.user_avatar_supportedsection);
 
-        Toast.makeText(getActivity(), "Welcome "+getNewUserFromSharedPreference().getFullName() + " !",Toast.LENGTH_LONG).show();
 
         screenTitle.setText(R.string.home);
+        //Setting up user avatar on top bar
+        myUtils = new Utils();
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+        String profilePhotoUrl = "http://167.99.13.238:8000" + userProfile.getProfileImg();
+        Picasso
+                .get()
+                .load(profilePhotoUrl)
+                .placeholder(R.drawable.image_placeholder)
+                .into(userAvatar);
 
+        getLatestGlobalPostList();
         // Inflate the layout for this fragment
         return view;
     }
 
-    private NewUser getNewUserFromSharedPreference() {
-        SharedPreferences pref = Objects.requireNonNull(getContext()).getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = pref.getString("NewUser","");
-        NewUser user = gson.fromJson(json, NewUser.class);
+    public void getLatestGlobalPostList(){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getLatestGlobalPosts(userProfile.getHnid());
 
-        return user;
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(Call<PostList> call, Response<PostList> response) {
+                if(response.code() == 200){
+                    PostList latestGlobalPostList = response.body();
+                    if (latestGlobalPostList != null) {
+                        Log.d(TAG,"next global post list url = "+latestGlobalPostList.getNext());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostList> call, Throwable t) {
+
+            }
+        });
     }
 }

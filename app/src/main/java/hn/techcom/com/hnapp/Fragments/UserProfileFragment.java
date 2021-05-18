@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import hn.techcom.com.hnapp.Models.NewUser;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.R;
 

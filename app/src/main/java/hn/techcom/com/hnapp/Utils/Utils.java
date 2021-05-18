@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 
 import java.util.Objects;
 
-import hn.techcom.com.hnapp.Models.NewUser;
 import hn.techcom.com.hnapp.Models.Profile;
 
 public class Utils {

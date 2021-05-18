@@ -34,8 +34,9 @@
             android:layout_gravity="center"
             android:fontFamily="@font/sf_pro_rounded_regular"
             android:text="Supported CitiPagers"
-            android:textSize="@dimen/_16ssp"
-            android:textColor="@color/colorTextTitle"/>
+            android:textColor="@color/colorCenterLinearGradient"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <EditText
@@ -52,6 +53,8 @@
         android:drawableStart="@drawable/search_ic"
         android:drawablePadding="5dp"
         android:hint="Search..."
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:background="@drawable/rounded_corner_rectangle"/>
 
 <!--    <androidx.recyclerview.widget.RecyclerView-->

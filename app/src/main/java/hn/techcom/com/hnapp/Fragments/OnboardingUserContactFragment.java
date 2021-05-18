@@ -1,7 +1,5 @@
 package hn.techcom.com.hnapp.Fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,15 +11,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 
 import java.util.Objects;
-import java.util.Random;
 
-import hn.techcom.com.hnapp.Models.NewUser;
 import hn.techcom.com.hnapp.Models.Profile;
-import hn.techcom.com.hnapp.Models.User;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Utils.Utils;
 

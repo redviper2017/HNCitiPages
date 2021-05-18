@@ -3,15 +3,13 @@ package hn.techcom.com.hnapp.Interfaces;
 import java.util.List;
 
 import hn.techcom.com.hnapp.Models.NewPostResponse;
-import hn.techcom.com.hnapp.Models.Post;
+import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
-import hn.techcom.com.hnapp.Models.QUser;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Models.ValidationResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -24,10 +22,6 @@ public interface GetDataService {
     //Fetch Supporting Profiles List
     @GET("users/support/list/{user_id}/")
     Call<List<SupporterProfile>> getSupportedProfiles (@Path("user_id") String user_id);
-
-    //Fetch All Posts By Single User With Current User's (QUser = Query User) perspective
-    @POST("posts/{posts_by_username}/")
-    Call<List<Post>> getAllPostsBy(@Path("posts_by_username") String posts_by_username, @Body QUser queryUser);
 
 
     // APIs for New Server
@@ -89,5 +83,9 @@ public interface GetDataService {
             @Part("text") RequestBody text,
             @Part MultipartBody.Part file
     );
+
+    //Get all latest global posts
+    @GET("posts/get/{hnid}/all/anything/")
+    Call<PostList> getLatestGlobalPosts(@Path("hnid") String hnid);
 
 }
