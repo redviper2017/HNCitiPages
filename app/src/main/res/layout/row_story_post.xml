@@ -87,7 +87,7 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:fontFamily="@font/sf_pro_rounded_regular"
-        android:textSize="@dimen/_10ssp"
+        android:textSize="@dimen/_12ssp"
         android:layout_marginEnd="20dp"
         android:autoLink="all"
         android:ellipsize="end"

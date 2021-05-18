@@ -2,6 +2,8 @@ package hn.techcom.com.hnapp.Adapters;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,64 +93,79 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof StoryViewHolder){
-            Result post = allPosts.get(position);
-
-            StoryViewHolder storyViewHolder = (StoryViewHolder) holder;
-
-            String location = post.getUser().getCity() + ", " + post.getUser().getCountry();
-
-            storyViewHolder.name.setText(post.getUser().getFullName());
-            storyViewHolder.location.setText(location);
-            storyViewHolder.text.setText(post.getText());
-
-            //see more button toggle for large texts
-//            if( storyViewHolder.text.getLayout().getLineCount() > 10)
-//                storyViewHolder.seeMoreButton.setVisibility(View.VISIBLE);
-//            else
-//                storyViewHolder.seeMoreButton.setVisibility(View.GONE);
-
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
-            Picasso
-                    .get()
-                    .load(profilePhotoUrl)
-                    .into(storyViewHolder.avatar);
+        Result post = allPosts.get(position);
+        switch (holder.getItemViewType()) {
+            case VIEW_TYPE_STORY:
+                ((StoryViewHolder) holder).bind(post);
+                break;
+            case VIEW_TYPE_IMAGE:
+                ((ImageViewHolder) holder).bind(post);
+                break;
+            case VIEW_TYPE_VIDEO:
+                ((VideoViewHolder) holder).bind(post);
+                break;
+            case VIEW_TYPE_LOADING:
+                ((LoadingViewHolder) holder).bind();
+                break;
         }
-        if(holder instanceof ImageViewHolder){
-            Result post = allPosts.get(position);
-
-            ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
-
-            String location = post.getUser().getCity() + ", " + post.getUser().getCountry();
-
-            imageViewHolder.name.setText(post.getUser().getFullName());
-            imageViewHolder.location.setText(location);
-            imageViewHolder.text.setText(post.getText());
-
-            //see more button toggle for large texts
-//            if( imageViewHolder.text.getLayout().getLineCount() > 10)
-//                imageViewHolder.seeMoreButton.setVisibility(View.VISIBLE);
-//            else
-//                imageViewHolder.seeMoreButton.setVisibility(View.GONE);
-
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
-            Picasso
-                    .get()
-                    .load(profilePhotoUrl)
-                    .into(imageViewHolder.avatar);
-
-            String imageUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
-
-            //TODO: later toggle the imageview based on image aspect ratio
-            imageViewHolder.landscapeImageView.setVisibility(View.GONE);
-            imageViewHolder.portraitImageView.setVisibility(View.VISIBLE);
-            Picasso
-                    .get()
-                    .load(imageUrl)
-                    .into(imageViewHolder.portraitImageView);
-
-            //Placing image into respective imageview based on aspect ratio
-        }
+//        if(holder instanceof StoryViewHolder){
+//            Result post = allPosts.get(position);
+//
+//            StoryViewHolder storyViewHolder = (StoryViewHolder) holder;
+//
+//            String location = post.getUser().getCity() + ", " + post.getUser().getCountry();
+//
+//            storyViewHolder.name.setText(post.getUser().getFullName());
+//            storyViewHolder.location.setText(location);
+//            storyViewHolder.text.setText(post.getText());
+//
+//            //see more button toggle for large texts
+////            if( storyViewHolder.text.getLayout().getLineCount() > 10)
+////                storyViewHolder.seeMoreButton.setVisibility(View.VISIBLE);
+////            else
+////                storyViewHolder.seeMoreButton.setVisibility(View.GONE);
+//
+//            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
+//            Picasso
+//                    .get()
+//                    .load(profilePhotoUrl)
+//                    .into(storyViewHolder.avatar);
+//        }
+//        if(holder instanceof ImageViewHolder){
+//            Result post = allPosts.get(position);
+//
+//            ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
+//
+//            String location = post.getUser().getCity() + ", " + post.getUser().getCountry();
+//
+//            imageViewHolder.name.setText(post.getUser().getFullName());
+//            imageViewHolder.location.setText(location);
+//            imageViewHolder.text.setText(post.getText());
+//
+//            //see more button toggle for large texts
+////            if( imageViewHolder.text.getLayout().getLineCount() > 10)
+////                imageViewHolder.seeMoreButton.setVisibility(View.VISIBLE);
+////            else
+////                imageViewHolder.seeMoreButton.setVisibility(View.GONE);
+//
+//            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
+//            Picasso
+//                    .get()
+//                    .load(profilePhotoUrl)
+//                    .into(imageViewHolder.avatar);
+//
+//            String imageUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
+//
+//            //TODO: later toggle the imageview based on image aspect ratio
+//            imageViewHolder.landscapeImageView.setVisibility(View.GONE);
+//            imageViewHolder.portraitImageView.setVisibility(View.VISIBLE);
+//            Picasso
+//                    .get()
+//                    .load(imageUrl)
+//                    .into(imageViewHolder.portraitImageView);
+//
+//            //Placing image into respective imageview based on aspect ratio
+//        }
     }
 
     @Override
@@ -195,12 +212,41 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public StoryViewHolder(@NonNull View view) {
             super(view);
 
-            name     = view.findViewById(R.id.name_post);
-            location = view.findViewById(R.id.location_post);
-            text     = view.findViewById(R.id.text_post);
-            likes    = view.findViewById(R.id.text_like_count_post);
-            comments = view.findViewById(R.id.text_comment_count_post);
-            avatar   = view.findViewById(R.id.avatar_post);
+            name          = view.findViewById(R.id.name_post);
+            location      = view.findViewById(R.id.location_post);
+            text          = view.findViewById(R.id.text_post);
+            likes         = view.findViewById(R.id.text_like_count_post);
+            comments      = view.findViewById(R.id.text_comment_count_post);
+            avatar        = view.findViewById(R.id.avatar_post);
+            seeMoreButton = view.findViewById(R.id.seemore_post);
+        }
+        void bind(Result post){
+            String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
+
+            name.setText(post.getUser().getFullName());
+            location.setText(address);
+            text.setText(post.getText());
+
+            //see more button toggle for large texts
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (text.getLayout() != null) {
+                        Log.d(TAG, "line count = " + text.getLayout().getLineCount());
+                        if (text.getLayout().getLineCount() > 9)
+                            seeMoreButton.setVisibility(View.VISIBLE);
+                        else
+                            seeMoreButton.setVisibility(View.GONE);
+                    }
+                }
+            },100);
+
+            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
+            Picasso
+                    .get()
+                    .load(profilePhotoUrl)
+                    .into(avatar);
         }
     }
 
@@ -222,6 +268,47 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             avatar             = view.findViewById(R.id.avatar_post);
             landscapeImageView = view.findViewById(R.id.imageview_landscape_post);
             portraitImageView  = view.findViewById(R.id.imageview_portrait_post);
+            seeMoreButton      = view.findViewById(R.id.seemore_post);
+        }
+        void bind(Result post){
+            String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
+
+            name.setText(post.getUser().getFullName());
+            location.setText(address);
+            text.setText(post.getText());
+
+            //see more button toggle for large texts
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (text.getLayout() != null) {
+                        Log.d(TAG, "line count = " + text.getLayout().getLineCount());
+                        if (text.getLayout().getLineCount() > 9)
+                            seeMoreButton.setVisibility(View.VISIBLE);
+                        else
+                            seeMoreButton.setVisibility(View.GONE);
+                    }
+                }
+            },100);
+
+            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
+            Picasso
+                    .get()
+                    .load(profilePhotoUrl)
+                    .into(avatar);
+
+            String imageUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
+
+            //TODO: later toggle the imageview based on image aspect ratio
+            landscapeImageView.setVisibility(View.GONE);
+            portraitImageView.setVisibility(View.VISIBLE);
+            Picasso
+                    .get()
+                    .load(imageUrl)
+                    .into(portraitImageView);
+
+            //Placing image into respective imageview based on aspect ratio
         }
     }
 
@@ -244,6 +331,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             landscapeVideoView = view.findViewById(R.id.videoview_landscape_post);
             portraitVideoView  = view.findViewById(R.id.videoview_portrait_post);
         }
+        void bind(Result post){
+
+        }
     }
 
     //Loading view holder class
@@ -255,6 +345,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(view);
 
             progressBar = view.findViewById(R.id.progressbar);
+        }
+        void bind(){
+
         }
     }
 }
