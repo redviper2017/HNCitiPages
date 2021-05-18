@@ -91,7 +91,24 @@
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
-        android:autoLink="all"/>
+        android:autoLink="all"
+        android:maxLines="10"
+        android:ellipsize="end"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/seemore_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/see_more"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:fontFamily="@font/sf_pro_rounded_regular"
+        android:textSize="@dimen/_10ssp"
+        android:layout_marginEnd="20dp"
+        android:autoLink="all"
+        android:ellipsize="end"
+        android:layout_gravity="end"
+        android:visibility="gone"/>
     <!-- Layout - like,favorite,comment buttons; like count & comment count -->
     <RelativeLayout
         android:layout_width="match_parent"
