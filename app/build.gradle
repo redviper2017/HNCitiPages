@@ -57,6 +57,7 @@ dependencies {
     implementation 'org.imaginativeworld.whynotimagecarousel:whynotimagecarousel:1.2.1'
 
     implementation 'com.github.mohan-dev1248:PosterSlider:1.0.2'
+    implementation 'com.github.santalu:aspect-ratio-imageview:1.0.9'
     
     //room
     implementation "android.arch.persistence.room:runtime:2.2.6"

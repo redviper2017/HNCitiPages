@@ -285,7 +285,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 followImageButton.setImageResource(R.drawable.support_icon_selected);
 
             if(post.getLiked())
-                likeImageButton.setImageResource(R.drawable.like_ic_selected);
+                likeImageButton.setImageResource(R.drawable.filled_thumb_up_24_ic);
 
             if(post.getFavorite())
                 favoriteImageButton.setImageResource(R.drawable.favorite_ic_selected);

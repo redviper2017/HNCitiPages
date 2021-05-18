@@ -127,7 +127,8 @@
             android:layout_height="wrap_content"
             android:gravity="left|top"
             android:inputType="textMultiLine"
-            android:lines="5"/>
+            android:lines="5"
+            android:maxLines="5"/>
     </com.google.android.material.textfield.TextInputLayout>
     <ProgressBar
         android:id="@+id/share_image_progressbar"
