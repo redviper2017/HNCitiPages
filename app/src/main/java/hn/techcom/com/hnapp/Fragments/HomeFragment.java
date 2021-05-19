@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
 
         //Hooks
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_supportsection);
-        CircleImageView userAvatar = view.findViewById(R.id.user_avatar_supportedsection);
+
         recyclerView = view.findViewById(R.id.recyclerview_posts_supportsection);
 
         screenTitle.setText(R.string.home);
@@ -59,12 +59,6 @@ public class HomeFragment extends Fragment {
         //Setting up user avatar on top bar
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(getContext());
-        String profilePhotoUrl = "http://167.99.13.238:8000" + userProfile.getProfileImg();
-        Picasso
-                .get()
-                .load(profilePhotoUrl)
-                .placeholder(R.drawable.image_placeholder)
-                .into(userAvatar);
 
         getLatestGlobalPostList();
         // Inflate the layout for this fragment

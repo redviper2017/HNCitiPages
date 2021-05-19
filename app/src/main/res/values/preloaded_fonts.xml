@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/dancing_script</item>
+        <item>@font/dancing_script_bold</item>
+        <item>@font/lobster</item>
+        <item>@font/lora</item>
+        <item>@font/lora_bold</item>
+        <item>@font/lora_bold_italic</item>
+        <item>@font/pacifico</item>
+        <item>@font/pattaya</item>
         <item>@font/playfair_display</item>
         <item>@font/playfair_display_bold</item>
         <item>@font/roboto</item>

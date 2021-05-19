@@ -54,6 +54,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.allPosts = allPosts;
         this.context = context;
 
+        Log.d(TAG,"post list size in adapter = "+allPosts.size());
+
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -307,14 +309,24 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             String imageUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
 
             //TODO: later toggle the imageview based on image aspect ratio
-            landscapeImageView.setVisibility(View.GONE);
-            portraitImageView.setVisibility(View.VISIBLE);
-            Picasso
-                    .get()
-                    .load(imageUrl)
-                    .into(portraitImageView);
+
 
             //Placing image into respective imageview based on aspect ratio
+            if (post.getFiles().get(0).getAspect().equals("portrait")){
+                landscapeImageView.setVisibility(View.GONE);
+                portraitImageView.setVisibility(View.VISIBLE);
+                Picasso
+                        .get()
+                        .load(imageUrl)
+                        .into(portraitImageView);
+            }else{
+                landscapeImageView.setVisibility(View.VISIBLE);
+                portraitImageView.setVisibility(View.GONE);
+                Picasso
+                        .get()
+                        .load(imageUrl)
+                        .into(landscapeImageView);
+            }
         }
     }
 

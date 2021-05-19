@@ -15,26 +15,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/colorSurface">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_avatar_supportedsection"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:civ_border_width="0dp"
-            android:src="@drawable/profile_ic"
-            android:padding="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"/>
 
-        <com.google.android.material.textview.MaterialTextView
+        <include
             android:id="@+id/text_screen_title_supportsection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/sf_pro_rounded_regular"
-            android:text="Supported CitiPagers"
-            android:textColor="@color/colorCenterLinearGradient"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"/>
+            layout="@layout/screen_title_view"/>
     </LinearLayout>
 
     <EditText
