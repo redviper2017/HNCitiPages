@@ -82,6 +82,7 @@ public interface GetDataService {
             @Part("posttype") RequestBody posttype,
             @Part("category") RequestBody category,
             @Part("text") RequestBody text,
+            @Part("aspect") RequestBody aspect,
             @Part MultipartBody.Part file
     );
 

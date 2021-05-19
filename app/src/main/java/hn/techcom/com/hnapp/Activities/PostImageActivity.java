@@ -357,6 +357,7 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
         RequestBody posttype = RequestBody.create(MediaType.parse("text/plain"),"I");
         RequestBody category = RequestBody.create(MediaType.parse("text/plain"),postCategory);
         RequestBody text = RequestBody.create(MediaType.parse("text/plain"), Objects.requireNonNull(imageCaption.getText()).toString());
+        RequestBody aspect = RequestBody.create(MediaType.parse("text/plain"),newImageAspectRatio);
 
         MultipartBody.Part filePart = MultipartBody.Part.createFormData(
                 "file",
@@ -365,7 +366,7 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
         );
 
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<NewPostResponse> call = service.shareImage(user,city,country,posttype,category,text,filePart);
+        Call<NewPostResponse> call = service.shareImage(user,city,country,posttype,category,text,aspect,filePart);
 
         call.enqueue(new Callback<NewPostResponse>() {
             @Override
