@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -79,7 +80,7 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
     private Profile userProfile;
     private TextInputEditText imageCaption;
     private File newImageFile;
-    private String newImageFileName;
+    private String newImageFileName, newImageAspectRatio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,6 +204,11 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             imageview.setImageURI(Uri.fromFile(new File(newImageFileName)));
 
+            String imageAspect = getImageDimension(newImageFileName);
+            Log.d(TAG,"aspect of image = "+imageAspect);
+
+            newImageAspectRatio = imageAspect;
+
             //Change visibility of function buttons
             changeButtonsUI("upload");
 
@@ -213,6 +219,11 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
 
             String filePath = getRealPathFromURIPath(data.getData(), this);
             newImageFile = new File(filePath);
+
+            String imageAspect = getImageDimension(filePath);
+            Log.d(TAG,"aspect of image = "+imageAspect);
+
+            newImageAspectRatio = imageAspect;
 
             //Change visibility of function buttons
             changeButtonsUI("upload");
@@ -337,6 +348,7 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void shareNewImage(){
+        Log.d(TAG, "posted image aspect ratio = "+newImageAspectRatio);
         progressBar.setVisibility(View.VISIBLE);
 
         RequestBody user = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
@@ -382,5 +394,26 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
                 Toast.makeText(PostImageActivity.this,"Unable to share image! Try again later..",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private String getImageDimension(String imagePath){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+
+        //Returns null, sizes are in the options variable
+        BitmapFactory.decodeFile(imagePath, options);
+        int width = options.outWidth;
+
+        int height = options.outHeight;
+
+        Log.d(TAG,"width of this image = "+width);
+        Log.d(TAG,"height of this image = "+height);
+        //If you want, the MIME type will also be decoded (if possible)
+        String type = options.outMimeType;
+
+        if(width>height)
+            return "landscape";
+        else
+            return "portrait";
     }
 }
