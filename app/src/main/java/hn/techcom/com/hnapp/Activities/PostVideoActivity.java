@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -77,6 +79,8 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
     private static final int REQUEST_VIDEO_CAPTURE = 1;
     private static final int REQUEST_VIDEO_PICK = 2;
     private static final int PERMISSION_REQUEST_CODE = 200;
+
+    private String newVideoAspectRatio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,9 +212,11 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
 //            videoview.requestFocus();
             videoPlayer.setSource(mVideoFileName);
 
+            newVideoAspectRatio = getVideoDimension(mVideoFileName);
+            Log.d(TAG, "selected video aspect ratio = "+newVideoAspectRatio);
+
             //Change visibility of function buttons
             changeButtonsUI("upload");
-
         }
         if (requestCode == REQUEST_VIDEO_PICK && resultCode == RESULT_OK) {
             Log.d(TAG,"multi video output = "+data.getData());
@@ -221,6 +227,9 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
             newVideoFile = new File(filePath);
 
             videoPlayer.setSource(filePath);
+
+            newVideoAspectRatio = getVideoDimension(filePath);
+            Log.d(TAG, "selected video aspect ratio = "+newVideoAspectRatio);
 
             //Change visibility of function buttons
             changeButtonsUI("upload");
@@ -330,6 +339,7 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void shareNewVideo(){
+        Log.d(TAG, "posted video aspect ratio = "+newVideoAspectRatio);
         progressBar.setVisibility(View.VISIBLE);
 
         RequestBody user = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
@@ -373,5 +383,19 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
                 Toast.makeText(PostVideoActivity.this,"Unable to share video! Try again later..",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private String getVideoDimension(String videoPath){
+        MediaMetadataRetriever mRetriever = new MediaMetadataRetriever();
+        mRetriever.setDataSource(videoPath);
+        Bitmap frame = mRetriever.getFrameAtTime();
+
+        int width = frame.getWidth();
+        int height = frame.getHeight();
+
+        if(width>height)
+            return "landscape";
+        else
+            return "portrait";
     }
 }
