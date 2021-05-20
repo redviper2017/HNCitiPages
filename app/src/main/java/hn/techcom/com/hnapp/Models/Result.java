@@ -8,43 +8,46 @@ import java.util.List;
 public class Result {
     @SerializedName("user")
     @Expose
-    private Profile user;
+    private User user;
     @SerializedName("text")
     @Expose
     private String text;
     @SerializedName("city")
     @Expose
-    private String city;
+    private Object city;
     @SerializedName("country")
     @Expose
-    private String country;
+    private Object country;
     @SerializedName("created_on")
     @Expose
     private String createdOn;
     @SerializedName("multiple_media")
     @Expose
     private Boolean multipleMedia;
+    @SerializedName("posttype")
+    @Expose
+    private String posttype;
+    @SerializedName("category")
+    @Expose
+    private String category;
     @SerializedName("isLiked")
     @Expose
     private Boolean isLiked;
     @SerializedName("isSupported")
     @Expose
     private Boolean isSupported;
-    @SerializedName("category")
-    @Expose
-    private String category;
-    @SerializedName("posttype")
-    @Expose
-    private String posttype;
     @SerializedName("files")
     @Expose
     private List<File> files = null;
+    @SerializedName("comment_count")
+    @Expose
+    private Integer commentCount;
 
-    public Profile getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Profile user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -56,19 +59,19 @@ public class Result {
         this.text = text;
     }
 
-    public String getCity() {
+    public Object getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(Object city) {
         this.city = city;
     }
 
-    public String getCountry() {
+    public Object getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Object country) {
         this.country = country;
     }
 
@@ -88,6 +91,22 @@ public class Result {
         this.multipleMedia = multipleMedia;
     }
 
+    public String getPosttype() {
+        return posttype;
+    }
+
+    public void setPosttype(String posttype) {
+        this.posttype = posttype;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public Boolean getIsLiked() {
         return isLiked;
     }
@@ -104,27 +123,19 @@ public class Result {
         this.isSupported = isSupported;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getPosttype() {
-        return posttype;
-    }
-
-    public void setPosttype(String posttype) {
-        this.posttype = posttype;
-    }
-
     public List<File> getFiles() {
         return files;
     }
 
     public void setFiles(List<File> files) {
         this.files = files;
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
     }
 }

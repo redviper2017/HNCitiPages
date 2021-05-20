@@ -15,6 +15,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Activities.PostAudioActivity;
 import hn.techcom.com.hnapp.Activities.PostImageActivity;
 import hn.techcom.com.hnapp.Activities.PostStoryActivity;
 import hn.techcom.com.hnapp.Activities.PostVideoActivity;
@@ -48,6 +49,10 @@ public class SharePostBottomSheetFragment extends BottomSheetDialogFragment {
                 }
                 if(item.getItemId() == R.id.navigation_share_video){
                     startActivity(new Intent(getActivity(), PostVideoActivity.class));
+                    dismiss();
+                }
+                if(item.getItemId() == R.id.navigation_share_audio){
+                    startActivity(new Intent(getActivity(), PostAudioActivity.class));
                     dismiss();
                 }
 

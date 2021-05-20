@@ -24,7 +24,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".Activities.PostImageActivity"></activity>
+        <activity android:name=".Activities.PostAudioActivity"></activity>
+        <activity android:name=".Activities.PostImageActivity" />
         <activity android:name=".Activities.PostStoryActivity" />
         <activity android:name=".Activities.PostVideoActivity" />
         <activity android:name=".Activities.TermsActivity" />

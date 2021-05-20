@@ -249,12 +249,6 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                 }
             },100);
-
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
-            Picasso
-                    .get()
-                    .load(profilePhotoUrl)
-                    .into(avatar);
         }
     }
 
@@ -300,16 +294,16 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             },100);
 
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
-            Picasso
-                    .get()
-                    .load(profilePhotoUrl)
-                    .into(avatar);
-
             String imageUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
 
-            //TODO: later toggle the imageview based on image aspect ratio
-
+            //Set comment count on post
+            if(post.getCommentCount() >1) {
+                String commentText = post.getCommentCount() + " comments";
+                comments.setText(commentText);
+            }else{
+                String commentText = post.getCommentCount() + " comment";
+                comments.setText(commentText);
+            }
 
             //Placing image into respective imageview based on aspect ratio
             if (post.getFiles().get(0).getAspect().equals("portrait")){
@@ -374,11 +368,14 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             },100);
 
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
-            Picasso
-                    .get()
-                    .load(profilePhotoUrl)
-                    .into(avatar);
+            //Set comment count on post
+            if(post.getCommentCount() >1) {
+                String commentText = post.getCommentCount() + " comments";
+                comments.setText(commentText);
+            }else{
+                String commentText = post.getCommentCount() + " comment";
+                comments.setText(commentText);
+            }
 
             String videoUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
 
