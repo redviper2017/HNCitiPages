@@ -34,6 +34,7 @@ import android.widget.VideoView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
 import com.squareup.picasso.Picasso;
 
@@ -88,19 +89,21 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_post_video);
 
         //Hooks
-        ImageButton backButton     = findViewById(R.id.image_button_back);
-        CircleImageView userAvatar = findViewById(R.id.user_avatar_sharevideo);
-        captureVideoButton         = findViewById(R.id.capture_video_button);
-        selectVideoButton          = findViewById(R.id.select_video_button);
-        shareVideoButton           = findViewById(R.id.share_video_button);
-        clearVideoButton           = findViewById(R.id.clear_video_button);
-        postCategorySpinner        = findViewById(R.id.spinner_post_type);
-        videoview                  = findViewById(R.id.videoview);
-        progressBar                = findViewById(R.id.share_video_progressbar);
-        videoCaption               = findViewById(R.id.textInputEditText_video_caption);
-        videoPlayer                = findViewById(R.id.video_player);
+        ImageButton backButton       = findViewById(R.id.image_button_back);
+        MaterialTextView screenTitle = findViewById(R.id.text_screen_title_sharevideo);
+        captureVideoButton           = findViewById(R.id.capture_video_button);
+        selectVideoButton            = findViewById(R.id.select_video_button);
+        shareVideoButton             = findViewById(R.id.share_video_button);
+        clearVideoButton             = findViewById(R.id.clear_video_button);
+        postCategorySpinner          = findViewById(R.id.spinner_post_type);
+        videoview                    = findViewById(R.id.videoview);
+        progressBar                  = findViewById(R.id.share_video_progressbar);
+        videoCaption                 = findViewById(R.id.textInputEditText_video_caption);
+        videoPlayer                  = findViewById(R.id.video_player);
 
         postCategory = "r";
+
+        screenTitle.setText(R.string.share_video);
 
         //Setting up post types for spinner
         String[] arrayPostType = new String[]{"Random",
@@ -117,12 +120,6 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         postCategorySpinner.setAdapter(adapter);
 
-        //Set MediaController  to enable play, pause, forward, etc options.
-//        MediaController mediaController = new MediaController(this);
-//        mediaController.setAnchorView(videoview);
-//
-//        videoview.setMediaController(mediaController);
-
         //OnClick Listeners
         backButton.setOnClickListener(this);
         captureVideoButton.setOnClickListener(this);
@@ -133,12 +130,6 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         //Setting up user avatar on top bar
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(this);
-        String profilePhotoUrl = "http://167.99.13.238:8000" + userProfile.getProfileImg();
-        Picasso
-                .get()
-                .load(profilePhotoUrl)
-                .placeholder(R.drawable.image_placeholder)
-                .into(userAvatar);
 
         postCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -348,6 +339,7 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         RequestBody posttype = RequestBody.create(MediaType.parse("text/plain"),"V");
         RequestBody category = RequestBody.create(MediaType.parse("text/plain"),postCategory);
         RequestBody text = RequestBody.create(MediaType.parse("text/plain"), Objects.requireNonNull(videoCaption.getText()).toString());
+        RequestBody aspect = RequestBody.create(MediaType.parse("text/plain"),newVideoAspectRatio);
 
         MultipartBody.Part filePart = MultipartBody.Part.createFormData(
                 "file",
@@ -356,7 +348,7 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
         );
 
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<NewPostResponse> call = service.shareVideo(user,city,country,posttype,category,text,filePart);
+        Call<NewPostResponse> call = service.shareVideo(user,city,country,posttype,category,text,aspect,filePart);
 
         call.enqueue(new Callback<NewPostResponse>() {
             @Override
@@ -370,7 +362,7 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
                 }
                 else{
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(PostVideoActivity.this,"Unable to share video! Try again later..",Toast.LENGTH_LONG).show();
+//                    Toast.makeText(PostVideoActivity.this,"Unable to share video! Try again later..",Toast.LENGTH_LONG).show();
                     videoCaption.setText("");
                     postCategorySpinner.setSelection(0);
                     recreate();

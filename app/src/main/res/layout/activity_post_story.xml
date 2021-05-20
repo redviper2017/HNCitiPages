@@ -18,36 +18,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.utils.widget.ImageFilterButton
+        <include
             android:id="@+id/image_button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/arrow_back_ic"
-            android:background="@drawable/flag_transparent"
-            android:layout_alignParentEnd="true"/>
+            layout="@layout/custom_image_button_back"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_avatar_sharestory"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:padding="5dp"
-            android:src="@drawable/profile_ic"
-            app:civ_border_width="0dp" />
-
-        <com.google.android.material.textview.MaterialTextView
+        <include
             android:id="@+id/text_screen_title_sharestory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/image_button_back"
-            android:layout_toEndOf="@id/user_avatar_sharestory"
-            android:fontFamily="@font/sf_pro_rounded_regular"
-            android:text="Share Story"
-            android:textColor="@color/colorCenterLinearGradient"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"/>
+            layout="@layout/screen_title_view"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"

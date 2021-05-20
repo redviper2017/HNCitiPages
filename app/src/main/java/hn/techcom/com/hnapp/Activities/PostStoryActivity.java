@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -49,15 +50,17 @@ public class PostStoryActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_post_story);
 
         //Hooks
-        ImageButton backButton     = findViewById(R.id.image_button_back);
-        CircleImageView userAvatar = findViewById(R.id.user_avatar_sharestory);
-        postCategorySpinner        = findViewById(R.id.spinner_post_type);
-        progressBar                = findViewById(R.id.share_story_progressbar);
-        storyText                  = findViewById(R.id.textInputEditText_story);
-        shareStoryButton           = findViewById(R.id.share_story_button);
-        clearStoryButton           = findViewById(R.id.clear_story_button);
+        MaterialTextView screenTitle = findViewById(R.id.text_screen_title_sharestory);
+        ImageButton backButton       = findViewById(R.id.image_button_back);
+        postCategorySpinner          = findViewById(R.id.spinner_post_type);
+        progressBar                  = findViewById(R.id.share_story_progressbar);
+        storyText                    = findViewById(R.id.textInputEditText_story);
+        shareStoryButton             = findViewById(R.id.share_story_button);
+        clearStoryButton             = findViewById(R.id.clear_story_button);
 
         postCategory = "r";
+
+        screenTitle.setText(R.string.share_story);
 
         //Setting up post types for spinner
         String[] arrayPostType = new String[]{"Random",
@@ -82,12 +85,6 @@ public class PostStoryActivity extends AppCompatActivity implements View.OnClick
         //Setting up user avatar on top bar
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(this);
-        String profilePhotoUrl = "http://167.99.13.238:8000" + userProfile.getProfileImg();
-        Picasso
-                .get()
-                .load(profilePhotoUrl)
-                .placeholder(R.drawable.image_placeholder)
-                .into(userAvatar);
 
         postCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -4,19 +4,19 @@
     <item
         android:id="@+id/navigation_share_text"
         android:icon="@drawable/text_post_ic"
-        android:title="Share Story"
+        android:title="@string/share_story"
         android:enabled="true"
         app:showAsAction="always"/>
     <item
         android:id="@+id/navigation_share_image"
         android:icon="@drawable/image_post_ic"
-        android:title="Share Photo"
+        android:title="@string/share_picture"
         android:enabled="true"
         app:showAsAction="always"/>
     <item
         android:id="@+id/navigation_share_video"
         android:icon="@drawable/video_post_ic"
-        android:title="Share Video"
+        android:title="@string/share_video"
         android:enabled="true"
         app:showAsAction="always"/>
     <item

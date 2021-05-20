@@ -92,4 +92,7 @@
     <string name="dummy_like_count_text">641 likes</string>
     <string name="dummy_comment_count_text">112 comments</string>
     <string name="see_more">see more...</string>
+    <string name="share_story">Share Story</string>
+    <string name="share_picture">Share Picture</string>
+    <string name="share_video">Share Video</string>
 </resources>

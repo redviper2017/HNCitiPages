@@ -32,6 +32,7 @@ import android.widget.VideoView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
 import com.kroegerama.imgpicker.BottomSheetImagePicker;
 import com.squareup.picasso.Picasso;
 
@@ -88,18 +89,20 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_post_image);
 
         //Hooks
-        ImageButton backButton     = findViewById(R.id.image_button_back);
-        CircleImageView userAvatar = findViewById(R.id.user_avatar_shareimage);
-        captureImageButton         = findViewById(R.id.capture_image_button);
-        selectImageButton          = findViewById(R.id.select_image_button);
-        shareImageButton           = findViewById(R.id.share_image_button);
-        clearImageButton           = findViewById(R.id.clear_image_button);
-        postCategorySpinner        = findViewById(R.id.spinner_post_type);
-        imageview                  = findViewById(R.id.imageview);
-        progressBar                = findViewById(R.id.share_image_progressbar);
-        imageCaption               = findViewById(R.id.textInputEditText_image_caption);
+        ImageButton backButton       = findViewById(R.id.image_button_back);
+        MaterialTextView screenTitle = findViewById(R.id.text_screen_title_shareimage);
+        captureImageButton           = findViewById(R.id.capture_image_button);
+        selectImageButton            = findViewById(R.id.select_image_button);
+        shareImageButton             = findViewById(R.id.share_image_button);
+        clearImageButton             = findViewById(R.id.clear_image_button);
+        postCategorySpinner          = findViewById(R.id.spinner_post_type);
+        imageview                    = findViewById(R.id.imageview);
+        progressBar                  = findViewById(R.id.share_image_progressbar);
+        imageCaption                 = findViewById(R.id.textInputEditText_image_caption);
 
         postCategory = "r";
+
+        screenTitle.setText(R.string.share_picture);
 
         //Setting up post types for spinner
         String[] arrayPostType = new String[]{"Random",
@@ -126,12 +129,6 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
         //Setting up user avatar on top bar
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(this);
-        String profilePhotoUrl = "http://167.99.13.238:8000" + userProfile.getProfileImg();
-        Picasso
-                .get()
-                .load(profilePhotoUrl)
-                .placeholder(R.drawable.image_placeholder)
-                .into(userAvatar);
 
         postCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -381,7 +378,7 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
                 }
                 else{
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(PostImageActivity.this,"Unable to share image! Try again later..",Toast.LENGTH_LONG).show();
+//                    Toast.makeText(PostImageActivity.this,"Unable to share image! Try again later..",Toast.LENGTH_LONG).show();
                     imageCaption.setText("");
                     postCategorySpinner.setSelection(0);
                     imageview.setImageDrawable(ContextCompat.getDrawable(PostImageActivity.this,R.drawable.image_1));

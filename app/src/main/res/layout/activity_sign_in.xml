@@ -116,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             app:cardCornerRadius="15dp"
             app:layout_constraintTop_toBottomOf="@id/card_main_image_post"
             app:cardElevation="10dp"
@@ -136,6 +136,15 @@
                 android:padding="10dp"
                 android:drawableStart="@drawable/phone_ic"/>
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign in with Phone feature is currently disabled from the system, please try signing in with Google."
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/roboto"
+            android:justificationMode="none"
+            tools:targetApi="o" />
 
         <ProgressBar
             android:id="@+id/signin_progressbar"
