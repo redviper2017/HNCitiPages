@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Result;
@@ -30,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnOptionsButtonClickListener {
     //Constants
     private static final String TAG = "HomeFragment";
 
@@ -84,9 +85,7 @@ public class HomeFragment extends Fragment {
 
                         Log.d(TAG,"number of posts to show = "+postList.size());
 
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        postListAdapter = new PostListAdapter(recyclerView, postList, getContext());
-                        recyclerView.setAdapter(postListAdapter);
+                        setRecyclerView(postList);
                     }
                 }
             }
@@ -119,5 +118,17 @@ public class HomeFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onOptionsButtonClick(int position) {
+        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment();
+        interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
+    }
+
+    public void setRecyclerView(ArrayList<Result> postList){
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        postListAdapter = new PostListAdapter(recyclerView, postList, getContext(),this);
+        recyclerView.setAdapter(postListAdapter);
     }
 }

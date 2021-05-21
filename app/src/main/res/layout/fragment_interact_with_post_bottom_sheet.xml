@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation_view_share"
+        android:id="@+id/navigation_interact_with_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -15,6 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/bottomsheet_share_post"
+        app:menu="@menu/bottomsheet_ineract_with_post"
         app:elevation="0dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

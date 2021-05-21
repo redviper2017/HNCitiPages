@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.VideoView;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
+import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hnapp.Models.Result;
 import hn.techcom.com.hnapp.R;
 
@@ -50,9 +52,13 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private int lastVisibleItem, totalItemCount;
     private Context context;
 
-    public PostListAdapter(RecyclerView recyclerView, ArrayList<Result> allPosts, Context context){
+    //instance of interface
+    private final OnOptionsButtonClickListener onOptionsButtonClickListener;
+
+    public PostListAdapter(RecyclerView recyclerView, ArrayList<Result> allPosts, Context context, OnOptionsButtonClickListener onOptionsButtonClickListener){
         this.allPosts = allPosts;
         this.context = context;
+        this.onOptionsButtonClickListener = onOptionsButtonClickListener;
 
         Log.d(TAG,"post list size in adapter = "+allPosts.size());
 
@@ -212,10 +218,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //View holder classes
 
     //Story view holder class
-    private class StoryViewHolder extends RecyclerView.ViewHolder{
+    private class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public MaterialTextView name, location, text, likes, comments, seeMoreButton;
         public CircleImageView avatar;
+        private ImageButton optionsButton;
 
         public StoryViewHolder(@NonNull View view) {
             super(view);
@@ -227,6 +234,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             comments      = view.findViewById(R.id.text_comment_count_post);
             avatar        = view.findViewById(R.id.avatar_post);
             seeMoreButton = view.findViewById(R.id.seemore_post);
+            optionsButton = view.findViewById(R.id.options_icon_post);
+
+            optionsButton.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -250,14 +260,21 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             },100);
         }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAbsoluteAdapterPosition();
+            onOptionsButtonClickListener.onOptionsButtonClick(position);
+        }
     }
 
     //Image view holder class
-    private class ImageViewHolder extends RecyclerView.ViewHolder{
+    private class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public MaterialTextView name, location, text, likes, comments, seeMoreButton;
         public CircleImageView avatar;
         public AspectRatioImageView landscapeImageView, portraitImageView;
+        private ImageButton optionsButton;
 
         public ImageViewHolder(@NonNull View view) {
             super(view);
@@ -271,6 +288,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             landscapeImageView = view.findViewById(R.id.imageview_landscape_post);
             portraitImageView  = view.findViewById(R.id.imageview_portrait_post);
             seeMoreButton      = view.findViewById(R.id.seemore_post);
+            optionsButton      = view.findViewById(R.id.options_icon_post);
+
+            optionsButton.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -322,15 +342,22 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .into(landscapeImageView);
             }
         }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAbsoluteAdapterPosition();
+            onOptionsButtonClickListener.onOptionsButtonClick(position);
+        }
     }
 
     //Video view holder class
-    private class VideoViewHolder extends RecyclerView.ViewHolder{
+    private class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public MaterialTextView name, location, text, likes, comments, seeMoreButton;
         public CircleImageView avatar;
         public VideoView landscapeVideoView, portraitVideoView;
         private AndExoPlayerView videoPlayer;
+        private ImageButton optionsButton;
 
         public VideoViewHolder(@NonNull View view) {
             super(view);
@@ -345,6 +372,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             portraitVideoView  = view.findViewById(R.id.videoview_portrait_post);
             seeMoreButton      = view.findViewById(R.id.seemore_post);
             videoPlayer        = view.findViewById(R.id.video_player_post);
+            optionsButton      = view.findViewById(R.id.options_icon_post);
+
+            optionsButton.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -393,6 +423,12 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //            portraitVideoView.requestFocus();
 
             videoPlayer.setSource(videoUrl);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAbsoluteAdapterPosition();
+            onOptionsButtonClickListener.onOptionsButtonClick(position);
         }
     }
 

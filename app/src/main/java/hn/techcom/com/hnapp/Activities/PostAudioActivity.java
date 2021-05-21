@@ -115,8 +115,9 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void startAudioPick(){
-//        final Intent intent = new Intent(Intent.ACTION_PICK);
-//        intent.setType("audio/*");
-//        startActivityForResult(intent, REQUEST_AUDIO_PICK);
+        Intent intent_upload = new Intent();
+        intent_upload.setType("audio/*");
+        intent_upload.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent_upload,REQUEST_AUDIO_PICK);
     }
 }
