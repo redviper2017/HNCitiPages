@@ -29,6 +29,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hnapp.Models.Result;
@@ -54,11 +55,13 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     //instance of interface
     private final OnOptionsButtonClickListener onOptionsButtonClickListener;
+    private final OnLikeButtonClickListener onLikeButtonClickListener;
 
-    public PostListAdapter(RecyclerView recyclerView, ArrayList<Result> allPosts, Context context, OnOptionsButtonClickListener onOptionsButtonClickListener){
+    public PostListAdapter(RecyclerView recyclerView, ArrayList<Result> allPosts, Context context, OnOptionsButtonClickListener onOptionsButtonClickListener, OnLikeButtonClickListener onLikeButtonClickListener){
         this.allPosts = allPosts;
         this.context = context;
         this.onOptionsButtonClickListener = onOptionsButtonClickListener;
+        this.onLikeButtonClickListener = onLikeButtonClickListener;
 
         Log.d(TAG,"post list size in adapter = "+allPosts.size());
 
@@ -222,7 +225,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public MaterialTextView name, location, text, likes, comments, seeMoreButton;
         public CircleImageView avatar;
-        private ImageButton optionsButton;
+        private ImageButton optionsButton, likeButton;
 
         public StoryViewHolder(@NonNull View view) {
             super(view);
@@ -235,6 +238,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             avatar        = view.findViewById(R.id.avatar_post);
             seeMoreButton = view.findViewById(R.id.seemore_post);
             optionsButton = view.findViewById(R.id.options_icon_post);
+            likeButton    = view.findViewById(R.id.like_button_post);
 
             optionsButton.setOnClickListener(this);
         }
@@ -275,12 +279,21 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 String likeText = post.getLikeCount() + " like";
                 likes.setText(likeText);
             }
+
+            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImgUrl();
+            Picasso
+                    .get()
+                    .load(profilePhotoUrl)
+                    .into(avatar);
         }
 
         @Override
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
-            onOptionsButtonClickListener.onOptionsButtonClick(position);
+            if(view.getId() == R.id.options_icon_post)
+                onOptionsButtonClickListener.onOptionsButtonClick(position);
+            if(view.getId() == R.id.like_button_post)
+                onLikeButtonClickListener.onLikeButtonClick(position);
         }
     }
 
@@ -347,6 +360,12 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 String likeText = post.getLikeCount() + " like";
                 likes.setText(likeText);
             }
+
+            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImgUrl();
+            Picasso
+                    .get()
+                    .load(profilePhotoUrl)
+                    .into(avatar);
 
             //Placing image into respective imageview based on aspect ratio
             if (post.getFiles().get(0).getAspect().equals("portrait")){
@@ -436,6 +455,12 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 String likeText = post.getLikeCount() + " like";
                 likes.setText(likeText);
             }
+
+            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImgUrl();
+            Picasso
+                    .get()
+                    .load(profilePhotoUrl)
+                    .into(avatar);
 
             String videoUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
 

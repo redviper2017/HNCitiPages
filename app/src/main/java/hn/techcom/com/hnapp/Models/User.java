@@ -16,7 +16,7 @@ public class User {
     @SerializedName("username")
     @Expose
     private String username;
-    @SerializedName("profile_img_url")
+    @SerializedName("profile_img")
     @Expose
     private String profileImgUrl;
     @SerializedName("full_name")

@@ -15,8 +15,8 @@
         android:orientation="horizontal">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/avatar_post"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:civ_border_width="0dp"
             android:src="@drawable/profile_ic"
             android:padding="5dp"
@@ -33,27 +33,29 @@
             android:layout_toEndOf="@id/avatar_post"
             android:layout_toStartOf="@id/options_icon_post"
             android:layout_centerVertical="true">
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/name_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/varela_round"
                 android:text="John Doe"
                 android:textColor="@color/black"
-                android:fontFamily="@font/sf_pro_rounded_regular"
                 android:textSize="@dimen/_12ssp"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:focusable="true" />
+                android:textStyle="bold" />
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/location_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dhaka, Bangladesh"
-                android:fontFamily="@font/sf_pro_rounded_regular"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_10ssp"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:fontFamily="@font/varela_round"
+                android:text="Dhaka, Bangladesh"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp" />
         </LinearLayout>
         <androidx.constraintlayout.utils.widget.ImageFilterButton
             android:id="@+id/options_icon_post"
@@ -91,8 +93,8 @@
         android:textColor="@color/black"
         android:fontFamily="@font/sf_pro_rounded_regular"
         android:textSize="@dimen/_12ssp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="5dp"
         android:autoLink="all"
         android:maxLines="10"

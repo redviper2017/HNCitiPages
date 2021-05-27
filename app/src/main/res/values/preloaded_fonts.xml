@@ -13,5 +13,6 @@
         <item>@font/playfair_display_bold</item>
         <item>@font/roboto</item>
         <item>@font/roboto_thin</item>
+        <item>@font/varela_round</item>
     </array>
 </resources>

@@ -2,6 +2,7 @@ package hn.techcom.com.hnapp.Interfaces;
 
 import java.util.List;
 
+import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.NewPostResponse;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
@@ -94,5 +95,13 @@ public interface GetDataService {
     //Get global posts from a specified page
     @GET() //i.e https://api.demo.com/Search?
     Call<PostList> getGlobalPostsFromPage(@Url String url);
+
+    //Like/Un Like Post
+    @Multipart
+    @POST("posts/like_post/")
+    Call<LikeResponse> likeOrUnlikePost(
+         @Part("user") RequestBody user,
+         @Part("post") RequestBody post
+    );
 
 }
