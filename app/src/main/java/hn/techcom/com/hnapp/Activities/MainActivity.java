@@ -23,6 +23,7 @@ import hn.techcom.com.hnapp.Fragments.HomeFragment;
 import hn.techcom.com.hnapp.Fragments.SharePostBottomSheetFragment;
 import hn.techcom.com.hnapp.Fragments.SupportedSectionFragment;
 import hn.techcom.com.hnapp.Models.Post;
+import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Utils.BottomSheetFragment;
@@ -48,8 +49,10 @@ public class MainActivity extends AppCompatActivity {
         myUtils = new Utils();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        Profile localUser = myUtils.getNewUserFromSharedPreference(this);
+
         //Check if user is logged in and profile is locally stored
-        if(user == null || myUtils.getNewUserFromSharedPreference(this) == null){
+        if(user == null || localUser.getProfileImg() == null){
             startActivity(new Intent(this, SignInActivity.class));
         }
         else {

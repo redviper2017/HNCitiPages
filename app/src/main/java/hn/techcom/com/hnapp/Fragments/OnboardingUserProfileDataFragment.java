@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,8 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -30,6 +33,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,6 +74,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     private Utils myUtils;
 
     private ProgressBar progressBar;
+    private String currentPhotoPath;
 
 
     public OnboardingUserProfileDataFragment() {
@@ -100,27 +105,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     public void onClick(View view) {
         if(view.getId() == R.id.fab_add_image){
             if (checkPermission()) {
-                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                StrictMode.setVmPolicy(builder.build());
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                Date date = new Date();
-                DateFormat df = new SimpleDateFormat("-mm-ss");
-
-                String newImageFileName = df.format(date) + ".jpg";
-                String newImagePath = "/sdcard/" + newImageFileName;
-                newImageFile = new File(newImagePath);
-
-
-
-
-                mCameraFileName = newImageFile.toString();
-                Uri outuri = Uri.fromFile(newImageFile);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
-
-
-                startActivityForResult(cameraIntent,Image_Capture_Code);
-
+                dispatchTakePictureIntent();
             } else {
                 requestPermission();
             }
@@ -137,9 +122,54 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Image_Capture_Code && resultCode == Activity.RESULT_OK) {
-           profileImage.setImageURI(Uri.fromFile(new File(mCameraFileName)));
+//            if (data != null) {
+//                Bundle extras = data.getExtras();
+//                Bitmap imageBitmap = (Bitmap) extras.get("data");
+//                profileImage.setImageBitmap(imageBitmap);
+//            }
+            profileImage.setImageURI(Uri.fromFile(new File(currentPhotoPath)));
 
             Log.d(TAG,"new image file = "+newImageFile);
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+
+        newImageFile = image;
+        return image;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getContext(),
+                        "hn.techcom.com.hnapp.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, Image_Capture_Code);
+            }
         }
     }
 
@@ -205,8 +235,8 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     // function to create new user account
     public void registerNewUserAccount(){
         userProfile = myUtils.getNewUserFromSharedPreference(getContext());
-
-        Log.d(TAG,"onboarding new user = "+userProfile);
+        userProfile.setFirstImg(newImageFile.toString());
+        Log.d(TAG,"onboarding new user = "+userProfile.toString());
 
         RequestBody email = RequestBody.create(MediaType.parse("text/plain"), userProfile.getEmail());
         RequestBody mobile_number = RequestBody.create(MediaType.parse("text/plain"), userProfile.getMobileNumber());
@@ -216,9 +246,9 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
         RequestBody country = RequestBody.create(MediaType.parse("text/plain"), userProfile.getCountry());
         RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), userProfile.getGender());
 
-        File file = new File(android.os.Environment.getExternalStorageDirectory(), mCameraFileName);
+//        File file = new File(android.os.Environment.getExternalStorageDirectory(), mCameraFileName);
 
-        Toast.makeText(getContext(),"image = "+file,Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(),"image = "+file,Toast.LENGTH_LONG).show();
 
         MultipartBody.Part filePart = MultipartBody.Part.createFormData(
                 "first_img",
@@ -262,6 +292,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
 
             @Override
             public void onFailure(@NonNull Call<Profile> call, @NonNull Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(),"Registration Failed! Try again later.",Toast.LENGTH_LONG).show();
             }
         });

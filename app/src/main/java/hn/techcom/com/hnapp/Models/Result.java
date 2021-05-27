@@ -42,6 +42,9 @@ public class Result {
     @SerializedName("comment_count")
     @Expose
     private Integer commentCount;
+    @SerializedName("like_count")
+    @Expose
+    private Integer likeCount;
 
     public User getUser() {
         return user;
@@ -137,5 +140,13 @@ public class Result {
 
     public void setCommentCount(Integer commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
     }
 }

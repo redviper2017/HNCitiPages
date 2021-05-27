@@ -126,4 +126,20 @@ public class Profile {
         this.mobileNumber = mobileNumber;
     }
 
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "hnid='" + hnid + '\'' +
+                ", username='" + username + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", gender='" + gender + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", profileImg='" + profileImg + '\'' +
+                ", firstImg='" + firstImg + '\'' +
+                ", mobileNumber='" + mobileNumber + '\'' +
+                '}';
+    }
 }

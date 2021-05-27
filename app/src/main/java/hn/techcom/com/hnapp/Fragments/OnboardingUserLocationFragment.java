@@ -170,6 +170,8 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
                         city.setText(address.get(0).getLocality());
                         country.setText(address.get(0).getCountryName());
 
+                        Log.d(TAG, "user city: "+location.getLatitude()+ " "+ "user country: "+address.get(0).getCountryName());
+
                         setLocationOnMap();
 
                     } catch (IOException e) {
