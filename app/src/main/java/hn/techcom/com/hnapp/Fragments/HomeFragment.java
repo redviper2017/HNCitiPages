@@ -44,6 +44,7 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
     private Profile userProfile;
     public  ArrayList<PostList> globalPostList;
     private PostListAdapter postListAdapter;
+    private boolean isLoading = false;
 
     public HomeFragment() {}
 
@@ -65,6 +66,19 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
         userProfile = myUtils.getNewUserFromSharedPreference(getContext());
 
         getLatestGlobalPostList();
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }

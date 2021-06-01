@@ -75,8 +75,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     if (onLoadMoreListener != null) {
                         onLoadMoreListener.onLoadMore();
+                        isLoading = true;
                     }
-                    isLoading = true;
                 }
             }
         });
@@ -216,6 +216,10 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
         this.onLoadMoreListener = mOnLoadMoreListener;
+    }
+
+    public void setLoadMore(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
     }
 
     //View holder classes
@@ -397,24 +401,22 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public MaterialTextView name, location, text, likes, comments, seeMoreButton;
         public CircleImageView avatar;
-        public VideoView landscapeVideoView, portraitVideoView;
-        private AndExoPlayerView videoPlayer;
+        private AndExoPlayerView videoPlayerPortrait, videoPlayerLandscape;
         private ImageButton optionsButton;
 
         public VideoViewHolder(@NonNull View view) {
             super(view);
 
-            name               = view.findViewById(R.id.name_post);
-            location           = view.findViewById(R.id.location_post);
-            text               = view.findViewById(R.id.text_post);
-            likes              = view.findViewById(R.id.text_like_count_post);
-            comments           = view.findViewById(R.id.text_comment_count_post);
-            avatar             = view.findViewById(R.id.avatar_post);
-            landscapeVideoView = view.findViewById(R.id.videoview_landscape_post);
-            portraitVideoView  = view.findViewById(R.id.videoview_portrait_post);
-            seeMoreButton      = view.findViewById(R.id.seemore_post);
-            videoPlayer        = view.findViewById(R.id.video_player_post);
-            optionsButton      = view.findViewById(R.id.options_icon_post);
+            name                 = view.findViewById(R.id.name_post);
+            location             = view.findViewById(R.id.location_post);
+            text                 = view.findViewById(R.id.text_post);
+            likes                = view.findViewById(R.id.text_like_count_post);
+            comments             = view.findViewById(R.id.text_comment_count_post);
+            avatar               = view.findViewById(R.id.avatar_post);
+            seeMoreButton        = view.findViewById(R.id.seemore_post);
+            videoPlayerPortrait  = view.findViewById(R.id.video_player_portrait_post);
+            videoPlayerLandscape = view.findViewById(R.id.video_player_landscape_post);
+            optionsButton        = view.findViewById(R.id.options_icon_post);
 
             optionsButton.setOnClickListener(this);
         }
@@ -476,8 +478,15 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //
 //            portraitVideoView.setVideoPath(videoUrl);
 //            portraitVideoView.requestFocus();
-
-            videoPlayer.setSource(videoUrl);
+            if (post.getFiles().get(0).getAspect().equals("portrait")){
+                videoPlayerPortrait.setVisibility(View.VISIBLE);
+                videoPlayerLandscape.setVisibility(View.GONE);
+                videoPlayerPortrait.setSource(videoUrl);
+            }else{
+                videoPlayerLandscape.setVisibility(View.VISIBLE);
+                videoPlayerPortrait.setVisibility(View.GONE);
+                videoPlayerLandscape.setSource(videoUrl);
+            }
         }
 
         @Override
@@ -498,7 +507,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             progressBar = view.findViewById(R.id.progressbar);
         }
         void bind(){
-
+            progressBar.setIndeterminate(true);
         }
     }
 }

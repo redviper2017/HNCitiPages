@@ -81,15 +81,39 @@
         android:scaleType="fitXY"
         android:src="@drawable/dummy_image_2"
         android:visibility="gone"/>
+<!--    <com.potyvideo.library.AndExoPlayerView-->
+<!--        android:id="@+id/video_player_post"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:andexo_aspect_ratio="aspect_1_1"-->
+<!--        app:andexo_full_screen="true"-->
+<!--        app:andexo_play_when_ready="false"-->
+<!--        app:andexo_show_controller="true"-->
+<!--        app:andexo_resize_mode="Zoom" />-->
     <com.potyvideo.library.AndExoPlayerView
-        android:id="@+id/video_player_post"
+        android:id="@+id/video_player_landscape_post"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:andexo_aspect_ratio="aspect_1_1"
+        android:layout_height="@dimen/_200sdp"
+        app:andexo_aspect_ratio="aspect_match"
         app:andexo_full_screen="true"
         app:andexo_play_when_ready="true"
+        app:andexo_mute="mute"
         app:andexo_show_controller="true"
-        app:andexo_resize_mode="Zoom" />
+        app:andexo_resize_mode="Zoom"
+        app:andexo_loop="finite"
+        android:visibility="visible"/>
+    <com.potyvideo.library.AndExoPlayerView
+        android:id="@+id/video_player_portrait_post"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_400sdp"
+        app:andexo_aspect_ratio="aspect_match"
+        app:andexo_full_screen="true"
+        app:andexo_play_when_ready="true"
+        app:andexo_mute="mute"
+        app:andexo_show_controller="true"
+        app:andexo_resize_mode="Zoom"
+        app:andexo_loop="finite"
+        android:visibility="gone"/>
     <!-- Layout - text -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_post"
