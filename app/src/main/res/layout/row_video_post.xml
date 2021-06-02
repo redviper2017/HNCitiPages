@@ -100,7 +100,7 @@
         app:andexo_mute="mute"
         app:andexo_show_controller="true"
         app:andexo_resize_mode="Zoom"
-        app:andexo_loop="finite"
+        app:andexo_loop="infinite"
         android:visibility="visible"/>
     <com.potyvideo.library.AndExoPlayerView
         android:id="@+id/video_player_portrait_post"
@@ -112,7 +112,7 @@
         app:andexo_mute="mute"
         app:andexo_show_controller="true"
         app:andexo_resize_mode="Zoom"
-        app:andexo_loop="finite"
+        app:andexo_loop="infinite"
         android:visibility="gone"/>
     <!-- Layout - text -->
     <com.google.android.material.textview.MaterialTextView

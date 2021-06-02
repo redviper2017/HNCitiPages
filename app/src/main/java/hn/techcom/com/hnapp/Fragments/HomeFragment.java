@@ -1,5 +1,7 @@
 package hn.techcom.com.hnapp.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -43,6 +48,7 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
     private Utils myUtils;
     private Profile userProfile;
     public  ArrayList<PostList> globalPostList;
+    private ArrayList<Result> recentPostList;
     private PostListAdapter postListAdapter;
     private boolean isLoading = false;
 
@@ -60,6 +66,7 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
 
         screenTitle.setText(R.string.home);
         globalPostList = new ArrayList<>();
+        recentPostList = new ArrayList<>();
 
         //Setting up user avatar on top bar
         myUtils = new Utils();
@@ -83,6 +90,19 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(getRecentPosts() != null)
+            setRecyclerView(getRecentPosts());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        storeRecentPosts();
+    }
+
     public void getLatestGlobalPostList(){
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getLatestGlobalPosts(userProfile.getHnid());
@@ -99,6 +119,9 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
 
                         ArrayList<Result> postList = new ArrayList<>();
                         postList.addAll(latestGlobalPostList.getResults());
+
+                        recentPostList.clear();
+                        recentPostList.addAll(postList);
 
                         Log.d(TAG,"number of posts to show = "+postList.size());
 
@@ -159,5 +182,22 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
     @Override
     public void onLikeButtonClick(int position) {
 
+    }
+
+    private void storeRecentPosts(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(recentPostList);
+        editor.putString("RecentPosts", json);
+        editor.apply();
+    }
+
+    private ArrayList<Result> getRecentPosts(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("RecentPosts", null);
+        Type type = new TypeToken<ArrayList<Result>>() {}.getType();
+        return gson.fromJson(json, type);
     }
 }

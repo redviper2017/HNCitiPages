@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
+import com.potyvideo.library.globalEnums.EnumRepeatMode;
 import com.santalu.aspectratioimageview.AspectRatioImageView;
 import com.squareup.picasso.Picasso;
 
@@ -419,6 +420,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             optionsButton        = view.findViewById(R.id.options_icon_post);
 
             optionsButton.setOnClickListener(this);
+            videoPlayerLandscape.setPlayWhenReady(false);
+          
+
+            videoPlayerPortrait.setPlayWhenReady(false);
+
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -482,10 +488,16 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 videoPlayerPortrait.setVisibility(View.VISIBLE);
                 videoPlayerLandscape.setVisibility(View.GONE);
                 videoPlayerPortrait.setSource(videoUrl);
+                videoPlayerPortrait.setPlayWhenReady(false);
+//                videoPlayerPortrait.stopPlayer();
+//                videoPlayerPortrait.seekForward(1);
             }else{
                 videoPlayerLandscape.setVisibility(View.VISIBLE);
                 videoPlayerPortrait.setVisibility(View.GONE);
                 videoPlayerLandscape.setSource(videoUrl);
+                videoPlayerLandscape.setPlayWhenReady(false);
+//                videoPlayerLandscape.stopPlayer();
+//                videoPlayerLandscape.seekForward(1);
             }
         }
 
