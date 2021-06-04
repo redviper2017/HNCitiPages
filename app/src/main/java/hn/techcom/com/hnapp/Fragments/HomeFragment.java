@@ -17,12 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
@@ -174,8 +172,8 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
     //Overriding implemented clickListeners interface methods
 
     @Override
-    public void onOptionsButtonClick(int position) {
-        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment();
+    public void onOptionsButtonClick(int position, Result result) {
+        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment(position, result.getId());
         interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
     }
 

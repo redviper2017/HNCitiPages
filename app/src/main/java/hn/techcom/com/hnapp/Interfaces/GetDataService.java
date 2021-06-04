@@ -2,6 +2,7 @@ package hn.techcom.com.hnapp.Interfaces;
 
 import java.util.List;
 
+import hn.techcom.com.hnapp.Models.DeleteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.NewPostResponse;
 import hn.techcom.com.hnapp.Models.PostList;
@@ -103,5 +104,9 @@ public interface GetDataService {
          @Part("user") RequestBody user,
          @Part("post") RequestBody post
     );
+
+    //Delete/change upload status post
+    @POST("posts/delete_post/{post_id}/")
+    Call<DeleteResponse> deletePost(@Path("post_id") int post_id);
 
 }

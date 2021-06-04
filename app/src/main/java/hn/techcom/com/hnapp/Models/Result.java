@@ -9,6 +9,9 @@ public class Result {
     @SerializedName("user")
     @Expose
     private User user;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
     @SerializedName("text")
     @Expose
     private String text;
@@ -30,21 +33,21 @@ public class Result {
     @SerializedName("category")
     @Expose
     private String category;
-    @SerializedName("isLiked")
+    @SerializedName("liked")
     @Expose
-    private Boolean isLiked;
-    @SerializedName("isSupported")
-    @Expose
-    private Boolean isSupported;
+    private Boolean liked;
     @SerializedName("files")
     @Expose
     private List<File> files = null;
-    @SerializedName("comment_count")
-    @Expose
-    private Integer commentCount;
     @SerializedName("like_count")
     @Expose
     private Integer likeCount;
+    @SerializedName("comment_count")
+    @Expose
+    private Integer commentCount;
+    @SerializedName("featured")
+    @Expose
+    private Boolean featured;
 
     public User getUser() {
         return user;
@@ -52,6 +55,14 @@ public class Result {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getText() {
@@ -110,20 +121,12 @@ public class Result {
         this.category = category;
     }
 
-    public Boolean getIsLiked() {
-        return isLiked;
+    public Boolean getLiked() {
+        return liked;
     }
 
-    public void setIsLiked(Boolean isLiked) {
-        this.isLiked = isLiked;
-    }
-
-    public Boolean getIsSupported() {
-        return isSupported;
-    }
-
-    public void setIsSupported(Boolean isSupported) {
-        this.isSupported = isSupported;
+    public void setLiked(Boolean liked) {
+        this.liked = liked;
     }
 
     public List<File> getFiles() {
@@ -134,6 +137,14 @@ public class Result {
         this.files = files;
     }
 
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
     public Integer getCommentCount() {
         return commentCount;
     }
@@ -142,11 +153,12 @@ public class Result {
         this.commentCount = commentCount;
     }
 
-    public Integer getLikeCount() {
-        return likeCount;
+    public Boolean getFeatured() {
+        return featured;
     }
 
-    public void setLikeCount(Integer likeCount) {
-        this.likeCount = likeCount;
+    public void setFeatured(Boolean featured) {
+        this.featured = featured;
     }
+
 }

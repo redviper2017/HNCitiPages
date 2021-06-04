@@ -126,6 +126,7 @@
             android:orientation="horizontal"
             android:layout_alignParentStart="true">
             <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:id="@+id/like_button_post"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/outline_thumb_up_24_ic"

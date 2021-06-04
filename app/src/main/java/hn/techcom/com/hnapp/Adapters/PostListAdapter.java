@@ -1,18 +1,13 @@
 package hn.techcom.com.hnapp.Adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.MediaController;
 import android.widget.ProgressBar;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,13 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
-import com.potyvideo.library.globalEnums.EnumRepeatMode;
 import com.santalu.aspectratioimageview.AspectRatioImageView;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -285,7 +276,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 likes.setText(likeText);
             }
 
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImgUrl();
+            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
@@ -296,7 +287,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
             if(view.getId() == R.id.options_icon_post)
-                onOptionsButtonClickListener.onOptionsButtonClick(position);
+                onOptionsButtonClickListener.onOptionsButtonClick(position, allPosts.get(position));
             if(view.getId() == R.id.like_button_post)
                 onLikeButtonClickListener.onLikeButtonClick(position);
         }
@@ -308,7 +299,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public MaterialTextView name, location, text, likes, comments, seeMoreButton;
         public CircleImageView avatar;
         public AspectRatioImageView landscapeImageView, portraitImageView;
-        private ImageButton optionsButton;
+        private ImageButton optionsButton, likeButton;
 
         public ImageViewHolder(@NonNull View view) {
             super(view);
@@ -323,6 +314,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             portraitImageView  = view.findViewById(R.id.imageview_portrait_post);
             seeMoreButton      = view.findViewById(R.id.seemore_post);
             optionsButton      = view.findViewById(R.id.options_icon_post);
+            likeButton         = view.findViewById(R.id.like_button_post);
 
             optionsButton.setOnClickListener(this);
         }
@@ -366,7 +358,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 likes.setText(likeText);
             }
 
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImgUrl();
+            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
@@ -393,7 +385,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
-            onOptionsButtonClickListener.onOptionsButtonClick(position);
+            onOptionsButtonClickListener.onOptionsButtonClick(position, allPosts.get(position));
         }
     }
 
@@ -403,7 +395,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public MaterialTextView name, location, text, likes, comments, seeMoreButton;
         public CircleImageView avatar;
         private AndExoPlayerView videoPlayerPortrait, videoPlayerLandscape;
-        private ImageButton optionsButton;
+        private ImageButton optionsButton, likeButton;
 
         public VideoViewHolder(@NonNull View view) {
             super(view);
@@ -418,10 +410,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             videoPlayerPortrait  = view.findViewById(R.id.video_player_portrait_post);
             videoPlayerLandscape = view.findViewById(R.id.video_player_landscape_post);
             optionsButton        = view.findViewById(R.id.options_icon_post);
+            likeButton           = view.findViewById(R.id.like_button_post);
 
             optionsButton.setOnClickListener(this);
             videoPlayerLandscape.setPlayWhenReady(false);
-          
+
 
             videoPlayerPortrait.setPlayWhenReady(false);
 
@@ -464,7 +457,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 likes.setText(likeText);
             }
 
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImgUrl();
+            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
@@ -504,7 +497,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
-            onOptionsButtonClickListener.onOptionsButtonClick(position);
+            onOptionsButtonClickListener.onOptionsButtonClick(position, allPosts.get(position));
         }
     }
 
