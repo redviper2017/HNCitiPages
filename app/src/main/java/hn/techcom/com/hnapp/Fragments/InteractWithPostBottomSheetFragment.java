@@ -81,6 +81,7 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
                 if(response.code() == 200){
                     DeleteResponse deleteResponse = response.body();
                     Toast.makeText(getActivity(), Objects.requireNonNull(deleteResponse).getSuccess(), Toast.LENGTH_LONG).show();
+                    dismiss();
                 }
                 else
                     Toast.makeText(getActivity(),"Sorry, the post cannot be deleted at this moment. Try again..", Toast.LENGTH_LONG).show();

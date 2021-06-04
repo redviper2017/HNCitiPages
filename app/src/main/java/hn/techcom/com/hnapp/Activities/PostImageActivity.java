@@ -393,7 +393,8 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
 
         call.enqueue(new Callback<NewPostResponse>() {
             @Override
-            public void onResponse(Call<NewPostResponse> call, Response<NewPostResponse> response) {
+            public void onResponse(Call<NewPostResponse> call, @NonNull Response<NewPostResponse> response) {
+                Log.d(TAG, "post image api response code = "+response.code());
                 if (response.code() == 201) {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(PostImageActivity.this,"Image shared successfully!",Toast.LENGTH_LONG).show();

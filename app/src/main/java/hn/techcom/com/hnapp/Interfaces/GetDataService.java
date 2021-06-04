@@ -109,4 +109,6 @@ public interface GetDataService {
     @POST("posts/delete_post/{post_id}/")
     Call<DeleteResponse> deletePost(@Path("post_id") int post_id);
 
+    //Support user
+
 }
