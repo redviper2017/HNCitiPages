@@ -184,7 +184,7 @@ public class HomeFragment
     }
 
     //like or un-like post
-    public void likeOrUnlikeThisPost(String hnid, int postId){
+    public void likeOrUnlikeThisPost(String hnid, int postId, int position){
         RequestBody user = RequestBody.create(MediaType.parse("text/plain"), hnid);
         RequestBody post = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(postId));
 
@@ -197,6 +197,8 @@ public class HomeFragment
                 if(response.code() == 201){
                     LikeResponse likeResponse = response.body();
                     Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
+                    recentPostList.get(position).setLiked(!recentPostList.get(position).getLiked());
+                    postListAdapter.notifyDataSetChanged();
                 }else
                     Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
             }
@@ -243,7 +245,7 @@ public class HomeFragment
 
     @Override
     public void onLikeButtonClick(int position, int postId) {
-        likeOrUnlikeThisPost(userProfile.getHnid(), postId);
+        likeOrUnlikeThisPost(userProfile.getHnid(), postId, position);
     }
 
     @Override

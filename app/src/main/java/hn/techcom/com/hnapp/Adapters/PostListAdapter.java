@@ -370,6 +370,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             String imageUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
 
+            if(post.getLiked())
+                likeButton.setImageResource(R.drawable.filled_thumb_up_24_ic);
+            else
+                likeButton.setImageResource(R.drawable.outline_thumb_up_24_ic);
+
             //Set comment count on post
             if(post.getCommentCount() >1) {
                 String commentText = post.getCommentCount() + " comments";

@@ -38,7 +38,7 @@ public class ViewLikesActivity extends AppCompatActivity implements View.OnClick
         //get the post id to view likes
         Intent intent = getIntent();
         postId = intent.getIntExtra("POST_ID",-1);
-//        viewLikesOnPost();
+        viewLikesOnPost();
 
         //Hooks
         MaterialTextView screenTitle   = findViewById(R.id.text_screen_title_view_likes);
