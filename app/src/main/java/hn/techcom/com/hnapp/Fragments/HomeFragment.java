@@ -1,6 +1,7 @@
 package hn.techcom.com.hnapp.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,10 +23,12 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import hn.techcom.com.hnapp.Activities.ViewLikesActivity;
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Interfaces.OnFavoriteButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
+import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
@@ -43,7 +46,11 @@ import retrofit2.Response;
 
 public class HomeFragment
         extends Fragment
-        implements OnOptionsButtonClickListener, OnLikeButtonClickListener, OnFavoriteButtonClickListener {
+        implements
+        OnOptionsButtonClickListener,
+        OnLikeButtonClickListener,
+        OnFavoriteButtonClickListener,
+        OnLikeCountButtonListener {
     //Constants
     private static final String TAG = "HomeFragment";
 
@@ -166,7 +173,13 @@ public class HomeFragment
 
     public void setRecyclerView(ArrayList<Result> postList){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        postListAdapter = new PostListAdapter(recyclerView, postList, getContext(),this, this, this);
+        postListAdapter = new PostListAdapter(
+                recyclerView,
+                postList, getContext(),
+                this,
+                this,
+                this,
+                this);
         recyclerView.setAdapter(postListAdapter);
     }
 
@@ -231,6 +244,13 @@ public class HomeFragment
     @Override
     public void onLikeButtonClick(int position, int postId) {
         likeOrUnlikeThisPost(userProfile.getHnid(), postId);
+    }
+
+    @Override
+    public void onLikeCountButtonClick(int postId) {
+        Intent intent = new Intent(getContext(), ViewLikesActivity.class);
+        intent.putExtra("POST_ID",postId);
+        startActivity(intent);
     }
 
     @Override

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Interfaces.OnFavoriteButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
+import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hnapp.Models.Result;
@@ -50,6 +51,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final OnOptionsButtonClickListener onOptionsButtonClickListener;
     private final OnLikeButtonClickListener onLikeButtonClickListener;
     private final OnFavoriteButtonClickListener onFavoriteButtonClickListener;
+    private final OnLikeCountButtonListener onLikeCountButtonListener;
 
     public PostListAdapter(
             RecyclerView recyclerView,
@@ -57,7 +59,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             Context context,
             OnOptionsButtonClickListener onOptionsButtonClickListener,
             OnLikeButtonClickListener onLikeButtonClickListener,
-            OnFavoriteButtonClickListener onFavoriteButtonClickListener
+            OnFavoriteButtonClickListener onFavoriteButtonClickListener,
+            OnLikeCountButtonListener onLikeCountButtonListener
     )
     {
         this.allPosts = allPosts;
@@ -65,6 +68,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.onOptionsButtonClickListener = onOptionsButtonClickListener;
         this.onLikeButtonClickListener = onLikeButtonClickListener;
         this.onFavoriteButtonClickListener = onFavoriteButtonClickListener;
+        this.onLikeCountButtonListener = onLikeCountButtonListener;
 
         Log.d(TAG,"post list size in adapter = "+allPosts.size());
 
@@ -251,6 +255,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
             favoriteButton.setOnClickListener(this);
+            likes.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -307,6 +312,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 onLikeButtonClickListener.onLikeButtonClick(position, postId);
             if(view.getId() == R.id.favorite_button_post)
                 onFavoriteButtonClickListener.onFavoriteButtonClick(position, postId);
+            if(view.getId() == R.id.text_like_count_post)
+                onLikeCountButtonListener.onLikeCountButtonClick(postId);
         }
     }
 
@@ -337,6 +344,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
             favoriteButton.setOnClickListener(this);
+            likes.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -412,6 +420,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 onLikeButtonClickListener.onLikeButtonClick(position, postId);
             if(view.getId() == R.id.favorite_button_post)
                 onFavoriteButtonClickListener.onFavoriteButtonClick(position, postId);
+            if(view.getId() == R.id.text_like_count_post)
+                onLikeCountButtonListener.onLikeCountButtonClick(postId);
         }
     }
 
@@ -445,6 +455,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             videoPlayerLandscape.setPlayWhenReady(false);
             videoPlayerPortrait.setPlayWhenReady(false);
             favoriteButton.setOnClickListener(this);
+            likes.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -531,6 +542,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 onLikeButtonClickListener.onLikeButtonClick(position, postId);
             if(view.getId() == R.id.favorite_button_post)
                 onFavoriteButtonClickListener.onFavoriteButtonClick(position, postId);
+            if(view.getId() == R.id.text_like_count_post)
+                onLikeCountButtonListener.onLikeCountButtonClick(postId);
         }
     }
 

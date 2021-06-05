@@ -10,6 +10,7 @@ import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Models.ValidationResponse;
+import hn.techcom.com.hnapp.Models.ViewLikesResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -97,6 +98,13 @@ public interface GetDataService {
     //Get global posts from a specified page
     @GET() //i.e https://api.demo.com/Search?
     Call<PostList> getGlobalPostsFromPage(@Url String url);
+
+    //Get Likes on post
+    @Multipart
+    @GET("posts/like_post/")
+    Call<List<ViewLikesResponse>> viewLikes(
+         @Part("post") RequestBody post
+    );
 
     //Like/Un-Like Post
     @Multipart

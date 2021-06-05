@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="5dp"
+    android:paddingEnd="5dp"
+    android:background="@color/white"
+    tools:context=".Activities.ViewLikesActivity">
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_like_count_view_likes"
+        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/pacifico"
+        android:text="41"
+        android:textColor="@color/colorTextTitle"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold" />
+    <RelativeLayout
+        android:id="@+id/layout_screentitle_view_likes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSurface"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_like_count_view_likes"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/image_button_back"
+            layout="@layout/custom_image_button_back"/>
+
+        <include
+            android:id="@+id/text_screen_title_view_likes"
+            layout="@layout/screen_title_view"/>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
