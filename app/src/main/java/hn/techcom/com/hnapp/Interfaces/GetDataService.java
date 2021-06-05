@@ -3,6 +3,7 @@ package hn.techcom.com.hnapp.Interfaces;
 import java.util.List;
 
 import hn.techcom.com.hnapp.Models.DeleteResponse;
+import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.NewPostResponse;
 import hn.techcom.com.hnapp.Models.PostList;
@@ -105,10 +106,17 @@ public interface GetDataService {
          @Part("post") RequestBody post
     );
 
+    //Favorite/Un-Favorite post
+
     //Delete/change upload status post
     @POST("posts/delete_post/{post_id}/")
     Call<DeleteResponse> deletePost(@Path("post_id") int post_id);
 
     //Support user
-
+    @Multipart
+    @POST("posts/post_bookmark/")
+    Call<FavoriteResponse> favoriteOrUnfavoritePost(
+            @Part("user") RequestBody user,
+            @Part("post") RequestBody post
+    );
 }

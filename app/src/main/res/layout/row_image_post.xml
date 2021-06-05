@@ -133,12 +133,14 @@
                 android:layout_marginStart="5dp"
                 android:background="@color/white"/>
             <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:id="@+id/comment_button_post"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/outline_comment_24_ic"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"/>
             <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:id="@+id/favorite_button_post"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/outline_favorite_24_ic"

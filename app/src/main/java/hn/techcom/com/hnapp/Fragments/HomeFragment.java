@@ -24,8 +24,10 @@ import java.util.ArrayList;
 
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Interfaces.OnFavoriteButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
+import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
@@ -39,7 +41,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements OnOptionsButtonClickListener, OnLikeButtonClickListener {
+public class HomeFragment
+        extends Fragment
+        implements OnOptionsButtonClickListener, OnLikeButtonClickListener, OnFavoriteButtonClickListener {
     //Constants
     private static final String TAG = "HomeFragment";
 
@@ -162,7 +166,7 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
 
     public void setRecyclerView(ArrayList<Result> postList){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        postListAdapter = new PostListAdapter(recyclerView, postList, getContext(),this, this);
+        postListAdapter = new PostListAdapter(recyclerView, postList, getContext(),this, this, this);
         recyclerView.setAdapter(postListAdapter);
     }
 
@@ -191,6 +195,31 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
         });
     }
 
+    //favorite or un-favorite post
+    public void favoriteOrUnfavoritePost(String hnid, int postId){
+        RequestBody user = RequestBody.create(MediaType.parse("text/plain"), hnid);
+        RequestBody post = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(postId));
+
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<FavoriteResponse> call = service.favoriteOrUnfavoritePost(user,post);
+
+        call.enqueue(new Callback<FavoriteResponse>() {
+            @Override
+            public void onResponse(Call<FavoriteResponse> call, Response<FavoriteResponse> response) {
+                if(response.code() == 201){
+                    FavoriteResponse favoriteResponse = response.body();
+                    Toast.makeText(getContext(), favoriteResponse.getMessage(), Toast.LENGTH_LONG).show();
+                }else
+                    Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<FavoriteResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     //Overriding implemented clickListeners interface methods
 
     @Override
@@ -202,6 +231,11 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
     @Override
     public void onLikeButtonClick(int position, int postId) {
         likeOrUnlikeThisPost(userProfile.getHnid(), postId);
+    }
+
+    @Override
+    public void onFavoriteButtonClick(int position, int postId) {
+        favoriteOrUnfavoritePost(userProfile.getHnid(), postId);
     }
 
     private void storeRecentPosts(){
