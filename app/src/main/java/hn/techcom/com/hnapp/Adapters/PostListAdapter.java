@@ -294,6 +294,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             if(post.getLikeCount() != 0){
+                likes.setVisibility(View.VISIBLE);
                 if(post.getLikeCount() >1) {
                     String likeText = post.getLikeCount() + " likes";
                     likes.setText(likeText);
@@ -394,6 +395,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 comments.setText(commentText);
             }
             if(post.getLikeCount() != 0){
+                likes.setVisibility(View.VISIBLE);
                 if(post.getLikeCount() >1) {
                     String likeText = post.getLikeCount() + " likes";
                     likes.setText(likeText);
@@ -512,6 +514,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 comments.setText(commentText);
             }
             if(post.getLikeCount() != 0){
+                likes.setVisibility(View.VISIBLE);
                 if(post.getLikeCount() >1) {
                     String likeText = post.getLikeCount() + " likes";
                     likes.setText(likeText);
