@@ -279,6 +279,12 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             },100);
 
+            //Toggling like button
+            if(post.getLiked())
+                likeButton.setImageResource(R.drawable.filled_thumb_up_24_ic);
+            else
+                likeButton.setImageResource(R.drawable.outline_thumb_up_24_ic);
+
             if(post.getCommentCount() >1) {
                 String commentText = post.getCommentCount() + " comments";
                 comments.setText(commentText);
@@ -287,13 +293,16 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 comments.setText(commentText);
             }
 
-            if(post.getLikeCount() >1) {
-                String likeText = post.getLikeCount() + " likes";
-                likes.setText(likeText);
-            }else{
-                String likeText = post.getLikeCount() + " like";
-                likes.setText(likeText);
-            }
+            if(post.getLikeCount() != 0){
+                if(post.getLikeCount() >1) {
+                    String likeText = post.getLikeCount() + " likes";
+                    likes.setText(likeText);
+                }else{
+                    String likeText = post.getLikeCount() + " like";
+                    likes.setText(likeText);
+                }
+            }else
+                likes.setVisibility(View.GONE);
 
             String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
             Picasso
@@ -370,6 +379,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             String imageUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
 
+            //Toggling like button
             if(post.getLiked())
                 likeButton.setImageResource(R.drawable.filled_thumb_up_24_ic);
             else
@@ -383,13 +393,16 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 String commentText = post.getCommentCount() + " comment";
                 comments.setText(commentText);
             }
-            if(post.getLikeCount() >1) {
-                String likeText = post.getLikeCount() + " likes";
-                likes.setText(likeText);
-            }else{
-                String likeText = post.getLikeCount() + " like";
-                likes.setText(likeText);
-            }
+            if(post.getLikeCount() != 0){
+                if(post.getLikeCount() >1) {
+                    String likeText = post.getLikeCount() + " likes";
+                    likes.setText(likeText);
+                }else{
+                    String likeText = post.getLikeCount() + " like";
+                    likes.setText(likeText);
+                }
+            }else
+                likes.setVisibility(View.GONE);
 
             String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
             Picasso
@@ -484,6 +497,12 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             },100);
 
+            //Toggling like button
+            if(post.getLiked())
+                likeButton.setImageResource(R.drawable.filled_thumb_up_24_ic);
+            else
+                likeButton.setImageResource(R.drawable.outline_thumb_up_24_ic);
+
             //Set comment count on post
             if(post.getCommentCount() >1) {
                 String commentText = post.getCommentCount() + " comments";
@@ -492,13 +511,16 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 String commentText = post.getCommentCount() + " comment";
                 comments.setText(commentText);
             }
-            if(post.getLikeCount() >1) {
-                String likeText = post.getLikeCount() + " likes";
-                likes.setText(likeText);
-            }else{
-                String likeText = post.getLikeCount() + " like";
-                likes.setText(likeText);
-            }
+            if(post.getLikeCount() != 0){
+                if(post.getLikeCount() >1) {
+                    String likeText = post.getLikeCount() + " likes";
+                    likes.setText(likeText);
+                }else{
+                    String likeText = post.getLikeCount() + " like";
+                    likes.setText(likeText);
+                }
+            }else
+                likes.setVisibility(View.GONE);
 
             String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
             Picasso

@@ -197,7 +197,16 @@ public class HomeFragment
                 if(response.code() == 201){
                     LikeResponse likeResponse = response.body();
                     Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
+
+                    //Toggling like button image
                     recentPostList.get(position).setLiked(!recentPostList.get(position).getLiked());
+
+                    //Toggling like count on post
+                    if(recentPostList.get(position).getLiked())
+                        recentPostList.get(position).setLikeCount(recentPostList.get(position).getLikeCount() + 1);
+                    else
+                        recentPostList.get(position).setLikeCount(recentPostList.get(position).getLikeCount() - 1);
+
                     postListAdapter.notifyDataSetChanged();
                 }else
                     Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
