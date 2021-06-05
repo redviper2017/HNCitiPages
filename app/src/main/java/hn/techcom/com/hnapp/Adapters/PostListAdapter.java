@@ -237,6 +237,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             likeButton    = view.findViewById(R.id.like_button_post);
 
             optionsButton.setOnClickListener(this);
+            likeButton.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -286,10 +287,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
+            int postId   = allPosts.get(position).getId();
             if(view.getId() == R.id.options_icon_post)
-                onOptionsButtonClickListener.onOptionsButtonClick(position, allPosts.get(position));
+                onOptionsButtonClickListener.onOptionsButtonClick(position, postId);
             if(view.getId() == R.id.like_button_post)
-                onLikeButtonClickListener.onLikeButtonClick(position);
+                onLikeButtonClickListener.onLikeButtonClick(position, postId);
         }
     }
 
@@ -317,6 +319,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             likeButton         = view.findViewById(R.id.like_button_post);
 
             optionsButton.setOnClickListener(this);
+            likeButton.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -385,7 +388,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
-            onOptionsButtonClickListener.onOptionsButtonClick(position, allPosts.get(position));
+            int postId   = allPosts.get(position).getId();
+            if(view.getId() == R.id.options_icon_post)
+                onOptionsButtonClickListener.onOptionsButtonClick(position, postId);
+            if(view.getId() == R.id.like_button_post)
+                onLikeButtonClickListener.onLikeButtonClick(position, postId);
         }
     }
 
@@ -413,11 +420,10 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             likeButton           = view.findViewById(R.id.like_button_post);
 
             optionsButton.setOnClickListener(this);
+            likeButton.setOnClickListener(this);
+
             videoPlayerLandscape.setPlayWhenReady(false);
-
-
             videoPlayerPortrait.setPlayWhenReady(false);
-
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -497,7 +503,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
-            onOptionsButtonClickListener.onOptionsButtonClick(position, allPosts.get(position));
+            int postId   = allPosts.get(position).getId();
+            if(view.getId() == R.id.options_icon_post)
+                onOptionsButtonClickListener.onOptionsButtonClick(position, postId);
+            if(view.getId() == R.id.like_button_post)
+                onLikeButtonClickListener.onLikeButtonClick(position, postId);
         }
     }
 

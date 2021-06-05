@@ -97,7 +97,7 @@ public interface GetDataService {
     @GET() //i.e https://api.demo.com/Search?
     Call<PostList> getGlobalPostsFromPage(@Url String url);
 
-    //Like/Un Like Post
+    //Like/Un-Like Post
     @Multipart
     @POST("posts/like_post/")
     Call<LikeResponse> likeOrUnlikePost(

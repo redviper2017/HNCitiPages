@@ -2,12 +2,22 @@ package hn.techcom.com.hnapp.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.Profile;
+import hn.techcom.com.hnapp.Models.User;
+import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Utils {
 
@@ -29,5 +39,4 @@ public class Utils {
         editor.putString("NewUser",json);
         editor.apply();
     }
-
 }

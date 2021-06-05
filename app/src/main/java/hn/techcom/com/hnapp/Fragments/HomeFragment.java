@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +26,7 @@ import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
+import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Result;
@@ -164,22 +166,42 @@ public class HomeFragment extends Fragment implements OnOptionsButtonClickListen
         recyclerView.setAdapter(postListAdapter);
     }
 
-    private void likeOrUnlikeThisPost(int postId){
-        RequestBody user = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
+    //like or un-like post
+    public void likeOrUnlikeThisPost(String hnid, int postId){
+        RequestBody user = RequestBody.create(MediaType.parse("text/plain"), hnid);
         RequestBody post = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(postId));
+
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<LikeResponse> call = service.likeOrUnlikePost(user,post);
+
+        call.enqueue(new Callback<LikeResponse>() {
+            @Override
+            public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
+                if(response.code() == 201){
+                    LikeResponse likeResponse = response.body();
+                    Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
+                }else
+                    Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<LikeResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     //Overriding implemented clickListeners interface methods
 
     @Override
-    public void onOptionsButtonClick(int position, Result result) {
-        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment(position, result.getId());
+    public void onOptionsButtonClick(int position, int postId) {
+        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment(position, postId);
         interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
     }
 
     @Override
-    public void onLikeButtonClick(int position) {
-
+    public void onLikeButtonClick(int position, int postId) {
+        likeOrUnlikeThisPost(userProfile.getHnid(), postId);
     }
 
     private void storeRecentPosts(){
