@@ -41,17 +41,17 @@
         </menu>
     </item>
 
-    <item android:title="@string/my_supported_profiles">
-        <menu>
-            <group android:id="@+id/my_supported_profiles"
-                android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_visit_supported_profile_posts"
-                    android:icon="@drawable/ic_show_chart_black_24dp"
-                    android:title="@string/supported_profile_s_posts" />
-            </group>
-        </menu>
-    </item>
+<!--    <item android:title="@string/my_supported_profiles">-->
+<!--        <menu>-->
+<!--            <group android:id="@+id/my_supported_profiles"-->
+<!--                android:checkableBehavior="single">-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_visit_supported_profile_posts"-->
+<!--                    android:icon="@drawable/ic_show_chart_black_24dp"-->
+<!--                    android:title="@string/supported_profile_s_posts" />-->
+<!--            </group>-->
+<!--        </menu>-->
+<!--    </item>-->
 
     <item android:title="@string/posts_by_humman_navigators">
         <menu>
@@ -93,22 +93,22 @@
         </menu>
     </item>
 
-    <item android:title="Visit" >
-        <menu>
-            <item
-                android:id="@+id/nav_visit_city"
-                android:icon="@drawable/ic_visitcity_white_24dp"
-                android:title="Visit City"/>
-            <item
-                android:id="@+id/nav_visit_country"
-                android:icon="@drawable/ic_visitcountry_24dp"
-                android:title="Visit Country"/>
-            <item
-                android:id="@+id/nav_visit_world"
-                android:icon="@drawable/ic_visitworld_white_24dp"
-                android:title="Visit World"/>
-        </menu>
-    </item>
+<!--    <item android:title="Visit" >-->
+<!--        <menu>-->
+<!--            <item-->
+<!--                android:id="@+id/nav_visit_city"-->
+<!--                android:icon="@drawable/ic_visitcity_white_24dp"-->
+<!--                android:title="Visit City"/>-->
+<!--            <item-->
+<!--                android:id="@+id/nav_visit_country"-->
+<!--                android:icon="@drawable/ic_visitcountry_24dp"-->
+<!--                android:title="Visit Country"/>-->
+<!--            <item-->
+<!--                android:id="@+id/nav_visit_world"-->
+<!--                android:icon="@drawable/ic_visitworld_white_24dp"-->
+<!--                android:title="Visit World"/>-->
+<!--        </menu>-->
+<!--    </item>-->
 
 
     <item android:title="@string/human_navigation_app">
