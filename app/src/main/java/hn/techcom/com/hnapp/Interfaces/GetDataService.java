@@ -114,17 +114,23 @@ public interface GetDataService {
          @Part("post") RequestBody post
     );
 
-    //Favorite/Un-Favorite post
-
     //Delete/change upload status post
     @POST("posts/delete_post/{post_id}/")
     Call<DeleteResponse> deletePost(@Path("post_id") int post_id);
 
-    //Support user
+    //Favorite/Un-Favorite post
     @Multipart
     @POST("posts/post_bookmark/")
     Call<FavoriteResponse> favoriteOrUnfavoritePost(
             @Part("user") RequestBody user,
             @Part("post") RequestBody post
+    );
+
+    //Support/Un-Support User
+    @Multipart
+    @POST("users/support_users/")
+    Call<LikeResponse> supportOrUnsupportUser(
+            @Part("supporter") RequestBody supporter,
+            @Part("supporting") RequestBody supporting
     );
 }

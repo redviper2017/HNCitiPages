@@ -22,9 +22,14 @@ import java.util.Objects;
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Models.DeleteResponse;
+import hn.techcom.com.hnapp.Models.LikeResponse;
+import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Result;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.Utils;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,7 +39,9 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
     private NavigationView navigationView;
     private int postId, itemPosition;
     private ArrayList<Result> recentPostList;
-    private   PostListAdapter postListAdapter;
+    private PostListAdapter postListAdapter;
+    private String hnid_user;
+    private Utils myUtils;
 
     private static final String TAG = "PostBottomSheetFragment";
 
@@ -42,11 +49,13 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
             int position,
             int id,
             ArrayList<Result> recentPostList,
-            PostListAdapter postListAdapter) {
+            PostListAdapter postListAdapter, String hnid_user) {
         postId = id;
         itemPosition = position;
         this.recentPostList = recentPostList;
         this.postListAdapter = postListAdapter;
+        this.hnid_user = hnid_user;
+        myUtils = new Utils();
     }
 
     @Override
@@ -68,6 +77,7 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if(item.getItemId() == R.id.support_user_post){
                     Toast.makeText(getActivity(), "Support this user",Toast.LENGTH_LONG).show();
+                    supportOrUnsupport();
                 }
                 if(item.getItemId() == R.id.report_post){
                     Toast.makeText(getActivity(), "Reporting this post..",Toast.LENGTH_LONG).show();
@@ -112,6 +122,34 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
             @Override
             public void onFailure(Call<DeleteResponse> call, Throwable t) {
                 Toast.makeText(getActivity(),"Sorry, the delete request has been failed. Try again..", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void supportOrUnsupport(){
+        Log.d(TAG,"support or unsupport user with hnid = "+hnid_user);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+
+        Profile userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+
+        RequestBody supporter = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
+        RequestBody supporting = RequestBody.create(MediaType.parse("text/plain"), hnid_user);
+
+
+        Call<LikeResponse> call = service.supportOrUnsupportUser(supporter,supporting);
+        call.enqueue(new Callback<LikeResponse>() {
+            @Override
+            public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
+                if(response.code() == 201){
+                    LikeResponse supportResponse = response.body();
+                    Toast.makeText(getActivity(), Objects.requireNonNull(supportResponse).getMessage(), Toast.LENGTH_LONG).show();
+                }else
+                    Toast.makeText(getActivity(),"Sorry, the user cannot be supported at this moment. Try again..", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<LikeResponse> call, Throwable t) {
+                Toast.makeText(getActivity(),"Sorry, the support request has been failed. Try again..", Toast.LENGTH_LONG).show();
             }
         });
     }

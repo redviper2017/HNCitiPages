@@ -330,8 +330,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
             int postId   = allPosts.get(position).getId();
+            String hnid_user = allPosts.get(position).getUser().getHnid();
             if(view.getId() == R.id.options_icon_post)
-                onOptionsButtonClickListener.onOptionsButtonClick(position, postId);
+                onOptionsButtonClickListener.onOptionsButtonClick(position, postId, hnid_user);
             if(view.getId() == R.id.like_button_post)
                 onLikeButtonClickListener.onLikeButtonClick(position, postId);
             if(view.getId() == R.id.favorite_button_post)
@@ -462,8 +463,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
             int postId   = allPosts.get(position).getId();
+            String hnid_user = allPosts.get(position).getUser().getHnid();
             if(view.getId() == R.id.options_icon_post)
-                onOptionsButtonClickListener.onOptionsButtonClick(position, postId);
+                onOptionsButtonClickListener.onOptionsButtonClick(position, postId, hnid_user);
             if(view.getId() == R.id.like_button_post)
                 onLikeButtonClickListener.onLikeButtonClick(position, postId);
             if(view.getId() == R.id.favorite_button_post)
@@ -609,8 +611,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
             int postId   = allPosts.get(position).getId();
+            String hnid_user = allPosts.get(position).getUser().getHnid();
             if(view.getId() == R.id.options_icon_post)
-                onOptionsButtonClickListener.onOptionsButtonClick(position, postId);
+                onOptionsButtonClickListener.onOptionsButtonClick(position, postId, hnid_user);
             if(view.getId() == R.id.like_button_post)
                 onLikeButtonClickListener.onLikeButtonClick(position, postId);
             if(view.getId() == R.id.favorite_button_post)

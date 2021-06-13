@@ -3,5 +3,5 @@ package hn.techcom.com.hnapp.Interfaces;
 import hn.techcom.com.hnapp.Models.Result;
 
 public interface OnOptionsButtonClickListener {
-    void onOptionsButtonClick(int position, int postId);
+    void onOptionsButtonClick(int position, int postId, String hnid_user);
 }
