@@ -16,10 +16,13 @@ import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Models.DeleteResponse;
+import hn.techcom.com.hnapp.Models.Result;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
 import retrofit2.Call;
@@ -30,12 +33,20 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
 
     private NavigationView navigationView;
     private int postId, itemPosition;
+    private ArrayList<Result> recentPostList;
+    private   PostListAdapter postListAdapter;
 
-    private static final String TAG = "InteractWithPostBottomSheetFragment";
+    private static final String TAG = "PostBottomSheetFragment";
 
-    public InteractWithPostBottomSheetFragment(int position, int id) {
+    public InteractWithPostBottomSheetFragment(
+            int position,
+            int id,
+            ArrayList<Result> recentPostList,
+            PostListAdapter postListAdapter) {
         postId = id;
         itemPosition = position;
+        this.recentPostList = recentPostList;
+        this.postListAdapter = postListAdapter;
     }
 
     @Override
@@ -81,6 +92,17 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
                 if(response.code() == 200){
                     DeleteResponse deleteResponse = response.body();
                     Toast.makeText(getActivity(), Objects.requireNonNull(deleteResponse).getSuccess(), Toast.LENGTH_LONG).show();
+
+                    Log.d(TAG,"remove item post id = "+postId);
+
+                    Log.d(TAG,"post list size = "+recentPostList.size());
+                    recentPostList.remove(itemPosition);
+                    Log.d(TAG,"post list size = "+recentPostList.size());
+
+//                    postListAdapter.notifyItemRemoved(itemPosition);
+
+                    postListAdapter.removeItem(itemPosition);
+
                     dismiss();
                 }
                 else

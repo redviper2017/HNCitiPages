@@ -634,4 +634,10 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             progressBar.setIndeterminate(true);
         }
     }
+
+    public void removeItem(int position) {
+        allPosts.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount() - position);
+    }
 }
