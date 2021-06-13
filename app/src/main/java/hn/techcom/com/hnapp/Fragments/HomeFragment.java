@@ -220,7 +220,7 @@ public class HomeFragment
     }
 
     //favorite or un-favorite post
-    public void favoriteOrUnfavoritePost(String hnid, int postId){
+    public void favoriteOrUnfavoritePost(String hnid, int postId, int position){
         RequestBody user = RequestBody.create(MediaType.parse("text/plain"), hnid);
         RequestBody post = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(postId));
 
@@ -233,6 +233,11 @@ public class HomeFragment
                 if(response.code() == 201){
                     FavoriteResponse favoriteResponse = response.body();
                     Toast.makeText(getContext(), favoriteResponse.getMessage(), Toast.LENGTH_LONG).show();
+
+                    //Toggling favorite button image
+                    recentPostList.get(position).setFavourite(!recentPostList.get(position).getFavourite());
+
+                    postListAdapter.notifyDataSetChanged();
                 }else
                     Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
             }
@@ -266,7 +271,7 @@ public class HomeFragment
 
     @Override
     public void onFavoriteButtonClick(int position, int postId) {
-        favoriteOrUnfavoritePost(userProfile.getHnid(), postId);
+        favoriteOrUnfavoritePost(userProfile.getHnid(), postId, position);
     }
 
     private void storeRecentPosts(){

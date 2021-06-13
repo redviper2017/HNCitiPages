@@ -17,10 +17,10 @@ public class Result {
     private String text;
     @SerializedName("city")
     @Expose
-    private Object city;
+    private String city;
     @SerializedName("country")
     @Expose
-    private Object country;
+    private String country;
     @SerializedName("created_on")
     @Expose
     private String createdOn;
@@ -48,6 +48,9 @@ public class Result {
     @SerializedName("featured")
     @Expose
     private Boolean featured;
+    @SerializedName("favourite")
+    @Expose
+    private Boolean favourite;
 
     public User getUser() {
         return user;
@@ -73,19 +76,19 @@ public class Result {
         this.text = text;
     }
 
-    public Object getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(Object city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
-    public Object getCountry() {
+    public String getCountry() {
         return country;
     }
 
-    public void setCountry(Object country) {
+    public void setCountry(String country) {
         this.country = country;
     }
 
@@ -161,4 +164,11 @@ public class Result {
         this.featured = featured;
     }
 
+    public Boolean getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(Boolean favourite) {
+        this.favourite = favourite;
+    }
 }

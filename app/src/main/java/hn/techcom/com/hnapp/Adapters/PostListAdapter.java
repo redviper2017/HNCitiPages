@@ -285,14 +285,28 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else
                 likeButton.setImageResource(R.drawable.outline_thumb_up_24_ic);
 
-            if(post.getCommentCount() >1) {
-                String commentText = post.getCommentCount() + " comments";
-                comments.setText(commentText);
-            }else{
-                String commentText = post.getCommentCount() + " comment";
-                comments.setText(commentText);
-            }
+            //Toggling favorite button
+            if(post.getFavourite())
+                favoriteButton.setImageResource(R.drawable.favorite_ic_selected);
+            else
+                favoriteButton.setImageResource(R.drawable.outline_favorite_24_ic);
 
+            Log.d(TAG, "favorite = "+post.getFavourite().toString());
+
+            //Toggling comment count text
+            if (post.getCommentCount() != 0){
+                comments.setVisibility(View.VISIBLE);
+                if(post.getCommentCount() >1) {
+                    String commentText = post.getCommentCount() + " comments";
+                    comments.setText(commentText);
+                }else{
+                    String commentText = post.getCommentCount() + " comment";
+                    comments.setText(commentText);
+                }
+            }else
+                comments.setVisibility(View.GONE);
+
+            //Toggling like count text
             if(post.getLikeCount() != 0){
                 likes.setVisibility(View.VISIBLE);
                 if(post.getLikeCount() >1) {
@@ -386,14 +400,28 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else
                 likeButton.setImageResource(R.drawable.outline_thumb_up_24_ic);
 
-            //Set comment count on post
-            if(post.getCommentCount() >1) {
-                String commentText = post.getCommentCount() + " comments";
-                comments.setText(commentText);
-            }else{
-                String commentText = post.getCommentCount() + " comment";
-                comments.setText(commentText);
-            }
+            //Toggling favorite button
+            if(post.getFavourite())
+                favoriteButton.setImageResource(R.drawable.favorite_ic_selected);
+            else
+                favoriteButton.setImageResource(R.drawable.outline_favorite_24_ic);
+
+            Log.d(TAG, "favorite = "+post.getFavourite().toString());
+
+            //Toggling comment count text
+            if (post.getCommentCount() != 0){
+                comments.setVisibility(View.VISIBLE);
+                if(post.getCommentCount() >1) {
+                    String commentText = post.getCommentCount() + " comments";
+                    comments.setText(commentText);
+                }else{
+                    String commentText = post.getCommentCount() + " comment";
+                    comments.setText(commentText);
+                }
+            }else
+                comments.setVisibility(View.GONE);
+
+            //Toggling like count text
             if(post.getLikeCount() != 0){
                 likes.setVisibility(View.VISIBLE);
                 if(post.getLikeCount() >1) {
@@ -505,14 +533,29 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else
                 likeButton.setImageResource(R.drawable.outline_thumb_up_24_ic);
 
-            //Set comment count on post
-            if(post.getCommentCount() >1) {
-                String commentText = post.getCommentCount() + " comments";
-                comments.setText(commentText);
-            }else{
-                String commentText = post.getCommentCount() + " comment";
-                comments.setText(commentText);
-            }
+            //Toggling favorite button
+            if(post.getFavourite())
+                favoriteButton.setImageResource(R.drawable.favorite_ic_selected);
+            else
+                favoriteButton.setImageResource(R.drawable.outline_favorite_24_ic);
+
+            Log.d(TAG, "favorite = "+post.getFavourite().toString());
+
+
+            //Toggling comment count text
+            if (post.getCommentCount() != 0){
+                comments.setVisibility(View.VISIBLE);
+                if(post.getCommentCount() >1) {
+                    String commentText = post.getCommentCount() + " comments";
+                    comments.setText(commentText);
+                }else{
+                    String commentText = post.getCommentCount() + " comment";
+                    comments.setText(commentText);
+                }
+            }else
+                comments.setVisibility(View.GONE);
+
+            //Toggling like count text
             if(post.getLikeCount() != 0){
                 likes.setVisibility(View.VISIBLE);
                 if(post.getLikeCount() >1) {
