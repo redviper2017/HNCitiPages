@@ -252,8 +252,8 @@ public class HomeFragment
     //Overriding implemented clickListeners interface methods
 
     @Override
-    public void onOptionsButtonClick(int position, int postId, String hnid_user) {
-        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment(position, postId, recentPostList, postListAdapter, hnid_user);
+    public void onOptionsButtonClick(int position, int postId, String hnid_user, boolean supporting) {
+        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment(position, postId, recentPostList, postListAdapter, hnid_user, supporting);
         interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
     }
 

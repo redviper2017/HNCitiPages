@@ -331,8 +331,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             int position = getAbsoluteAdapterPosition();
             int postId   = allPosts.get(position).getId();
             String hnid_user = allPosts.get(position).getUser().getHnid();
+            boolean supporting = allPosts.get(position).getUser().getIsSupported();
             if(view.getId() == R.id.options_icon_post)
-                onOptionsButtonClickListener.onOptionsButtonClick(position, postId, hnid_user);
+                onOptionsButtonClickListener.onOptionsButtonClick(position, postId, hnid_user, supporting);
             if(view.getId() == R.id.like_button_post)
                 onLikeButtonClickListener.onLikeButtonClick(position, postId);
             if(view.getId() == R.id.favorite_button_post)
@@ -464,8 +465,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             int position = getAbsoluteAdapterPosition();
             int postId   = allPosts.get(position).getId();
             String hnid_user = allPosts.get(position).getUser().getHnid();
+            boolean supporting = allPosts.get(position).getUser().getIsSupported();
             if(view.getId() == R.id.options_icon_post)
-                onOptionsButtonClickListener.onOptionsButtonClick(position, postId, hnid_user);
+                onOptionsButtonClickListener.onOptionsButtonClick(position, postId, hnid_user, supporting);
             if(view.getId() == R.id.like_button_post)
                 onLikeButtonClickListener.onLikeButtonClick(position, postId);
             if(view.getId() == R.id.favorite_button_post)
@@ -612,8 +614,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             int position = getAbsoluteAdapterPosition();
             int postId   = allPosts.get(position).getId();
             String hnid_user = allPosts.get(position).getUser().getHnid();
+            boolean supporting = allPosts.get(position).getUser().getIsSupported();
             if(view.getId() == R.id.options_icon_post)
-                onOptionsButtonClickListener.onOptionsButtonClick(position, postId, hnid_user);
+                onOptionsButtonClickListener.onOptionsButtonClick(position, postId, hnid_user, supporting);
             if(view.getId() == R.id.like_button_post)
                 onLikeButtonClickListener.onLikeButtonClick(position, postId);
             if(view.getId() == R.id.favorite_button_post)
@@ -642,5 +645,10 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         allPosts.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, getItemCount() - position);
+    }
+
+    public void changeSupportingStatus(int position){
+        allPosts.get(position).getUser().setIsSupported(!allPosts.get(position).getUser().getIsSupported());
+        notifyDataSetChanged();
     }
 }

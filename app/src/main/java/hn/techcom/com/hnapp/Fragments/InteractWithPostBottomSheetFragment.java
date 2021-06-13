@@ -42,6 +42,7 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
     private PostListAdapter postListAdapter;
     private String hnid_user;
     private Utils myUtils;
+    private boolean supporting;
 
     private static final String TAG = "PostBottomSheetFragment";
 
@@ -49,21 +50,28 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
             int position,
             int id,
             ArrayList<Result> recentPostList,
-            PostListAdapter postListAdapter, String hnid_user) {
+            PostListAdapter postListAdapter, String hnid_user, boolean supporting) {
         postId = id;
         itemPosition = position;
         this.recentPostList = recentPostList;
         this.postListAdapter = postListAdapter;
         this.hnid_user = hnid_user;
+        this.supporting = supporting;
         myUtils = new Utils();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_interact_with_post_bottom_sheet, container, false);
+        View view;
+
+        if(supporting)
+            view = inflater.inflate(R.layout.fragment_interact_with_post_bottom_sheet_supporting, container, false);
+        else
+            view = inflater.inflate(R.layout.fragment_interact_with_post_bottom_sheet, container, false);
 
         navigationView = view.findViewById(R.id.navigation_interact_with_post);
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -143,13 +151,18 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
                 if(response.code() == 201){
                     LikeResponse supportResponse = response.body();
                     Toast.makeText(getActivity(), Objects.requireNonNull(supportResponse).getMessage(), Toast.LENGTH_LONG).show();
-                }else
-                    Toast.makeText(getActivity(),"Sorry, the user cannot be supported at this moment. Try again..", Toast.LENGTH_LONG).show();
+                    postListAdapter.changeSupportingStatus(itemPosition);
+                    dismiss();
+                }else {
+                    Toast.makeText(getActivity(), "Sorry, the user cannot be supported at this moment. Try again..", Toast.LENGTH_LONG).show();
+                    dismiss();
+                }
             }
 
             @Override
             public void onFailure(Call<LikeResponse> call, Throwable t) {
                 Toast.makeText(getActivity(),"Sorry, the support request has been failed. Try again..", Toast.LENGTH_LONG).show();
+                dismiss();
             }
         });
     }
