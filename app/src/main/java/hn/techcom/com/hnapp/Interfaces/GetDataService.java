@@ -100,11 +100,8 @@ public interface GetDataService {
     Call<PostList> getGlobalPostsFromPage(@Url String url);
 
     //Get Likes on post
-    @Multipart
-    @GET("posts/like_post/")
-    Call<List<ViewLikesResponse>> viewLikes(
-         @Part("post") RequestBody post
-    );
+    @GET("posts/get_like_post/{post_id}/")
+    Call<ViewLikesResponse> viewLikes(@Path("post_id") int post_id);
 
     //Like/Un-Like Post
     @Multipart

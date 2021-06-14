@@ -233,6 +233,7 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0) {
@@ -254,7 +255,10 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
                                             }
                                         });
                                 return;
-                            } } } }
+                            }
+                        }
+                    }
+                }
                 break;
         }
     }

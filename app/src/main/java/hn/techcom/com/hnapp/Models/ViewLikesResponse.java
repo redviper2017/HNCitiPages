@@ -3,27 +3,51 @@ package hn.techcom.com.hnapp.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class ViewLikesResponse {
-    @SerializedName("user")
+    @SerializedName("count")
     @Expose
-    private Profile user;
-    @SerializedName("post")
+    private Integer count;
+    @SerializedName("next")
     @Expose
-    private Integer post;
+    private Object next;
+    @SerializedName("previous")
+    @Expose
+    private Object previous;
+    @SerializedName("results")
+    @Expose
+    private List<Result1> results = null;
 
-    public Profile getUser() {
-        return user;
+    public Integer getCount() {
+        return count;
     }
 
-    public void setUser(Profile user) {
-        this.user = user;
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
-    public Integer getPost() {
-        return post;
+    public Object getNext() {
+        return next;
     }
 
-    public void setPost(Integer post) {
-        this.post = post;
+    public void setNext(Object next) {
+        this.next = next;
+    }
+
+    public Object getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(Object previous) {
+        this.previous = previous;
+    }
+
+    public List<Result1> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Result1> results) {
+        this.results = results;
     }
 }

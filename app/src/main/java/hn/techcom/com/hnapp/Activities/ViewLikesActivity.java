@@ -1,6 +1,8 @@
 package hn.techcom.com.hnapp.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +14,13 @@ import com.google.android.material.textview.MaterialTextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import hn.techcom.com.hnapp.Adapters.LikeListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Models.Result;
+import hn.techcom.com.hnapp.Models.Result1;
 import hn.techcom.com.hnapp.Models.ViewLikesResponse;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,9 +28,12 @@ import retrofit2.Response;
 public class ViewLikesActivity extends AppCompatActivity implements View.OnClickListener{
 
     private MaterialTextView likeCountText;
+    private RecyclerView recyclerView;
+    private LikeListAdapter likesListAdapter;
+    private MaterialTextView screenTitle;
 
     private static final String TAG = "ViewLikesActivity";
-    private ArrayList<ViewLikesResponse> likesArrayList;
+    private ArrayList<Result1> likesArrayList;
 
     private int postId;
     @Override
@@ -38,16 +44,17 @@ public class ViewLikesActivity extends AppCompatActivity implements View.OnClick
         //get the post id to view likes
         Intent intent = getIntent();
         postId = intent.getIntExtra("POST_ID",-1);
-        viewLikesOnPost();
 
         //Hooks
-        MaterialTextView screenTitle   = findViewById(R.id.text_screen_title_view_likes);
         ImageButton backButton         = findViewById(R.id.image_button_back);
+        screenTitle                    = findViewById(R.id.text_screen_title_view_likes);
         likeCountText                  = findViewById(R.id.text_like_count_view_likes);
+        recyclerView                   = findViewById(R.id.recyclerview_posts_likes);
 
         likesArrayList                 = new ArrayList<>();
 
-        screenTitle.setText(R.string.likes);
+        viewLikesOnPost();
+
         //OnClick Listeners
         backButton.setOnClickListener(this);
     }
@@ -59,25 +66,36 @@ public class ViewLikesActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void viewLikesOnPost(){
-        RequestBody post = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(postId));
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<ViewLikesResponse>> call = service.viewLikes(post);
-        call.enqueue(new Callback<List<ViewLikesResponse>>() {
+        Call<ViewLikesResponse> call = service.viewLikes(postId);
+        call.enqueue(new Callback<ViewLikesResponse>() {
             @Override
-            public void onResponse(Call<List<ViewLikesResponse>> call, Response<List<ViewLikesResponse>> response) {
-                if(response.code() == 201) {
-                    List<ViewLikesResponse> list = response.body();
-                    if(list.size() != 0) {
-                        likesArrayList.addAll(list);
-                        likeCountText.setText(likesArrayList.size());
+            public void onResponse(Call<ViewLikesResponse> call, Response<ViewLikesResponse> response) {
+                if(response.code() == 200) {
+                    ViewLikesResponse list = response.body();
+
+                    if(list.getResults().size() != 0) {
+                        likesArrayList.addAll(list.getResults());
+                        likeCountText.setText(String.valueOf(likesArrayList.size()));
+                        if(list.getCount() == 1)
+                            screenTitle.setText(R.string.like);
+                        else
+                            screenTitle.setText(R.string.likes);
+                        setRecyclerView(likesArrayList);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ViewLikesResponse>> call, Throwable t) {
+            public void onFailure(Call<ViewLikesResponse> call, Throwable t) {
 
             }
         });
+    }
+
+    public void setRecyclerView(ArrayList<Result1> likeList){
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        likesListAdapter = new LikeListAdapter(recyclerView, likeList, this);
+        recyclerView.setAdapter(likesListAdapter);
     }
 }

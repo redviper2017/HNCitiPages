@@ -9,7 +9,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:fontFamily="@font/pacifico"
-    android:text="Supported CitiPagers"
     android:textColor="@color/colorTextTitle"
     android:textSize="@dimen/_16ssp"
     android:textStyle="bold" />
