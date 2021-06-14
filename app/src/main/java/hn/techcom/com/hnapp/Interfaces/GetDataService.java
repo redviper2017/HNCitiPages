@@ -2,12 +2,14 @@ package hn.techcom.com.hnapp.Interfaces;
 
 import java.util.List;
 
+import hn.techcom.com.hnapp.Models.CommentResponse;
 import hn.techcom.com.hnapp.Models.DeleteResponse;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.NewPostResponse;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
+import hn.techcom.com.hnapp.Models.ResultViewComments;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Models.ValidationResponse;
 import hn.techcom.com.hnapp.Models.ViewCommentResponse;
@@ -134,5 +136,14 @@ public interface GetDataService {
     Call<LikeResponse> supportOrUnsupportUser(
             @Part("supporter") RequestBody supporter,
             @Part("supporting") RequestBody supporting
+    );
+
+    //Comment on post
+    @Multipart
+    @POST("posts/post_comment/")
+    Call<ResultViewComments> commentOnPost(
+            @Part("user") RequestBody user,
+            @Part("post") RequestBody post,
+            @Part("comment") RequestBody comment
     );
 }
