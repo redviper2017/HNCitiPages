@@ -95,10 +95,13 @@
     <string name="see_more">see more...</string>
     <string name="likes">Likes</string>
     <string name="like">Like</string>
+    <string name="comments">Comments</string>
+    <string name="comment">Comment</string>
     <string name="share_story">Share Story</string>
     <string name="share_picture">Share Picture</string>
     <string name="share_video">Share Video</string>
     <string name="share_audio">Share Audio</string>
     <string name="support_user">Support User</string>
     <string name="un_support_user">Stop Supporting User</string>
+    <string name="add_a_comment">Add a comment...</string>
 </resources>

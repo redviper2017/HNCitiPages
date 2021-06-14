@@ -23,9 +23,11 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import hn.techcom.com.hnapp.Activities.ViewCommentsActivity;
 import hn.techcom.com.hnapp.Activities.ViewLikesActivity;
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Interfaces.OnCommentClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnFavoriteButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
@@ -50,7 +52,8 @@ public class HomeFragment
         OnOptionsButtonClickListener,
         OnLikeButtonClickListener,
         OnFavoriteButtonClickListener,
-        OnLikeCountButtonListener {
+        OnLikeCountButtonListener,
+        OnCommentClickListener {
     //Constants
     private static final String TAG = "HomeFragment";
 
@@ -179,6 +182,7 @@ public class HomeFragment
                 this,
                 this,
                 this,
+                this,
                 this);
         recyclerView.setAdapter(postListAdapter);
     }
@@ -272,6 +276,14 @@ public class HomeFragment
     @Override
     public void onFavoriteButtonClick(int position, int postId) {
         favoriteOrUnfavoritePost(userProfile.getHnid(), postId, position);
+    }
+
+
+    @Override
+    public void onCommentClick(int postId) {
+        Intent intent = new Intent(getContext(), ViewCommentsActivity.class);
+        intent.putExtra("POST_ID",postId);
+        startActivity(intent);
     }
 
     private void storeRecentPosts(){

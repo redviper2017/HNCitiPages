@@ -10,6 +10,7 @@ import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Models.ValidationResponse;
+import hn.techcom.com.hnapp.Models.ViewCommentResponse;
 import hn.techcom.com.hnapp.Models.ViewLikesResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -102,6 +103,10 @@ public interface GetDataService {
     //Get Likes on post
     @GET("posts/get_like_post/{post_id}/")
     Call<ViewLikesResponse> viewLikes(@Path("post_id") int post_id);
+
+    //Get comments on post
+    @GET("posts/get_post_comment/{post_id}/")
+    Call<ViewCommentResponse> viewComments(@Path("post_id") int post_id);
 
     //Like/Un-Like Post
     @Multipart

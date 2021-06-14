@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ViewLikesResponse {
+public class ViewCommentResponse {
     @SerializedName("count")
     @Expose
     private Integer count;
@@ -17,7 +17,7 @@ public class ViewLikesResponse {
     private Object previous;
     @SerializedName("results")
     @Expose
-    private List<ResultViewLikes> results = null;
+    private List<ResultViewComments> results = null;
 
     public Integer getCount() {
         return count;
@@ -43,11 +43,11 @@ public class ViewLikesResponse {
         this.previous = previous;
     }
 
-    public List<ResultViewLikes> getResults() {
+    public List<ResultViewComments> getResults() {
         return results;
     }
 
-    public void setResults(List<ResultViewLikes> results) {
+    public void setResults(List<ResultViewComments> results) {
         this.results = results;
     }
 }
