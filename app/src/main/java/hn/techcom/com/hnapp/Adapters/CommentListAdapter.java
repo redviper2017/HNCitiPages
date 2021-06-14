@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
+import hn.techcom.com.hnapp.Models.Reply;
 import hn.techcom.com.hnapp.Models.ResultViewComments;
 import hn.techcom.com.hnapp.Models.ResultViewLikes;
 import hn.techcom.com.hnapp.R;
@@ -78,6 +79,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public MaterialTextView name, location;
         public CircleImageView avatar;
         private MaterialTextView commentPost;
+        private RecyclerView repliesRecyclerview;
+        private ReplyListAdapter replyListAdapter;
 
         public CommentViewHolder(@NonNull View view) {
             super(view);
@@ -86,6 +89,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             location       = view.findViewById(R.id.location_post);
             avatar         = view.findViewById(R.id.avatar_post);
             commentPost    = view.findViewById(R.id.comment_post);
+            repliesRecyclerview = view.findViewById(R.id.recyclerview_posts_replies);
         }
 
         void bind(ResultViewComments comment){
@@ -104,11 +108,23 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             Log.d(TAG,"comment = "+comment.getComment());
             commentPost.setText(String.valueOf(comment.getComment()));
+
+            if(comment.getReplies().size() > 0) {
+                ArrayList<Reply> replyList = new ArrayList<>();
+                replyList.addAll(comment.getReplies());
+                setRecyclerView(replyList, repliesRecyclerview);
+            }
         }
 
         @Override
         public void onClick(View view) {
 
+        }
+
+        public void setRecyclerView(ArrayList<Reply> replyList, RecyclerView repliesRecyclerview){
+            repliesRecyclerview.setLayoutManager(new LinearLayoutManager(context));
+            replyListAdapter = new ReplyListAdapter(context, this.repliesRecyclerview, replyList);
+            repliesRecyclerview.setAdapter(replyListAdapter);
         }
     }
 }

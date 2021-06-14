@@ -3,12 +3,7 @@ package hn.techcom.com.hnapp.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class ResultViewComments {
-    @SerializedName("id")
-    @Expose
-    private Integer id;
+public class Reply {
     @SerializedName("user")
     @Expose
     private User user;
@@ -18,17 +13,6 @@ public class ResultViewComments {
     @SerializedName("timestamp")
     @Expose
     private String timestamp;
-    @SerializedName("replies")
-    @Expose
-    private List<Reply> replies = null;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public User getUser() {
         return user;
@@ -54,11 +38,4 @@ public class ResultViewComments {
         this.timestamp = timestamp;
     }
 
-    public List<Reply> getReplies() {
-        return replies;
-    }
-
-    public void setReplies(List<Reply> replies) {
-        this.replies = replies;
-    }
 }
