@@ -10,6 +10,7 @@ import hn.techcom.com.hnapp.Models.NewPostResponse;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.ResultViewComments;
+import hn.techcom.com.hnapp.Models.SupportedProfileList;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Models.ValidationResponse;
 import hn.techcom.com.hnapp.Models.ViewCommentResponse;
@@ -99,7 +100,7 @@ public interface GetDataService {
     Call<PostList> getLatestGlobalPosts(@Path("hnid") String hnid);
 
     //Get global posts from a specified page
-    @GET() //i.e https://api.demo.com/Search?
+    @GET()
     Call<PostList> getGlobalPostsFromPage(@Url String url);
 
     //Get Likes on post
@@ -146,4 +147,20 @@ public interface GetDataService {
             @Part("post") RequestBody post,
             @Part("comment") RequestBody comment
     );
+
+    //Get Supported Profiles
+    @GET("users/supporting/{hnid}/")
+    Call<SupportedProfileList> getSupportingProfiles(@Path("hnid") String hnid);
+
+    //Get Supporters Profile
+    @GET("users/supporters/{hnid}/")
+    Call<SupportedProfileList> getSupporterProfiles(@Path("hnid") String hnid);
+
+    //Get Supported Profile Posts List
+    @GET("posts/get_supporting_posts/{hnid}/")
+    Call<PostList> getLatestSupportingProfilePosts(@Path("hnid") String hnid);
+
+    //Get supported profile posts from a specified page
+    @GET()
+    Call<PostList> getSupportingProfilePostsFromPage(@Url String url);
 }

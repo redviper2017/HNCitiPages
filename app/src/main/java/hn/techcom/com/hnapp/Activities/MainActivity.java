@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import hn.techcom.com.hnapp.Fragments.HomeFragment;
 import hn.techcom.com.hnapp.Fragments.SharePostBottomSheetFragment;
+import hn.techcom.com.hnapp.Fragments.SupportSectionFragment;
 import hn.techcom.com.hnapp.Fragments.SupportedSectionFragment;
 import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.Profile;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragmentSelected = null;
         switch(item.getItemId()){
             case R.id.navigation_supportedsection:
-                fragmentSelected = new SupportedSectionFragment(userSupportedProfiles,userSupportedProfilePosts);
+                fragmentSelected = new SupportSectionFragment();
                 break;
             case R.id.navigation_home:
                 fragmentSelected = new HomeFragment();
