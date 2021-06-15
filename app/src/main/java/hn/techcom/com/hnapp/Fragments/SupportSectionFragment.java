@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import hn.techcom.com.hnapp.Activities.ViewCommentsActivity;
 import hn.techcom.com.hnapp.Activities.ViewLikesActivity;
+import hn.techcom.com.hnapp.Adapters.AvatarLoaderAdapter;
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Interfaces.OnCommentClickListener;
@@ -37,7 +38,9 @@ import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Result;
-import hn.techcom.com.hnapp.Models.SupportedProfileList;
+import hn.techcom.com.hnapp.Models.SupporterProfile;
+import hn.techcom.com.hnapp.Models.SupportingProfileList;
+import hn.techcom.com.hnapp.Models.User;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Utils.Utils;
@@ -60,8 +63,9 @@ public class SupportSectionFragment
     private Profile userProfile;
 
     private ProgressBar progressBar;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView, profileRecyclerView;
     private PostListAdapter postListAdapter;
+    private AvatarLoaderAdapter avatarLoaderAdapter;
 
     private ArrayList<Result> recentPostList;
 
@@ -81,6 +85,7 @@ public class SupportSectionFragment
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_supportsection);
         progressBar                  = view.findViewById(R.id.progress);
         recyclerView                 = view.findViewById(R.id.recyclerview_posts_supportsection);
+        profileRecyclerView          = view.findViewById(R.id.recyclerview_supported_avatars_supportsection);
         recentPostList = new ArrayList<>();
 
         //Setting up user avatar on top bar
@@ -99,18 +104,23 @@ public class SupportSectionFragment
     //get initial supporting profile list
     public void getSupportingProfiles(){
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<SupportedProfileList> call = service.getSupportingProfiles(userProfile.getHnid());
-        call.enqueue(new Callback<SupportedProfileList>(){
+        Call<SupportingProfileList> call = service.getSupportingProfiles(userProfile.getHnid());
+        call.enqueue(new Callback<SupportingProfileList>(){
             @Override
-            public void onResponse(Call<SupportedProfileList> call, Response<SupportedProfileList> response) {
+            public void onResponse(Call<SupportingProfileList> call, Response<SupportingProfileList> response) {
                 if(response.code() == 200){
-                    SupportedProfileList supportedProfileList = response.body();
-                    Log.d(TAG, "number of supporting profile = "+supportedProfileList.getCount());
+                    SupportingProfileList supportingProfileList = response.body();
+                    Log.d(TAG, "number of supporting profile = "+ supportingProfileList.getCount());
+
+                    ArrayList<User> profilesArraytList = new ArrayList<>();
+                    profilesArraytList.addAll(supportingProfileList.getResults());
+
+                    setProfilesRecyclerView(profilesArraytList);
                 }
             }
 
             @Override
-            public void onFailure(Call<SupportedProfileList> call, Throwable t) {
+            public void onFailure(Call<SupportingProfileList> call, Throwable t) {
 
             }
         });
@@ -153,6 +163,30 @@ public class SupportSectionFragment
                 this,
                 this);
         recyclerView.setAdapter(postListAdapter);
+    }
+
+    public void setProfilesRecyclerView(ArrayList<User> supportingProfileList){
+        ArrayList<String> avatarList = new ArrayList<>();
+        ArrayList<String> nameList = new ArrayList<>();
+
+        for (User supportingProfile : supportingProfileList) {
+            avatarList.add(supportingProfile.getProfileImg());
+            nameList.add(supportingProfile.getFullName());
+        }
+
+        Log.d(TAG, "avatar list item url 1 = "+avatarList.get(0));
+
+        LinearLayoutManager horizontalLayout = new LinearLayoutManager(
+                getContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+        );
+        profileRecyclerView.setLayoutManager(horizontalLayout);
+        avatarLoaderAdapter = new AvatarLoaderAdapter(
+                avatarList,
+                nameList
+        );
+        profileRecyclerView.setAdapter(avatarLoaderAdapter);
     }
 
     @Override

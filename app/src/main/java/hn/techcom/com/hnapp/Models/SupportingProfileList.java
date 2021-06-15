@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class SupportedProfileList {
+public class SupportingProfileList {
     @SerializedName("count")
     @Expose
     private Integer count;
@@ -27,7 +27,7 @@ public class SupportedProfileList {
         this.count = count;
     }
 
-    public Object getNext() {
+    public String getNext() {
         return next;
     }
 
@@ -35,7 +35,7 @@ public class SupportedProfileList {
         this.next = next;
     }
 
-    public Object getPrevious() {
+    public String getPrevious() {
         return previous;
     }
 

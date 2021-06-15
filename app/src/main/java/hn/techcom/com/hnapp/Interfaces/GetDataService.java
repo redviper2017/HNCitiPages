@@ -2,7 +2,6 @@ package hn.techcom.com.hnapp.Interfaces;
 
 import java.util.List;
 
-import hn.techcom.com.hnapp.Models.CommentResponse;
 import hn.techcom.com.hnapp.Models.DeleteResponse;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
@@ -10,7 +9,7 @@ import hn.techcom.com.hnapp.Models.NewPostResponse;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.ResultViewComments;
-import hn.techcom.com.hnapp.Models.SupportedProfileList;
+import hn.techcom.com.hnapp.Models.SupportingProfileList;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Models.ValidationResponse;
 import hn.techcom.com.hnapp.Models.ViewCommentResponse;
@@ -23,7 +22,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface GetDataService {
@@ -150,11 +148,11 @@ public interface GetDataService {
 
     //Get Supported Profiles
     @GET("users/supporting/{hnid}/")
-    Call<SupportedProfileList> getSupportingProfiles(@Path("hnid") String hnid);
+    Call<SupportingProfileList> getSupportingProfiles(@Path("hnid") String hnid);
 
     //Get Supporters Profile
     @GET("users/supporters/{hnid}/")
-    Call<SupportedProfileList> getSupporterProfiles(@Path("hnid") String hnid);
+    Call<SupportingProfileList> getSupporterProfiles(@Path("hnid") String hnid);
 
     //Get Supported Profile Posts List
     @GET("posts/get_supporting_posts/{hnid}/")
