@@ -670,4 +670,14 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         allPosts.get(position).getUser().setIsSupported(!allPosts.get(position).getUser().getIsSupported());
         notifyDataSetChanged();
     }
+
+
+    //This method will filter the list
+    //here we are passing the filtered data
+    //and assigning it to the list with notifydatasetchanged method
+    public void filterList(ArrayList<Result> filterdNames) {
+        allPosts = filterdNames;
+        notifyDataSetChanged();
+    }
+
 }

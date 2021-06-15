@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -64,6 +67,7 @@ public class HomeFragment
     public  ArrayList<PostList> globalPostList;
     private ArrayList<Result> recentPostList;
     private PostListAdapter postListAdapter;
+    private EditText searchView;
     private boolean isLoading = false;
 
     public HomeFragment() {}
@@ -77,6 +81,7 @@ public class HomeFragment
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_supportsection);
 
         recyclerView = view.findViewById(R.id.recyclerview_posts_supportsection);
+        searchView   = view.findViewById(R.id.searchview_supportedsection);
 
         screenTitle.setText(R.string.home);
         globalPostList = new ArrayList<>();
@@ -100,6 +105,23 @@ public class HomeFragment
             }
         });
 
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString().toLowerCase());
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -115,6 +137,16 @@ public class HomeFragment
     public void onPause() {
         super.onPause();
         storeRecentPosts();
+    }
+
+    private void filter(String text) {
+        ArrayList<Result> filterNames = new ArrayList<>();
+
+        for (Result post : recentPostList)
+            if (post.getUser().getFullName().toLowerCase().contains(text))
+                filterNames.add(post);
+
+        postListAdapter.filterList(filterNames);
     }
 
     public void getLatestGlobalPostList(){

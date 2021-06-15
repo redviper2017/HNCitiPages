@@ -9,10 +9,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -35,6 +38,7 @@ import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
+import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Result;
@@ -64,6 +68,7 @@ public class SupportSectionFragment
 
     private ProgressBar progressBar;
     private RecyclerView recyclerView, profileRecyclerView;
+    private EditText searchView;
     private PostListAdapter postListAdapter;
     private AvatarLoaderAdapter avatarLoaderAdapter;
 
@@ -86,6 +91,8 @@ public class SupportSectionFragment
         progressBar                  = view.findViewById(R.id.progress);
         recyclerView                 = view.findViewById(R.id.recyclerview_posts_supportsection);
         profileRecyclerView          = view.findViewById(R.id.recyclerview_supported_avatars_supportsection);
+        searchView                   = view.findViewById(R.id.searchview_supportedsection);
+
         recentPostList = new ArrayList<>();
 
         //Setting up user avatar on top bar
@@ -97,8 +104,35 @@ public class SupportSectionFragment
         getSupportingProfiles();
         getSupportingProfilePosts();
 
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString().toLowerCase());
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void filter(String text) {
+        ArrayList<Result> filterNames = new ArrayList<>();
+
+        for (Result post : recentPostList)
+            if (post.getUser().getFullName().toLowerCase().contains(text))
+                filterNames.add(post);
+
+        postListAdapter.filterList(filterNames);
     }
 
     //get initial supporting profile list
@@ -140,6 +174,9 @@ public class SupportSectionFragment
 
                     ArrayList<Result> postArrayList = new ArrayList<>();
                     postArrayList.addAll(postList.getResults());
+
+                    recentPostList.clear();
+                    recentPostList.addAll(postArrayList);
 
                     setRecyclerView(postArrayList);
                 }
