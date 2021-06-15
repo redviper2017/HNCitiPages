@@ -373,6 +373,9 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
             public void onFailure(Call<NewPostResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(PostVideoActivity.this,"Unable to share video! Try again later..",Toast.LENGTH_LONG).show();
+                videoCaption.setText("");
+                postCategorySpinner.setSelection(0);
+                recreate();
             }
         });
     }

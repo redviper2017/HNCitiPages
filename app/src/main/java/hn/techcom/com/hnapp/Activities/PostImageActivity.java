@@ -420,7 +420,11 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onFailure(Call<NewPostResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(PostImageActivity.this,"Unable to share image! Try again later..",Toast.LENGTH_LONG).show();
+                imageCaption.setText("");
+                postCategorySpinner.setSelection(0);
+                imageview.setImageDrawable(ContextCompat.getDrawable(PostImageActivity.this,R.drawable.image_1));
+                changeButtonsUI("select");
+//                Toast.makeText(PostImageActivity.this,"Unable to share image! Try again later..",Toast.LENGTH_LONG).show();
             }
         });
     }

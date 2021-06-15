@@ -151,9 +151,16 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
                     ResultViewComments commentResponse = response.body();
                     Toast.makeText(ViewCommentsActivity.this, "Your comment has been posted successfully!", Toast.LENGTH_LONG).show();
                     commentEditText.setText("");
+                    if (commentListAdapter != null)
+                        if(commentsArrayList.size() != 0) {
+                            commentsArrayList.add(0, commentResponse);
+                            commentListAdapter.notifyDataSetChanged();
+                        }
+                    else {
+                        commentsArrayList.add(commentResponse);
+                        commentListAdapter.notifyDataSetChanged();
+                    }
 
-                    commentsArrayList.add(0,commentResponse);
-                    commentListAdapter.notifyDataSetChanged();
                 }else
                     Toast.makeText(ViewCommentsActivity.this,"Unable to post comment! Try again later..",Toast.LENGTH_LONG).show();
             }

@@ -181,7 +181,7 @@ public class PostStoryActivity extends AppCompatActivity implements View.OnClick
                 progressBar.setVisibility(View.GONE);
                 storyText.setText("");
                 postCategorySpinner.setSelection(0);
-                Toast.makeText(PostStoryActivity.this,"Oops! something is wrong, please try again later..",Toast.LENGTH_LONG).show();
+//                Toast.makeText(PostStoryActivity.this,"Oops! something is wrong, please try again later..",Toast.LENGTH_LONG).show();
 
             }
         });
