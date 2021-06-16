@@ -118,8 +118,10 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
                         else
                             screenTitle.setText(R.string.comments);
                         setRecyclerView(commentsArrayList);
-                    }  else
+                    }  else {
                         screenTitle.setText(R.string.comments);
+                        setRecyclerView(commentsArrayList);
+                    }
                 }
             }
 

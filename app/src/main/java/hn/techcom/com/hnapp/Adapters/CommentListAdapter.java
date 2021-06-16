@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -81,6 +82,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private MaterialTextView commentPost;
         private RecyclerView repliesRecyclerview;
         private ReplyListAdapter replyListAdapter;
+        private ImageButton replyButton;
 
         public CommentViewHolder(@NonNull View view) {
             super(view);
@@ -90,6 +92,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             avatar         = view.findViewById(R.id.avatar_post);
             commentPost    = view.findViewById(R.id.comment_post);
             repliesRecyclerview = view.findViewById(R.id.recyclerview_posts_replies);
+            replyButton    = view.findViewById(R.id.reply_button_comment);
         }
 
         void bind(ResultViewComments comment){
@@ -114,6 +117,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 replyList.addAll(comment.getReplies());
                 setRecyclerView(replyList, repliesRecyclerview);
             }
+
+            replyButton.setOnClickListener(this);
         }
 
         @Override

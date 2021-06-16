@@ -68,13 +68,14 @@
             android:layout_marginEnd="10dp"
             android:layout_marginTop="5dp"/>
         <androidx.constraintlayout.utils.widget.ImageFilterButton
-            android:id="@+id/options_icon_comment"
+            android:id="@+id/reply_button_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/options_ic"
-            android:layout_marginEnd="10dp"
+            android:src="@drawable/reply_ic"
+            android:layout_marginEnd="20dp"
             android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:background="@color/transparent"/>
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_posts_replies"
