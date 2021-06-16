@@ -153,7 +153,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 int position = getAbsoluteAdapterPosition();
                 int commentId = allComments.get(position).getId();
                 if(!TextUtils.isEmpty(replyText.getText().toString()))
-                    onReplyClickListener.onReplyClick(commentId,replyText.getText().toString(), position);
+                    onReplyClickListener.onReplyClick(commentId,replyText.getText().toString(), position, replyLayout, replyButton);
                 else
                     Toast.makeText(context,"Oops! You've forgot to enter your reply",Toast.LENGTH_LONG).show();
             }

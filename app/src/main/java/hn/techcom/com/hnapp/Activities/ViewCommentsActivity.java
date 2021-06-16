@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.textview.MaterialTextView;
@@ -20,17 +21,12 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Adapters.CommentListAdapter;
-import hn.techcom.com.hnapp.Adapters.LikeListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Interfaces.OnReplyClickListener;
-import hn.techcom.com.hnapp.Models.CommentResponse;
-import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Reply;
 import hn.techcom.com.hnapp.Models.ResultViewComments;
-import hn.techcom.com.hnapp.Models.ResultViewLikes;
 import hn.techcom.com.hnapp.Models.ViewCommentResponse;
-import hn.techcom.com.hnapp.Models.ViewLikesResponse;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Utils.Utils;
@@ -179,12 +175,12 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void onReplyClick(int commentId, String reply, int position) {
+    public void onReplyClick(int commentId, String reply, int position, LinearLayout replyLayout, ImageButton replyButton) {
         Log.d(TAG,"replied text = "+reply);
-        postReply(commentId,reply, position);
+        postReply(commentId,reply, position, replyLayout, replyButton);
     }
 
-    public void postReply(int commentId, String reply, int position){
+    public void postReply(int commentId, String reply, int position, LinearLayout replyLayout, ImageButton replyButton){
         RequestBody user = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
         RequestBody post = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(postId));
         RequestBody reply_comment = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(commentId));
@@ -201,6 +197,9 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
                     Reply reply = response.body();
                     commentsArrayList.get(position).getReplies().add(reply);
                     commentListAdapter.notifyDataSetChanged();
+
+                    replyButton.setImageResource(R.drawable.reply_ic);
+                    replyLayout.setVisibility(View.GONE);
                 }
 
             }
