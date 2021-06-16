@@ -63,7 +63,7 @@
             android:text="Wonderful comment"
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/black"
-            android:layout_toStartOf="@id/options_icon_comment"
+            android:layout_toStartOf="@id/reply_button_comment"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="5dp"/>

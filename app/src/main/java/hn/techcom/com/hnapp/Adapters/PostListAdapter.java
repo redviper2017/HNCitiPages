@@ -1,13 +1,17 @@
 package hn.techcom.com.hnapp.Adapters;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +22,7 @@ import com.potyvideo.library.AndExoPlayerView;
 import com.santalu.aspectratioimageview.AspectRatioImageView;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -655,10 +660,13 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //Audio view holder class
     private class AudioViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location, text, likes, comments, seeMoreButton;
+        public MaterialTextView name, location, text, likes, comments, seeMoreButton, currentTime, totalTime;
         public CircleImageView avatar;
-        private AndExoPlayerView videoPlayerPortrait, videoPlayerLandscape;
-        private ImageButton optionsButton, likeButton, favoriteButton, commentButton;;
+        public ImageView playPauseButton;
+        public SeekBar seekbar;
+        private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
+        public MediaPlayer mediaPlayer;
+        public Handler handler = new Handler();
 
         public AudioViewHolder(@NonNull View view) {
             super(view);
@@ -670,22 +678,50 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             comments             = view.findViewById(R.id.text_comment_count_post);
             avatar               = view.findViewById(R.id.avatar_post);
             seeMoreButton        = view.findViewById(R.id.seemore_post);
-            videoPlayerPortrait  = view.findViewById(R.id.video_player_portrait_post);
-            videoPlayerLandscape = view.findViewById(R.id.video_player_landscape_post);
+            currentTime          = view.findViewById(R.id.currentTime_text);
+            totalTime            = view.findViewById(R.id.totalTime_text);
+            playPauseButton      = view.findViewById(R.id.playPause_imagebutton_audio);
+            seekbar              = view.findViewById(R.id.seekbar_audio);
             optionsButton        = view.findViewById(R.id.options_icon_post);
             likeButton           = view.findViewById(R.id.like_button_post);
             favoriteButton       = view.findViewById(R.id.favorite_button_post);
             commentButton        = view.findViewById(R.id.comment_button_post);
 
+            mediaPlayer          = new MediaPlayer();
+            seekbar.setMax(100);
+
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
-
-            videoPlayerLandscape.setPlayWhenReady(false);
-            videoPlayerPortrait.setPlayWhenReady(false);
             favoriteButton.setOnClickListener(this);
             likes.setOnClickListener(this);
             comments.setOnClickListener(this);
             commentButton.setOnClickListener(this);
+
+            playPauseButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    if(mediaPlayer.isPlaying()){
+                        handler.removeCallbacks(updater);
+                        mediaPlayer.pause();
+                        playPauseButton.setImageResource(R.drawable.play_button_ic);
+                    }else{
+                        mediaPlayer.start();
+                        playPauseButton.setImageResource(R.drawable.pause_button_ic);
+                        updateSeekBar();
+                    }
+                }
+            });
+
+            seekbar.setOnTouchListener(new View.OnTouchListener(){
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    SeekBar seekBar = (SeekBar) view;
+                    int playPosition = (mediaPlayer.getDuration() / 100) * seekbar.getProgress();
+                    mediaPlayer.seekTo(playPosition);
+                    currentTime.setText(milliSecondsToTimer(mediaPlayer.getCurrentPosition()));
+                    return false;
+                }
+            });
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -756,35 +792,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     .load(profilePhotoUrl)
                     .into(avatar);
 
-            String videoUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
 
-//            //Set MediaController  to enable play, pause, forward, etc options.
-//            MediaController mediaController = new MediaController(context);
-//
-//            //TODO: later toggle the imageview based on image aspect ratio
-//            landscapeVideoView.setVisibility(View.GONE);
-//            portraitVideoView.setVisibility(View.VISIBLE);
-//
-//            mediaController.setAnchorView(portraitVideoView);
-//            portraitVideoView.setMediaController(mediaController);
-//
-//            portraitVideoView.setVideoPath(videoUrl);
-//            portraitVideoView.requestFocus();
-            if (post.getFiles().get(0).getAspect().equals("portrait")){
-                videoPlayerPortrait.setVisibility(View.VISIBLE);
-                videoPlayerLandscape.setVisibility(View.GONE);
-                videoPlayerPortrait.setSource(videoUrl);
-                videoPlayerPortrait.setPlayWhenReady(false);
-//                videoPlayerPortrait.stopPlayer();
-//                videoPlayerPortrait.seekForward(1);
-            }else{
-                videoPlayerLandscape.setVisibility(View.VISIBLE);
-                videoPlayerPortrait.setVisibility(View.GONE);
-                videoPlayerLandscape.setSource(videoUrl);
-                videoPlayerLandscape.setPlayWhenReady(false);
-//                videoPlayerLandscape.stopPlayer();
-//                videoPlayerLandscape.seekForward(1);
-            }
+            prepareMediaPlayer(post);
         }
 
         @Override
@@ -803,6 +812,53 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 onLikeCountButtonListener.onLikeCountButtonClick(postId);
             if(view.getId() == R.id.comment_button_post || view.getId() == R.id.text_comment_count_post)
                 onCommentClickListener.onCommentClick(postId);
+        }
+
+        private void prepareMediaPlayer(Result post){
+            mediaPlayer          = new MediaPlayer();
+            try{
+                String audioUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
+                mediaPlayer.setDataSource(audioUrl);  //url of audio file
+                mediaPlayer.prepare();
+                totalTime.setText(milliSecondsToTimer(mediaPlayer.getDuration()));
+            } catch (IOException e) {
+                Log.d(TAG,"audio load exception message = "+e.getMessage());
+            }
+        }
+
+        private Runnable updater = new Runnable() {
+            @Override
+            public void run() {
+                updateSeekBar();
+                long currentDuration = mediaPlayer.getCurrentPosition();
+                currentTime.setText(milliSecondsToTimer(currentDuration));
+            }
+        };
+
+        private void updateSeekBar(){
+            if(mediaPlayer.isPlaying()) {
+                seekbar.setProgress((int) (((float) mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration()) * 100));
+                handler.postDelayed(updater, 1000);
+            }
+        }
+
+        private String milliSecondsToTimer(long milliseconds){
+            String timerString = "";
+            String secondsString;
+
+            int hours   = (int) (milliseconds / (1000 * 60 * 60));
+            int minutes = (int) (milliseconds % (1000 * 60 * 60)) / (1000 * 60);
+            int seconds = (int) ((milliseconds % (1000 * 60 * 60)) % (1000 * 60) / 1000);
+
+            if (hours > 0)
+                timerString = hours + ":";
+            if (seconds < 10)
+                secondsString = "0" + seconds;
+            else
+                secondsString = "" + seconds;
+
+            timerString = timerString + minutes + ":" + secondsString;
+            return timerString;
         }
     }
 
