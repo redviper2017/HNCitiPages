@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,9 +22,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Adapters.CommentListAdapter;
 import hn.techcom.com.hnapp.Adapters.LikeListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Interfaces.OnReplyClickListener;
 import hn.techcom.com.hnapp.Models.CommentResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.Profile;
+import hn.techcom.com.hnapp.Models.Reply;
 import hn.techcom.com.hnapp.Models.ResultViewComments;
 import hn.techcom.com.hnapp.Models.ResultViewLikes;
 import hn.techcom.com.hnapp.Models.ViewCommentResponse;
@@ -37,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ViewCommentsActivity extends AppCompatActivity implements View.OnClickListener{
+public class ViewCommentsActivity extends AppCompatActivity implements View.OnClickListener, OnReplyClickListener {
 
     private MaterialTextView commentCountText;
     private RecyclerView recyclerView;
@@ -52,6 +55,7 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
     private Profile userProfile;
 
     private ArrayList<ResultViewComments> commentsArrayList;
+    private static final String TAG = "ViewCommentsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +138,7 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
 
     public void setRecyclerView(ArrayList<ResultViewComments> commentList){
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        commentListAdapter = new CommentListAdapter(recyclerView, commentList, this);
+        commentListAdapter = new CommentListAdapter(recyclerView, commentList, this, this);
         recyclerView.setAdapter(commentListAdapter);
     }
 
@@ -170,6 +174,40 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onFailure(Call<ResultViewComments> call, Throwable t) {
                 Toast.makeText(ViewCommentsActivity.this,"Oops! something is wrong, please try again later..",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void onReplyClick(int commentId, String reply, int position) {
+        Log.d(TAG,"replied text = "+reply);
+        postReply(commentId,reply, position);
+    }
+
+    public void postReply(int commentId, String reply, int position){
+        RequestBody user = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
+        RequestBody post = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(postId));
+        RequestBody reply_comment = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(commentId));
+        RequestBody comment = RequestBody.create(MediaType.parse("text/plain"), reply);
+
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<Reply> call = service.replyOnPost(user,post,reply_comment,comment);
+
+        call.enqueue(new Callback<Reply>() {
+            @Override
+            public void onResponse(Call<Reply> call, Response<Reply> response) {
+
+                if(response.code() == 201) {
+                    Reply reply = response.body();
+                    commentsArrayList.get(position).getReplies().add(reply);
+                    commentListAdapter.notifyDataSetChanged();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Reply> call, Throwable t) {
+
             }
         });
     }

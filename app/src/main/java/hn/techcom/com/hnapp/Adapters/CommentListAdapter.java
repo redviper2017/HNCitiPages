@@ -1,11 +1,15 @@
 package hn.techcom.com.hnapp.Adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +22,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
+import hn.techcom.com.hnapp.Interfaces.OnReplyClickListener;
 import hn.techcom.com.hnapp.Models.Reply;
 import hn.techcom.com.hnapp.Models.ResultViewComments;
 import hn.techcom.com.hnapp.Models.ResultViewLikes;
@@ -34,11 +39,13 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private RecyclerView recyclerView;
     private ArrayList<ResultViewComments> allComments = new ArrayList<>();
     private OnLoadMoreListener onLoadMoreListener;
+    private OnReplyClickListener onReplyClickListener;
 
-    public CommentListAdapter(RecyclerView recyclerView, ArrayList<ResultViewComments> allComments, Context context) {
+    public CommentListAdapter(RecyclerView recyclerView, ArrayList<ResultViewComments> allComments, Context context, OnReplyClickListener onReplyClickListener) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.allComments = allComments;
+        this.onReplyClickListener = onReplyClickListener;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -82,7 +89,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private MaterialTextView commentPost;
         private RecyclerView repliesRecyclerview;
         private ReplyListAdapter replyListAdapter;
-        private ImageButton replyButton;
+        private ImageButton replyButton, postReplyButton;
+        private LinearLayout replyLayout;
+        private EditText replyText;
 
         public CommentViewHolder(@NonNull View view) {
             super(view);
@@ -93,6 +102,12 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             commentPost    = view.findViewById(R.id.comment_post);
             repliesRecyclerview = view.findViewById(R.id.recyclerview_posts_replies);
             replyButton    = view.findViewById(R.id.reply_button_comment);
+            replyLayout    = view.findViewById(R.id.reply_layout);
+            replyText      = view.findViewById(R.id.reply_editText);
+            postReplyButton = view.findViewById(R.id.post_reply_button);
+
+            replyButton.setOnClickListener(this);
+            postReplyButton.setOnClickListener(this);
         }
 
         void bind(ResultViewComments comment){
@@ -117,13 +132,31 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 replyList.addAll(comment.getReplies());
                 setRecyclerView(replyList, repliesRecyclerview);
             }
-
-            replyButton.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
+            if(view.getId() == R.id.reply_button_comment) {
+                if(replyButton.getTag().equals("reply")) {
+                    replyButton.setTag("cancel");
+                    int position = getAbsoluteAdapterPosition();
 
+                    replyLayout.setVisibility(View.VISIBLE);
+                    replyButton.setImageResource(R.drawable.cancel_ic);
+                }else{
+                    replyButton.setTag("reply");
+                    replyButton.setImageResource(R.drawable.reply_ic);
+                    replyLayout.setVisibility(View.GONE);
+                }
+            }
+            if(view.getId() == R.id.post_reply_button){
+                int position = getAbsoluteAdapterPosition();
+                int commentId = allComments.get(position).getId();
+                if(!TextUtils.isEmpty(replyText.getText().toString()))
+                    onReplyClickListener.onReplyClick(commentId,replyText.getText().toString(), position);
+                else
+                    Toast.makeText(context,"Oops! You've forgot to enter your reply",Toast.LENGTH_LONG).show();
+            }
         }
 
         public void setRecyclerView(ArrayList<Reply> replyList, RecyclerView repliesRecyclerview){

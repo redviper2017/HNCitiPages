@@ -8,6 +8,7 @@ import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.NewPostResponse;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
+import hn.techcom.com.hnapp.Models.Reply;
 import hn.techcom.com.hnapp.Models.ResultViewComments;
 import hn.techcom.com.hnapp.Models.SupportingProfileList;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
@@ -143,6 +144,16 @@ public interface GetDataService {
     Call<ResultViewComments> commentOnPost(
             @Part("user") RequestBody user,
             @Part("post") RequestBody post,
+            @Part("comment") RequestBody comment
+    );
+
+    //Reply on post
+    @Multipart
+    @POST("posts/post_comment/")
+    Call<Reply> replyOnPost(
+            @Part("user") RequestBody user,
+            @Part("post") RequestBody post,
+            @Part("reply_comment") RequestBody reply_comment,
             @Part("comment") RequestBody comment
     );
 
