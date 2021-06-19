@@ -23,6 +23,6 @@
         android:id="@+id/navigation_noticeboard"
         app:showAsAction="always"
         android:enabled="true"
-        android:icon="@drawable/profile_ic"
+        android:icon="@drawable/noticeboard_ic"
         android:title="Noticeboard" />
 </menu>

@@ -1,48 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.SupportedSectionFragment">
+    tools:context=".Fragments.SupportedSectionFragment"
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/layout_screentitle_home"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:orientation="horizontal"
         android:background="@color/colorSurface">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_avatar_supportedsection"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:civ_border_width="0dp"
-            android:src="@drawable/profile_ic"
-            android:padding="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"/>
 
-        <com.google.android.material.textview.MaterialTextView
+        <include
             android:id="@+id/text_screen_title_supportsection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/playfair_display_bold"
-            android:text="Supported CitiPagers"
-            android:textSize="14sp"
-            android:textColor="@color/colorTextTitle"/>
+            layout="@layout/screen_title_view"/>
     </LinearLayout>
 
     <EditText
         android:id="@+id/searchview_supportedsection"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_screentitle_home"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
@@ -50,26 +32,33 @@
         android:drawableStart="@drawable/search_ic"
         android:drawablePadding="5dp"
         android:hint="Search..."
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:background="@drawable/rounded_corner_rectangle"/>
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerview_supported_avatars_supportsection"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/searchview_supportedsection"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_marginStart="10dp" />-->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_posts_supportsection"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/searchview_supportedsection"
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"/>
+        android:visibility="gone"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_posts_supportsection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>

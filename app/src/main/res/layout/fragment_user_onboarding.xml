@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.UserOnboardingFragment">
+    tools:context=".Fragments.UserOnboardingFragment"
+    android:background="@color/white">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/page_slider_onboarding"

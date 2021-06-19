@@ -44,7 +44,7 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
         holder.nameView.setText(name);
 
         if (avatarUrlList.get(position) != null) {
-            String completeUrl = "http://hn.techcomengine.com" + avatarUrlList.get(position);
+            String completeUrl = "http://167.99.13.238:8000" + avatarUrlList.get(position);
             Picasso
                     .get()
                     .load(completeUrl)

@@ -1,31 +1,42 @@
 package hn.techcom.com.hnapp.Fragments;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.Calendar;
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.Utils;
 
 public class OnboardingUserAboutFragment extends Fragment implements View.OnClickListener {
 
+    private static final String TAG = "AboutFragment";
     private MaterialTextView dateOfBirth;
+    private TextInputEditText fullname;
     private RelativeLayout genderLayout;
 
-    private String gender;
+    private String gender, genderCode;
+
+    private Profile userProfile = null;
+
+    private Utils myUtils;
 
     public OnboardingUserAboutFragment() {
         // Required empty public constructor
@@ -36,9 +47,12 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_onboarding_user_about, container, false);
 
+        myUtils = new Utils();
+
         //Hooks
         Spinner spinner = view.findViewById(R.id.spinner_gender);
         dateOfBirth = view.findViewById(R.id.text_dob);
+        fullname = view.findViewById(R.id.textinputeditext_fullname);
         genderLayout = view.findViewById(R.id.layout_gender);
 
         //CLick listeners
@@ -74,6 +88,19 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 gender = parent.getItemAtPosition(position).toString();
+
+                switch(gender){
+                    case "Male":
+                        genderCode = "M";
+                        break;
+                    case "Female":
+                        genderCode = "F";
+                        break;
+                    case "Other":
+                        genderCode = "O";
+                        break;
+                }
+
                 genderLayout.setBackground(getResources().getDrawable(R.drawable.custom_textview_shape));
             }
 
@@ -92,11 +119,42 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
         if (v.getId() == R.id.text_dob) {
             showDatePickerDialog(v);
             dateOfBirth.setBackground(getResources().getDrawable(R.drawable.custom_textview_shape_selected));
+
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        //getting stored user information so far from shared preference
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+
+        userProfile.setFullName(Objects.requireNonNull(fullname.getText()).toString());
+        userProfile.setDateOfBirth(dateOfBirth.getText().toString());
+        userProfile.setGender(genderCode);
+
+        myUtils.storeNewUserToSharedPref(Objects.requireNonNull(getContext()),userProfile);
+
+        Log.d(TAG,"new user = "+userProfile.toString());
+    }
+
     public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "datePicker");
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        dateOfBirth.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                    }
+                }, year, month, day);
+        datePickerDialog.show();
     }
 }

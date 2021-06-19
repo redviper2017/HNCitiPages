@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/support_user_post"
+        android:icon="@drawable/support_icon"
+        android:title="@string/support_user"
+        android:enabled="true"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/report_post"
+        android:icon="@drawable/image_post_ic"
+        android:title="Report Post"
+        android:enabled="true"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/delete_post"
+        android:icon="@drawable/delete_post_ic"
+        android:title="Delete Post"
+        android:enabled="true"
+        app:showAsAction="always"/>
+</menu>

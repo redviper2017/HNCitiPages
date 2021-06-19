@@ -3,10 +3,9 @@ package hn.techcom.com.hnapp.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,23 +13,22 @@ import android.view.View;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Fragments.HomeFragment;
 import hn.techcom.com.hnapp.Fragments.SharePostBottomSheetFragment;
+import hn.techcom.com.hnapp.Fragments.SupportSectionFragment;
 import hn.techcom.com.hnapp.Fragments.SupportedSectionFragment;
-import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Models.Post;
-import hn.techcom.com.hnapp.Models.QUser;
+import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
-import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import hn.techcom.com.hnapp.Utils.BottomSheetFragment;
+import hn.techcom.com.hnapp.Utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,11 +41,25 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    private Utils myUtils;
+
     @Override
     protected void onStart() {
         super.onStart();
-        Fragment fragment = new HomeFragment(globalPosts);
-        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
+
+        myUtils = new Utils();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        Profile localUser = myUtils.getNewUserFromSharedPreference(this);
+
+        //Check if user is logged in and profile is locally stored
+        if(user == null || localUser.getProfileImg() == null){
+            startActivity(new Intent(this, SignInActivity.class));
+        }
+        else {
+            Fragment fragment = new HomeFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
+        }
     }
 
     @Override
@@ -61,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
         //set bottomAppBar
         setSupportActionBar(bottomAppBar);
-
-        getSupportedProfiles();
 
         newPostFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,82 +95,19 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragmentSelected = null;
         switch(item.getItemId()){
             case R.id.navigation_supportedsection:
-                fragmentSelected = new SupportedSectionFragment(userSupportedProfiles,userSupportedProfilePosts);
+                fragmentSelected = new SupportSectionFragment();
                 break;
             case R.id.navigation_home:
-                fragmentSelected = new HomeFragment(globalPosts);
+                fragmentSelected = new HomeFragment();
+                break;
+            case android.R.id.home:
+                BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
+                bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
                 break;
         }
         // Begin the transaction
-        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragmentSelected)).commit();
+        if(fragmentSelected != null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragmentSelected)).commit();
         return true;
     }
-
-    @Override
-    public void onBackPressed() {
-        //if the current fragment loaded is the home fragment then follow default behavior
-        Fragment f = getSupportFragmentManager().findFragmentById(R.id.framelayout_main);
-        if(f instanceof HomeFragment)
-            super.onBackPressed();
-        else {
-            Fragment fragment = new HomeFragment(globalPosts);
-            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
-        }
-
-    }
-
-    // this function retrieves the list of supported profiles by the current user
-    public void getSupportedProfiles() {
-        //here the user id is 1 which will come from local db
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<SupporterProfile>> call = service.getSupportedProfiles("1");
-        call.enqueue(new Callback<List<SupporterProfile>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<SupporterProfile>> call, @NonNull Response<List<SupporterProfile>> response) {
-                userSupportedProfiles = new ArrayList<>(Objects.requireNonNull(response.body()));
-                Log.d(TAG, "this user is supported by = " + userSupportedProfiles.get(0).getFullName());
-                getSupportedProfilePosts();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<SupporterProfile>> call, @NonNull Throwable t) {
-                Log.d(TAG, "request failed = " + "True: " + t.getMessage());
-            }
-        });
-    }
-
-    // this function retrieves the list of posts by a single user
-    public void getPostsByUser(String username) {
-        Log.d(TAG, "getting posts of = " + username);
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-
-        QUser currentUser = new QUser();
-        currentUser.setUser(currentUserUsername);
-
-        Call<List<Post>> call = service.getAllPostsBy(username, currentUser);
-        call.enqueue(new Callback<List<Post>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
-                if (response.body() != null) {
-                    Log.d(TAG, "first post from " + username + " = " + response.body().get(0).getText());
-                    userSupportedProfilePosts.addAll(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Post>> call, @NonNull Throwable t) {
-
-            }
-        });
-    }
-
-    // this function retrieves the list of supported user's posts
-    public void getSupportedProfilePosts() {
-        Log.d(TAG, "this user is supporting  =  " + userSupportedProfiles.get(0).getUsername());
-
-        for(int i=0;i<userSupportedProfiles.size();i++){
-            getPostsByUser(userSupportedProfiles.get(i).getUsername());
-        }
-    }
-
 }

@@ -10,8 +10,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_supported_avatars_supportsection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" /></com.google.android.material.card.MaterialCardView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_supported_avatars_supportsection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"/>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

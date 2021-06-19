@@ -1,5 +1,6 @@
 package hn.techcom.com.hnapp.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,6 +15,10 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
 
+import hn.techcom.com.hnapp.Activities.PostAudioActivity;
+import hn.techcom.com.hnapp.Activities.PostImageActivity;
+import hn.techcom.com.hnapp.Activities.PostStoryActivity;
+import hn.techcom.com.hnapp.Activities.PostVideoActivity;
 import hn.techcom.com.hnapp.R;
 
 public class SharePostBottomSheetFragment extends BottomSheetDialogFragment {
@@ -34,16 +39,21 @@ public class SharePostBottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                switch (item.getItemId()) {
-
-//                    case R.id.navigation_share_text:
-//                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ShareTextFragment()).commit();
-//                        dismiss();
-//                        break;
-                    case R.id.navigation_share_image:
-                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new ImagePostFragment()).commit();
-                        dismiss();
-                        break;
+                if(item.getItemId() == R.id.navigation_share_text){
+                    startActivity(new Intent(getActivity(), PostStoryActivity.class));
+                    dismiss();
+                }
+                if(item.getItemId() == R.id.navigation_share_image){
+                    startActivity(new Intent(getActivity(), PostImageActivity.class));
+                    dismiss();
+                }
+                if(item.getItemId() == R.id.navigation_share_video){
+                    startActivity(new Intent(getActivity(), PostVideoActivity.class));
+                    dismiss();
+                }
+                if(item.getItemId() == R.id.navigation_share_audio){
+                    startActivity(new Intent(getActivity(), PostAudioActivity.class));
+                    dismiss();
                 }
 
                 return true;

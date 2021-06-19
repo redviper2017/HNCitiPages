@@ -58,7 +58,6 @@ public class UserOnboardingFragment extends Fragment implements View.OnClickList
                     default:
                         prevButton.setVisibility(View.VISIBLE);
                         nextButton.setVisibility(View.VISIBLE);
-
                 }
             }
 

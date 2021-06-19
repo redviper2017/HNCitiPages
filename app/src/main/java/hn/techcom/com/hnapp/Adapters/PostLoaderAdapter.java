@@ -174,7 +174,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         void setPostView(Post post) {
-            String fullname = post.getUser().getFirstName() + " " + post.getUser().getLastName();
+            String fullname = post.getUser().getFullName();;
             String location = post.getUser().getCity() + ", " + post.getUser().getCountry();
 
             String likeText = "";
@@ -193,9 +193,9 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             else
                 commentText = post.getCommentCount() + " comment";
 
-            if (post.getUser().getProfileImgUrl() != null) {
+            if (post.getUser().getProfileImg() != null) {
                 Picasso.get()
-                        .load("http://hn.techcomengine.com" + post.getUser().getProfileImgUrl())
+                        .load("http://hn.techcomengine.com" + post.getUser().getProfileImg())
                         .fit()
                         .centerInside()
                         .into(userImage);
@@ -285,7 +285,7 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 followImageButton.setImageResource(R.drawable.support_icon_selected);
 
             if(post.getLiked())
-                likeImageButton.setImageResource(R.drawable.like_ic_selected);
+                likeImageButton.setImageResource(R.drawable.filled_thumb_up_24_ic);
 
             if(post.getFavorite())
                 favoriteImageButton.setImageResource(R.drawable.favorite_ic_selected);

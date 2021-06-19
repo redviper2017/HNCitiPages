@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.MainActivity">
+    tools:context=".Activities.MainActivity"
+    android:background="@color/white">
 
     <FrameLayout
         android:id="@+id/framelayout_main"
@@ -39,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_anchor="@id/bottomappbar_home"
-            android:src="@drawable/post_ic_dark" />
+            android:src="@drawable/post_ic_dark"
+            android:backgroundTint="@color/colorStartLinearGradient"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

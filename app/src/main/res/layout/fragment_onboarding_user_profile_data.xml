@@ -2,9 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.OnboardingUserProfileDataFragment">
+    tools:context=".Fragments.OnboardingUserProfileDataFragment"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,19 +31,20 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/roboto"
             android:justificationMode="none"
-            android:text="Please take a selfie and select a username for you HN CitiPages ID."
+            android:text="Please take a selfie for you HN CitiPages ID."
             android:textSize="20sp"
             tools:targetApi="o" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleimageview_profile_onboarding"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:src="@drawable/dummy_profile_avatar"
                 app:civ_border_color="@android:color/white"
                 app:civ_border_width="1dp" />
@@ -55,23 +58,23 @@
                 android:layout_alignEnd="@id/circleimageview_profile_onboarding"/>
         </RelativeLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/MyTextInputLayout"
-            app:boxCornerRadiusBottomStart="20dp"
-            app:boxCornerRadiusTopEnd="20dp"
-            app:boxStrokeWidth="1dp"
-            app:hintTextColor="@color/colorText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="Username">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/MyTextInputLayout"-->
+<!--            app:boxCornerRadiusBottomStart="20dp"-->
+<!--            app:boxCornerRadiusTopEnd="20dp"-->
+<!--            app:boxStrokeWidth="1dp"-->
+<!--            app:hintTextColor="@color/colorText"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:hint="Username">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/username_add_ic"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:drawableEnd="@drawable/username_add_ic"-->
+<!--                android:inputType="textPersonName" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_create_account"
@@ -81,6 +84,8 @@
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="15dp"
             app:cardElevation="10dp"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintTop_toBottomOf="@id/card_main_image_post">
 
             <com.google.android.material.textview.MaterialTextView
@@ -96,6 +101,14 @@
                 android:textSize="16sp"
                 app:fontFamily="@font/roboto" />
         </com.google.android.material.card.MaterialCardView>
+
+        <ProgressBar
+            android:id="@+id/registration_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </FrameLayout>
