@@ -69,7 +69,7 @@ public class PostStoryActivity extends AppCompatActivity implements View.OnClick
                 "Culture",
                 "Lifestyle",
                 "Hustle",
-                "Commedy",
+                "Comedy",
                 "News"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
