@@ -118,7 +118,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             location.setText(address);
 
             //setting up user avatar
-            String profilePhotoUrl = "http://167.99.13.238:8000" + comment.getUser().getProfileImg();
+            String profilePhotoUrl = comment.getUser().getProfileImg();
             Picasso
                     .get()
                     .load(profilePhotoUrl)

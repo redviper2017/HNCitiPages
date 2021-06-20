@@ -52,7 +52,7 @@ public class UserProfileFragment extends Fragment {
         phone.setText(registeredUser.getMobileNumber());
         hnid.setText(registeredUser.getHnid());
 
-        String profilePhotoUrl = "http://167.99.13.238:8000" + registeredUser.getProfileImg();
+        String profilePhotoUrl = registeredUser.getProfileImg();
         Log.d(TAG,"loaded profile photo url = "+profilePhotoUrl);
         Picasso
                 .get()

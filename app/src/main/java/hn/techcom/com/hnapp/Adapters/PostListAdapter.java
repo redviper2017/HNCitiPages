@@ -338,7 +338,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }else
                 likes.setVisibility(View.GONE);
 
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
+            String profilePhotoUrl = post.getUser().getProfileImg();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
@@ -418,7 +418,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             },100);
 
-            String imageUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
+            String imageUrl = post.getFiles().get(0).getMedia();
 
             //Toggling like button
             if(post.getLiked())
@@ -460,7 +460,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }else
                 likes.setVisibility(View.GONE);
 
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
+            String profilePhotoUrl = post.getUser().getProfileImg();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
@@ -601,13 +601,13 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }else
                 likes.setVisibility(View.GONE);
 
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
+            String profilePhotoUrl = post.getUser().getProfileImg();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
                     .into(avatar);
 
-            String videoUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
+            String videoUrl = post.getFiles().get(0).getMedia();
 
 //            //Set MediaController  to enable play, pause, forward, etc options.
 //            MediaController mediaController = new MediaController(context);
@@ -786,7 +786,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }else
                 likes.setVisibility(View.GONE);
 
-            String profilePhotoUrl = "http://167.99.13.238:8000" + post.getUser().getProfileImg();
+            String profilePhotoUrl = post.getUser().getProfileImg();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
@@ -817,7 +817,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private void prepareMediaPlayer(Result post){
             mediaPlayer          = new MediaPlayer();
             try{
-                String audioUrl = "http://167.99.13.238:8000" + post.getFiles().get(0).getMedia();
+                String audioUrl = post.getFiles().get(0).getMedia();
                 mediaPlayer.setDataSource(audioUrl);  //url of audio file
                 mediaPlayer.prepare();
                 totalTime.setText(milliSecondsToTimer(mediaPlayer.getDuration()));

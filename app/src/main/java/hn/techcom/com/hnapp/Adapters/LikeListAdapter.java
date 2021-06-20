@@ -92,7 +92,7 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             location.setText(address);
 
             //setting up user avatar
-            String profilePhotoUrl = "http://167.99.13.238:8000" + like.getUser().getProfileImg();
+            String profilePhotoUrl = like.getUser().getProfileImg();
             Picasso
                     .get()
                     .load(profilePhotoUrl)

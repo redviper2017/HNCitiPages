@@ -78,7 +78,7 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
         //Setting up user avatar on comment bottom bar
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(this);
-        String profilePhotoUrl = "http://167.99.13.238:8000" + userProfile.getProfileImg();
+        String profilePhotoUrl = userProfile.getProfileImg();
         Picasso
                 .get()
                 .load(profilePhotoUrl)
