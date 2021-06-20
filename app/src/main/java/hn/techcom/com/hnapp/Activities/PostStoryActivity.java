@@ -3,6 +3,7 @@ package hn.techcom.com.hnapp.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -164,9 +165,12 @@ public class PostStoryActivity extends AppCompatActivity implements View.OnClick
                 if(response.code() == 201){
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(PostStoryActivity.this,"Story shared successfully!",Toast.LENGTH_LONG).show();
-//                        Objects.requireNonNull(getActivity()).recreate();
+
                     storyText.setText("");
                     postCategorySpinner.setSelection(0);
+
+                    startActivity(new Intent(PostStoryActivity.this,MainActivity.class));
+                    finish();
                 }
                 else{
                     progressBar.setVisibility(View.GONE);

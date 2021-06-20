@@ -359,6 +359,8 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
                     videoCaption.setText("");
                     postCategorySpinner.setSelection(0);
                     recreate();
+                    startActivity(new Intent(PostVideoActivity.this,MainActivity.class));
+                    finish();
                 }
                 else{
                     progressBar.setVisibility(View.GONE);

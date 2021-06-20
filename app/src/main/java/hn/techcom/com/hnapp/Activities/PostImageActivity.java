@@ -406,6 +406,8 @@ public class PostImageActivity extends AppCompatActivity implements View.OnClick
                     postCategorySpinner.setSelection(0);
                     imageview.setImageDrawable(ContextCompat.getDrawable(PostImageActivity.this,R.drawable.image_1));
                     changeButtonsUI("select");
+                    startActivity(new Intent(PostImageActivity.this,MainActivity.class));
+                    finish();
                 }
                 else{
                     progressBar.setVisibility(View.GONE);
