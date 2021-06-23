@@ -146,10 +146,14 @@ public class SupportSectionFragment
                     SupportingProfileList supportingProfileList = response.body();
                     Log.d(TAG, "number of supporting profile = "+ supportingProfileList.getCount());
 
-                    ArrayList<User> profilesArraytList = new ArrayList<>();
-                    profilesArraytList.addAll(supportingProfileList.getResults());
+                    if(supportingProfileList.getCount()>0) {
+                        ArrayList<User> profilesArraytList = new ArrayList<>();
+                        profilesArraytList.addAll(supportingProfileList.getResults());
 
-                    setProfilesRecyclerView(profilesArraytList);
+                        setProfilesRecyclerView(profilesArraytList);
+                    }else{
+                        Toast.makeText(getContext(),"Oops! seems like you haven't supported anyone yet. Please support someone and come back hear to see their posts.",Toast.LENGTH_LONG).show();
+                    }
                 }
             }
 

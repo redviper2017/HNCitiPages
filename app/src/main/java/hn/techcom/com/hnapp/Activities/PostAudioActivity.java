@@ -184,6 +184,8 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
     private void startAudioCaptureIntent(){
 //        Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
 //        startActivityForResult(intent, REQUEST_AUDIO_CAPTURE);
+
+        Toast.makeText(this,"This feature is coming soon!!",Toast.LENGTH_LONG).show();
     }
 
     private void startAudioPick(){
