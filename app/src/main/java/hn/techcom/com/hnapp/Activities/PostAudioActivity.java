@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -50,6 +51,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class PostAudioActivity extends AppCompatActivity implements View.OnClickListener{
@@ -67,6 +69,8 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
     private Utils myUtils;
     private Profile userProfile;
     private static final int PERMISSION_REQUEST_CODE = 200;
+
+    private boolean isRecording = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +204,8 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0){
                     boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (storageAccepted)
+                    boolean recordAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    if (storageAccepted && recordAccepted)
                         startAudioPick();
                     else
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -209,7 +214,7 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA},
+                                                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, RECORD_AUDIO},
                                                         PERMISSION_REQUEST_CODE);
                                             }
                                         });
@@ -222,19 +227,32 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
 
     //Custom methods
     private void startAudioCaptureIntent(){
-//        Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-//        startActivityForResult(intent, REQUEST_AUDIO_CAPTURE);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(PostAudioActivity.this);
         View alertView = getLayoutInflater().inflate(R.layout.voice_note_alert_layout, null);
 
         FloatingActionButton recordVoiceNote = (FloatingActionButton) alertView.findViewById(R.id.capture_voice_button);
+        Chronometer recordTimer = (Chronometer) alertView.findViewById(R.id.record_timer);
 
         Toast.makeText(this,"This feature is coming soon!!",Toast.LENGTH_LONG).show();
 
         recordVoiceNote.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-
+                if(isRecording) {
+                    //Stop recording
+                    recordVoiceNote.setImageResource(R.drawable.outline_stop_white_48dp);
+                    isRecording = false;
+                }
+                else {
+                    //Start recording
+                    if(checkPermission()) {
+                        recordVoiceNote.setImageResource(R.drawable.outline_mic_white_48dp);
+                        isRecording = true;
+                    }else{
+                        requestPermission();
+                    }
+                }
             }
         });
 
@@ -337,17 +355,18 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
 
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(this, RECORD_AUDIO);
 
-        return result == PackageManager.PERMISSION_GRANTED;
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, RECORD_AUDIO}, PERMISSION_REQUEST_CODE);
     }
 
     private void showMessageOKCancel(DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(this)
-                .setMessage("You need to allow access to this permission in order to continue with this feature.")
+                .setMessage("You need to allow access to both of these permission in order to continue with this feature.")
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", null)
                 .create()
