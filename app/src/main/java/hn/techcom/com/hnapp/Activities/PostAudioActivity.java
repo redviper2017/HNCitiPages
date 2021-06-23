@@ -1,29 +1,63 @@
 package hn.techcom.com.hnapp.Activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
+import com.potyvideo.library.AndExoPlayerView;
 
+import java.io.File;
+import java.util.Objects;
+
+import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Models.NewPostResponse;
+import hn.techcom.com.hnapp.Models.Profile;
+import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.UriUtils;
+import hn.techcom.com.hnapp.Utils.Utils;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PostAudioActivity extends AppCompatActivity implements View.OnClickListener{
     //Constants
     private static final int REQUEST_AUDIO_CAPTURE = 1;
     private static final int REQUEST_AUDIO_PICK = 2;
-    private MaterialCardView captureAudioButton, selectAudioButton;
+    private static final String TAG = "PostAudioActivity";
+    private MaterialCardView captureAudioButton, selectAudioButton, shareAudioButton, clearAudioButton;
     private Spinner postCategorySpinner;
-
+    private TextInputEditText audioCaption;
+    private AndExoPlayerView audioPlayer;
+    private ProgressBar progressBar;
     private String postCategory;
+    private File newAudioFile;
+    private Utils myUtils;
+    private Profile userProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +68,17 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
         MaterialTextView screenTitle = findViewById(R.id.text_screen_title_shareaudio);
         captureAudioButton           = findViewById(R.id.capture_audio_button);
         selectAudioButton            = findViewById(R.id.select_audio_button);
+        shareAudioButton             = findViewById(R.id.share_audio_button);
+        clearAudioButton             = findViewById(R.id.clear_audio_button);
         postCategorySpinner          = findViewById(R.id.spinner_post_type);
+        audioCaption                 = findViewById(R.id.textInputEditText_audio_caption);
+        audioPlayer                  = findViewById(R.id.audio_player);
+        progressBar                  = findViewById(R.id.share_audio_progressbar);
+
+
+        //Setting up user avatar on top bar
+        myUtils = new Utils();
+        userProfile = myUtils.getNewUserFromSharedPreference(this);
 
         screenTitle.setText(R.string.share_audio);
 
@@ -57,6 +101,8 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
         backButton.setOnClickListener(this);
         captureAudioButton.setOnClickListener(this);
         selectAudioButton.setOnClickListener(this);
+        shareAudioButton.setOnClickListener(this);
+        clearAudioButton.setOnClickListener(this);
 
         postCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -99,6 +145,21 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_AUDIO_PICK && resultCode == RESULT_OK){
+            audioPlayer.setSource(String.valueOf(data.getData()));
+            audioPlayer.setPlayWhenReady(true);
+
+            String filePath = UriUtils.getPathFromUri(this,data.getData());
+            newAudioFile = new File(filePath);
+
+            //Change visibility of function buttons
+            changeButtonsUI("upload");
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         if(view.getId() == R.id.image_button_back)
             super.onBackPressed();
@@ -106,6 +167,17 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
             startAudioCaptureIntent();
         if(view.getId() == R.id.select_audio_button)
             startAudioPick();
+        if(view.getId() == R.id.clear_audio_button) {
+            audioCaption.setText("");
+            postCategorySpinner.setSelection(0);
+            recreate();
+        }
+        if(view.getId() == R.id.share_audio_button){
+            if(!TextUtils.isEmpty(audioCaption.getText()))
+                shareNewAudio();
+            else
+                Toast.makeText(this,"Oops! You've forgot to enter a caption for your picture..",Toast.LENGTH_LONG).show();
+        }
     }
 
     //Custom methods
@@ -119,5 +191,90 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
         intent_upload.setType("audio/*");
         intent_upload.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent_upload,REQUEST_AUDIO_PICK);
+    }
+
+    public String getRealPathFromURIPath(Uri contentURI, Activity activity) {
+        Cursor cursor = activity.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            return contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA);
+            String string = cursor.getString(idx);
+            return string;
+        }
+    }
+
+    private void changeButtonsUI(String layoutName){
+        switch (layoutName){
+            case "upload":
+                captureAudioButton.setVisibility(View.GONE);
+                selectAudioButton.setVisibility(View.GONE);
+                shareAudioButton.setVisibility(View.VISIBLE);
+                clearAudioButton.setVisibility(View.VISIBLE);
+                break;
+            case "select":
+                captureAudioButton.setVisibility(View.VISIBLE);
+                selectAudioButton.setVisibility(View.VISIBLE);
+                shareAudioButton.setVisibility(View.GONE);
+                clearAudioButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void shareNewAudio(){
+//        Log.d(TAG, "posted image aspect ratio = "+newImageAspectRatio);
+        progressBar.setVisibility(View.VISIBLE);
+
+        RequestBody user = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
+        RequestBody city = RequestBody.create(MediaType.parse("text/plain"), userProfile.getCity());
+        RequestBody country = RequestBody.create(MediaType.parse("text/plain"), userProfile.getCountry());
+        RequestBody posttype = RequestBody.create(MediaType.parse("text/plain"),"A");
+        RequestBody category = RequestBody.create(MediaType.parse("text/plain"),postCategory);
+        RequestBody text = RequestBody.create(MediaType.parse("text/plain"), Objects.requireNonNull(audioCaption.getText()).toString());
+//        RequestBody aspect = RequestBody.create(MediaType.parse("text/plain"),newImageAspectRatio);
+
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData(
+                "file",
+                newAudioFile.getName(),
+                RequestBody.create(MediaType.parse("audio/*"), newAudioFile)
+        );
+
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<NewPostResponse> call = service.shareAudio(user,city,country,posttype,category,text,filePart);
+
+        call.enqueue(new Callback<NewPostResponse>() {
+            @Override
+            public void onResponse(Call<NewPostResponse> call, @NonNull Response<NewPostResponse> response) {
+                Log.d(TAG, "post image api response code = "+response.code());
+                if (response.code() == 201) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(PostAudioActivity.this,"Audio shared successfully!",Toast.LENGTH_LONG).show();
+                    audioCaption.setText("");
+                    postCategorySpinner.setSelection(0);
+//                    imageview.setImageDrawable(ContextCompat.getDrawable(PostImageActivity.this,R.drawable.image_1));
+                    changeButtonsUI("select");
+                    startActivity(new Intent(PostAudioActivity.this,MainActivity.class));
+                    finish();
+                }
+                else{
+                    progressBar.setVisibility(View.GONE);
+//                    Toast.makeText(PostImageActivity.this,"Unable to share image! Try again later..",Toast.LENGTH_LONG).show();
+                    audioCaption.setText("");
+                    postCategorySpinner.setSelection(0);
+//                    imageview.setImageDrawable(ContextCompat.getDrawable(PostImageActivity.this,R.drawable.image_1));
+                    changeButtonsUI("select");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NewPostResponse> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                audioCaption.setText("");
+                postCategorySpinner.setSelection(0);
+//                imageview.setImageDrawable(ContextCompat.getDrawable(PostImageActivity.this,R.drawable.image_1));
+                changeButtonsUI("select");
+                Toast.makeText(PostAudioActivity.this,"Unable to share audio! Try again later..",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

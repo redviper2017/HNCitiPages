@@ -60,6 +60,21 @@
             android:spinnerMode="dropdown" />
     </LinearLayout>
 
+    <com.potyvideo.library.AndExoPlayerView
+        android:id="@+id/audio_player"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_200sdp"
+        app:andexo_aspect_ratio="aspect_match"
+        app:andexo_full_screen="true"
+        app:andexo_play_when_ready="true"
+        app:andexo_mute="mute"
+        app:andexo_show_controller="true"
+        app:andexo_resize_mode="Zoom"
+        app:andexo_loop="infinite"
+        app:layout_constraintTop_toBottomOf="@id/layout_spinner_post_type"
+        app:layout_constraintBottom_toTopOf="@+id/textinputlayout_caption"
+        android:visibility="visible"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textinputlayout_caption"
         style="@style/MyTextInputLayout"
@@ -76,7 +91,7 @@
         app:hintTextColor="@color/colorText">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText_image_caption"
+            android:id="@+id/textInputEditText_audio_caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left|top"
@@ -84,6 +99,17 @@
             android:lines="5"
             android:maxLines="5"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ProgressBar
+        android:id="@+id/share_audio_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/audio_select_option_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
         android:id="@+id/audio_select_option_layout"
@@ -94,6 +120,7 @@
         android:layout_marginBottom="20dp"
         android:visibility="visible">
 
+        <!-- Capture Audio Button -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/capture_audio_button"
             android:layout_width="match_parent"
@@ -109,14 +136,15 @@
                 android:background="@drawable/gradient_button"
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
-                android:text="Capture with Camera"
+                android:text="Capture Voice Note"
                 android:textAlignment="center"
                 android:textColor="@color/colorSurface"
                 android:textSize="16sp"
                 android:padding="10dp"
-                android:drawableStart="@drawable/camera_ic"/>
+                android:drawableStart="@drawable/mic_ic"/>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Select Audio Button -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/select_audio_button"
             android:layout_width="match_parent"
@@ -133,7 +161,7 @@
                 android:background="@drawable/gradient_button"
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
-                android:text="Select from Gallery"
+                android:text="Select from Files"
                 android:textAlignment="center"
                 android:textColor="@color/colorSurface"
                 android:textSize="16sp"
@@ -141,6 +169,7 @@
                 android:drawableStart="@drawable/gallery_ic"/>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Share Audio Button -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/share_audio_button"
             android:layout_width="match_parent"
@@ -166,6 +195,7 @@
                 android:drawableStart="@drawable/gallery_ic"/>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Clear Audio Button -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/clear_audio_button"
             android:layout_width="match_parent"
@@ -190,5 +220,7 @@
                 android:padding="10dp"
                 android:drawableStart="@drawable/delete_file_ic"/>
         </com.google.android.material.card.MaterialCardView>
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

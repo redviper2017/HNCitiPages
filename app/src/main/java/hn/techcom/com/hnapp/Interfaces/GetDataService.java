@@ -94,6 +94,19 @@ public interface GetDataService {
             @Part MultipartBody.Part file
     );
 
+    //Share Audio Post
+    @Multipart
+    @POST("posts/create/")
+    Call<NewPostResponse> shareAudio(
+            @Part("user") RequestBody user,
+            @Part("city") RequestBody city,
+            @Part("country") RequestBody country,
+            @Part("posttype") RequestBody posttype,
+            @Part("category") RequestBody category,
+            @Part("text") RequestBody text,
+            @Part MultipartBody.Part file
+    );
+
     //Get all latest global posts
     @GET("posts/get/{hnid}/all/anything/")
     Call<PostList> getLatestGlobalPosts(@Path("hnid") String hnid);
