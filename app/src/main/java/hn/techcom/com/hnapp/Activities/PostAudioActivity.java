@@ -2,13 +2,18 @@ package hn.techcom.com.hnapp.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -43,6 +48,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 public class PostAudioActivity extends AppCompatActivity implements View.OnClickListener{
     //Constants
     private static final int REQUEST_AUDIO_CAPTURE = 1;
@@ -57,6 +65,7 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
     private File newAudioFile;
     private Utils myUtils;
     private Profile userProfile;
+    private static final int PERMISSION_REQUEST_CODE = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +175,10 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
         if(view.getId() == R.id.capture_audio_button)
             startAudioCaptureIntent();
         if(view.getId() == R.id.select_audio_button)
-            startAudioPick();
+            if(checkPermission())
+                startAudioPick();
+            else
+                requestPermission();
         if(view.getId() == R.id.clear_audio_button) {
             audioCaption.setText("");
             postCategorySpinner.setSelection(0);
@@ -177,6 +189,33 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
                 shareNewAudio();
             else
                 Toast.makeText(this,"Oops! You've forgot to enter a caption for your picture..",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0){
+                    boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (storageAccepted)
+                        startAudioPick();
+                    else
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) {
+                                showMessageOKCancel(
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA},
+                                                        PERMISSION_REQUEST_CODE);
+                                            }
+                                        });
+                                return;
+                            }
+                        }
+                }
         }
     }
 
@@ -278,5 +317,24 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
                 Toast.makeText(PostAudioActivity.this,"Unable to share audio! Try again later..",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE);
+
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+    }
+
+    private void showMessageOKCancel(DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage("You need to allow access to the permissions")
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
     }
 }
