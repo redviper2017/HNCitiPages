@@ -331,7 +331,7 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
 
     private void showMessageOKCancel(DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(this)
-                .setMessage("You need to allow access to the permissions")
+                .setMessage("You need to allow access to this permission in order to continue with this feature.")
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", null)
                 .create()
