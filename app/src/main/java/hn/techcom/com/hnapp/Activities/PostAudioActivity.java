@@ -27,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
@@ -223,8 +224,23 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
     private void startAudioCaptureIntent(){
 //        Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
 //        startActivityForResult(intent, REQUEST_AUDIO_CAPTURE);
+        AlertDialog.Builder builder = new AlertDialog.Builder(PostAudioActivity.this);
+        View alertView = getLayoutInflater().inflate(R.layout.voice_note_alert_layout, null);
+
+        FloatingActionButton recordVoiceNote = (FloatingActionButton) alertView.findViewById(R.id.capture_voice_button);
 
         Toast.makeText(this,"This feature is coming soon!!",Toast.LENGTH_LONG).show();
+
+        recordVoiceNote.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        builder.setView(alertView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void startAudioPick(){
