@@ -60,7 +60,8 @@
         android:layout_weight="1"
         app:cardCornerRadius="15dp"
         app:cardElevation="10dp"
-        android:layout_margin="@dimen/_10sdp">
+        android:layout_margin="@dimen/_10sdp"
+        android:visibility="gone">
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"

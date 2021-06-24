@@ -254,7 +254,7 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View view) {
                 if(isRecording) {
                     //Stop recording
-                    stopRecording(recordTimer,recordInstructionText,recordVoiceNote);
+                    stopRecording(recordTimer,recordInstructionText,recordVoiceNote,uploadVoiceNoteButton);
                     isRecording = false;
                 }
                 else {
@@ -285,8 +285,14 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
                 File audioFile = new File(recordedFilePathFinal);
                 Uri uri = Uri.fromFile(audioFile);
 
+                String filePath = UriUtils.getPathFromUri(getApplicationContext(),uri);
+                newAudioFile = new File(filePath);
+
                 audioPlayer.setSource(String.valueOf(uri));
                 audioPlayer.setPlayWhenReady(true);
+
+                //Change visibility of function buttons
+                changeButtonsUI("upload");
             }
         });
     }
@@ -322,7 +328,8 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
         recordedFilePathFinal = recordPath + "/" + recordFile;
     }
 
-    private void stopRecording(Chronometer recordTimer, MaterialTextView recordInstructionText, FloatingActionButton recordVoiceNote){
+    private void stopRecording(Chronometer recordTimer, MaterialTextView recordInstructionText, FloatingActionButton recordVoiceNote, MaterialCardView uploadVoiceNoteButton){
+        uploadVoiceNoteButton.setVisibility(View.VISIBLE);
         recordVoiceNote.setImageResource(R.drawable.outline_mic_white_48dp);
         recordInstructionText.setText(R.string.start_recording_disclaimer);
         recordTimer.stop();
