@@ -12,9 +12,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,6 +36,10 @@ import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
@@ -71,6 +77,9 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
     private static final int PERMISSION_REQUEST_CODE = 200;
 
     private boolean isRecording = false;
+    private MediaRecorder mediaRecorder;
+    private String recordFile;
+    private String recordedFilePathFinal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,8 +240,9 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
         AlertDialog.Builder builder = new AlertDialog.Builder(PostAudioActivity.this);
         View alertView = getLayoutInflater().inflate(R.layout.voice_note_alert_layout, null);
 
-        FloatingActionButton recordVoiceNote = (FloatingActionButton) alertView.findViewById(R.id.capture_voice_button);
-        Chronometer recordTimer = (Chronometer) alertView.findViewById(R.id.record_timer);
+        FloatingActionButton recordVoiceNote   = (FloatingActionButton) alertView.findViewById(R.id.capture_voice_button);
+        Chronometer recordTimer                = (Chronometer) alertView.findViewById(R.id.record_timer);
+        MaterialTextView recordInstructionText = alertView.findViewById(R.id.textview_disclaimer_voice_note);
 
         Toast.makeText(this,"This feature is coming soon!!",Toast.LENGTH_LONG).show();
 
@@ -241,17 +251,13 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View view) {
                 if(isRecording) {
                     //Stop recording
-                    recordVoiceNote.setImageResource(R.drawable.outline_stop_white_48dp);
+                    stopRecording(recordTimer,recordInstructionText,recordVoiceNote);
                     isRecording = false;
                 }
                 else {
                     //Start recording
-                    if(checkPermission()) {
-                        recordVoiceNote.setImageResource(R.drawable.outline_mic_white_48dp);
-                        isRecording = true;
-                    }else{
-                        requestPermission();
-                    }
+                    startRecording(recordTimer,recordInstructionText,recordVoiceNote);
+                    isRecording = true;
                 }
             }
         });
@@ -259,6 +265,45 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
         builder.setView(alertView);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void startRecording(Chronometer recordTimer, MaterialTextView recordInstructionText, FloatingActionButton recordVoiceNote) {
+        recordVoiceNote.setImageResource(R.drawable.outline_stop_white_48dp);
+        recordInstructionText.setText(R.string.stop_recording_disclaimer);
+        recordTimer.setBase(SystemClock.elapsedRealtime());
+        recordTimer.start();
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd:HH:mm:ss", Locale.getDefault());
+        String time = dateFormat.format(new Date());
+        Log.d(TAG,"time now = "+time);
+
+        recordFile = "HN"+time+".3gp";
+        String recordPath = getExternalFilesDir("/").getAbsolutePath();
+
+
+
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setOutputFile(recordPath + "/" + recordFile);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            mediaRecorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mediaRecorder.start();
+        Log.d(TAG, "recorded file path = "+recordPath + "/" + recordFile);
+    }
+
+    private void stopRecording(Chronometer recordTimer, MaterialTextView recordInstructionText, FloatingActionButton recordVoiceNote){
+        recordVoiceNote.setImageResource(R.drawable.outline_mic_white_48dp);
+        recordInstructionText.setText(R.string.start_recording_disclaimer);
+        recordTimer.stop();
+        mediaRecorder.stop();
+        mediaRecorder.release();
+        mediaRecorder = null;
     }
 
     private void startAudioPick(){

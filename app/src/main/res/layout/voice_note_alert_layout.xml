@@ -47,8 +47,56 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/roboto"
-        android:text="Hold the button above to start recording your voice note."
+        android:text="@string/start_recording_disclaimer"
         android:textSize="14sp"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/layout_screentitle_shareimage"/>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/button_upload_voice_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp"
+        android:layout_margin="@dimen/_10sdp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_button"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="confirm"
+            android:textAlignment="center"
+            android:textColor="@color/colorSurface"
+            android:textSize="16sp"
+            android:padding="5dp"
+            android:drawableStart="@drawable/save_ic"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/capture_image_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_button"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="close"
+            android:textAlignment="center"
+            android:textColor="@color/colorSurface"
+            android:textSize="16sp"
+            android:padding="5dp"
+            android:drawableStart="@drawable/cancel_alert_ic"/>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
