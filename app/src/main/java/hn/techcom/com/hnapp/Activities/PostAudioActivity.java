@@ -37,6 +37,7 @@ import com.potyvideo.library.AndExoPlayerView;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -243,6 +244,8 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
         FloatingActionButton recordVoiceNote   = (FloatingActionButton) alertView.findViewById(R.id.capture_voice_button);
         Chronometer recordTimer                = (Chronometer) alertView.findViewById(R.id.record_timer);
         MaterialTextView recordInstructionText = alertView.findViewById(R.id.textview_disclaimer_voice_note);
+        MaterialCardView uploadVoiceNoteButton = alertView.findViewById(R.id.button_upload_voice_note);
+        MaterialCardView closeDialogButton     = alertView.findViewById(R.id.button_close_dialog);
 
         Toast.makeText(this,"This feature is coming soon!!",Toast.LENGTH_LONG).show();
 
@@ -265,6 +268,27 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
         builder.setView(alertView);
         AlertDialog dialog = builder.create();
         dialog.show();
+
+        closeDialogButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+
+        uploadVoiceNoteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+                Log.d(TAG, "final record path on click = "+recordedFilePathFinal);
+
+                File audioFile = new File(recordedFilePathFinal);
+                Uri uri = Uri.fromFile(audioFile);
+
+                audioPlayer.setSource(String.valueOf(uri));
+                audioPlayer.setPlayWhenReady(true);
+            }
+        });
     }
 
     private void startRecording(Chronometer recordTimer, MaterialTextView recordInstructionText, FloatingActionButton recordVoiceNote) {
@@ -295,6 +319,7 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
 
         mediaRecorder.start();
         Log.d(TAG, "recorded file path = "+recordPath + "/" + recordFile);
+        recordedFilePathFinal = recordPath + "/" + recordFile;
     }
 
     private void stopRecording(Chronometer recordTimer, MaterialTextView recordInstructionText, FloatingActionButton recordVoiceNote){

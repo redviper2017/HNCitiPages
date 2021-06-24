@@ -72,12 +72,12 @@
             android:textAlignment="center"
             android:textColor="@color/colorSurface"
             android:textSize="16sp"
-            android:padding="5dp"
+            android:padding="10dp"
             android:drawableStart="@drawable/save_ic"/>
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/capture_image_button"
+        android:id="@+id/button_close_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -96,7 +96,7 @@
             android:textAlignment="center"
             android:textColor="@color/colorSurface"
             android:textSize="16sp"
-            android:padding="5dp"
+            android:padding="10dp"
             android:drawableStart="@drawable/cancel_alert_ic"/>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
