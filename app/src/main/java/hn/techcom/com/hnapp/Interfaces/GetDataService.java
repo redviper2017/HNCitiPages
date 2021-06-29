@@ -185,4 +185,8 @@ public interface GetDataService {
     //Get supported profile posts from a specified page
     @GET()
     Call<PostList> getSupportingProfilePostsFromPage(@Url String url);
+
+    //Get all latest favorite posts
+    @GET("posts/get_post_bookmark/{hnid}/")
+    Call<PostList> getLatestFavoritePosts(@Path("hnid") String hnid);
 }
