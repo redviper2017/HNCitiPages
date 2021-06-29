@@ -112,8 +112,10 @@ public class HomeFragment
                 if (!recyclerView.canScrollVertically(1) && dy>0){
                     //scrolled to bottom
                     Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
-                    recentPostList.remove(recentPostList.size()-1);
-                    getGlobalPostsFromNextPage(nextGlobalPostListUrl);
+                    if (recentPostList.get(recentPostList.size()-1) == null) {
+                        recentPostList.remove(recentPostList.size() - 1);
+                        getGlobalPostsFromNextPage(nextGlobalPostListUrl);
+                    }
                 }
             }
         });
@@ -170,6 +172,7 @@ public class HomeFragment
         postListAdapter.filterList(filterNames);
     }
 
+    //get initial global posts list
     public void getLatestGlobalPostList(){
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getLatestGlobalPosts(userProfile.getHnid());
@@ -187,7 +190,9 @@ public class HomeFragment
 
                         recentPostList.clear();
                         recentPostList.addAll(postList);
-                        recentPostList.add(null);
+
+                        if(latestGlobalPostList.getNext() != null)
+                            recentPostList.add(null);
 
                         Log.d(TAG,"number of posts to show = "+postList.size());
 
@@ -203,6 +208,7 @@ public class HomeFragment
         });
     }
 
+    //get global posts list from next page
     public void getGlobalPostsFromNextPage(String nextPageUrl){
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getGlobalPostsFromPage(nextPageUrl);

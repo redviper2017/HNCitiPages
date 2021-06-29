@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,6 +72,7 @@ public class SupportSectionFragment
     private EditText searchView;
     private PostListAdapter postListAdapter;
     private AvatarLoaderAdapter avatarLoaderAdapter;
+    private String nextSupportingPostListUrl;
 
     private ArrayList<Result> recentPostList;
 
@@ -103,6 +105,27 @@ public class SupportSectionFragment
 
         getSupportingProfiles();
         getSupportingProfilePosts();
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (!recyclerView.canScrollVertically(1) && dy>0){
+                    //scrolled to bottom
+                    Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
+                    if (recentPostList.get(recentPostList.size()-1) == null) {
+                        recentPostList.remove(recentPostList.size() - 1);
+                        getSupportingProfilePostsFromNextPage(nextSupportingPostListUrl);
+                    }
+                }
+            }
+        });
 
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -164,7 +187,7 @@ public class SupportSectionFragment
         });
     }
 
-    //get initial supporting profile posts lit
+    //get initial supporting profile posts list
     public void getSupportingProfilePosts(){
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getLatestSupportingProfilePosts(userProfile.getHnid());
@@ -174,15 +197,54 @@ public class SupportSectionFragment
             public void onResponse(Call<PostList> call, Response<PostList> response) {
                 if(response.code() == 200){
                     PostList postList = response.body();
+                    if(postList != null) {
+                        Log.d(TAG, "number of supporting profile posts = " + postList.getCount());
+                        nextSupportingPostListUrl = postList.getNext();
+
+                        ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
+
+                        recentPostList.clear();
+                        recentPostList.addAll(postArrayList);
+                        if(postList.getNext() != null)
+                            recentPostList.add(null);
+
+                        setRecyclerView(recentPostList);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    //get supporting profile posts list from next page
+    public void getSupportingProfilePostsFromNextPage(String nextPageUrl){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getSupportingProfilePostsFromPage(nextPageUrl);
+
+        call.enqueue(new Callback<PostList>(){
+            @Override
+            public void onResponse(Call<PostList> call, Response<PostList> response) {
+                if(response.code() == 200){
+                    PostList postList = response.body();
                     Log.d(TAG, "number of supporting profile posts = "+postList.getCount());
+                    if (postList != null) {
+                        nextSupportingPostListUrl = postList.getNext();
 
-                    ArrayList<Result> postArrayList = new ArrayList<>();
-                    postArrayList.addAll(postList.getResults());
+                        ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
 
-                    recentPostList.clear();
-                    recentPostList.addAll(postArrayList);
+                        recentPostList.addAll(postArrayList);
+                        recentPostList.add(null);
 
-                    setRecyclerView(postArrayList);
+                        postListAdapter.notifyDataSetChanged();
+                        if (postList.getNext() != null) {
+                            Log.d(TAG,"total number of global posts fetched = "+recentPostList.size());
+                            getSupportingProfilePostsFromNextPage(postList.getNext());
+                        }
+                    }
                 }
             }
 
