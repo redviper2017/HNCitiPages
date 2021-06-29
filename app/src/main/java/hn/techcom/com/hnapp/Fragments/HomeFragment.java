@@ -34,6 +34,7 @@ import hn.techcom.com.hnapp.Interfaces.OnCommentClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnFavoriteButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
+import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
@@ -56,7 +57,8 @@ public class HomeFragment
         OnLikeButtonClickListener,
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
-        OnCommentClickListener {
+        OnCommentClickListener,
+        OnLoadMoreListener {
     //Constants
     private static final String TAG = "HomeFragment";
 
@@ -69,6 +71,7 @@ public class HomeFragment
     private PostListAdapter postListAdapter;
     private EditText searchView;
     private boolean isLoading = false;
+    private String nextGlobalPostListUrl;
 
     public HomeFragment() {}
 
@@ -102,6 +105,13 @@ public class HomeFragment
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+
+                if (!recyclerView.canScrollVertically(1) && dy>0){
+                    //scrolled to bottom
+                    Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
+                    recentPostList.remove(recentPostList.size()-1);
+                    getGlobalPostsFromNextPage(nextGlobalPostListUrl);
+                }
             }
         });
 
@@ -160,18 +170,17 @@ public class HomeFragment
                     PostList latestGlobalPostList = response.body();
                     if (latestGlobalPostList != null) {
                         Log.d(TAG,"next global post list url = "+latestGlobalPostList.getNext());
+                        nextGlobalPostListUrl = latestGlobalPostList.getNext();
 
-                        getGlobalPostsFromNextPage(latestGlobalPostList.getNext());
-
-                        ArrayList<Result> postList = new ArrayList<>();
-                        postList.addAll(latestGlobalPostList.getResults());
+                        ArrayList<Result> postList = new ArrayList<>(latestGlobalPostList.getResults());
 
                         recentPostList.clear();
                         recentPostList.addAll(postList);
+                        recentPostList.add(null);
 
                         Log.d(TAG,"number of posts to show = "+postList.size());
 
-                        setRecyclerView(postList);
+                        setRecyclerView(recentPostList);
                     }
                 }
             }
@@ -195,6 +204,20 @@ public class HomeFragment
                     if (globalPostList != null) {
                         Log.d(TAG,"next global post list url = "+globalPostList.getNext());
                         Log.d(TAG,"previous global post list url = "+globalPostList.getPrevious());
+
+                        nextGlobalPostListUrl = globalPostList.getNext();
+
+                        ArrayList<Result> postList = new ArrayList<>(globalPostList.getResults());
+
+                        recentPostList.addAll(postList);
+                        recentPostList.add(null);
+
+                        setRecyclerView(recentPostList);
+
+                        if (globalPostList.getNext() != null) {
+                            Log.d(TAG,"total number of global posts fetched = "+recentPostList.size());
+                            getGlobalPostsFromNextPage(globalPostList.getNext());
+                        }
                     }
                 }
             }
@@ -209,8 +232,9 @@ public class HomeFragment
     public void setRecyclerView(ArrayList<Result> postList){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postListAdapter = new PostListAdapter(
-                recyclerView,
-                postList, getContext(),
+                postList,
+                getContext(),
+                this,
                 this,
                 this,
                 this,
@@ -333,5 +357,10 @@ public class HomeFragment
         String json = sharedPreferences.getString("RecentPosts", null);
         Type type = new TypeToken<ArrayList<Result>>() {}.getType();
         return gson.fromJson(json, type);
+    }
+
+    @Override
+    public void onLoadMore() {
+
     }
 }

@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
@@ -40,7 +40,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int VIEW_TYPE_VIDEO = 3;
     private static final int VIEW_TYPE_AUDIO = 4;
 
-    private OnLoadMoreListener onLoadMoreListener;
+
+    private RecyclerView recyclerView;
     private  ArrayList<Result> allPosts = new ArrayList<>();
 
     private boolean isLoading;
@@ -54,17 +55,17 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final OnFavoriteButtonClickListener onFavoriteButtonClickListener;
     private final OnLikeCountButtonListener onLikeCountButtonListener;
     private final OnCommentClickListener onCommentClickListener;
+    private final OnLoadMoreListener onLoadMoreListener;
 
     public PostListAdapter(
-            RecyclerView recyclerView,
             ArrayList<Result> allPosts,
             Context context,
             OnOptionsButtonClickListener onOptionsButtonClickListener,
             OnLikeButtonClickListener onLikeButtonClickListener,
             OnFavoriteButtonClickListener onFavoriteButtonClickListener,
             OnLikeCountButtonListener onLikeCountButtonListener,
-            OnCommentClickListener onCommentClickListener
-    )
+            OnCommentClickListener onCommentClickListener,
+            OnLoadMoreListener onLoadMoreListener)
     {
         this.allPosts = allPosts;
         this.context = context;
@@ -73,24 +74,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.onFavoriteButtonClickListener = onFavoriteButtonClickListener;
         this.onLikeCountButtonListener = onLikeCountButtonListener;
         this.onCommentClickListener = onCommentClickListener;
+        this.onLoadMoreListener = onLoadMoreListener;
 
         Log.d(TAG,"post list size in adapter = "+allPosts.size());
-
-        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                totalItemCount = linearLayoutManager.getItemCount();
-                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                    if (onLoadMoreListener != null) {
-                        onLoadMoreListener.onLoadMore();
-                        isLoading = true;
-                    }
-                }
-            }
-        });
     }
 
     @NonNull
@@ -222,18 +208,6 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return allPosts == null ? 0 : allPosts.size();
     }
 
-    //Custom methods
-    public void setLoaded() {
-        isLoading = false;
-    }
-
-    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
-        this.onLoadMoreListener = mOnLoadMoreListener;
-    }
-
-    public void setLoadMore(OnLoadMoreListener onLoadMoreListener) {
-        this.onLoadMoreListener = onLoadMoreListener;
-    }
 
     //View holder classes
 
@@ -243,21 +217,23 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public MaterialTextView name, location, text, likes, comments, seeMoreButton;
         public CircleImageView avatar;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
+        private View supportCircleView;
 
         public StoryViewHolder(@NonNull View view) {
             super(view);
 
-            name           = view.findViewById(R.id.name_post);
-            location       = view.findViewById(R.id.location_post);
-            text           = view.findViewById(R.id.text_post);
-            likes          = view.findViewById(R.id.text_like_count_post);
-            comments       = view.findViewById(R.id.text_comment_count_post);
-            avatar         = view.findViewById(R.id.avatar_post);
-            seeMoreButton  = view.findViewById(R.id.seemore_post);
-            optionsButton  = view.findViewById(R.id.options_icon_post);
-            likeButton     = view.findViewById(R.id.like_button_post);
-            favoriteButton = view.findViewById(R.id.favorite_button_post);
-            commentButton  = view.findViewById(R.id.comment_button_post);
+            name              = view.findViewById(R.id.name_post);
+            location          = view.findViewById(R.id.location_post);
+            text              = view.findViewById(R.id.text_post);
+            likes             = view.findViewById(R.id.text_like_count_post);
+            comments          = view.findViewById(R.id.text_comment_count_post);
+            avatar            = view.findViewById(R.id.avatar_post);
+            seeMoreButton     = view.findViewById(R.id.seemore_post);
+            optionsButton     = view.findViewById(R.id.options_icon_post);
+            likeButton        = view.findViewById(R.id.like_button_post);
+            favoriteButton    = view.findViewById(R.id.favorite_button_post);
+            commentButton     = view.findViewById(R.id.comment_button_post);
+            supportCircleView = view.findViewById(R.id.support_circle_view);
 
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
@@ -328,11 +304,17 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }else
                 likes.setVisibility(View.GONE);
 
-            String profilePhotoUrl = post.getUser().getProfileImg();
+            String profilePhotoUrl = post.getUser().getProfile_img_thumbnail();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
                     .into(avatar);
+
+            //Toggling support avatar circle
+            if(post.getUser().getIsSupported())
+                supportCircleView.setVisibility(View.VISIBLE);
+            else
+                supportCircleView.setVisibility(View.GONE);
         }
 
         @Override
@@ -361,6 +343,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public CircleImageView avatar;
         public AspectRatioImageView landscapeImageView, portraitImageView;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
+        private View supportCircleView;
 
         public ImageViewHolder(@NonNull View view) {
             super(view);
@@ -378,6 +361,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             likeButton         = view.findViewById(R.id.like_button_post);
             favoriteButton     = view.findViewById(R.id.favorite_button_post);
             commentButton      = view.findViewById(R.id.comment_button_post);
+            supportCircleView  = view.findViewById(R.id.support_circle_view);
 
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
@@ -450,11 +434,17 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }else
                 likes.setVisibility(View.GONE);
 
-            String profilePhotoUrl = post.getUser().getProfileImg();
+            String profilePhotoUrl = post.getUser().getProfile_img_thumbnail();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
                     .into(avatar);
+
+            //Toggling support avatar circle
+            if(post.getUser().getIsSupported())
+                supportCircleView.setVisibility(View.VISIBLE);
+            else
+                supportCircleView.setVisibility(View.GONE);
 
             //Placing image into respective imageview based on aspect ratio
             if (post.getFiles().get(0).getAspect().equals("portrait")){
@@ -498,8 +488,10 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public MaterialTextView name, location, text, likes, comments, seeMoreButton;
         public CircleImageView avatar;
-        private AndExoPlayerView videoPlayerPortrait, videoPlayerLandscape;
-        private ImageButton optionsButton, likeButton, favoriteButton, commentButton;;
+        private AndExoPlayerView videoPlayerPortrait, videoPlayerLandscape, audioPlayer;
+        private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
+        private LinearLayout audioPlayerLayout;
+        private View supportCircleView;
 
         public AudioVideoViewHolder(@NonNull View view) {
             super(view);
@@ -513,10 +505,13 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             seeMoreButton        = view.findViewById(R.id.seemore_post);
             videoPlayerPortrait  = view.findViewById(R.id.video_player_portrait_post);
             videoPlayerLandscape = view.findViewById(R.id.video_player_landscape_post);
+            audioPlayer          = view.findViewById(R.id.audio_player);
+            audioPlayerLayout    = view.findViewById(R.id.audio_player_layout);
             optionsButton        = view.findViewById(R.id.options_icon_post);
             likeButton           = view.findViewById(R.id.like_button_post);
             favoriteButton       = view.findViewById(R.id.favorite_button_post);
             commentButton        = view.findViewById(R.id.comment_button_post);
+            supportCircleView    = view.findViewById(R.id.support_circle_view);
 
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
@@ -591,11 +586,17 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }else
                 likes.setVisibility(View.GONE);
 
-            String profilePhotoUrl = post.getUser().getProfileImg();
+            String profilePhotoUrl = post.getUser().getProfile_img_thumbnail();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
                     .into(avatar);
+
+            //Toggling support avatar circle
+            if(post.getUser().getIsSupported())
+                supportCircleView.setVisibility(View.VISIBLE);
+            else
+                supportCircleView.setVisibility(View.GONE);
 
             String videoUrl = post.getFiles().get(0).getMedia();
 
@@ -612,10 +613,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //            portraitVideoView.setVideoPath(videoUrl);
 //            portraitVideoView.requestFocus();
             if(post.getPosttype().equals("A")){
-                videoPlayerLandscape.setVisibility(View.VISIBLE);
+                videoPlayerLandscape.setVisibility(View.GONE);
                 videoPlayerPortrait.setVisibility(View.GONE);
-                videoPlayerLandscape.setSource(videoUrl);
-                videoPlayerLandscape.setPlayWhenReady(false);
+                audioPlayerLayout.setVisibility(View.VISIBLE);
+                audioPlayer.setSource(videoUrl);
+                audioPlayer.setPlayWhenReady(false);
             }else{
                 if (post.getFiles().get(0).getAspect().equals("portrait")){
                     videoPlayerPortrait.setVisibility(View.VISIBLE);

@@ -35,14 +35,13 @@ import hn.techcom.com.hnapp.Interfaces.OnCommentClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnFavoriteButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
+import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
-import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Result;
-import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Models.SupportingProfileList;
 import hn.techcom.com.hnapp.Models.User;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
@@ -61,7 +60,8 @@ public class SupportSectionFragment
         OnLikeButtonClickListener,
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
-        OnCommentClickListener {
+        OnCommentClickListener,
+        OnLoadMoreListener {
 
     private Utils myUtils;
     private Profile userProfile;
@@ -196,8 +196,8 @@ public class SupportSectionFragment
     public void setRecyclerView(ArrayList<Result> postList){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postListAdapter = new PostListAdapter(
-                recyclerView,
                 postList, getContext(),
+                this,
                 this,
                 this,
                 this,
@@ -211,7 +211,7 @@ public class SupportSectionFragment
         ArrayList<String> nameList = new ArrayList<>();
 
         for (User supportingProfile : supportingProfileList) {
-            avatarList.add(supportingProfile.getProfileImg());
+            avatarList.add(supportingProfile.getProfile_img_thumbnail());
             nameList.add(supportingProfile.getFullName());
         }
 
@@ -341,5 +341,10 @@ public class SupportSectionFragment
         String json = sharedPreferences.getString("RecentPosts", null);
         Type type = new TypeToken<ArrayList<Result>>() {}.getType();
         return gson.fromJson(json, type);
+    }
+
+    @Override
+    public void onLoadMore() {
+
     }
 }

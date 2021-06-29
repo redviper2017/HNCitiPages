@@ -28,6 +28,9 @@ public class User {
     @SerializedName("first_img")
     @Expose
     private String firstImg;
+    @SerializedName("profile_img_thumbnail")
+    @Expose
+    private String profile_img_thumbnail;
     @SerializedName("hnid")
     @Expose
     private String hnid;
@@ -100,6 +103,14 @@ public class User {
 
     public void setFirstImg(String firstImg) {
         this.firstImg = firstImg;
+    }
+
+    public String getProfile_img_thumbnail() {
+        return profile_img_thumbnail;
+    }
+
+    public void setProfile_img_thumbnail(String profile_img_thumbnail) {
+        this.profile_img_thumbnail = profile_img_thumbnail;
     }
 
     public String getHnid() {
