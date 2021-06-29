@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item
-        android:id="@+id/nav_buy"
-        android:icon="@drawable/ic_buy_black_24dp"
-        android:title="@string/buy_a_copy" />
+<!--    <item-->
+<!--        android:id="@+id/nav_buy"-->
+<!--        android:icon="@drawable/ic_buy_black_24dp"-->
+<!--        android:title="@string/buy_a_copy" />-->
 
-    <item
-        android:id="@+id/nav_notifications"
-        android:icon="@drawable/bell"
-        android:title="@string/notifications" />
+<!--    <item-->
+<!--        android:id="@+id/nav_notifications"-->
+<!--        android:icon="@drawable/bell"-->
+<!--        android:title="@string/notifications" />-->
 
     <item android:title="@string/posts_by_hlumelo">
         <menu>
@@ -119,21 +119,21 @@
                     android:id="@+id/nav_fav"
                     android:icon="@drawable/ic_favorite_black_24dp"
                     android:title="@string/favorites"/>
-                <item
-                    android:id="@+id/nav_about"
-                    android:icon="@drawable/ic_about_black_24dp"
-                    android:title="@string/about_us" />
-                <item
-                    android:id="@+id/nav_contact"
-                    android:icon="@drawable/contact_icon_24dp"
-                    android:title="@string/contact_us" />
+<!--                <item-->
+<!--                    android:id="@+id/nav_about"-->
+<!--                    android:icon="@drawable/ic_about_black_24dp"-->
+<!--                    android:title="@string/about_us" />-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_contact"-->
+<!--                    android:icon="@drawable/contact_icon_24dp"-->
+<!--                    android:title="@string/contact_us" />-->
             </group>
         </menu>
     </item>
 
-    <item android:id="@+id/nav_settings"
-        android:icon="@drawable/ic_settings_24dp"
-        android:title="Settings"/>
+<!--    <item android:id="@+id/nav_settings"-->
+<!--        android:icon="@drawable/ic_settings_24dp"-->
+<!--        android:title="Settings"/>-->
     <item android:id="@+id/nav_sign_out"
         android:icon="@drawable/ic_account_circle_black_24dp"
         android:title="Sign Out"/>
