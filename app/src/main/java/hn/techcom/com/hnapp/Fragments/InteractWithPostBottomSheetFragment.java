@@ -119,7 +119,7 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
 
 //                    postListAdapter.notifyItemRemoved(itemPosition);
 
-                    postListAdapter.removeItem(itemPosition);
+                    postListAdapter.notifyDataSetChanged();
 
                     dismiss();
                 }

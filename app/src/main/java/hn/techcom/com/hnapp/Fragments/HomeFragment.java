@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
@@ -72,6 +73,7 @@ public class HomeFragment
     private EditText searchView;
     private boolean isLoading = false;
     private String nextGlobalPostListUrl;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public HomeFragment() {}
 
@@ -85,6 +87,7 @@ public class HomeFragment
 
         recyclerView = view.findViewById(R.id.recyclerview_posts_supportsection);
         searchView   = view.findViewById(R.id.searchview_supportedsection);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
 
         screenTitle.setText(R.string.home);
         globalPostList = new ArrayList<>();
@@ -129,6 +132,14 @@ public class HomeFragment
             @Override
             public void afterTextChanged(Editable editable) {
                 filter(editable.toString().toLowerCase());
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                recentPostList.clear();
+                getLatestGlobalPostList();
             }
         });
 
@@ -243,6 +254,7 @@ public class HomeFragment
                 this,
                 this);
         recyclerView.setAdapter(postListAdapter);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     //like or un-like post
