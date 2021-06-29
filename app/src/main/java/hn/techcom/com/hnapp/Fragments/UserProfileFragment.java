@@ -19,9 +19,12 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.Utils;
 
 public class UserProfileFragment extends Fragment {
     private static final String TAG = "UserProfileFragment";
+    private Utils myUtils;
+    private Profile userProfile;
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -32,6 +35,8 @@ public class UserProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
+        //Hooks
+        MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_profile);
         MaterialTextView name        = view.findViewById(R.id.textview_name_view_profile);
         MaterialTextView username    = view.findViewById(R.id.textview_username_view_profile);
         MaterialTextView email       = view.findViewById(R.id.textview_email_view_profile);
@@ -40,37 +45,31 @@ public class UserProfileFragment extends Fragment {
         CircleImageView profilePhoto = view.findViewById(R.id.circleimageview_user_profile);
         ProgressBar progressBar      = view.findViewById(R.id.user_profile_photo_progressbar);
 
-        Profile registeredUser = getNewUserFromSharedPreference();
 
-        Log.d("ProfileFragment","registered user profile = "+registeredUser.toString());
 
+        myUtils = new Utils();
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+
+        Log.d("ProfileFragment","registered user profile = "+userProfile.toString());
+
+        screenTitle.setText(R.string.my_profile);
         progressBar.setVisibility(View.VISIBLE);
 
-        name.setText(registeredUser.getFullName());
-        username.setText(registeredUser.getUsername());
-        email.setText(registeredUser.getEmail());
-        phone.setText(registeredUser.getMobileNumber());
-        hnid.setText(registeredUser.getHnid());
+        name.setText(userProfile.getFullName());
+        username.setText(userProfile.getUsername());
+        email.setText(userProfile.getEmail());
+        phone.setText(userProfile.getMobileNumber());
+        hnid.setText(userProfile.getHnid());
 
-        String profilePhotoUrl = registeredUser.getProfileImg();
+        String profilePhotoUrl = userProfile.getProfileImg();
         Log.d(TAG,"loaded profile photo url = "+profilePhotoUrl);
         Picasso
                 .get()
                 .load(profilePhotoUrl)
-                .placeholder(R.drawable.image_placeholder)
                 .into(profilePhoto);
         progressBar.setVisibility(View.GONE);
 
         // Inflate the layout for this fragment
         return view;
-    }
-
-    private Profile getNewUserFromSharedPreference() {
-        SharedPreferences pref = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = pref.getString("NewUser","");
-        Profile user = gson.fromJson(json, Profile.class);
-
-        return user;
     }
 }

@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Activities.SignInActivity;
+import hn.techcom.com.hnapp.Fragments.FavoritesFragment;
 import hn.techcom.com.hnapp.Fragments.UserProfileFragment;
 import hn.techcom.com.hnapp.R;
 
@@ -96,10 +97,10 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new VisitWorldFragment()).commit();
 //                        dismiss();
 //                        break;
-//                    case R.id.nav_fav:
-//                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FavoritesFragment()).commit();
-//                        dismiss();
-//                        break;
+                    case R.id.nav_fav:
+                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new FavoritesFragment()).commit();
+                        dismiss();
+                        break;
 //                    case R.id.nav_about:
 //                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AboutUsFragment()).commit();
 //                        dismiss();

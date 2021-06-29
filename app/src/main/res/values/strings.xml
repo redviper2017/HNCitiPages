@@ -107,4 +107,5 @@
     <string name="add_a_comment">Add a comment...</string>
     <string name="start_recording_disclaimer">Tap the button above to start recording.</string>
     <string name="stop_recording_disclaimer">Tap the button above to stop recording.</string>
+    <string name="search">Search...</string>
 </resources>
