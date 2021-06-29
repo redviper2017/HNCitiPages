@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -73,6 +74,7 @@ public class SupportSectionFragment
     private PostListAdapter postListAdapter;
     private AvatarLoaderAdapter avatarLoaderAdapter;
     private String nextSupportingPostListUrl;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private ArrayList<Result> recentPostList;
 
@@ -94,6 +96,7 @@ public class SupportSectionFragment
         recyclerView                 = view.findViewById(R.id.recyclerview_posts_supportsection);
         profileRecyclerView          = view.findViewById(R.id.recyclerview_supported_avatars_supportsection);
         searchView                   = view.findViewById(R.id.searchview_supportedsection);
+        swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
 
         recentPostList = new ArrayList<>();
 
@@ -141,6 +144,15 @@ public class SupportSectionFragment
             @Override
             public void afterTextChanged(Editable editable) {
                 filter(editable.toString().toLowerCase());
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                recentPostList.clear();
+                getSupportingProfilePosts();
+                getSupportingProfiles();
             }
         });
 
@@ -266,6 +278,7 @@ public class SupportSectionFragment
                 this,
                 this);
         recyclerView.setAdapter(postListAdapter);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     public void setProfilesRecyclerView(ArrayList<User> supportingProfileList){
