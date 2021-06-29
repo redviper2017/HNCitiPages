@@ -212,7 +212,9 @@ public class HomeFragment
                         recentPostList.addAll(postList);
                         recentPostList.add(null);
 
-                        setRecyclerView(recentPostList);
+                        postListAdapter.notifyDataSetChanged();
+
+//                        setRecyclerView(recentPostList);
 
                         if (globalPostList.getNext() != null) {
                             Log.d(TAG,"total number of global posts fetched = "+recentPostList.size());
