@@ -19,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:itemIconTint="@color/colorTextTitle"
-        app:menu="@menu/drawer_menu"/>
+        app:menu="@menu/drawer_menu"
+        android:elevation="0dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
