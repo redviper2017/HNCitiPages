@@ -13,21 +13,21 @@
 <!--        android:icon="@drawable/bell"-->
 <!--        android:title="@string/notifications" />-->
 
-    <item android:title="@string/posts_by_hlumelo">
-        <menu>
-            <group android:id="@+id/posts_hn"
-                android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_today_post_hn"
-                    android:icon="@drawable/ic_today_black_24dp"
-                    android:title="@string/today_s_post" />
-                <item
-                    android:id="@+id/nav_all_post_hn"
-                    android:icon="@drawable/ic_all_black_24dp"
-                    android:title="@string/all_posts" />
-            </group>
-        </menu>
-    </item>
+<!--    <item android:title="@string/posts_by_hlumelo">-->
+<!--        <menu>-->
+<!--            <group android:id="@+id/posts_hn"-->
+<!--                android:checkableBehavior="single">-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_today_post_hn"-->
+<!--                    android:icon="@drawable/ic_today_black_24dp"-->
+<!--                    android:title="@string/today_s_post" />-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_all_post_hn"-->
+<!--                    android:icon="@drawable/ic_all_black_24dp"-->
+<!--                    android:title="@string/all_posts" />-->
+<!--            </group>-->
+<!--        </menu>-->
+<!--    </item>-->
 
     <item android:title="@string/my_profile">
         <menu>
@@ -53,45 +53,45 @@
 <!--        </menu>-->
 <!--    </item>-->
 
-    <item android:title="@string/posts_by_humman_navigators">
-        <menu>
-            <group android:id="@+id/posts_community"
-                android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_random_community"
-                    android:icon="@drawable/ic_random_posts_green_24dp"
-                    android:title="@string/random" />
-                <item
-                    android:id="@+id/nav_positive_thought_community"
-                    android:icon="@drawable/ic_thoughts_black_24dp"
-                    android:title="@string/positive_thought"/>
-                <item
-                    android:id="@+id/nav_talent_community"
-                    android:icon="@drawable/ic_talent_posts_green_24dp"
-                    android:title="@string/talent"/>
-                <item
-                    android:id="@+id/nav_culture_community"
-                    android:icon="@drawable/ic_culture_posts_green_24dp"
-                    android:title="@string/culture" />
-                <item
-                    android:id="@+id/nav_lifestyle_community"
-                    android:icon="@drawable/lifestyle_ic"
-                    android:title="@string/lifestyle" />
-                <item
-                    android:id="@+id/nav_hustle_community"
-                    android:icon="@drawable/hustle_ic"
-                    android:title="@string/hustle" />
-                <item
-                    android:id="@+id/nav_commedy_community"
-                    android:icon="@drawable/commedy_ic"
-                    android:title="@string/commedy" />
-                <item
-                    android:id="@+id/nav_news_community"
-                    android:icon="@drawable/ic_news_black_24dp"
-                    android:title="@string/news" />
-            </group>
-        </menu>
-    </item>
+<!--    <item android:title="@string/posts_by_humman_navigators">-->
+<!--        <menu>-->
+<!--            <group android:id="@+id/posts_community"-->
+<!--                android:checkableBehavior="single">-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_random_community"-->
+<!--                    android:icon="@drawable/ic_random_posts_green_24dp"-->
+<!--                    android:title="@string/random" />-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_positive_thought_community"-->
+<!--                    android:icon="@drawable/ic_thoughts_black_24dp"-->
+<!--                    android:title="@string/positive_thought"/>-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_talent_community"-->
+<!--                    android:icon="@drawable/ic_talent_posts_green_24dp"-->
+<!--                    android:title="@string/talent"/>-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_culture_community"-->
+<!--                    android:icon="@drawable/ic_culture_posts_green_24dp"-->
+<!--                    android:title="@string/culture" />-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_lifestyle_community"-->
+<!--                    android:icon="@drawable/lifestyle_ic"-->
+<!--                    android:title="@string/lifestyle" />-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_hustle_community"-->
+<!--                    android:icon="@drawable/hustle_ic"-->
+<!--                    android:title="@string/hustle" />-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_commedy_community"-->
+<!--                    android:icon="@drawable/commedy_ic"-->
+<!--                    android:title="@string/commedy" />-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_news_community"-->
+<!--                    android:icon="@drawable/ic_news_black_24dp"-->
+<!--                    android:title="@string/news" />-->
+<!--            </group>-->
+<!--        </menu>-->
+<!--    </item>-->
 
 <!--    <item android:title="Visit" >-->
 <!--        <menu>-->

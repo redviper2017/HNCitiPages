@@ -13,10 +13,4 @@
         android:title="Report Post"
         android:enabled="true"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/delete_post"
-        android:icon="@drawable/delete_post_ic"
-        android:title="Delete Post"
-        android:enabled="true"
-        app:showAsAction="always"/>
 </menu>

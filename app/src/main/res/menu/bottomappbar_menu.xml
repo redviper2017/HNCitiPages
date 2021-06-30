@@ -7,22 +7,22 @@
         android:enabled="true"
         android:icon="@drawable/home_ic"
         android:title="Home" />
-    <item
-        android:id="@+id/navigation_visitsection"
-        app:showAsAction="always"
-        android:enabled="true"
-        android:icon="@drawable/visit_ic"
-        android:title="Trending" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_visitsection"-->
+<!--        app:showAsAction="always"-->
+<!--        android:enabled="true"-->
+<!--        android:icon="@drawable/visit_ic"-->
+<!--        android:title="Trending" />-->
     <item
         android:id="@+id/navigation_supportedsection"
         app:showAsAction="always"
         android:enabled="true"
         android:icon="@drawable/support_icon"
         android:title="Supported" />
-    <item
-        android:id="@+id/navigation_noticeboard"
-        app:showAsAction="always"
-        android:enabled="true"
-        android:icon="@drawable/noticeboard_ic"
-        android:title="Noticeboard" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_noticeboard"-->
+<!--        app:showAsAction="always"-->
+<!--        android:enabled="true"-->
+<!--        android:icon="@drawable/noticeboard_ic"-->
+<!--        android:title="Noticeboard" />-->
 </menu>

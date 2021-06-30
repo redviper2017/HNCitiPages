@@ -42,6 +42,7 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
     private PostListAdapter postListAdapter;
     private String hnid_user;
     private Utils myUtils;
+    private Profile userProfile;
     private boolean supporting;
 
     private static final String TAG = "PostBottomSheetFragment";
@@ -65,10 +66,16 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
                              Bundle savedInstanceState) {
         View view;
 
-        if(supporting)
-            view = inflater.inflate(R.layout.fragment_interact_with_post_bottom_sheet_supporting, container, false);
-        else
-            view = inflater.inflate(R.layout.fragment_interact_with_post_bottom_sheet, container, false);
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+
+        if(recentPostList.get(itemPosition).getUser().getHnid().equals(userProfile.getHnid()))
+            view = inflater.inflate(R.layout.fragment_interact_with_post_bottom_sheet_own, container, false);
+        else {
+            if(supporting)
+                view = inflater.inflate(R.layout.fragment_interact_with_post_bottom_sheet_supporting, container, false);
+            else
+                view = inflater.inflate(R.layout.fragment_interact_with_post_bottom_sheet, container, false);
+        }
 
         navigationView = view.findViewById(R.id.navigation_interact_with_post);
 
@@ -137,8 +144,6 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
     public void supportOrUnsupport(){
         Log.d(TAG,"support or unsupport user with hnid = "+hnid_user);
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-
-        Profile userProfile = myUtils.getNewUserFromSharedPreference(getContext());
 
         RequestBody supporter = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
         RequestBody supporting = RequestBody.create(MediaType.parse("text/plain"), hnid_user);
