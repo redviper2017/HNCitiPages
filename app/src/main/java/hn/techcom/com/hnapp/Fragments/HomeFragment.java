@@ -166,8 +166,9 @@ public class HomeFragment
         ArrayList<Result> filterNames = new ArrayList<>();
 
         for (Result post : recentPostList)
-            if (post.getUser().getFullName().toLowerCase().contains(text))
-                filterNames.add(post);
+            if(post != null)
+                if (post.getUser().getFullName().toLowerCase().contains(text))
+                    filterNames.add(post);
 
         postListAdapter.filterList(filterNames);
     }

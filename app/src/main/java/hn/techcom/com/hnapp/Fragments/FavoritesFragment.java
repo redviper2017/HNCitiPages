@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.textview.MaterialTextView;
@@ -59,7 +62,7 @@ public class FavoritesFragment
     private ArrayList<Result> recentPostList;
     private String nextFavoritePostListUrl;
     private PostListAdapter postListAdapter;
-
+    private EditText searchView;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -79,11 +82,50 @@ public class FavoritesFragment
 
         //Hooks
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_favorites);
-        recyclerView = view.findViewById(R.id.recyclerview_posts_favorites);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        recyclerView                 = view.findViewById(R.id.recyclerview_posts_favorites);
+        searchView                   = view.findViewById(R.id.searchview_favorites);
+        swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
 
         screenTitle.setText(R.string.favorites);
         getLatestFavoritePostList();
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (!recyclerView.canScrollVertically(1) && dy>0){
+                    //scrolled to bottom
+                    Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
+                    if (recentPostList.get(recentPostList.size()-1) == null) {
+                        recentPostList.remove(recentPostList.size() - 1);
+                        getFavoritePostsFromNextPage(nextFavoritePostListUrl);
+                    }
+                }
+            }
+        });
+
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString().toLowerCase());
+            }
+        });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -95,6 +137,17 @@ public class FavoritesFragment
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void filter(String text) {
+        ArrayList<Result> filterNames = new ArrayList<>();
+
+        for (Result post : recentPostList)
+            if(post != null)
+                if (post.getUser().getFullName().toLowerCase().contains(text))
+                    filterNames.add(post);
+
+        postListAdapter.filterList(filterNames);
     }
 
     public void getLatestFavoritePostList(){
@@ -127,6 +180,43 @@ public class FavoritesFragment
 
             @Override
             public void onFailure(@NonNull Call<PostList> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    public void getFavoritePostsFromNextPage(String nextPageUrl){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getFavoritePostsFromPage(nextPageUrl);
+
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(Call<PostList> call, Response<PostList> response) {
+                if(response.code() == 200){
+                    PostList favoritePostList = response.body();
+                    if(favoritePostList != null){
+                        Log.d(TAG,"next favorite post list url = "+favoritePostList.getNext());
+                        Log.d(TAG,"previous favorite post list url = "+favoritePostList.getPrevious());
+
+                        nextFavoritePostListUrl = favoritePostList.getNext();
+
+                        ArrayList<Result> postList = new ArrayList<>(favoritePostList.getResults());
+
+                        recentPostList.addAll(postList);
+                        recentPostList.add(null);
+
+                        postListAdapter.notifyDataSetChanged();
+
+                        if(favoritePostList.getNext() != null){
+                            Log.d(TAG,"total number of global posts fetched = "+recentPostList.size());
+                            getFavoritePostsFromNextPage(favoritePostList.getNext());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostList> call, Throwable t) {
 
             }
         });

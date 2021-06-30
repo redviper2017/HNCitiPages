@@ -189,4 +189,8 @@ public interface GetDataService {
     //Get all latest favorite posts
     @GET("posts/get_post_bookmark/{hnid}/")
     Call<PostList> getLatestFavoritePosts(@Path("hnid") String hnid);
+
+    //Get all favorite posts from a specified page
+    @GET()
+    Call<PostList> getFavoritePostsFromPage(@Url String url);
 }
