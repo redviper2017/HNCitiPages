@@ -111,8 +111,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/_150sdp"
-            android:src="@drawable/audio_placeholder"
-            android:scaleType="fitXY"/>
+            android:src="@drawable/audio_placeholder_2"
+            android:scaleType="centerCrop"/>
         <com.potyvideo.library.AndExoPlayerView
             android:id="@+id/audio_player"
             android:layout_width="match_parent"
