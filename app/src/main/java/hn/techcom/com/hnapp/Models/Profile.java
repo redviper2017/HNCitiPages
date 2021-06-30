@@ -34,6 +34,10 @@ public class Profile {
     @SerializedName("first_img")
     @Expose
     private String firstImg;
+
+    @SerializedName("profile_img_thumbnail")
+    @Expose
+    private String profileImgThumbnail;
     @SerializedName("mobile_number")
     @Expose
     private String mobileNumber;
@@ -112,6 +116,14 @@ public class Profile {
 
     public String getFirstImg() {
         return firstImg;
+    }
+
+    public String getProfileImgThumbnail() {
+        return profileImgThumbnail;
+    }
+
+    public void setProfileImgThumbnail(String profileImgThumbnail) {
+        this.profileImgThumbnail = profileImgThumbnail;
     }
 
     public void setFirstImg(String firstImg) {

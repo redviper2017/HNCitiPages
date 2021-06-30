@@ -61,7 +61,7 @@ public class UserProfileFragment extends Fragment {
         phone.setText(userProfile.getMobileNumber());
         hnid.setText(userProfile.getHnid());
 
-        String profilePhotoUrl = userProfile.getProfileImg();
+        String profilePhotoUrl = userProfile.getProfileImgThumbnail();
         Log.d(TAG,"loaded profile photo url = "+profilePhotoUrl);
         Picasso
                 .get()
