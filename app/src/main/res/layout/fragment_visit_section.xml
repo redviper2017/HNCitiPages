@@ -35,6 +35,7 @@
 <!--            android:layout_alignParentEnd="true"-->
 <!--            android:background="@drawable/flag_transparent"/>-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/change_location_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fabSize="mini"

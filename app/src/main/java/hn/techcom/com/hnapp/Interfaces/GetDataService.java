@@ -5,6 +5,7 @@ import java.util.List;
 import hn.techcom.com.hnapp.Models.DeleteResponse;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
+import hn.techcom.com.hnapp.Models.Location;
 import hn.techcom.com.hnapp.Models.NewPostResponse;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
@@ -193,4 +194,8 @@ public interface GetDataService {
     //Get all favorite posts from a specified page
     @GET()
     Call<PostList> getFavoritePostsFromPage(@Url String url);
+
+    //Get all cities & countries
+    @GET("get_country_city/")
+    Call<Location> getLocations();
 }

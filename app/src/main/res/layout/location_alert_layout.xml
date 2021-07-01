@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/_30sdp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textview_title_country_pick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pacifico"
+        android:textAlignment="center"
+        android:text="Pick a place to visit"
+        android:textSize="@dimen/_16ssp"
+        android:textColor="@color/colorTextTitle"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@id/layout_screentitle_shareimage"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textview_title_country_pick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="Pick a country"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dp"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/layout_screentitle_shareimage"/>
+
+    <RelativeLayout
+        android:id="@+id/layout_country"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_textview_shape"
+        android:tag="notselected"
+        android:layout_marginBottom="10dp">
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinner_country"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorCenterLinearGradient"
+            android:dropDownVerticalOffset="40dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:popupBackground="@color/colorSurface"
+            android:spinnerMode="dropdown" />
+    </RelativeLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textview_title_city_pick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="Pick a city"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintTop_toBottomOf="@id/layout_screentitle_shareimage"/>
+
+    <RelativeLayout
+        android:id="@+id/layout_city"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_textview_shape"
+        android:tag="notselected"
+        android:layout_marginBottom="10dp">
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinner_city"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorCenterLinearGradient"
+            android:dropDownVerticalOffset="40dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:popupBackground="@color/colorSurface"
+            android:spinnerMode="dropdown" />
+    </RelativeLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/button_visit_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp"
+        android:layout_marginTop="20dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_button"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="visit"
+            android:textAlignment="center"
+            android:textColor="@color/colorSurface"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:drawableStart="@drawable/done_ic"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/button_clear_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_button"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="clear"
+            android:textAlignment="center"
+            android:textColor="@color/colorSurface"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:drawableStart="@drawable/cancel_alert_ic"/>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>
