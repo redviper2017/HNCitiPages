@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     tools:context=".Fragments.VisitSectionFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layout_screentitle_visit_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,6 +18,47 @@
         <include
             android:id="@+id/text_screen_title_visitsection"
             layout="@layout/screen_title_view"/>
-    </LinearLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/location_visitsection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/text_screen_title_visitsection"
+            android:layout_below="@id/text_screen_title_visitsection"
+            android:textSize="@dimen/_12ssp"
+            android:drawableStart="@drawable/location_ic"/>
+
+<!--        <androidx.constraintlayout.utils.widget.ImageFilterButton-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/change_location_ic"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:background="@drawable/flag_transparent"/>-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            android:src="@drawable/change_location_ic"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/colorStartLinearGradient"/>
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/searchview_visitsection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:drawableStart="@drawable/search_ic"
+        android:drawablePadding="5dp"
+        android:hint="Search..."
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:background="@drawable/rounded_corner_rectangle"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

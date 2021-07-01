@@ -100,7 +100,7 @@ public class SupportSectionFragment
 
         recentPostList = new ArrayList<>();
 
-        //Setting up user avatar on top bar
+        //Getting user profile from local storage
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(getContext());
 
