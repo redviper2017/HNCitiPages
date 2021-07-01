@@ -23,6 +23,7 @@ import hn.techcom.com.hnapp.Fragments.HomeFragment;
 import hn.techcom.com.hnapp.Fragments.SharePostBottomSheetFragment;
 import hn.techcom.com.hnapp.Fragments.SupportSectionFragment;
 import hn.techcom.com.hnapp.Fragments.SupportedSectionFragment;
+import hn.techcom.com.hnapp.Fragments.VisitSectionFragment;
 import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
@@ -99,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.navigation_home:
                 fragmentSelected = new HomeFragment();
+                break;
+            case R.id.navigation_visitsection:
+                fragmentSelected = new VisitSectionFragment();
                 break;
             case android.R.id.home:
                 BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
