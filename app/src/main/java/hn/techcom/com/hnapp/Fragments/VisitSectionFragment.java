@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -156,6 +157,7 @@ public class VisitSectionFragment
         if(view.getId() == R.id.change_location_fab)
             showLocationDialog();
         if (view.getId() == R.id.current_location_fab) {
+            Toast.makeText(getContext(),"Fetching posts from "+locationText+"...",Toast.LENGTH_LONG).show();
             getLatestPostsByCity(userProfile.getCity());
             location.setText(locationText);
         }
