@@ -34,6 +34,17 @@
 <!--            android:src="@drawable/change_location_ic"-->
 <!--            android:layout_alignParentEnd="true"-->
 <!--            android:background="@drawable/flag_transparent"/>-->
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/current_location_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            android:src="@drawable/my_location_ic"
+            android:layout_toStartOf="@id/change_location_fab"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/colorStartLinearGradient"/>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/change_location_fab"
             android:layout_width="wrap_content"

@@ -60,9 +60,9 @@ public class VisitSectionFragment
     private Profile userProfile;
     private ArrayList<String> citiesList, countriesList;
     private ArrayList<Result> recentPostList;
-    private String nextCityPostListUrl, nextCountryPostListUrl, citySelected, countrySelected;
+    private String nextCityPostListUrl, nextCountryPostListUrl, citySelected, countrySelected, locationText;
 
-    private FloatingActionButton changeLocationButton;
+    private FloatingActionButton changeLocationButton, currentLocationButton;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private  AlertDialog dialog;
@@ -83,6 +83,7 @@ public class VisitSectionFragment
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_visitsection);
         location                     = view.findViewById(R.id.location_visitsection);
         changeLocationButton         = view.findViewById(R.id.change_location_fab);
+        currentLocationButton        = view.findViewById(R.id.current_location_fab);
         recyclerView                 = view.findViewById(R.id.recyclerview_posts_visitsection);
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
 
@@ -97,12 +98,13 @@ public class VisitSectionFragment
         citySelected = userProfile.getCity();
         countrySelected = userProfile.getCountry();
 
-        String locationText = userProfile.getCity() + ", " + userProfile.getCountry();
+        locationText = userProfile.getCity() + ", " + userProfile.getCountry();
 
         screenTitle.setText(R.string.visit_section);
         location.setText(locationText);
 
         changeLocationButton.setOnClickListener(this);
+        currentLocationButton.setOnClickListener(this);
 
         getLocations();
         getLatestPostsByCity(citySelected);
@@ -153,6 +155,11 @@ public class VisitSectionFragment
     public void onClick(View view) {
         if(view.getId() == R.id.change_location_fab)
             showLocationDialog();
+        if (view.getId() == R.id.current_location_fab) {
+            getLatestPostsByCity(userProfile.getCity());
+            location.setText(locationText);
+        }
+
     }
 
     public void getLocations(){
