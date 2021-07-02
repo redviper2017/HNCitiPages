@@ -13,9 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -58,11 +60,13 @@ public class VisitSectionFragment
     private Profile userProfile;
     private ArrayList<String> citiesList, countriesList;
     private ArrayList<Result> recentPostList;
-    private String nextCityPostListUrl, citySelected, countrySelected;
+    private String nextCityPostListUrl, nextCountryPostListUrl, citySelected, countrySelected;
 
     private FloatingActionButton changeLocationButton;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private  AlertDialog dialog;
+    private MaterialTextView location;
 
     private PostListAdapter postListAdapter;
 
@@ -77,7 +81,7 @@ public class VisitSectionFragment
 
         //Hooks
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_visitsection);
-        MaterialTextView location    = view.findViewById(R.id.location_visitsection);
+        location                     = view.findViewById(R.id.location_visitsection);
         changeLocationButton         = view.findViewById(R.id.change_location_fab);
         recyclerView                 = view.findViewById(R.id.recyclerview_posts_visitsection);
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
@@ -106,8 +110,13 @@ public class VisitSectionFragment
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                recentPostList.clear();
-                getLatestPostsByCity(citySelected);
+                if(!citySelected.equals("All")) {
+                    recentPostList.clear();
+                    getLatestPostsByCity(citySelected);
+                }else {
+                    recentPostList.clear();
+                    getLatestPostsByCountry(countrySelected);
+                }
             }
         });
 
@@ -126,7 +135,11 @@ public class VisitSectionFragment
                     Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
                     if (recentPostList.get(recentPostList.size()-1) == null) {
                         recentPostList.remove(recentPostList.size() - 1);
-                        getCityPostsFromNextPage(nextCityPostListUrl);
+                        if (!citySelected.equals("All"))
+                            getCityPostsFromNextPage(nextCityPostListUrl);
+                        else
+                            getCountryPostsFromNextPage(nextCountryPostListUrl);
+
                     }
                 }
             }
@@ -175,6 +188,8 @@ public class VisitSectionFragment
 
         Spinner countrySpinner = alertView.findViewById(R.id.spinner_country);
         Spinner citySpinner = alertView.findViewById(R.id.spinner_city);
+        MaterialCardView visitButton = alertView.findViewById(R.id.button_visit_dialog);
+        MaterialCardView closeButton = alertView.findViewById(R.id.button_close_dialog);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>((getContext()),
                 android.R.layout.simple_spinner_dropdown_item, countriesList) {
@@ -196,13 +211,55 @@ public class VisitSectionFragment
 
             }
         };
+
         adapterCity.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         citySpinner.setAdapter(adapterCity);
         citySpinner.setSelection(0);
 
         builder.setView(alertView);
-        AlertDialog dialog = builder.create();
+        dialog = builder.create();
         dialog.show();
+
+        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                countrySelected = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                citySelected = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        visitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!citySelected.equals("All"))
+                    getLatestPostsByCity(citySelected);
+                else
+                    getLatestPostsByCountry(countrySelected);
+            }
+        });
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
     }
 
     public void getLatestPostsByCity(String city){
@@ -215,9 +272,50 @@ public class VisitSectionFragment
                 if(response.code() == 200){
                     PostList cityPostList = response.body();
                     if (cityPostList.getCount() != 0){
+                        location.setText(city);
+
+                        if (dialog!=null)
+                            dialog.cancel();
+
                         nextCityPostListUrl = cityPostList.getNext();
 
                         ArrayList<Result> postList = new ArrayList<>(cityPostList.getResults());
+
+                        recentPostList.clear();
+                        recentPostList.addAll(postList);
+
+                        if (nextCityPostListUrl != null)
+                            recentPostList.add(null);
+
+                        setRecyclerView(recentPostList);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getLatestPostsByCountry(String country){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getLatestPostsFromCountry(userProfile.getHnid(),country);
+
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(Call<PostList> call, Response<PostList> response) {
+                if(response.code() == 200){
+                    PostList countryPostList = response.body();
+                    if (countryPostList.getCount() != 0){
+                        location.setText(country);
+                        if (dialog!=null)
+                            dialog.cancel();
+
+                        nextCountryPostListUrl = countryPostList.getNext();
+
+                        ArrayList<Result> postList = new ArrayList<>(countryPostList.getResults());
 
                         recentPostList.clear();
                         recentPostList.addAll(postList);
@@ -258,6 +356,38 @@ public class VisitSectionFragment
 
                         if(nextCityPostListUrl != null)
                             getCityPostsFromNextPage(nextCityPostListUrl);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getCountryPostsFromNextPage(String nextPageUrl){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getPostsFromCountryFromPage(nextCountryPostListUrl);
+
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(Call<PostList> call, Response<PostList> response) {
+                if(response.code() == 200){
+                    PostList countryPostList = response.body();
+                    if (countryPostList.getCount() != 0){
+                        nextCountryPostListUrl = countryPostList.getNext();
+
+                        ArrayList<Result> postList = new ArrayList<>(countryPostList.getResults());
+
+                        recentPostList.addAll(postList);
+                        recentPostList.add(null);
+
+                        postListAdapter.notifyDataSetChanged();
+
+                        if(nextCountryPostListUrl != null)
+                            getCountryPostsFromNextPage(nextCountryPostListUrl);
                     }
                 }
             }

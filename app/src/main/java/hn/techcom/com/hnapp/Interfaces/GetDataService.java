@@ -210,4 +210,15 @@ public interface GetDataService {
     //Get all posts by city from a specified page
     @GET()
     Call<PostList> getPostsFromCityFromPage(@Url String url);
+
+    //Get latest Posts by country
+    @GET("posts/get/{hnid}/country/{country}/")
+    Call<PostList> getLatestPostsFromCountry(
+            @Path("hnid") String hnid,
+            @Path("country") String country
+    );
+
+    //Get all posts by country from a specified page
+    @GET()
+    Call<PostList> getPostsFromCountryFromPage(@Url String url);
 }
