@@ -2,8 +2,12 @@ package hn.techcom.com.hnapp.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +23,18 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Activities.PostAudioActivity;
+import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Interfaces.OnCommentClickListener;
+import hn.techcom.com.hnapp.Interfaces.OnFavoriteButtonClickListener;
+import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
+import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
+import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
+import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hnapp.Models.Location;
+import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
+import hn.techcom.com.hnapp.Models.Result;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Utils.Utils;
@@ -29,14 +42,29 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VisitSectionFragment extends Fragment implements View.OnClickListener{
+public class VisitSectionFragment
+        extends Fragment
+        implements
+        View.OnClickListener,
+        OnOptionsButtonClickListener,
+        OnLikeButtonClickListener,
+        OnFavoriteButtonClickListener,
+        OnLikeCountButtonListener,
+        OnCommentClickListener,
+        OnLoadMoreListener {
 
     private static final String TAG = "VisitSectionFragment";
     private Utils myUtils;
     private Profile userProfile;
     private ArrayList<String> citiesList, countriesList;
-    private FloatingActionButton changeLocationButton;
+    private ArrayList<Result> recentPostList;
+    private String nextCityPostListUrl, citySelected, countrySelected;
 
+    private FloatingActionButton changeLocationButton;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+    private PostListAdapter postListAdapter;
 
     public VisitSectionFragment() {
         // Required empty public constructor
@@ -51,15 +79,19 @@ public class VisitSectionFragment extends Fragment implements View.OnClickListen
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_visitsection);
         MaterialTextView location    = view.findViewById(R.id.location_visitsection);
         changeLocationButton         = view.findViewById(R.id.change_location_fab);
+        recyclerView                 = view.findViewById(R.id.recyclerview_posts_visitsection);
+        swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
 
-        citiesList    = new ArrayList<>();
-        countriesList = new ArrayList<>();
-
-        getLocations();
+        citiesList     = new ArrayList<>();
+        countriesList  = new ArrayList<>();
+        recentPostList = new ArrayList<>();
 
         //Getting user profile from local storage
-        myUtils = new Utils();
+        myUtils     = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+
+        citySelected = userProfile.getCity();
+        countrySelected = userProfile.getCountry();
 
         String locationText = userProfile.getCity() + ", " + userProfile.getCountry();
 
@@ -68,6 +100,37 @@ public class VisitSectionFragment extends Fragment implements View.OnClickListen
 
         changeLocationButton.setOnClickListener(this);
 
+        getLocations();
+        getLatestPostsByCity(citySelected);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                recentPostList.clear();
+                getLatestPostsByCity(citySelected);
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (!recyclerView.canScrollVertically(1) && dy>0){
+                    //scrolled to bottom
+                    Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
+                    if (recentPostList.get(recentPostList.size()-1) == null) {
+                        recentPostList.remove(recentPostList.size() - 1);
+                        getCityPostsFromNextPage(nextCityPostListUrl);
+                    }
+                }
+            }
+        });
 
         // Inflate the layout for this fragment
         return view;
@@ -90,6 +153,8 @@ public class VisitSectionFragment extends Fragment implements View.OnClickListen
                     if (location != null) {
                         citiesList.addAll(location.getCities());
                         countriesList.addAll(location.getCountries());
+
+                        citiesList.add(0,"All");
 
                         Log.d(TAG,"number of cities = " + citiesList.size() + " & number of countries = " + countriesList.size());
                     }
@@ -138,5 +203,114 @@ public class VisitSectionFragment extends Fragment implements View.OnClickListen
         builder.setView(alertView);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void getLatestPostsByCity(String city){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getLatestPostsFromCity(userProfile.getHnid(),city);
+
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(Call<PostList> call, Response<PostList> response) {
+                if(response.code() == 200){
+                    PostList cityPostList = response.body();
+                    if (cityPostList.getCount() != 0){
+                        nextCityPostListUrl = cityPostList.getNext();
+
+                        ArrayList<Result> postList = new ArrayList<>(cityPostList.getResults());
+
+                        recentPostList.clear();
+                        recentPostList.addAll(postList);
+
+                        if (nextCityPostListUrl != null)
+                            recentPostList.add(null);
+
+                        setRecyclerView(recentPostList);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getCityPostsFromNextPage(String nextPageUrl){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getPostsFromCityFromPage(nextCityPostListUrl);
+
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(Call<PostList> call, Response<PostList> response) {
+                if(response.code() == 200){
+                    PostList cityPostList = response.body();
+                    if (cityPostList.getCount() != 0){
+                        nextCityPostListUrl = cityPostList.getNext();
+
+                        ArrayList<Result> postList = new ArrayList<>(cityPostList.getResults());
+
+                        recentPostList.addAll(postList);
+                        recentPostList.add(null);
+
+                        postListAdapter.notifyDataSetChanged();
+
+                        if(nextCityPostListUrl != null)
+                            getCityPostsFromNextPage(nextCityPostListUrl);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void setRecyclerView(ArrayList<Result> postList){
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        postListAdapter = new PostListAdapter(
+                postList,
+                getContext(),
+                this,
+                this,
+                this,
+                this,
+                this,
+                this);
+        recyclerView.setAdapter(postListAdapter);
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onCommentClick(int postId) {
+
+    }
+
+    @Override
+    public void onFavoriteButtonClick(int position, int postId) {
+
+    }
+
+    @Override
+    public void onLikeButtonClick(int position, int postId) {
+
+    }
+
+    @Override
+    public void onLikeCountButtonClick(int postId) {
+
+    }
+
+    @Override
+    public void onLoadMore() {
+
+    }
+
+    @Override
+    public void onOptionsButtonClick(int position, int postId, String hnid_user, boolean supporting) {
+
     }
 }

@@ -7,6 +7,7 @@ import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.Location;
 import hn.techcom.com.hnapp.Models.NewPostResponse;
+import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Reply;
@@ -198,4 +199,15 @@ public interface GetDataService {
     //Get all cities & countries
     @GET("get_country_city/")
     Call<Location> getLocations();
+
+    //Get latest Posts by city
+    @GET("posts/get/{hnid}/city/{city}/")
+    Call<PostList> getLatestPostsFromCity(
+            @Path("hnid") String hnid,
+            @Path("city") String city
+    );
+
+    //Get all posts by city from a specified page
+    @GET()
+    Call<PostList> getPostsFromCityFromPage(@Url String url);
 }
