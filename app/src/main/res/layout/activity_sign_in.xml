@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="L"
-                android:textSize="@dimen/_30ssp"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorStartLinearGradient"
                 android:fontFamily="@font/roboto"/>
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="E"
-                android:textSize="@dimen/_30ssp"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorStartLinearGradient"
                 android:fontFamily="@font/roboto"
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="O"
-                android:textSize="@dimen/_30ssp"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorStartLinearGradient"
                 android:fontFamily="@font/roboto" />
