@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -70,7 +71,7 @@ public class VisitSectionFragment
     private SwipeRefreshLayout swipeRefreshLayout;
     private  AlertDialog dialog;
     private MaterialTextView location;
-
+    private LinearLayout cityLayout;
     private PostListAdapter postListAdapter;
 
     public VisitSectionFragment() {
@@ -160,7 +161,9 @@ public class VisitSectionFragment
         if(view.getId() == R.id.change_location_fab)
             showLocationDialog();
         if (view.getId() == R.id.current_location_fab) {
-            Toast.makeText(getContext(),"Fetching posts from "+locationText+"...",Toast.LENGTH_LONG).show();
+            countrySelected = userProfile.getCountry();
+            citySelected = userProfile.getCity();
+//            Toast.makeText(getContext(),"Fetching posts from "+locationText+"...",Toast.LENGTH_LONG).show();
             getLatestPostsByCity(userProfile.getCity());
             location.setText(locationText);
         }
@@ -197,6 +200,7 @@ public class VisitSectionFragment
         Spinner citySpinner = alertView.findViewById(R.id.spinner_city);
         MaterialCardView visitButton = alertView.findViewById(R.id.button_visit_dialog);
         MaterialCardView closeButton = alertView.findViewById(R.id.button_clear_dialog);
+        cityLayout                   = alertView.findViewById(R.id.parent_layout_city);
 
         countriesList.clear();
         countriesList.add("Select a country");
@@ -226,6 +230,7 @@ public class VisitSectionFragment
                 for (Location location: locations)
                     if (location.getCountry().equals(countrySelected)) {
                         citiesList.clear();
+                        citiesList.add("Select a city");
                         citiesList.add("All");
                         citiesList.addAll(location.getCities());
                         ArrayAdapter<String> adapterCity = new ArrayAdapter<String>((getContext()),
@@ -233,13 +238,14 @@ public class VisitSectionFragment
                             @Override
                             public boolean isEnabled(int position) {
                                 return position != 0;
-
                             }
                         };
 
                         adapterCity.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                         citySpinner.setAdapter(adapterCity);
                         citySpinner.setSelection(0);
+
+                        cityLayout.setVisibility(View.VISIBLE);
                     }
             }
 
@@ -305,6 +311,9 @@ public class VisitSectionFragment
                             recentPostList.add(null);
 
                         setRecyclerView(recentPostList);
+
+                        locationText = citySelected+", "+countrySelected;
+                        location.setText(locationText);
                     }
                 }
             }
@@ -341,6 +350,8 @@ public class VisitSectionFragment
                             recentPostList.add(null);
 
                         setRecyclerView(recentPostList);
+                        locationText = countrySelected;
+                        location.setText(locationText);
                     }
                 }
             }
