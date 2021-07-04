@@ -1,5 +1,6 @@
 package hn.techcom.com.hnapp.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,8 @@ import java.util.List;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Activities.PostAudioActivity;
+import hn.techcom.com.hnapp.Activities.ViewCommentsActivity;
+import hn.techcom.com.hnapp.Activities.ViewLikesActivity;
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Interfaces.OnCommentClickListener;
@@ -36,6 +39,8 @@ import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
+import hn.techcom.com.hnapp.Models.FavoriteResponse;
+import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.Location;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
@@ -43,6 +48,8 @@ import hn.techcom.com.hnapp.Models.Result;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Utils.Utils;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -444,22 +451,26 @@ public class VisitSectionFragment
 
     @Override
     public void onCommentClick(int postId) {
-
+        Intent intent = new Intent(getContext(), ViewCommentsActivity.class);
+        intent.putExtra("POST_ID",postId);
+        startActivity(intent);
     }
 
     @Override
     public void onFavoriteButtonClick(int position, int postId) {
-
+        favoriteOrUnfavoritePost(userProfile.getHnid(), postId, position);
     }
 
     @Override
     public void onLikeButtonClick(int position, int postId) {
-
+        likeOrUnlikeThisPost(userProfile.getHnid(), postId, position);
     }
 
     @Override
     public void onLikeCountButtonClick(int postId) {
-
+        Intent intent = new Intent(getContext(), ViewLikesActivity.class);
+        intent.putExtra("POST_ID",postId);
+        startActivity(intent);
     }
 
     @Override
@@ -469,6 +480,73 @@ public class VisitSectionFragment
 
     @Override
     public void onOptionsButtonClick(int position, int postId, String hnid_user, boolean supporting) {
+        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment(position, postId, recentPostList, postListAdapter, hnid_user, supporting);
+        interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
+    }
 
+
+    public void likeOrUnlikeThisPost(String hnid, int postId, int position){
+        RequestBody user = RequestBody.create(MediaType.parse("text/plain"), hnid);
+        RequestBody post = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(postId));
+
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<LikeResponse> call = service.likeOrUnlikePost(user,post);
+
+        call.enqueue(new Callback<LikeResponse>() {
+            @Override
+            public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
+                if(response.code() == 201){
+                    LikeResponse likeResponse = response.body();
+                    Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
+
+                    //Toggling like button image
+                    recentPostList.get(position).setLiked(!recentPostList.get(position).getLiked());
+
+                    //Toggling like count on post
+                    if(recentPostList.get(position).getLiked())
+                        recentPostList.get(position).setLikeCount(recentPostList.get(position).getLikeCount() + 1);
+                    else
+                        recentPostList.get(position).setLikeCount(recentPostList.get(position).getLikeCount() - 1);
+
+                    postListAdapter.notifyDataSetChanged();
+                }else
+                    Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<LikeResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    //favorite or un-favorite post
+    public void favoriteOrUnfavoritePost(String hnid, int postId, int position){
+        RequestBody user = RequestBody.create(MediaType.parse("text/plain"), hnid);
+        RequestBody post = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(postId));
+
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<FavoriteResponse> call = service.favoriteOrUnfavoritePost(user,post);
+
+        call.enqueue(new Callback<FavoriteResponse>() {
+            @Override
+            public void onResponse(Call<FavoriteResponse> call, Response<FavoriteResponse> response) {
+                if(response.code() == 201){
+                    FavoriteResponse favoriteResponse = response.body();
+                    Toast.makeText(getContext(), favoriteResponse.getMessage(), Toast.LENGTH_LONG).show();
+
+                    //Toggling favorite button image
+                    recentPostList.get(position).setFavourite(!recentPostList.get(position).getFavourite());
+
+                    postListAdapter.notifyDataSetChanged();
+                }else
+                    Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<FavoriteResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
