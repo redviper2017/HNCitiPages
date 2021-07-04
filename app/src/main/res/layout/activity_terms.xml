@@ -17,15 +17,20 @@
             android:layout_marginEnd="20dp"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/hncitipageslogo_small" />
+
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:fontFamily="@font/roboto"
                 android:text="@string/terms_and_conditions"
                 android:textColor="@color/colorCenterLinearGradient"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -44,8 +49,8 @@
                 android:fontFamily="@font/roboto"
                 android:justificationMode="none"
                 android:text="Basic Terms of Use"
-                android:textColor="@color/colorTextTitle"
-                android:textSize="14sp"
+                android:textColor="@color/colorCenterLinearGradient"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 tools:targetApi="o" />
 
@@ -66,8 +71,8 @@
                 android:fontFamily="@font/roboto"
                 android:justificationMode="none"
                 android:text="General Conditions"
-                android:textColor="@color/colorTextTitle"
-                android:textSize="14sp"
+                android:textColor="@color/colorCenterLinearGradient"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 tools:targetApi="o" />
 
@@ -78,7 +83,7 @@
                 android:fontFamily="@font/roboto"
                 android:justificationMode="inter_word"
                 android:text="@string/terms_general_conditions"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 tools:targetApi="o" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -88,8 +93,8 @@
                 android:fontFamily="@font/roboto"
                 android:justificationMode="none"
                 android:text="Proprietary Rights in Content on HN Citipages"
-                android:textColor="@color/colorTextTitle"
-                android:textSize="14sp"
+                android:textColor="@color/colorCenterLinearGradient"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 tools:targetApi="o" />
 
@@ -101,7 +106,7 @@
                 android:fontFamily="@font/roboto"
                 android:justificationMode="inter_word"
                 android:text="@string/terms_proprietary_rights"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 tools:targetApi="o" />
 
         </LinearLayout>

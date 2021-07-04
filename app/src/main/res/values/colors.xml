@@ -18,7 +18,7 @@
 
     <!-- Custom Gradient Colors -->
     <color name="colorStartLinearGradient">#F04F34</color>
-    <color name="colorCenterLinearGradient">#9F1F63</color>
+    <color name="colorCenterLinearGradient">#8E218A</color>
     <color name="colorEndLinearGradient">#3B256F</color>
     <color name="colorLightGrey">#b7b7b7</color>
     <color name="colorIvory">#E8E8E8</color>
