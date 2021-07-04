@@ -198,7 +198,7 @@ public interface GetDataService {
 
     //Get all cities & countries
     @GET("get_country_city/")
-    Call<Location> getLocations();
+    Call<List<Location>> getLocations();
 
     //Get latest Posts by city
     @GET("posts/get/{hnid}/city/{city}/")

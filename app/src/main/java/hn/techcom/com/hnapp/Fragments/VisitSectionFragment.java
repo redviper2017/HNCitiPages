@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Activities.PostAudioActivity;
@@ -61,6 +62,7 @@ public class VisitSectionFragment
     private Profile userProfile;
     private ArrayList<String> citiesList, countriesList;
     private ArrayList<Result> recentPostList;
+    ArrayList<Location> locations;
     private String nextCityPostListUrl, nextCountryPostListUrl, citySelected, countrySelected, locationText;
 
     private FloatingActionButton changeLocationButton, currentLocationButton;
@@ -91,6 +93,7 @@ public class VisitSectionFragment
         citiesList     = new ArrayList<>();
         countriesList  = new ArrayList<>();
         recentPostList = new ArrayList<>();
+        locations = new ArrayList<>();
 
         //Getting user profile from local storage
         myUtils     = new Utils();
@@ -166,26 +169,21 @@ public class VisitSectionFragment
 
     public void getLocations(){
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<Location> call = service.getLocations();
-        call.enqueue(new Callback<Location>() {
+        Call<List<Location>> call = service.getLocations();
+
+        call.enqueue(new Callback<List<Location>>() {
             @Override
-            public void onResponse(Call<Location> call, Response<Location> response) {
-                if(response.code() == 200){
-                    Location location = response.body();
-                    if (location != null) {
-                        citiesList.addAll(location.getCities());
-                        countriesList.addAll(location.getCountries());
-
-                        citiesList.add(0,"All");
-
-                        Log.d(TAG,"number of cities = " + citiesList.size() + " & number of countries = " + countriesList.size());
+            public void onResponse(Call<List<Location>> call, Response<List<Location>> response) {
+                if (response.code() == 200){
+                    List<Location> locationList = response.body();
+                    if (locationList != null && locationList.size() > 0) {
+                        locations = new ArrayList<>(locationList);
                     }
-
                 }
             }
 
             @Override
-            public void onFailure(Call<Location> call, Throwable t) {
+            public void onFailure(Call<List<Location>> call, Throwable t) {
 
             }
         });
@@ -200,6 +198,11 @@ public class VisitSectionFragment
         MaterialCardView visitButton = alertView.findViewById(R.id.button_visit_dialog);
         MaterialCardView closeButton = alertView.findViewById(R.id.button_clear_dialog);
 
+        countriesList.clear();
+        countriesList.add("Select a country");
+        for(Location location: locations)
+            countriesList.add(location.getCountry());
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>((getContext()),
                 android.R.layout.simple_spinner_dropdown_item, countriesList) {
             @Override
@@ -212,19 +215,6 @@ public class VisitSectionFragment
         countrySpinner.setAdapter(adapter);
         countrySpinner.setSelection(0);
 
-        ArrayAdapter<String> adapterCity = new ArrayAdapter<String>((getContext()),
-                android.R.layout.simple_spinner_dropdown_item, citiesList) {
-            @Override
-            public boolean isEnabled(int position) {
-                return position != 0;
-
-            }
-        };
-
-        adapterCity.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        citySpinner.setAdapter(adapterCity);
-        citySpinner.setSelection(0);
-
         builder.setView(alertView);
         dialog = builder.create();
         dialog.show();
@@ -233,6 +223,24 @@ public class VisitSectionFragment
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 countrySelected = parent.getItemAtPosition(position).toString();
+                for (Location location: locations)
+                    if (location.getCountry().equals(countrySelected)) {
+                        citiesList.clear();
+                        citiesList.add("All");
+                        citiesList.addAll(location.getCities());
+                        ArrayAdapter<String> adapterCity = new ArrayAdapter<String>((getContext()),
+                                android.R.layout.simple_spinner_dropdown_item, citiesList) {
+                            @Override
+                            public boolean isEnabled(int position) {
+                                return position != 0;
+
+                            }
+                        };
+
+                        adapterCity.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                        citySpinner.setAdapter(adapterCity);
+                        citySpinner.setSelection(0);
+                    }
             }
 
             @Override
