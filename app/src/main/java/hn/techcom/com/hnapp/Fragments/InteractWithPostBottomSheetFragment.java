@@ -94,9 +94,9 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
                     Toast.makeText(getActivity(), "Support this user",Toast.LENGTH_LONG).show();
                     supportOrUnsupport();
                 }
-                if(item.getItemId() == R.id.report_post){
-                    Toast.makeText(getActivity(), "Reporting this post..",Toast.LENGTH_LONG).show();
-                }
+//                if(item.getItemId() == R.id.report_post){
+//                    Toast.makeText(getActivity(), "Reporting this post..",Toast.LENGTH_LONG).show();
+//                }
                 if(item.getItemId() == R.id.delete_post){
                     Toast.makeText(getActivity(), "Deleting this post..",Toast.LENGTH_LONG).show();
                     deleteThisPost();

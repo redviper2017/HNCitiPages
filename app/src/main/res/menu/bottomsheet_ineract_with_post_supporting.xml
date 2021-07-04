@@ -7,10 +7,10 @@
         android:title="@string/un_support_user"
         android:enabled="true"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/report_post"
-        android:icon="@drawable/image_post_ic"
-        android:title="Report Post"
-        android:enabled="true"
-        app:showAsAction="always"/>
+<!--    <item-->
+<!--        android:id="@+id/report_post"-->
+<!--        android:icon="@drawable/image_post_ic"-->
+<!--        android:title="Report Post"-->
+<!--        android:enabled="true"-->
+<!--        app:showAsAction="always"/>-->
 </menu>
