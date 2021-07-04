@@ -25,16 +25,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m">
-        <activity android:name=".Activities.ViewCommentsActivity" />
-        <activity android:name=".Activities.ViewLikesActivity" />
-        <activity android:name=".Activities.PostAudioActivity" />
-        <activity android:name=".Activities.PostImageActivity" />
-        <activity android:name=".Activities.PostStoryActivity" />
-        <activity android:name=".Activities.PostVideoActivity" />
-        <activity android:name=".Activities.TermsActivity" />
-        <activity android:name=".Activities.SignInActivity" />
-        <activity android:name=".Activities.OnboardingActivity" />
+        tools:targetApi="m"
+        tools:ignore="LockedOrientationActivity">
+        <activity android:name=".Activities.ViewCommentsActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Activities.ViewLikesActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.PostAudioActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.PostImageActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.PostStoryActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.PostVideoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.TermsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.SignInActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.OnboardingActivity" android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -42,7 +43,8 @@
 
         <activity
             android:name=".Activities.MainActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
