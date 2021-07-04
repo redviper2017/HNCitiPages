@@ -225,4 +225,8 @@ public interface GetDataService {
     //Get all posts by single user
     @GET("posts/get_single_user_posts/{target_hnid}/{hnid}/")
     Call<PostList> getLatestPostsBySingleUser( @Path("target_hnid") String target_hnid, @Path("hnid") String hnid);
+
+    //Get posts by a single user from a specified page
+    @GET()
+    Call<PostList> getPostsBySingleUserFromPage(@Url String url);
 }

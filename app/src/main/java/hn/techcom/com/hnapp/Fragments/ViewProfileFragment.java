@@ -3,6 +3,7 @@ package hn.techcom.com.hnapp.Fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -119,6 +120,27 @@ public class ViewProfileFragment
         supporterCountText.setText(supporterCount);
         supportingCountText.setText(supportingCount);
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (!recyclerView.canScrollVertically(1) && dy>0){
+                    //scrolled to bottom
+                    Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
+                    if (recentPostList.get(recentPostList.size()-1) == null) {
+                        recentPostList.remove(recentPostList.size() - 1);
+                        getPostsBySingleUserFromPage(nextUserPostListUrl);
+                    }
+                }
+            }
+        });
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -131,7 +153,7 @@ public class ViewProfileFragment
         return view;
     }
 
-    //get initial supporting profile posts list
+    //get initial user posts list
     public void getLatestPostsBySingleUser(String target_hnid) {
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getLatestPostsBySingleUser(target_hnid, userProfile.getHnid());
@@ -153,6 +175,41 @@ public class ViewProfileFragment
                             recentPostList.add(null);
 
                         setRecyclerView(recentPostList);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    //get user posts list from next page
+    public void getPostsBySingleUserFromPage(String nextPageUrl){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getPostsBySingleUserFromPage(nextPageUrl);
+
+        call.enqueue(new Callback<PostList>(){
+            @Override
+            public void onResponse(Call<PostList> call, Response<PostList> response) {
+                if(response.code() == 200){
+                    PostList postList = response.body();
+                    Log.d(TAG, "number of supporting profile posts = "+postList.getCount());
+                    if (postList != null) {
+                        nextUserPostListUrl = postList.getNext();
+
+                        ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
+
+                        recentPostList.addAll(postArrayList);
+                        recentPostList.add(null);
+
+                        postListAdapter.notifyDataSetChanged();
+                        if (postList.getNext() != null) {
+                            Log.d(TAG,"total number of global posts fetched = "+recentPostList.size());
+                            getPostsBySingleUserFromPage(postList.getNext());
+                        }
                     }
                 }
             }
