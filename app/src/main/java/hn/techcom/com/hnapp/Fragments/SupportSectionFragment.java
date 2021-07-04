@@ -27,12 +27,14 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import hn.techcom.com.hnapp.Activities.ViewCommentsActivity;
 import hn.techcom.com.hnapp.Activities.ViewLikesActivity;
 import hn.techcom.com.hnapp.Adapters.AvatarLoaderAdapter;
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Interfaces.OnAvatarLongClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnCommentClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnFavoriteButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
@@ -63,7 +65,8 @@ public class SupportSectionFragment
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
         OnCommentClickListener,
-        OnLoadMoreListener {
+        OnLoadMoreListener,
+        OnAvatarLongClickListener {
 
     private Utils myUtils;
     private Profile userProfile;
@@ -285,10 +288,12 @@ public class SupportSectionFragment
     public void setProfilesRecyclerView(ArrayList<User> supportingProfileList){
         ArrayList<String> avatarList = new ArrayList<>();
         ArrayList<String> nameList = new ArrayList<>();
+        ArrayList<String> hnidList = new ArrayList<>();
 
         for (User supportingProfile : supportingProfileList) {
             avatarList.add(supportingProfile.getProfile_img_thumbnail());
             nameList.add(supportingProfile.getFullName());
+            hnidList.add(supportingProfile.getHnid());
         }
 
         Log.d(TAG, "avatar list item url 1 = "+avatarList.get(0));
@@ -301,7 +306,9 @@ public class SupportSectionFragment
         profileRecyclerView.setLayoutManager(horizontalLayout);
         avatarLoaderAdapter = new AvatarLoaderAdapter(
                 avatarList,
-                nameList
+                nameList,
+                hnidList,
+                this
         );
         profileRecyclerView.setAdapter(avatarLoaderAdapter);
     }
@@ -334,6 +341,22 @@ public class SupportSectionFragment
     public void onOptionsButtonClick(int position, int postId, String hnid_user, boolean supporting) {
         InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment(position, postId, recentPostList, postListAdapter, hnid_user, supporting);
         interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
+    }
+
+    @Override
+    public void onAvatarLongClick(String hnid, String name) {
+
+        Fragment fragment = new ViewProfileFragment();
+
+        //passing hnid with fragment
+        Bundle bundle = new Bundle();
+
+        bundle.putString("hnid", hnid);
+        bundle.putString("name", name);
+
+        fragment.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
 
     //like or un-like post

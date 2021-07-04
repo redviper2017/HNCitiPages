@@ -7,6 +7,9 @@ public class SupporterProfile {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("hnid")
+    @Expose
+    private String hnid;
     @SerializedName("username")
     @Expose
     private String username;
@@ -31,6 +34,14 @@ public class SupporterProfile {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getHnid() {
+        return hnid;
+    }
+
+    public void setHnid(String hnid) {
+        this.hnid = hnid;
     }
 
     public void setId(Integer id) {

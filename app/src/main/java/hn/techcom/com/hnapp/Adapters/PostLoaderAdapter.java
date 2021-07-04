@@ -35,7 +35,6 @@ import hn.techcom.com.hnapp.Transitions.DepthPageTransformer;
 
 public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private static int TYPE_SUPPORTED_PROFILES = 1;
     private static int TYPE_POSTS = 2;
 
     private ArrayList<Post> postList, tempList;
@@ -55,32 +54,20 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        //for top item avatar list
-        if (viewType == TYPE_SUPPORTED_PROFILES) {
-            view = LayoutInflater.from(context).inflate(R.layout.row_first_post, parent, false);
-            return new SupportedProfilesHolder(view);
-        }
-        //for all item posts
-        else {
-            view = LayoutInflater.from(context).inflate(R.layout.row_post, parent, false);
-            return new PostsHolder(view);
-        }
+
+        view = LayoutInflater.from(context).inflate(R.layout.row_post, parent, false);
+        return new PostsHolder(view);
+
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0)
-            return TYPE_SUPPORTED_PROFILES;
-        else
-            return TYPE_POSTS;
+        return TYPE_POSTS;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) == TYPE_SUPPORTED_PROFILES)
-            ((SupportedProfilesHolder) holder).setRecyclerView(userSupportedProfiles);
-        else
-            ((PostsHolder) holder).setPostView(postList.get(position));
+        ((PostsHolder) holder).setPostView(postList.get(position));
     }
 
     @Override
@@ -114,34 +101,6 @@ public class PostLoaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
         Log.d(TAG, "time returned from all post adapter = " + dueDateAsNormal);
         return dueDateAsNormal;
-    }
-
-    class SupportedProfilesHolder extends RecyclerView.ViewHolder {
-        private RecyclerView recyclerView;
-
-        SupportedProfilesHolder(@NonNull View itemView) {
-            super(itemView);
-            recyclerView = itemView.findViewById(R.id.recyclerview_supported_avatars_supportsection);
-        }
-
-        void setRecyclerView(ArrayList<SupporterProfile> userSupportedProfiles) {
-            ArrayList<String> avatarList = new ArrayList<>();
-            ArrayList<String> nameList = new ArrayList<>();
-            for (SupporterProfile supportingProfile : userSupportedProfiles) {
-                avatarList.add(supportingProfile.getProfileImgUrl());
-                nameList.add(supportingProfile.getFullName());
-            }
-            Log.d(TAG, "avatar list size = " + avatarList.size());
-            AvatarLoaderAdapter adapter = new AvatarLoaderAdapter(avatarList, nameList);
-            LinearLayoutManager horizontalLayout = new LinearLayoutManager(
-                    context,
-                    LinearLayoutManager.HORIZONTAL,
-                    false
-            );
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(horizontalLayout);
-            recyclerView.setAdapter(adapter);
-        }
     }
 
     class PostsHolder extends RecyclerView.ViewHolder {

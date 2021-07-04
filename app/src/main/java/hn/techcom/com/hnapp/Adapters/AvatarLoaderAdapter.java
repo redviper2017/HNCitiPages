@@ -4,6 +4,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,16 +16,21 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hn.techcom.com.hnapp.Interfaces.OnAvatarLongClickListener;
 import hn.techcom.com.hnapp.R;
 
 public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapter.ViewHolder> {
 
-    private final ArrayList<String> avatarUrlList, nameList;
+    private final ArrayList<String> avatarUrlList, nameList, hnidList;
     private static final String TAG = "AvatarLoaderAdapter";
 
-    public AvatarLoaderAdapter(ArrayList<String> avatarUrlList, ArrayList<String> nameList) {
+    private final OnAvatarLongClickListener onAvatarLongClickListener;
+
+    public AvatarLoaderAdapter(ArrayList<String> avatarUrlList, ArrayList<String> nameList, ArrayList<String> hnidList, OnAvatarLongClickListener onAvatarLongClickListener) {
         this.avatarUrlList = avatarUrlList;
         this.nameList = nameList;
+        this.hnidList = hnidList;
+        this.onAvatarLongClickListener = onAvatarLongClickListener;
     }
 
     @NonNull
@@ -57,14 +64,25 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
         return avatarUrlList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public CircleImageView avatarView;
         private MaterialTextView nameView;
+        private LinearLayout layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.avatarView = itemView.findViewById(R.id.circleimageview_row_avatar);
-            this.nameView = itemView.findViewById(R.id.textview_row_avatar);
+            this.nameView   = itemView.findViewById(R.id.textview_row_avatar);
+            this.layout     = itemView.findViewById(R.id.layout_row_user);
+
+            layout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Log.d(TAG,"View this profile of = "+nameList.get(getAbsoluteAdapterPosition()) + " " + hnidList.get(getAbsoluteAdapterPosition()));
+                    onAvatarLongClickListener.onAvatarLongClick(hnidList.get(getAbsoluteAdapterPosition()), nameList.get(getAbsoluteAdapterPosition()));
+                    return true;
+                }
+            });
         }
     }
 

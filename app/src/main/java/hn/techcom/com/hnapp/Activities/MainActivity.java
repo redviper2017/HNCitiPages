@@ -22,7 +22,6 @@ import java.util.Objects;
 import hn.techcom.com.hnapp.Fragments.HomeFragment;
 import hn.techcom.com.hnapp.Fragments.SharePostBottomSheetFragment;
 import hn.techcom.com.hnapp.Fragments.SupportSectionFragment;
-import hn.techcom.com.hnapp.Fragments.SupportedSectionFragment;
 import hn.techcom.com.hnapp.Fragments.VisitSectionFragment;
 import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.Profile;

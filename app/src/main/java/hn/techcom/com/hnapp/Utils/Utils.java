@@ -39,4 +39,18 @@ public class Utils {
         editor.putString("NewUser",json);
         editor.apply();
     }
+
+    //converts name to camel case
+    public String capitalizeName(String name) {
+        String fullName = "";
+        String[] splited = name.split("\\s+");
+        for (String part : splited) {
+            if (fullName.equals(""))
+                fullName = fullName + part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase();
+            else
+                fullName = fullName + " " + part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase();
+
+        }
+        return fullName;
+    }
 }

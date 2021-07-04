@@ -58,7 +58,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //                        dismiss();
 //                        break;
                     case R.id.nav_visit_profile:
-                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new UserProfileFragment()).commit();
+                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new UserProfileFragment()).addToBackStack(null).commit();
                         dismiss();
                         break;
 //                    case R.id.nav_random_community:
@@ -98,7 +98,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //                        dismiss();
 //                        break;
                     case R.id.nav_fav:
-                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new FavoritesFragment()).commit();
+                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new FavoritesFragment()).addToBackStack(null).commit();
                         dismiss();
                         break;
 //                    case R.id.nav_about:
