@@ -19,16 +19,24 @@ import hn.techcom.com.hnapp.Activities.PostAudioActivity;
 import hn.techcom.com.hnapp.Activities.PostImageActivity;
 import hn.techcom.com.hnapp.Activities.PostStoryActivity;
 import hn.techcom.com.hnapp.Activities.PostVideoActivity;
+import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.R;
+import hn.techcom.com.hnapp.Utils.Utils;
 
 public class SharePostBottomSheetFragment extends BottomSheetDialogFragment {
     NavigationView navigationView;
+    private Utils myUtils;
+    private Profile userProfile;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottomsheet_share_post,container,false);
         navigationView = view.findViewById(R.id.navigation_view_share);
+
+        myUtils = new Utils();
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+
         return view;
     }
 
