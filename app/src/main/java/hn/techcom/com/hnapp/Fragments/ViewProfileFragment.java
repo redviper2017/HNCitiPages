@@ -102,8 +102,6 @@ public class ViewProfileFragment
         String supportingCount = requireArguments().getString("supportingCount");
         String postCount = requireArguments().getString("postCount");
 
-        getLatestPostsBySingleUser(hnid);
-
         Log.d(TAG, "Number of posts in ViewProfile = " + postCount);
 
         screenTitle.setText(myUtils.capitalizeName(name));
@@ -120,6 +118,8 @@ public class ViewProfileFragment
         supporterCountText.setText(supporterCount);
         supportingCountText.setText(supportingCount);
 
+        getLatestPostsListBySingleUser(hnid);
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -135,7 +135,7 @@ public class ViewProfileFragment
                     Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
                     if (recentPostList.get(recentPostList.size()-1) == null) {
                         recentPostList.remove(recentPostList.size() - 1);
-                        getPostsBySingleUserFromPage(nextUserPostListUrl);
+                        getPostsListBySingleUserFromPage(nextUserPostListUrl);
                     }
                 }
             }
@@ -145,7 +145,7 @@ public class ViewProfileFragment
             @Override
             public void onRefresh() {
                 recentPostList.clear();
-                getLatestPostsBySingleUser(hnid);
+                getLatestPostsListBySingleUser(hnid);
             }
         });
 
@@ -154,23 +154,24 @@ public class ViewProfileFragment
     }
 
     //get initial user posts list
-    public void getLatestPostsBySingleUser(String target_hnid) {
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<PostList> call = service.getLatestPostsBySingleUser(target_hnid, userProfile.getHnid());
+    public void getLatestPostsListBySingleUser(String target_hnid) {
 
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getLatestPostsBySingleUser(target_hnid,userProfile.getHnid());
         call.enqueue(new Callback<PostList>() {
             @Override
             public void onResponse(Call<PostList> call, Response<PostList> response) {
-                if (response.code() == 200) {
+                if (response.code() == 200){
+                    Log.d(TAG,"total number of post by this user = "+response.body().getResults().size());
                     PostList postList = response.body();
-                    if (postList != null) {
-                        Log.d(TAG, "number of profile posts = " + postList.getCount());
+                    if (postList != null){
                         nextUserPostListUrl = postList.getNext();
 
                         ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
 
                         recentPostList.clear();
                         recentPostList.addAll(postArrayList);
+
                         if (postList.getNext() != null)
                             recentPostList.add(null);
 
@@ -187,19 +188,17 @@ public class ViewProfileFragment
     }
 
     //get user posts list from next page
-    public void getPostsBySingleUserFromPage(String nextPageUrl){
+    public void getPostsListBySingleUserFromPage(String nextPageUrl){
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getPostsBySingleUserFromPage(nextPageUrl);
-
-        call.enqueue(new Callback<PostList>(){
+        call.enqueue(new Callback<PostList>() {
             @Override
             public void onResponse(Call<PostList> call, Response<PostList> response) {
                 if(response.code() == 200){
                     PostList postList = response.body();
-                    Log.d(TAG, "number of supporting profile posts = "+postList.getCount());
-                    if (postList != null) {
+                    Log.d(TAG, "total number of supporting profile posts = "+postList.getCount());
+                    if(postList != null){
                         nextUserPostListUrl = postList.getNext();
-
                         ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
 
                         recentPostList.addAll(postArrayList);
@@ -207,8 +206,8 @@ public class ViewProfileFragment
 
                         postListAdapter.notifyDataSetChanged();
                         if (postList.getNext() != null) {
-                            Log.d(TAG,"total number of global posts fetched = "+recentPostList.size());
-                            getPostsBySingleUserFromPage(postList.getNext());
+                            Log.d(TAG, "total number of user posts fetched = " + recentPostList.size());
+                            getPostsListBySingleUserFromPage(postList.getNext());
                         }
                     }
                 }
