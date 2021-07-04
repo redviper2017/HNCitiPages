@@ -198,7 +198,7 @@ public class VisitSectionFragment
         Spinner countrySpinner = alertView.findViewById(R.id.spinner_country);
         Spinner citySpinner = alertView.findViewById(R.id.spinner_city);
         MaterialCardView visitButton = alertView.findViewById(R.id.button_visit_dialog);
-        MaterialCardView closeButton = alertView.findViewById(R.id.button_close_dialog);
+        MaterialCardView closeButton = alertView.findViewById(R.id.button_clear_dialog);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>((getContext()),
                 android.R.layout.simple_spinner_dropdown_item, countriesList) {

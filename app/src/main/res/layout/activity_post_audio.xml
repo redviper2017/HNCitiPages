@@ -60,20 +60,30 @@
             android:spinnerMode="dropdown" />
     </LinearLayout>
 
-    <com.potyvideo.library.AndExoPlayerView
-        android:id="@+id/audio_player"
+    <LinearLayout
+        android:id="@+id/audio_player_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
-        app:andexo_aspect_ratio="aspect_match"
-        app:andexo_full_screen="true"
-        app:andexo_play_when_ready="true"
-        app:andexo_mute="mute"
-        app:andexo_show_controller="true"
-        app:andexo_resize_mode="Zoom"
-        app:andexo_loop="infinite"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/layout_spinner_post_type"
         app:layout_constraintBottom_toTopOf="@+id/textinputlayout_caption"
-        android:visibility="visible"/>
+        android:visibility="visible">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_150sdp"
+            android:src="@drawable/audio_placeholder_2"
+            android:scaleType="centerCrop"/>
+        <com.potyvideo.library.AndExoPlayerView
+            android:id="@+id/audio_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:andexo_aspect_ratio="aspect_mp3"
+            app:andexo_play_when_ready="true"
+            app:andexo_mute="mute"
+            app:andexo_show_controller="true"
+            app:andexo_loop="infinite"
+            android:visibility="gone"/>
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textinputlayout_caption"

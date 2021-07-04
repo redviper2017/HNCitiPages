@@ -174,6 +174,7 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
         if(requestCode == REQUEST_AUDIO_PICK && resultCode == RESULT_OK){
             audioPlayer.setSource(String.valueOf(data.getData()));
             audioPlayer.setPlayWhenReady(true);
+            audioPlayer.setVisibility(View.VISIBLE);
 
             String filePath = UriUtils.getPathFromUri(this,data.getData());
             newAudioFile = new File(filePath);
@@ -247,7 +248,7 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
         MaterialCardView uploadVoiceNoteButton = alertView.findViewById(R.id.button_upload_voice_note);
         MaterialCardView closeDialogButton     = alertView.findViewById(R.id.button_close_dialog);
 
-        Toast.makeText(this,"This feature is coming soon!!",Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,"This feature is coming soon!!",Toast.LENGTH_LONG).show();
 
         recordVoiceNote.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -290,6 +291,8 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
 
                 audioPlayer.setSource(String.valueOf(uri));
                 audioPlayer.setPlayWhenReady(true);
+
+                audioPlayer.setVisibility(View.VISIBLE);
 
                 //Change visibility of function buttons
                 changeButtonsUI("upload");
