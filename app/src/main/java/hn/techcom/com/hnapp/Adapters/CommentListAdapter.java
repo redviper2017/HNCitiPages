@@ -118,7 +118,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             location.setText(address);
 
             //setting up user avatar
-            String profilePhotoUrl = comment.getUser().getProfile_img_thumbnail();
+            String profilePhotoUrl = comment.getUser().getProfileImgThumbnail();
             Picasso
                     .get()
                     .load(profilePhotoUrl)

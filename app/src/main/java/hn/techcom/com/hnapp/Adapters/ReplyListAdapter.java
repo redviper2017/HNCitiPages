@@ -75,7 +75,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             location.setText(address);
 
             //setting up user avatar
-            String profilePhotoUrl = reply.getUser().getProfile_img_thumbnail();
+            String profilePhotoUrl = reply.getUser().getProfileImgThumbnail();
             Picasso
                     .get()
                     .load(profilePhotoUrl)

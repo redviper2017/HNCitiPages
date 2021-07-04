@@ -304,7 +304,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }else
                 likes.setVisibility(View.GONE);
 
-            String profilePhotoUrl = post.getUser().getProfile_img_thumbnail();
+            String profilePhotoUrl = post.getUser().getProfileImgThumbnail();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
@@ -434,7 +434,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }else
                 likes.setVisibility(View.GONE);
 
-            String profilePhotoUrl = post.getUser().getProfile_img_thumbnail();
+            String profilePhotoUrl = post.getUser().getProfileImgThumbnail();
             Picasso
                     .get()
                     .load(profilePhotoUrl)
@@ -586,7 +586,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }else
                 likes.setVisibility(View.GONE);
 
-            String profilePhotoUrl = post.getUser().getProfile_img_thumbnail();
+            String profilePhotoUrl = post.getUser().getProfileImgThumbnail();
             Picasso
                     .get()
                     .load(profilePhotoUrl)

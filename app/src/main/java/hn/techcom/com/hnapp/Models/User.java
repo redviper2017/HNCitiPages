@@ -28,9 +28,6 @@ public class User {
     @SerializedName("first_img")
     @Expose
     private String firstImg;
-    @SerializedName("profile_img_thumbnail")
-    @Expose
-    private String profile_img_thumbnail;
     @SerializedName("hnid")
     @Expose
     private String hnid;
@@ -40,6 +37,18 @@ public class User {
     @SerializedName("isSupported")
     @Expose
     private Boolean isSupported;
+    @SerializedName("profile_img_thumbnail")
+    @Expose
+    private String profileImgThumbnail;
+    @SerializedName("supporterCount")
+    @Expose
+    private Integer supporterCount;
+    @SerializedName("supportingCount")
+    @Expose
+    private Integer supportingCount;
+    @SerializedName("postCount")
+    @Expose
+    private Integer postCount;
 
     public String getFullName() {
         return fullName;
@@ -105,14 +114,6 @@ public class User {
         this.firstImg = firstImg;
     }
 
-    public String getProfile_img_thumbnail() {
-        return profile_img_thumbnail;
-    }
-
-    public void setProfile_img_thumbnail(String profile_img_thumbnail) {
-        this.profile_img_thumbnail = profile_img_thumbnail;
-    }
-
     public String getHnid() {
         return hnid;
     }
@@ -135,5 +136,37 @@ public class User {
 
     public void setIsSupported(Boolean isSupported) {
         this.isSupported = isSupported;
+    }
+
+    public String getProfileImgThumbnail() {
+        return profileImgThumbnail;
+    }
+
+    public void setProfileImgThumbnail(String profileImgThumbnail) {
+        this.profileImgThumbnail = profileImgThumbnail;
+    }
+
+    public Integer getSupporterCount() {
+        return supporterCount;
+    }
+
+    public void setSupporterCount(Integer supporterCount) {
+        this.supporterCount = supporterCount;
+    }
+
+    public Integer getSupportingCount() {
+        return supportingCount;
+    }
+
+    public void setSupportingCount(Integer supportingCount) {
+        this.supportingCount = supportingCount;
+    }
+
+    public Integer getPostCount() {
+        return postCount;
+    }
+
+    public void setPostCount(Integer postCount) {
+        this.postCount = postCount;
     }
 }

@@ -21,16 +21,42 @@ import hn.techcom.com.hnapp.R;
 
 public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapter.ViewHolder> {
 
-    private final ArrayList<String> avatarUrlList, nameList, hnidList;
+    private final ArrayList<String>
+            avatarUrlList,
+            nameList,
+            usernameList,
+            locationList,
+            hnidList,
+            thumbnailList;
+    private final ArrayList<Integer>
+            supporterCountList,
+            supportingCountList,
+            postCountList;
     private static final String TAG = "AvatarLoaderAdapter";
 
     private final OnAvatarLongClickListener onAvatarLongClickListener;
 
-    public AvatarLoaderAdapter(ArrayList<String> avatarUrlList, ArrayList<String> nameList, ArrayList<String> hnidList, OnAvatarLongClickListener onAvatarLongClickListener) {
+    public AvatarLoaderAdapter(
+            ArrayList<String> avatarUrlList,
+            ArrayList<String> nameList,
+            ArrayList<String> usernameList,
+            ArrayList<String> locationList,
+            ArrayList<String> hnidList,
+            ArrayList<String> thumbnailList,
+            ArrayList<Integer> supporterCountList,
+            ArrayList<Integer> supportingCountList,
+            ArrayList<Integer> postCountList,
+            OnAvatarLongClickListener onAvatarLongClickListener) {
         this.avatarUrlList = avatarUrlList;
         this.nameList = nameList;
+        this.usernameList = usernameList;
+        this.locationList = locationList;
         this.hnidList = hnidList;
         this.onAvatarLongClickListener = onAvatarLongClickListener;
+        this.thumbnailList = thumbnailList;
+        this.supporterCountList = supporterCountList;
+        this.supportingCountList = supportingCountList;
+        this.postCountList = postCountList;
     }
 
     @NonNull
@@ -78,8 +104,18 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
             layout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
+
                     Log.d(TAG,"View this profile of = "+nameList.get(getAbsoluteAdapterPosition()) + " " + hnidList.get(getAbsoluteAdapterPosition()));
-                    onAvatarLongClickListener.onAvatarLongClick(hnidList.get(getAbsoluteAdapterPosition()), nameList.get(getAbsoluteAdapterPosition()));
+                    Log.d(TAG,"post count for this profile = "+postCountList.get(getAbsoluteAdapterPosition()));
+                    onAvatarLongClickListener.onAvatarLongClick(
+                            hnidList.get(getAbsoluteAdapterPosition()),
+                            nameList.get(getAbsoluteAdapterPosition()),
+                            usernameList.get(getAbsoluteAdapterPosition()),
+                            locationList.get(getAbsoluteAdapterPosition()),
+                            thumbnailList.get(getAbsoluteAdapterPosition()),
+                            supporterCountList.get(getAbsoluteAdapterPosition()),
+                            supportingCountList.get(getAbsoluteAdapterPosition()),
+                            postCountList.get(getAbsoluteAdapterPosition()));
                     return true;
                 }
             });

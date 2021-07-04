@@ -43,6 +43,7 @@ import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
+import hn.techcom.com.hnapp.Models.Location;
 import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Result;
@@ -188,7 +189,9 @@ public class SupportSectionFragment
                     if(supportingProfileList.getCount()>0) {
                         ArrayList<User> profilesArraytList = new ArrayList<>();
                         profilesArraytList.addAll(supportingProfileList.getResults());
-
+                        Log.d(TAG,"number of posts of user = "+profilesArraytList.get(0).getPostCount());
+                        Log.d(TAG,"number of supporting of user = "+profilesArraytList.get(0).getSupportingCount());
+                        Log.d(TAG,"number of supporter of user = "+profilesArraytList.get(0).getSupporterCount());
                         setProfilesRecyclerView(profilesArraytList);
                     }else{
                         Toast.makeText(getContext(),"Oops! seems like you haven't supported anyone yet. Please support someone and come back hear to see their posts.",Toast.LENGTH_LONG).show();
@@ -288,15 +291,29 @@ public class SupportSectionFragment
     public void setProfilesRecyclerView(ArrayList<User> supportingProfileList){
         ArrayList<String> avatarList = new ArrayList<>();
         ArrayList<String> nameList = new ArrayList<>();
+        ArrayList<String> usernameList = new ArrayList<>();
+        ArrayList<String> locationList = new ArrayList<>();
         ArrayList<String> hnidList = new ArrayList<>();
+        ArrayList<String> thumbnailList = new ArrayList<>();
+        ArrayList<Integer> supporterCountList = new ArrayList<>();
+        ArrayList<Integer> supportingCountList = new ArrayList<>();
+        ArrayList<Integer> postCountList = new ArrayList<>();
 
         for (User supportingProfile : supportingProfileList) {
-            avatarList.add(supportingProfile.getProfile_img_thumbnail());
+            Log.d(TAG,"supporting count = "+supportingProfile.getSupportingCount());
+
+            avatarList.add(supportingProfile.getProfileImgThumbnail());
             nameList.add(supportingProfile.getFullName());
+            usernameList.add(supportingProfile.getUsername());
+            locationList.add(supportingProfile.getCity()+", "+supportingProfile.getCountry());
             hnidList.add(supportingProfile.getHnid());
+            thumbnailList.add(supportingProfile.getProfileImgThumbnail());
+            supportingCountList.add(supportingProfile.getSupportingCount());
+            supporterCountList.add(supportingProfile.getSupporterCount());
+            postCountList.add(supportingProfile.getPostCount());
         }
 
-        Log.d(TAG, "avatar list item url 1 = "+avatarList.get(0));
+        Log.d(TAG, "Supporting count list size  = "+supportingCountList.size());
 
         LinearLayoutManager horizontalLayout = new LinearLayoutManager(
                 getContext(),
@@ -307,7 +324,13 @@ public class SupportSectionFragment
         avatarLoaderAdapter = new AvatarLoaderAdapter(
                 avatarList,
                 nameList,
+                thumbnailList,
+                usernameList,
                 hnidList,
+                locationList,
+                supporterCountList,
+                supportingCountList,
+                postCountList,
                 this
         );
         profileRecyclerView.setAdapter(avatarLoaderAdapter);
@@ -344,15 +367,30 @@ public class SupportSectionFragment
     }
 
     @Override
-    public void onAvatarLongClick(String hnid, String name) {
+    public void onAvatarLongClick(String hnid,
+                                  String name,
+                                  String thumbnail,
+                                  String username,
+                                  String location,
+                                  int supporterCount,
+                                  int supportingCount,
+                                  int postCount) {
 
         Fragment fragment = new ViewProfileFragment();
+
+        Log.d(TAG,"supportingCount = "+supportingCount);
 
         //passing hnid with fragment
         Bundle bundle = new Bundle();
 
         bundle.putString("hnid", hnid);
         bundle.putString("name", name);
+        bundle.putString("username", username);
+        bundle.putString("location", location);
+        bundle.putString("thumbnail", thumbnail);
+        bundle.putString("supporterCount", String.valueOf(supporterCount));
+        bundle.putString("supportingCount", String.valueOf(supportingCount));
+        bundle.putString("postCount", String.valueOf(postCount));
 
         fragment.setArguments(bundle);
 

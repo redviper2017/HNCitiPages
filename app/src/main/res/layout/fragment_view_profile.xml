@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical"
     tools:context=".Fragments.ViewProfileFragment">
@@ -19,4 +20,167 @@
             layout="@layout/screen_title_view"/>
     </LinearLayout>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleimageview_profile_view"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:civ_border_width="0dp"
+                android:padding="5dp"
+                app:civ_border_color="@android:color/white"
+                android:src="@drawable/dummy_profile_avatar"/>
+
+            <View
+                android:id="@+id/profile_circle_view"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/circle_hollow"
+                android:padding="5dp"
+                android:visibility="visible"/>
+
+        </RelativeLayout>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_20sdp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/post_count_viewprofile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1,380"
+                android:textColor="@color/colorText"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_gravity="center"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Posts"
+                android:textSize="16sp"
+                android:layout_gravity="center"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_20sdp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/supporter_count_viewprofile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="103K"
+                android:textColor="@color/colorText"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_gravity="center"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Supporters"
+                android:textSize="16sp"
+                android:layout_gravity="center"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_20sdp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/supporting_count_viewprofile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="339"
+                android:textColor="@color/colorText"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_gravity="center"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Supporting"
+                android:textSize="16sp"
+                android:layout_gravity="center"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp">
+
+        <LinearLayout
+            android:id="@+id/layout_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toStartOf="@+id/hnid_viewprofile">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yasir Ahmed"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/profile_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dhaka, Bangladesh"
+                android:textSize="16sp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/profile_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HNDev #KUWL126B"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/hnid_viewprofile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="HN CitiPages ID"
+            android:drawableStart="@drawable/id_ic"
+            android:textSize="16sp"
+            android:textColor="@color/colorText"
+            android:textAlignment="center"
+            android:drawablePadding="5dp"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:background="@color/colorBackgroundFill"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_posts_viewprofile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>
