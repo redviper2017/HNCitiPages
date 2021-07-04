@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/pacifico"
         android:layout_marginBottom="30dp"
-        android:text="Capture Voice Note"
+        android:text="Capture Voice Status"
         android:textAlignment="center"
         android:textSize="@dimen/_20ssp"
         android:textColor="@color/colorTextTitle"
