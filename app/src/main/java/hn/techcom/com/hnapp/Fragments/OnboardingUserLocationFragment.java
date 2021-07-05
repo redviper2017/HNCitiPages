@@ -1,13 +1,17 @@
 package hn.techcom.com.hnapp.Fragments;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,7 +96,7 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
         mMapView.onResume();
 
         //Initialise fused location
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getContext()));
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         //Click listeners
         getCurrentLocationButton.setOnClickListener(this);
@@ -118,7 +122,7 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
         userProfile.setCountry(country.getText().toString());
         userProfile.setCity(city.getText().toString());
 
-        myUtils.storeNewUserToSharedPref(Objects.requireNonNull(getContext()),userProfile);
+        myUtils.storeNewUserToSharedPref(requireContext(),userProfile);
 
         Log.d(TAG,"new user = "+userProfile.toString());
     }
@@ -183,13 +187,13 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
     }
 
     private void setLocationOnMap() {
-        MapsInitializer.initialize(Objects.requireNonNull(getActivity()).getApplicationContext());
+        MapsInitializer.initialize(requireActivity().getApplicationContext());
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap map) {
                 googleMap = map;
-                if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -216,6 +220,7 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
             if(!checkPermission()){
                 requestPermission();
             }else {
+                locationEnabled();
                 getLocation();
                 getCurrentLocationButton.setVisibility(View.GONE);
             }
@@ -223,14 +228,14 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
     }
 
     private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), ACCESS_FINE_LOCATION);
+        int result = ContextCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION);
 
         return result == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermission() {
 
-        ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+        ActivityCompat.requestPermissions(requireActivity(), new String[]{ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
 
     }
 
@@ -243,6 +248,7 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
                     boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
 
                     if (locationAccepted) {
+                        locationEnabled();
                         getLocation();
                         getCurrentLocationButton.setVisibility(View.GONE);
                     }
@@ -273,11 +279,52 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+        new AlertDialog.Builder(requireContext())
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        getCurrentLocationButton.setVisibility(View.VISIBLE);
+                    }
+                })
                 .create()
                 .show();
     }
+
+    private void locationEnabled () {
+        LocationManager lm = (LocationManager)
+                requireContext().getSystemService(Context. LOCATION_SERVICE ) ;
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager. GPS_PROVIDER ) ;
+        } catch (Exception e) {
+            e.printStackTrace() ;
+        }
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager. NETWORK_PROVIDER ) ;
+        } catch (Exception e) {
+            e.printStackTrace() ;
+        }
+        if (!gps_enabled && !network_enabled) {
+            new AlertDialog.Builder(requireContext())
+                    .setMessage( "Please turn your device's location first and then come back." )
+                    .setPositiveButton( "Ok" , new
+                            DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick (DialogInterface paramDialogInterface , int paramInt) {
+                                    requireActivity().onBackPressed();
+                                }
+                            })
+//                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            getActivity().onBackPressed();
+//                        }
+//                    })
+                    .show() ;
+        }
+    }
 }
+

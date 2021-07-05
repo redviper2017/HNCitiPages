@@ -211,8 +211,10 @@ public class VisitSectionFragment
 
         countriesList.clear();
         countriesList.add("Select a country");
-        for(Location location: locations)
-            countriesList.add(location.getCountry());
+        for(Location location: locations) {
+            if (location.getCountry()!=null)
+                countriesList.add(location.getCountry());
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>((getContext()),
                 android.R.layout.simple_spinner_dropdown_item, countriesList) {
@@ -234,25 +236,27 @@ public class VisitSectionFragment
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 countrySelected = parent.getItemAtPosition(position).toString();
-                for (Location location: locations)
-                    if (location.getCountry().equals(countrySelected)) {
-                        citiesList.clear();
-                        citiesList.add("Select a city");
-                        citiesList.add("All");
-                        citiesList.addAll(location.getCities());
-                        ArrayAdapter<String> adapterCity = new ArrayAdapter<String>((getContext()),
-                                android.R.layout.simple_spinner_dropdown_item, citiesList) {
-                            @Override
-                            public boolean isEnabled(int position) {
-                                return position != 0;
-                            }
-                        };
+                for (Location location : locations)
+                    if (location.getCountry() != null) {
+                        if (location.getCountry().equals(countrySelected)) {
+                            citiesList.clear();
+                            citiesList.add("Select a city");
+                            citiesList.add("All");
+                            citiesList.addAll(location.getCities());
+                            ArrayAdapter<String> adapterCity = new ArrayAdapter<String>((getContext()),
+                                    android.R.layout.simple_spinner_dropdown_item, citiesList) {
+                                @Override
+                                public boolean isEnabled(int position) {
+                                    return position != 0;
+                                }
+                            };
 
-                        adapterCity.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-                        citySpinner.setAdapter(adapterCity);
-                        citySpinner.setSelection(0);
+                            adapterCity.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                            citySpinner.setAdapter(adapterCity);
+                            citySpinner.setSelection(0);
 
-                        cityLayout.setVisibility(View.VISIBLE);
+                            cityLayout.setVisibility(View.VISIBLE);
+                        }
                     }
             }
 
