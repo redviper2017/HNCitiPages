@@ -137,7 +137,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -154,7 +154,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile = null;
             try {
@@ -164,7 +164,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(getContext(),
+                Uri photoURI = FileProvider.getUriForFile(requireContext(),
                         "hn.techcom.com.hnapp.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
@@ -174,15 +174,15 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     }
 
     private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), WRITE_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(getContext(), CAMERA);
+        int result = ContextCompat.checkSelfPermission(requireContext(), WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(requireContext(), CAMERA);
 
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermission() {
 
-        ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, PERMISSION_REQUEST_CODE);
+        ActivityCompat.requestPermissions(requireActivity(), new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, PERMISSION_REQUEST_CODE);
 
     }
 
@@ -224,7 +224,7 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+        new AlertDialog.Builder(requireContext())
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", null)
@@ -234,67 +234,71 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
 
     // function to create new user account
     public void registerNewUserAccount(){
-        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
-        userProfile.setFirstImg(newImageFile.toString());
-        Log.d(TAG,"onboarding new user = "+userProfile.toString());
+        if (newImageFile != null) {
+            userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+            userProfile.setFirstImg(newImageFile.toString());
+            Log.d(TAG, "onboarding new user = " + userProfile.toString());
 
-        RequestBody email = RequestBody.create(MediaType.parse("text/plain"), userProfile.getEmail());
-        RequestBody mobile_number = RequestBody.create(MediaType.parse("text/plain"), userProfile.getMobileNumber());
-        RequestBody full_name = RequestBody.create(MediaType.parse("text/plain"), userProfile.getFullName());
-        RequestBody date_of_birth = RequestBody.create(MediaType.parse("text/plain"), userProfile.getDateOfBirth());
-        RequestBody city = RequestBody.create(MediaType.parse("text/plain"), userProfile.getCity());
-        RequestBody country = RequestBody.create(MediaType.parse("text/plain"), userProfile.getCountry());
-        RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), userProfile.getGender());
+            RequestBody email = RequestBody.create(MediaType.parse("text/plain"), userProfile.getEmail());
+            RequestBody mobile_number = RequestBody.create(MediaType.parse("text/plain"), userProfile.getMobileNumber());
+            RequestBody full_name = RequestBody.create(MediaType.parse("text/plain"), userProfile.getFullName());
+            RequestBody date_of_birth = RequestBody.create(MediaType.parse("text/plain"), userProfile.getDateOfBirth());
+            RequestBody city = RequestBody.create(MediaType.parse("text/plain"), userProfile.getCity());
+            RequestBody country = RequestBody.create(MediaType.parse("text/plain"), userProfile.getCountry());
+            RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), userProfile.getGender());
 
 //        File file = new File(android.os.Environment.getExternalStorageDirectory(), mCameraFileName);
 
 //        Toast.makeText(getContext(),"image = "+file,Toast.LENGTH_LONG).show();
 
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData(
-                "first_img",
-                newImageFile.getName(),
-                RequestBody.create(MediaType.parse("image/*"), newImageFile)
-        );
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<Profile> call = service.registerNewUser(
-                email,
-                mobile_number,
-                full_name,
-                date_of_birth,
-                city,
-                country,
-                gender,
-                filePart //registration without image file
-        );
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData(
+                    "first_img",
+                    newImageFile.getName(),
+                    RequestBody.create(MediaType.parse("image/*"), newImageFile)
+            );
+            GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+            Call<Profile> call = service.registerNewUser(
+                    email,
+                    mobile_number,
+                    full_name,
+                    date_of_birth,
+                    city,
+                    country,
+                    gender,
+                    filePart //registration without image file
+            );
 
-        call.enqueue(new Callback<Profile>() {
-            @Override
-            public void onResponse(@NonNull Call<Profile> call,@NonNull Response<Profile> response) {
+            call.enqueue(new Callback<Profile>() {
+                @Override
+                public void onResponse(@NonNull Call<Profile> call, @NonNull Response<Profile> response) {
 
-                Log.d(TAG,"new registered user = "+ response);
-                if (response.code() == 201) {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(),"Registered Successfully!",Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "new registered user = " + response);
+                    if (response.code() == 201) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Registered Successfully!", Toast.LENGTH_LONG).show();
 
-                    userProfile = response.body();
-                    Log.d(TAG,"new created user = "+userProfile);
+                        userProfile = response.body();
+                        Log.d(TAG, "new created user = " + userProfile);
 
 
+                        myUtils.storeNewUserToSharedPref(requireContext(), userProfile);
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), response.toString(), Toast.LENGTH_LONG).show();
+                    }
 
-                    myUtils.storeNewUserToSharedPref(Objects.requireNonNull(getContext()),userProfile);
-                    startActivity(new Intent(getActivity(),MainActivity.class));
-                }else {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(),response.toString(),Toast.LENGTH_LONG).show();
                 }
 
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Profile> call, @NonNull Throwable t) {
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(getContext(),"Registration Failed! Try again later.",Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<Profile> call, @NonNull Throwable t) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "Registration Failed! Try again later.", Toast.LENGTH_LONG).show();
+                }
+            });
+        }else {
+            Toast.makeText(getContext(), "Oops you need to capture a selfie first in order to proceed with the registration process.", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
+        }
     }
 }

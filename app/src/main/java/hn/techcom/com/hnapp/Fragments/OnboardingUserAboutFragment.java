@@ -1,6 +1,7 @@
 package hn.techcom.com.hnapp.Fragments;
 
 import android.app.DatePickerDialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -61,7 +63,7 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
         String[] arrayGender = new String[]
                 {"Gender", "Male", "Female", "Other"};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Objects.requireNonNull(getContext()),
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireContext(),
                 android.R.layout.simple_spinner_dropdown_item, arrayGender) {
             @Override
             public boolean isEnabled(int position) {
@@ -77,7 +79,7 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction()==MotionEvent.ACTION_UP){
-                    genderLayout.setBackground(getResources().getDrawable(R.drawable.custom_textview_shape_selected));
+                    genderLayout.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.custom_textview_shape_selected,null));
                     genderLayout.setTag("selected");
                 }
                 return v.performClick();
@@ -101,7 +103,7 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
                         break;
                 }
 
-                genderLayout.setBackground(getResources().getDrawable(R.drawable.custom_textview_shape));
+                genderLayout.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.custom_textview_shape,null));
             }
 
             @Override
@@ -118,8 +120,7 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
     public void onClick(View v) {
         if (v.getId() == R.id.text_dob) {
             showDatePickerDialog(v);
-            dateOfBirth.setBackground(getResources().getDrawable(R.drawable.custom_textview_shape_selected));
-
+            dateOfBirth.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.custom_textview_shape_selected,null));
         }
     }
 
@@ -134,7 +135,7 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
         userProfile.setDateOfBirth(dateOfBirth.getText().toString());
         userProfile.setGender(genderCode);
 
-        myUtils.storeNewUserToSharedPref(Objects.requireNonNull(getContext()),userProfile);
+        myUtils.storeNewUserToSharedPref(requireContext(),userProfile);
 
         Log.d(TAG,"new user = "+userProfile.toString());
     }
@@ -144,7 +145,7 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
         int day = cldr.get(Calendar.DAY_OF_MONTH);
         int month = cldr.get(Calendar.MONTH);
         int year = cldr.get(Calendar.YEAR);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),R.style.customDatePickerStyle,
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override
@@ -152,9 +153,11 @@ public class OnboardingUserAboutFragment extends Fragment implements View.OnClic
                                           int monthOfYear, int dayOfMonth) {
 
                         dateOfBirth.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        dateOfBirth.setBackground(ResourcesCompat.getDrawable(getResources(),R.drawable.custom_textview_shape,null));
 
                     }
                 }, year, month, day);
+//        datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         datePickerDialog.show();
     }
 }
