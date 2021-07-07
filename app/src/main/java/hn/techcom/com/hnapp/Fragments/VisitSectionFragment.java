@@ -388,12 +388,13 @@ public class VisitSectionFragment
 
                         ArrayList<Result> postList = new ArrayList<>(cityPostList.getResults());
 
+                        recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(postList);
-                        recentPostList.add(null);
 
                         postListAdapter.notifyDataSetChanged();
 
                         if(nextCityPostListUrl != null)
+                            recentPostList.add(null);
                             getCityPostsFromNextPage(nextCityPostListUrl);
                     }
                 }
@@ -420,13 +421,17 @@ public class VisitSectionFragment
 
                         ArrayList<Result> postList = new ArrayList<>(countryPostList.getResults());
 
+
+                        recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(postList);
-                        recentPostList.add(null);
+
 
                         postListAdapter.notifyDataSetChanged();
 
-                        if(nextCountryPostListUrl != null)
+                        if(nextCountryPostListUrl != null) {
+                            recentPostList.add(null);
                             getCountryPostsFromNextPage(nextCountryPostListUrl);
+                        }
                     }
                 }
             }

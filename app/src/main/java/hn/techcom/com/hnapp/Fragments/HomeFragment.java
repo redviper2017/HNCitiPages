@@ -227,14 +227,16 @@ public class HomeFragment
 
                         ArrayList<Result> postList = new ArrayList<>(globalPostList.getResults());
 
+                        recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(postList);
-                        recentPostList.add(null);
+
 
                         postListAdapter.notifyDataSetChanged();
 
 //                        setRecyclerView(recentPostList);
 
                         if (globalPostList.getNext() != null) {
+                            recentPostList.add(null);
                             Log.d(TAG,"total number of global posts fetched = "+recentPostList.size());
                             getGlobalPostsFromNextPage(globalPostList.getNext());
                         }

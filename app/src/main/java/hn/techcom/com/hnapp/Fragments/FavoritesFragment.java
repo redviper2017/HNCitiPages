@@ -202,12 +202,14 @@ public class FavoritesFragment
 
                         ArrayList<Result> postList = new ArrayList<>(favoritePostList.getResults());
 
+                        recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(postList);
-                        recentPostList.add(null);
+
 
                         postListAdapter.notifyDataSetChanged();
 
                         if(favoritePostList.getNext() != null){
+                            recentPostList.add(null);
                             Log.d(TAG,"total number of global posts fetched = "+recentPostList.size());
                             getFavoritePostsFromNextPage(favoritePostList.getNext());
                         }

@@ -201,11 +201,13 @@ public class ViewProfileFragment
                         nextUserPostListUrl = postList.getNext();
                         ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
 
+                        recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(postArrayList);
-                        recentPostList.add(null);
+
 
                         postListAdapter.notifyDataSetChanged();
                         if (postList.getNext() != null) {
+                            recentPostList.add(null);
                             Log.d(TAG, "total number of user posts fetched = " + recentPostList.size());
                             getPostsListBySingleUserFromPage(postList.getNext());
                         }
