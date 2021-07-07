@@ -27,6 +27,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
@@ -34,7 +35,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.NewPostResponse;
+import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
+import hn.techcom.com.hnapp.Models.Result;
+import hn.techcom.com.hnapp.Models.SingleUserInfoResponse;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Utils.Utils;
@@ -91,7 +95,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         phone.setText(userProfile.getMobileNumber());
         hnid.setText(userProfile.getHnid());
 
-        String profilePhotoUrl = userProfile.getProfileImg();
+        String profilePhotoUrl = userProfile.getProfileImgThumbnail();
         Log.d(TAG,"loaded profile photo url = "+profilePhotoUrl);
         Picasso
                 .get()
@@ -260,6 +264,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                     progressBar.setVisibility(View.GONE);
                     updateProfileButton.setVisibility(View.GONE);
                     Toast.makeText(UserProfileActivity.this,"Profile photo updated successfully!",Toast.LENGTH_LONG).show();
+                    getUser();
                 }
                 else{
                     progressBar.setVisibility(View.GONE);
@@ -285,5 +290,27 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             String string = cursor.getString(idx);
             return string;
         }
+    }
+
+    public void getUser() {
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<SingleUserInfoResponse> call = service.getUserInfo(userProfile.getHnid());
+        call.enqueue(new Callback<SingleUserInfoResponse>() {
+            @Override
+            public void onResponse(Call<SingleUserInfoResponse> call, Response<SingleUserInfoResponse> response) {
+                if (response.code() == 200){
+                    SingleUserInfoResponse user = response.body();
+                    if (user != null) {
+                        userProfile.setProfileImgThumbnail(user.getProfileImgThumbnail());
+                        myUtils.storeNewUserToSharedPref(UserProfileActivity.this,userProfile);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SingleUserInfoResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

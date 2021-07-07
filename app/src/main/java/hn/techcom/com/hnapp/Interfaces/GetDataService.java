@@ -12,6 +12,7 @@ import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Reply;
 import hn.techcom.com.hnapp.Models.ResultViewComments;
+import hn.techcom.com.hnapp.Models.SingleUserInfoResponse;
 import hn.techcom.com.hnapp.Models.SupportingProfileList;
 import hn.techcom.com.hnapp.Models.SupporterProfile;
 import hn.techcom.com.hnapp.Models.ValidationResponse;
@@ -237,4 +238,8 @@ public interface GetDataService {
             @Part("user") RequestBody user,
             @Part MultipartBody.Part profile_img
     );
+
+    //Get single user info
+    @GET("users/single_userinfo/{hnid}/")
+    Call<SingleUserInfoResponse> getUserInfo(@Path("hnid") String hnid);
 }

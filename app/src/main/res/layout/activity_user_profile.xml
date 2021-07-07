@@ -38,8 +38,14 @@
                 android:layout_width="@dimen/_120sdp"
                 android:layout_height="@dimen/_120sdp"
                 android:src="@drawable/image_placeholder"
-                app:civ_border_color="@android:color/white"
-                app:civ_border_width="1dp" />
+                app:civ_border_width="0dp"/>
+
+            <View
+                android:id="@+id/support_circle_view"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:background="@drawable/circle_hollow_1"
+                android:visibility="visible"/>
 
             <include
                 android:id="@+id/fab_update_image"

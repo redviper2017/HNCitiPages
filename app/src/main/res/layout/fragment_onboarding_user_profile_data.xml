@@ -31,14 +31,14 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/roboto"
             android:justificationMode="none"
-            android:text="Please take a selfie for you HN CitiPages ID."
+            android:text="Please take a selfie for your HN CitiPages ID."
             android:textSize="20sp"
             tools:targetApi="o" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:layout_gravity="center">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -57,6 +57,29 @@
                 android:layout_alignBottom="@id/circleimageview_profile_onboarding"
                 android:layout_alignEnd="@id/circleimageview_profile_onboarding"/>
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_20sdp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/info_ic"
+                android:layout_marginEnd="5dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:justificationMode="none"
+                android:text="@string/hn_citipages_id_disclaimer"
+                android:textSize="@dimen/_10ssp"
+                tools:targetApi="o" />
+        </LinearLayout>
+
+
 
 <!--        <com.google.android.material.textfield.TextInputLayout-->
 <!--            style="@style/MyTextInputLayout"-->
