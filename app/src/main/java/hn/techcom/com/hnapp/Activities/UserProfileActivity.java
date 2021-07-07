@@ -2,6 +2,7 @@ package hn.techcom.com.hnapp.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -107,7 +108,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         if(view.getId() == R.id.fab_update_image)
             updatePhotoDialog();
         if (view.getId() == R.id.update_profile_button)
-            shareNewImage();
+            updateProfilePhoto();
     }
 
     @Override
@@ -117,6 +118,21 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             profilePhoto.setImageURI(Uri.fromFile(new File(currentPhotoPath)));
 
             String imageAspect = getImageDimension(currentPhotoPath);
+            Log.d(TAG,"aspect of image = "+imageAspect);
+
+            newImageAspectRatio = imageAspect;
+
+            dialog.cancel();
+            updateProfileButton.setVisibility(View.VISIBLE);
+        }
+
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
+            profilePhoto.setImageURI(Objects.requireNonNull(data).getData());
+
+            String filePath = getRealPathFromURIPath(data.getData(), this);
+            newImageFile = new File(filePath);
+
+            String imageAspect = getImageDimension(filePath);
             Log.d(TAG,"aspect of image = "+imageAspect);
 
             newImageAspectRatio = imageAspect;
@@ -143,7 +159,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startImagePickIntent();
             }
         });
 
@@ -172,6 +188,13 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
+    }
+
+    public void startImagePickIntent(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+
+        startActivityForResult(intent, REQUEST_IMAGE_PICK);
     }
 
     private File createImageFile() throws IOException {
@@ -213,7 +236,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             return "portrait";
     }
 
-    private void shareNewImage(){
+    private void updateProfilePhoto(){
         progressBar.setVisibility(View.VISIBLE);
 
         RequestBody user = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
@@ -250,5 +273,17 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(UserProfileActivity.this,"Unable to update profile! Try again later..",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public String getRealPathFromURIPath(Uri contentURI, Activity activity) {
+        Cursor cursor = activity.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            return contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            String string = cursor.getString(idx);
+            return string;
+        }
     }
 }
