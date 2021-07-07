@@ -250,19 +250,19 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             text.setText(post.getText());
 
             //see more button toggle for large texts
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (text.getLayout() != null) {
-                        Log.d(TAG, "line count = " + text.getLayout().getLineCount());
-                        if (text.getLayout().getLineCount() > 9)
-                            seeMoreButton.setVisibility(View.VISIBLE);
-                        else
-                            seeMoreButton.setVisibility(View.GONE);
-                    }
-                }
-            },100);
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (text.getLayout() != null) {
+//                        Log.d(TAG, "line count = " + text.getLayout().getLineCount());
+//                        if (text.getLayout().getLineCount() > 9)
+//                            seeMoreButton.setVisibility(View.VISIBLE);
+//                        else
+//                            seeMoreButton.setVisibility(View.GONE);
+//                    }
+//                }
+//            },100);
 
             //Toggling like button
             if(post.getLiked())
@@ -378,19 +378,19 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             text.setText(post.getText());
 
             //see more button toggle for large texts
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (text.getLayout() != null) {
-                        Log.d(TAG, "line count = " + text.getLayout().getLineCount());
-                        if (text.getLayout().getLineCount() > 9)
-                            seeMoreButton.setVisibility(View.VISIBLE);
-                        else
-                            seeMoreButton.setVisibility(View.GONE);
-                    }
-                }
-            },100);
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (text.getLayout() != null) {
+//                        Log.d(TAG, "line count = " + text.getLayout().getLineCount());
+//                        if (text.getLayout().getLineCount() > 9)
+//                            seeMoreButton.setVisibility(View.VISIBLE);
+//                        else
+//                            seeMoreButton.setVisibility(View.GONE);
+//                    }
+//                }
+//            },100);
 
             String imageUrl = post.getFiles().get(0).getMedia();
 
@@ -531,19 +531,19 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             text.setText(post.getText());
 
             //see more button toggle for large texts
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (text.getLayout() != null) {
-                        Log.d(TAG, "line count = " + text.getLayout().getLineCount());
-                        if (text.getLayout().getLineCount() > 9)
-                            seeMoreButton.setVisibility(View.VISIBLE);
-                        else
-                            seeMoreButton.setVisibility(View.GONE);
-                    }
-                }
-            },100);
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (text.getLayout() != null) {
+//                        Log.d(TAG, "line count = " + text.getLayout().getLineCount());
+//                        if (text.getLayout().getLineCount() > 9)
+//                            seeMoreButton.setVisibility(View.VISIBLE);
+//                        else
+//                            seeMoreButton.setVisibility(View.GONE);
+//                    }
+//                }
+//            },100);
 
             //Toggling like button
             if(post.getLiked())
