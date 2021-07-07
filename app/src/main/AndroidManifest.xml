@@ -25,17 +25,36 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m"
-        tools:ignore="LockedOrientationActivity">
-        <activity android:name=".Activities.ViewCommentsActivity" android:screenOrientation="portrait" />
-        <activity android:name=".Activities.ViewLikesActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.PostAudioActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.PostImageActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.PostStoryActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.PostVideoActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.TermsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.SignInActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.OnboardingActivity" android:screenOrientation="portrait"/>
+        tools:ignore="LockedOrientationActivity"
+        tools:targetApi="m">
+        <activity android:name=".Activities.UserProfileActivity"></activity>
+        <activity
+            android:name=".Activities.ViewCommentsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.ViewLikesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.PostAudioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.PostImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.PostStoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.PostVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.TermsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.SignInActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.OnboardingActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -43,8 +62,8 @@
 
         <activity
             android:name=".Activities.MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

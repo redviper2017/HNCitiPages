@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 import hn.techcom.com.hnapp.Activities.SignInActivity;
+import hn.techcom.com.hnapp.Activities.UserProfileActivity;
 import hn.techcom.com.hnapp.Fragments.FavoritesFragment;
 import hn.techcom.com.hnapp.Fragments.UserProfileFragment;
 import hn.techcom.com.hnapp.R;
@@ -58,7 +59,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //                        dismiss();
 //                        break;
                     case R.id.nav_visit_profile:
-                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new UserProfileFragment()).addToBackStack(null).commit();
+                        startActivity(new Intent(getContext(), UserProfileActivity.class));
                         dismiss();
                         break;
 //                    case R.id.nav_random_community:
@@ -98,7 +99,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //                        dismiss();
 //                        break;
                     case R.id.nav_fav:
-                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new FavoritesFragment()).addToBackStack(null).commit();
+                        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main,new FavoritesFragment()).addToBackStack(null).commit();
                         dismiss();
                         break;
 //                    case R.id.nav_about:

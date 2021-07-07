@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/_30sdp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textview_title_voice_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pacifico"
+        android:layout_marginBottom="30dp"
+        android:text="@string/update_profile_photo"
+        android:textAlignment="center"
+        android:textSize="@dimen/_20ssp"
+        android:textColor="@color/colorTextTitle"
+        app:layout_constraintTop_toBottomOf="@id/layout_screentitle_shareimage"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textview_disclaimer_voice_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="@string/update_profile_photo_instruction"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@id/layout_screentitle_shareimage"/>
+
+
+    <!-- Capture Button -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/button_capture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp"
+        android:visibility="visible">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_button"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="@string/capture_with_camera"
+            android:textAlignment="center"
+            android:textColor="@color/colorSurface"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:drawableStart="@drawable/camera_ic"/>
+    </com.google.android.material.card.MaterialCardView>
+    <!-- Select Button -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/button_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp"
+        android:layout_marginTop="@dimen/_10sdp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_button"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="@string/select_from_gallery"
+            android:textAlignment="center"
+            android:textColor="@color/colorSurface"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:drawableStart="@drawable/gallery_ic"/>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

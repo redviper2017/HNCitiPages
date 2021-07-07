@@ -229,4 +229,12 @@ public interface GetDataService {
     //Get posts by a single user from a specified page
     @GET()
     Call<PostList> getPostsBySingleUserFromPage(@Url String url);
+
+    //Update Profile Image
+    @Multipart
+    @POST("users/updateuser/")
+    Call<LikeResponse> updateProfileImage(
+            @Part("user") RequestBody user,
+            @Part MultipartBody.Part profile_img
+    );
 }

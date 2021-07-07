@@ -1,6 +1,7 @@
 package hn.techcom.com.hnapp.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,6 +30,7 @@ import java.util.Objects;
 import hn.techcom.com.hnapp.Fragments.HomeFragment;
 import hn.techcom.com.hnapp.Fragments.SharePostBottomSheetFragment;
 import hn.techcom.com.hnapp.Fragments.SupportSectionFragment;
+import hn.techcom.com.hnapp.Fragments.UserProfileFragment;
 import hn.techcom.com.hnapp.Fragments.VisitSectionFragment;
 import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.Profile;
@@ -41,7 +44,6 @@ import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity {
-
     static ArrayList<SupporterProfile> userSupportedProfiles;
     static ArrayList<Post> globalPosts = new ArrayList<>();
     static ArrayList<Post> userSupportedProfilePosts = new ArrayList<>();
