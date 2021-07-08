@@ -119,8 +119,16 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
         super.onPause();
         mMapView.onPause();
 
-        userProfile.setCountry(country.getText().toString());
-        userProfile.setCity(city.getText().toString());
+        if(!country.getText().toString().equals("Country"))
+            userProfile.setCountry(country.getText().toString());
+        else
+            userProfile.setCountry("N/A");
+
+        if (!city.getText().toString().equals("City/State"))
+            userProfile.setCity(city.getText().toString());
+        else
+            userProfile.setCity("N/A");
+
 
         myUtils.storeNewUserToSharedPref(requireContext(),userProfile);
 
