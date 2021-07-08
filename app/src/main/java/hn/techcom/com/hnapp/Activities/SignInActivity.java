@@ -153,8 +153,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             enterCodelayout.setVisibility(View.VISIBLE);
             enterPhoneLayout.setVisibility(View.GONE);
         }
-        if(view.getId() == R.id.button_terms_click)
+        if(view.getId() == R.id.button_terms_click) {
             startActivity(new Intent(this, TermsActivity.class));
+//            throw new RuntimeException("Test Crash"); // Force a crash
+        }
         if(view.getId() == R.id.button_login_with_gmail)
             signIn();
     }
@@ -178,8 +180,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean recordAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                     if (storageAccepted && recordAccepted){
-                        Fragment fragment = new HomeFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
+//                        Fragment fragment = new HomeFragment();
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
                     }
                     else
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -9,6 +9,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -75,10 +79,23 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
 
     private ProgressBar progressBar;
     private String currentPhotoPath;
+    ActivityResultLauncher<Intent> activityResultLauncher;
 
 
     public OnboardingUserProfileDataFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+
+            }
+        });
     }
 
     @Override
@@ -104,11 +121,13 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.fab_add_image){
-            if (checkPermission()) {
-                dispatchTakePictureIntent();
-            } else {
-                requestPermission();
-            }
+//            Toast.makeText(getContext(),"add image!!",Toast.LENGTH_SHORT).show();
+//            if (checkPermission()) {
+//                dispatchTakePictureIntent();
+//            } else {
+//                requestPermission();
+//            }
+            dispatchTakePictureIntent();
         }
         if(view.getId() == R.id.button_create_account){
             progressBar.setVisibility(View.VISIBLE);
@@ -154,22 +173,18 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(requireContext(),
+        // Create the File where the photo should go
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {}
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
+            Uri photoURI = FileProvider.getUriForFile(requireContext(),
                         "hn.techcom.com.hnapp.fileprovider",
                         photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, Image_Capture_Code);
-            }
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            startActivityForResult(takePictureIntent, Image_Capture_Code);
         }
     }
 
