@@ -10,6 +10,9 @@ public class File {
     @SerializedName("aspect")
     @Expose
     private String aspect;
+    @SerializedName("thumbnail")
+    @Expose
+    private String thumbnail;
 
     public String getMedia() {
         return media;
@@ -25,5 +28,13 @@ public class File {
 
     public void setAspect(String aspect) {
         this.aspect = aspect;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

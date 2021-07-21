@@ -7,12 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
 import com.santalu.aspectratioimageview.AspectRatioImageView;
@@ -208,8 +211,17 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return allPosts == null ? 0 : allPosts.size();
     }
 
-
-    //View holder classes
+    @Override
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        AndExoPlayerView portrait = holder.itemView.findViewById(R.id.video_player_portrait_post);
+        AndExoPlayerView landscapre = holder.itemView.findViewById(R.id.video_player_landscape_post);
+        if (portrait != null)
+            portrait.stopPlayer();
+        else if(landscapre != null)
+            landscapre.stopPlayer();
+    }
+//View holder classes
 
     //Story view holder class
     private class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -493,6 +505,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private LinearLayout audioPlayerLayout;
         private View supportCircleView;
 
+        private ImageView imageviewLandscape, imageviewPortrait, playButtonLandscape, playButtonPortrait;
+        private RelativeLayout videoLandscapeLayout, videoPortraitLayout;
+
         public AudioVideoViewHolder(@NonNull View view) {
             super(view);
 
@@ -513,15 +528,26 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             commentButton        = view.findViewById(R.id.comment_button_post);
             supportCircleView    = view.findViewById(R.id.support_circle_view);
 
+            imageviewLandscape   = view.findViewById(R.id.imageview_video_landscape);
+            imageviewPortrait    = view.findViewById(R.id.imageview_video_portrait);
+
+            playButtonLandscape  = view.findViewById(R.id.play_button_landscape);
+            videoLandscapeLayout = view.findViewById(R.id.layout_video_landscape);
+
+            playButtonPortrait   = view.findViewById(R.id.play_button_portrait);
+            videoPortraitLayout  = view.findViewById(R.id.layout_video_portrait);
+
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
 
-            videoPlayerLandscape.setPlayWhenReady(false);
-            videoPlayerPortrait.setPlayWhenReady(false);
+
             favoriteButton.setOnClickListener(this);
             likes.setOnClickListener(this);
             comments.setOnClickListener(this);
             commentButton.setOnClickListener(this);
+
+            playButtonLandscape.setOnClickListener(this);
+            playButtonPortrait.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -600,18 +626,6 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             String videoUrl = post.getFiles().get(0).getMedia();
 
-//            //Set MediaController  to enable play, pause, forward, etc options.
-//            MediaController mediaController = new MediaController(context);
-//
-//            //TODO: later toggle the imageview based on image aspect ratio
-//            landscapeVideoView.setVisibility(View.GONE);
-//            portraitVideoView.setVisibility(View.VISIBLE);
-//
-//            mediaController.setAnchorView(portraitVideoView);
-//            portraitVideoView.setMediaController(mediaController);
-//
-//            portraitVideoView.setVideoPath(videoUrl);
-//            portraitVideoView.requestFocus();
             if(post.getPosttype().equals("A")){
                 videoPlayerLandscape.setVisibility(View.GONE);
                 videoPlayerPortrait.setVisibility(View.GONE);
@@ -620,19 +634,29 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 audioPlayer.setPlayWhenReady(false);
             }else{
                 if (post.getFiles().get(0).getAspect().equals("portrait")){
-                    videoPlayerPortrait.setVisibility(View.VISIBLE);
-                    videoPlayerLandscape.setVisibility(View.GONE);
-                    videoPlayerPortrait.setSource(videoUrl);
-                    videoPlayerPortrait.setPlayWhenReady(false);
-//                videoPlayerPortrait.stopPlayer();
-//                videoPlayerPortrait.seekForward(1);
+                    videoLandscapeLayout.setVisibility(View.GONE);
+                    videoPortraitLayout.setVisibility(View.VISIBLE);
+                    if (post.getFiles().get(0).getThumbnail() != null) {
+                        Glide.with(context)
+                                .load(post.getFiles().get(0).getThumbnail())
+                                .into(imageviewPortrait);
+                    }
+                    videoPlayerPortrait.stopPlayer();
+                    playButtonPortrait.setVisibility(View.VISIBLE);
                 }else{
-                    videoPlayerLandscape.setVisibility(View.VISIBLE);
-                    videoPlayerPortrait.setVisibility(View.GONE);
-                    videoPlayerLandscape.setSource(videoUrl);
-                    videoPlayerLandscape.setPlayWhenReady(false);
-//                videoPlayerLandscape.stopPlayer();
-//                videoPlayerLandscape.seekForward(1);
+                    videoPortraitLayout.setVisibility(View.GONE);
+                    videoLandscapeLayout.setVisibility(View.VISIBLE);
+                    if (post.getFiles().get(0).getThumbnail() != null) {
+                        Glide.with(context)
+                                .load(post.getFiles().get(0).getThumbnail())
+                                .into(imageviewLandscape);
+                    }
+                    videoPlayerLandscape.stopPlayer();
+                    playButtonLandscape.setVisibility(View.VISIBLE);
+
+//                    Glide.with(context)
+//                            .load(videoUrl)
+//                            .into(imageviewLandscape);
                 }
             }
         }
@@ -653,6 +677,20 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 onLikeCountButtonListener.onLikeCountButtonClick(postId);
             if(view.getId() == R.id.comment_button_post || view.getId() == R.id.text_comment_count_post)
                 onCommentClickListener.onCommentClick(postId);
+            if (view.getId() == R.id.play_button_landscape){
+                String videoUrl = allPosts.get(position).getFiles().get(0).getMedia();
+                playButtonLandscape.setVisibility(View.GONE);
+                imageviewLandscape.setVisibility(View.GONE);
+                videoPlayerLandscape.setSource(videoUrl);
+                videoPlayerLandscape.setPlayWhenReady(true);
+            }
+            if (view.getId() == R.id.play_button_portrait){
+                String videoUrl = allPosts.get(position).getFiles().get(0).getMedia();
+                playButtonPortrait.setVisibility(View.GONE);
+                imageviewPortrait.setVisibility(View.GONE);
+                videoPlayerPortrait.setSource(videoUrl);
+                videoPlayerPortrait.setPlayWhenReady(true);
+            }
         }
     }
 

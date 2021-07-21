@@ -114,4 +114,5 @@
     <string name="select_from_gallery">Select from Gallery</string>
     <string name="update_profile_photo">Update Profile Photo</string>
     <string name="hn_citipages_id_disclaimer">Your HN CitiPages ID will be used for the security of your profile. You can update the above photo anytime from the View Profile section accessed via the app menu.</string>
+    <string name="todo">TODO</string>
 </resources>

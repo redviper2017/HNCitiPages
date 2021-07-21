@@ -125,30 +125,69 @@
             android:visibility="visible"/>
     </LinearLayout>
 
-    <com.potyvideo.library.AndExoPlayerView
-        android:id="@+id/video_player_landscape_post"
+    <RelativeLayout
+        android:id="@+id/layout_video_landscape"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
-        app:andexo_aspect_ratio="aspect_match"
-        app:andexo_full_screen="true"
-        app:andexo_play_when_ready="true"
-        app:andexo_mute="mute"
-        app:andexo_show_controller="true"
-        app:andexo_resize_mode="Zoom"
-        app:andexo_loop="infinite"
-        android:visibility="visible"/>
-    <com.potyvideo.library.AndExoPlayerView
-        android:id="@+id/video_player_portrait_post"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <com.potyvideo.library.AndExoPlayerView
+            android:id="@+id/video_player_landscape_post"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            app:andexo_aspect_ratio="aspect_match"
+            app:andexo_full_screen="true"
+            app:andexo_play_when_ready="true"
+            app:andexo_mute="mute"
+            app:andexo_show_controller="true"
+            app:andexo_resize_mode="Zoom"
+            app:andexo_loop="infinite"
+            android:visibility="visible"/>
+       <ImageView
+           android:id="@+id/play_button_landscape"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:src="@drawable/play_video_ci"
+            android:elevation="@dimen/_10sdp"
+            android:layout_centerInParent="true"
+           android:visibility="visible"/>
+        <ImageView
+            android:id="@+id/imageview_video_landscape"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_centerInParent="true"
+            android:visibility="visible"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/layout_video_portrait"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_400sdp"
-        app:andexo_aspect_ratio="aspect_match"
-        app:andexo_full_screen="true"
-        app:andexo_play_when_ready="true"
-        app:andexo_mute="mute"
-        app:andexo_show_controller="true"
-        app:andexo_resize_mode="Zoom"
-        app:andexo_loop="infinite"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <com.potyvideo.library.AndExoPlayerView
+            android:id="@+id/video_player_portrait_post"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_400sdp"
+            app:andexo_aspect_ratio="aspect_match"
+            app:andexo_full_screen="true"
+            app:andexo_play_when_ready="true"
+            app:andexo_mute="mute"
+            app:andexo_show_controller="true"
+            app:andexo_resize_mode="Zoom"
+            app:andexo_loop="infinite"
+            android:visibility="visible"/>
+        <ImageView
+            android:id="@+id/play_button_portrait"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:src="@drawable/play_video_ci"
+            android:layout_centerInParent="true"
+            android:visibility="visible"/>
+        <ImageView
+            android:id="@+id/imageview_video_portrait"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_400sdp"
+            android:layout_centerInParent="true"
+            android:visibility="visible"/>
+    </RelativeLayout>
     <!-- Layout - text -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_post"
