@@ -636,6 +636,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if (post.getFiles().get(0).getAspect().equals("portrait")){
                     videoLandscapeLayout.setVisibility(View.GONE);
                     videoPortraitLayout.setVisibility(View.VISIBLE);
+                    imageviewPortrait.setVisibility(View.VISIBLE);
                     if (post.getFiles().get(0).getThumbnail() != null) {
                         Glide.with(context)
                                 .load(post.getFiles().get(0).getThumbnail())
@@ -646,6 +647,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }else{
                     videoPortraitLayout.setVisibility(View.GONE);
                     videoLandscapeLayout.setVisibility(View.VISIBLE);
+                    imageviewLandscape.setVisibility(View.VISIBLE);
                     if (post.getFiles().get(0).getThumbnail() != null) {
                         Glide.with(context)
                                 .load(post.getFiles().get(0).getThumbnail())
