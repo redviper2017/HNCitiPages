@@ -4,13 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -33,6 +37,7 @@ import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
+import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Result;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
@@ -56,26 +61,37 @@ public class PostsActivity
         OnLoadMoreListener {
 
     private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private EditText searchView;
     private PostListAdapter adapter;
     private Utils myUtils;
     private Profile userProfile;
     private ArrayList<Result> recentPostList;
     private static final String TAG = "PostsActivity";
+    private String nextPageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
 
+        if (!getIntent().getStringExtra("NextPageUrl").equals("N/A"))
+            nextPageUrl = getIntent().getStringExtra("NextPageUrl");
+
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(this);
         recentPostList = getRecentPosts();
+
+        if (nextPageUrl != null)
+            recentPostList.add(null);
 
         //Hooks
         ImageButton backButton       = findViewById(R.id.image_button_back);
         MaterialTextView screenTitle = findViewById(R.id.text_screen_title);
         MaterialTextView countText   = findViewById(R.id.count_text);
         recyclerView                 = findViewById(R.id.recyclerview);
+        swipeRefreshLayout           = findViewById(R.id.swipeRefresh);
+        searchView                   = findViewById(R.id.searchview);
 
         setRecyclerView(recentPostList);
 
@@ -98,6 +114,93 @@ public class PostsActivity
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+
+                if (!recyclerView.canScrollVertically(1) && dy>0){
+                    //scrolled to bottom
+                    Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
+                    if (recentPostList.get(recentPostList.size()-1) == null) {
+                        recentPostList.remove(recentPostList.size() - 1);
+                        getPostsFromNextPage(nextPageUrl);
+                    }
+                }
+            }
+        });
+
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString().toLowerCase());
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                recentPostList.clear();
+                recentPostList = getRecentPosts();
+                setRecyclerView(recentPostList);
+            }
+        });
+    }
+
+    private void filter(String text) {
+        ArrayList<Result> filterNames = new ArrayList<>();
+
+        for (Result post : recentPostList)
+            if(post != null)
+                if (post.getText().toLowerCase().contains(text))
+                    filterNames.add(post);
+
+        adapter.filterList(filterNames);
+    }
+
+    private void getPostsFromNextPage(String url) {
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getGlobalPostsFromPage(url);
+
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(@NonNull Call<PostList> call, @NonNull Response<PostList> response) {
+                if(response.code() == 200){
+                    PostList postList = response.body();
+                    if (postList != null) {
+                        Log.d(TAG,"next post list url = "+postList.getNext());
+                        Log.d(TAG,"previous post list url = "+postList.getPrevious());
+
+                        nextPageUrl = postList.getNext();
+
+                        ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
+
+                        recentPostList.remove(recentPostList.size() - 1);
+                        recentPostList.addAll(postArrayList);
+
+
+                        adapter.notifyDataSetChanged();
+
+//                        setRecyclerView(recentPostList);
+
+                        if (postList.getNext() != null) {
+                            recentPostList.add(null);
+                            Log.d(TAG,"total number of global posts fetched = "+recentPostList.size());
+                            getPostsFromNextPage(postList.getNext());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PostList> call, @NonNull Throwable t) {
+
             }
         });
     }
@@ -128,7 +231,7 @@ public class PostsActivity
                 this,
                 this);
         recyclerView.setAdapter(adapter);
-//        swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

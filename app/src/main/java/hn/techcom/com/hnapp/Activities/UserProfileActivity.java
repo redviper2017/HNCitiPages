@@ -75,6 +75,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<Result> initialPostList;
 
     private int postCount;
+    private String nextPageUrl;
 
     @Override
     protected void onStart() {
@@ -152,7 +153,10 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(this, "Loading all posts...", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, PostsActivity.class);
                 intent.putExtra("PostCount", String.valueOf(postCount));
-
+                if(nextPageUrl != null)
+                    intent.putExtra("NextPageUrl", nextPageUrl);
+                else
+                    intent.putExtra("NextPageUrl", "N/A");
                 storeRecentPosts();
 
                 startActivity(intent);
@@ -453,6 +457,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                     PostList postList = response.body();
 
                     postCount = postList.getCount();
+                    if (postList.getNext() != null)
+                        nextPageUrl = postList.getNext();
+
                     if (postList.getCount() > 0) {
                         initialPostList.addAll(postList.getResults());
                         postCountText.setText(String.valueOf(postList.getCount()));
