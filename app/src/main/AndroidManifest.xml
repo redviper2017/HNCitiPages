@@ -27,7 +27,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity"
         tools:targetApi="m">
-        <activity android:name=".Activities.SupportersOrSuppoertingProfilesActivity"></activity>
+        <activity android:name=".Activities.PostsActivity"></activity>
+        <activity android:name=".Activities.SupportersOrSuppoertingProfilesActivity" />
         <activity android:name=".Activities.UserProfileActivity" />
         <activity
             android:name=".Activities.ViewCommentsActivity"

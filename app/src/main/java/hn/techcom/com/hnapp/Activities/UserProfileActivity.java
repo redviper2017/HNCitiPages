@@ -71,7 +71,10 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private static final int PERMISSION_REQUEST_CODE = 200;
     private AlertDialog dialog;
 
-    ArrayList<User> supportingProfilesArrayList, supporterProfilesArrayList;
+    private ArrayList<User> supportingProfilesArrayList, supporterProfilesArrayList;
+    private ArrayList<Result> initialPostList;
+
+    private int postCount;
 
     @Override
     protected void onStart() {
@@ -82,6 +85,10 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+
+        supporterProfilesArrayList  = new ArrayList<>();
+        supportingProfilesArrayList = new ArrayList<>();
+        initialPostList             = new ArrayList<>();
 
         //Hooks
         MaterialTextView screenTitle         = findViewById(R.id.text_screen_title_profile);
@@ -140,27 +147,43 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             updatePhotoDialog();
         if (view.getId() == R.id.update_profile_button)
             updateProfilePhoto();
-        if (view.getId() == R.id.view_posts_button)
-            Toast.makeText(this,"Loading all posts...",Toast.LENGTH_SHORT).show();
+        if (view.getId() == R.id.view_posts_button) {
+            if (initialPostList.size() != 0) {
+                Toast.makeText(this, "Loading all posts...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, PostsActivity.class);
+                intent.putExtra("PostCount", String.valueOf(postCount));
+
+                storeRecentPosts();
+
+                startActivity(intent);
+            }else
+                Toast.makeText(this,"Oops! seems like you haven't post anything yet.",Toast.LENGTH_LONG).show();
+        }
         if (view.getId() == R.id.view_supporters_button) {
-            Toast.makeText(this, "Loading all supporters...", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, SupportersOrSuppoertingProfilesActivity.class);
-            intent.putExtra("Show","Supporters");
-            intent.putExtra("SupporterCount",String.valueOf(supporterProfilesArrayList.size()));
+            if (supporterProfilesArrayList.size() != 0) {
+                Toast.makeText(this, "Loading all supporters...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, SupportersOrSuppoertingProfilesActivity.class);
+                intent.putExtra("Show", "Supporters");
+                intent.putExtra("SupporterCount", String.valueOf(supporterProfilesArrayList.size()));
 
-            storeProfiles("Supporters");
+                storeProfiles("Supporters");
 
-            startActivity(intent);
+                startActivity(intent);
+            }else
+                Toast.makeText(this,"Oops! seems like no one has supported you yet.",Toast.LENGTH_LONG).show();
         }
         if (view.getId() == R.id.view_supporting_button) {
-            Toast.makeText(this, "Loading all supporting profiles...", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, SupportersOrSuppoertingProfilesActivity.class);
-            intent.putExtra("Show","Supporting Profiles");
-            intent.putExtra("SupportingCount",String.valueOf(supportingProfilesArrayList.size()));
+            if (supportingProfilesArrayList.size() != 0) {
+                Toast.makeText(this, "Loading all supporting profiles...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, SupportersOrSuppoertingProfilesActivity.class);
+                intent.putExtra("Show", "Supporting Profiles");
+                intent.putExtra("SupportingCount", String.valueOf(supportingProfilesArrayList.size()));
 
-            storeProfiles("Supporting");
+                storeProfiles("Supporting");
 
-            startActivity(intent);
+                startActivity(intent);
+            }else
+                Toast.makeText(this,"Oops! seems like you haven't supported anyone yet.",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -375,7 +398,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                     Log.d(TAG, "number of supporting profile = "+ supportingProfileList.getCount());
 
                     if(supportingProfileList.getCount()>0) {
-                        supportingProfilesArrayList = new ArrayList<>();
                         supportingProfilesArrayList.addAll(supportingProfileList.getResults());
                         supportingCountText.setText(String.valueOf(supportingProfilesArrayList.size()));
                     }else{
@@ -403,7 +425,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                     Log.d(TAG, "number of supporter profile = "+ supporterProfileList.getCount());
 
                     if(supporterProfileList.getCount()>0) {
-                        supporterProfilesArrayList = new ArrayList<>();
                         supporterProfilesArrayList.addAll(supporterProfileList.getResults());
                         supporterCountText.setText(String.valueOf(supporterProfilesArrayList.size()));
                     }else{
@@ -430,8 +451,12 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 if (response.code() == 200){
                     Log.d(TAG,"total number of post by this user = "+response.body().getResults().size());
                     PostList postList = response.body();
-                    if (postList.getCount() > 0)
+
+                    postCount = postList.getCount();
+                    if (postList.getCount() > 0) {
+                        initialPostList.addAll(postList.getResults());
                         postCountText.setText(String.valueOf(postList.getCount()));
+                    }
                     else
                         postCountText.setText("0");
                 }
@@ -455,6 +480,15 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             json = gson.toJson(supportingProfilesArrayList);
 
         editor.putString(profilesListType, json);
+        editor.apply();
+    }
+
+    private void storeRecentPosts(){
+        SharedPreferences sharedPreferences = this.getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(initialPostList);
+        editor.putString("RecentPosts", json);
         editor.apply();
     }
 }

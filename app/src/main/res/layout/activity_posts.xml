@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.SupportersOrSuppoertingProfilesActivity"
+    tools:context=".Activities.PostsActivity"
     android:background="@color/white"
     android:orientation="vertical">
     <RelativeLayout
@@ -17,10 +16,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="121"
-            android:layout_centerVertical="true"
             android:fontFamily="@font/pacifico"
             android:textColor="@color/colorTextTitle"
             android:textSize="@dimen/_16ssp"
+            android:layout_centerVertical="true"
             android:textStyle="bold"/>
         <RelativeLayout
             android:id="@+id/layout_screentitle"
@@ -53,8 +52,7 @@
         android:hint="Search..."
         android:textColor="@color/black"
         android:textColorHint="@color/black"
-        android:background="@drawable/rounded_corner_rectangle"
-        android:visibility="gone"/>
+        android:background="@drawable/rounded_corner_rectangle"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
