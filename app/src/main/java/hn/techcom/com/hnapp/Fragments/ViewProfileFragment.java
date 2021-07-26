@@ -1,9 +1,12 @@
 package hn.techcom.com.hnapp.Fragments;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,8 +16,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
@@ -66,6 +76,8 @@ public class ViewProfileFragment
     private String nextUserPostListUrl;
     private PostListAdapter postListAdapter;
 
+    private AlertDialog dialog;
+
 
     public ViewProfileFragment() {
 
@@ -82,16 +94,17 @@ public class ViewProfileFragment
         recentPostList = new ArrayList<>();
 
         //Hooks
-        MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_viewprofile);
-        MaterialTextView profileName = view.findViewById(R.id.profile_name);
-        MaterialTextView locationText = view.findViewById(R.id.profile_location);
-        MaterialTextView usernameText = view.findViewById(R.id.profile_username);
-        MaterialTextView postCountText = view.findViewById(R.id.post_count_viewprofile);
-        MaterialTextView supporterCountText = view.findViewById(R.id.supporter_count_viewprofile);
+        MaterialTextView screenTitle         = view.findViewById(R.id.text_screen_title_viewprofile);
+        MaterialTextView profileName         = view.findViewById(R.id.profile_name);
+        MaterialTextView locationText        = view.findViewById(R.id.profile_location);
+        MaterialTextView usernameText        = view.findViewById(R.id.profile_username);
+        MaterialTextView postCountText       = view.findViewById(R.id.post_count_viewprofile);
+        MaterialTextView supporterCountText  = view.findViewById(R.id.supporter_count_viewprofile);
         MaterialTextView supportingCountText = view.findViewById(R.id.supporting_count_viewprofile);
-        CircleImageView profileThumbnail = view.findViewById(R.id.circleimageview_profile_view);
-        recyclerView = view.findViewById(R.id.recyclerview_posts_viewprofile);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        CircleImageView profileThumbnail     = view.findViewById(R.id.circleimageview_profile_view);
+        recyclerView                         = view.findViewById(R.id.recyclerview_posts_viewprofile);
+        swipeRefreshLayout                   = view.findViewById(R.id.swipeRefresh);
+        MaterialTextView viewHnIdButton      = view.findViewById(R.id.hnid_viewprofile);
 
         String hnid = requireArguments().getString("hnid");
         String name = requireArguments().getString("name");
@@ -101,6 +114,7 @@ public class ViewProfileFragment
         String supporterCount = requireArguments().getString("supporterCount");
         String supportingCount = requireArguments().getString("supportingCount");
         String postCount = requireArguments().getString("postCount");
+        String firstImage = requireArguments().getString("firstImage");
 
         Log.d(TAG, "Number of posts in ViewProfile = " + postCount);
 
@@ -146,6 +160,13 @@ public class ViewProfileFragment
             public void onRefresh() {
                 recentPostList.clear();
                 getLatestPostsListBySingleUser(hnid);
+            }
+        });
+
+        viewHnIdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updatePhotoDialog(hnid, firstImage);
             }
         });
 
@@ -334,5 +355,39 @@ public class ViewProfileFragment
                 Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void updatePhotoDialog(String hnid, String firstImage){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        View alertView = getLayoutInflater().inflate(R.layout.view_hnid_alert_layout, null);
+        MaterialTextView hnidText  = alertView.findViewById(R.id.textview_hnid_view_profile);
+        CircleImageView avatar = alertView.findViewById(R.id.circleimageview_user_profile);
+
+        hnidText.setText(hnid);
+
+        ProgressBar progressBar = alertView.findViewById(R.id.progressbar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        Glide
+                .with(requireContext())
+                .load(firstImage)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .centerCrop() // this cropping technique scales the image so that it fills the requested bounds and then crops the extra.
+                .into(avatar);
+
+        builder.setView(alertView);
+        dialog = builder.create();
+        dialog.show();
     }
 }

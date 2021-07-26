@@ -301,6 +301,7 @@ public class SupportSectionFragment
         ArrayList<Integer> supporterCountList = new ArrayList<>();
         ArrayList<Integer> supportingCountList = new ArrayList<>();
         ArrayList<Integer> postCountList = new ArrayList<>();
+        ArrayList<String> firstImageList = new ArrayList<>();
 
         for (User supportingProfile : supportingProfileList) {
             Log.d(TAG,"supporting count = "+supportingProfile.getSupportingCount());
@@ -314,6 +315,7 @@ public class SupportSectionFragment
             supportingCountList.add(supportingProfile.getSupportingCount());
             supporterCountList.add(supportingProfile.getSupporterCount());
             postCountList.add(supportingProfile.getPostCount());
+            firstImageList.add(supportingProfile.getFirstImg());
         }
 
         Log.d(TAG, "Supporting count list size  = "+supportingCountList.size());
@@ -334,6 +336,7 @@ public class SupportSectionFragment
                 supporterCountList,
                 supportingCountList,
                 postCountList,
+                firstImageList,
                 this
         );
         profileRecyclerView.setAdapter(avatarLoaderAdapter);
@@ -377,7 +380,8 @@ public class SupportSectionFragment
                                   String location,
                                   int supporterCount,
                                   int supportingCount,
-                                  int postCount) {
+                                  int postCount,
+                                  String firstImage) {
 
         Fragment fragment = new ViewProfileFragment();
 
@@ -394,7 +398,7 @@ public class SupportSectionFragment
         bundle.putString("supporterCount", String.valueOf(supporterCount));
         bundle.putString("supportingCount", String.valueOf(supportingCount));
         bundle.putString("postCount", String.valueOf(postCount));
-
+        bundle.putString("firstImage",firstImage);
         fragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();

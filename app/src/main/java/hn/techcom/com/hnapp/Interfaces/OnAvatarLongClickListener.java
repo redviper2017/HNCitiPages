@@ -9,5 +9,6 @@ public interface OnAvatarLongClickListener {
             String thumbnail,
             int supporterCount,
             int supportingCount,
-            int postCount);
+            int postCount,
+            String firstImage);
 }

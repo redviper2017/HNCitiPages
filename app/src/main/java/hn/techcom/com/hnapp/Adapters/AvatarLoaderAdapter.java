@@ -26,7 +26,9 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
             usernameList,
             locationList,
             hnidList,
-            thumbnailList;
+            thumbnailList,
+            firstImageList;
+
     private final ArrayList<Integer>
             supporterCountList,
             supportingCountList,
@@ -45,6 +47,7 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
             ArrayList<Integer> supporterCountList,
             ArrayList<Integer> supportingCountList,
             ArrayList<Integer> postCountList,
+            ArrayList<String> firstImageList,
             OnAvatarLongClickListener onAvatarLongClickListener) {
         this.avatarUrlList = avatarUrlList;
         this.nameList = nameList;
@@ -56,6 +59,7 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
         this.supporterCountList = supporterCountList;
         this.supportingCountList = supportingCountList;
         this.postCountList = postCountList;
+        this.firstImageList = firstImageList;
     }
 
     @NonNull
@@ -114,7 +118,8 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
                             thumbnailList.get(getAbsoluteAdapterPosition()),
                             supporterCountList.get(getAbsoluteAdapterPosition()),
                             supportingCountList.get(getAbsoluteAdapterPosition()),
-                            postCountList.get(getAbsoluteAdapterPosition()));
+                            postCountList.get(getAbsoluteAdapterPosition()),
+                            firstImageList.get(getAbsoluteAdapterPosition()));
                 }
             });
         }

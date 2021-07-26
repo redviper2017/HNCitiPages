@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/_30sdp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textview_title_voice_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pacifico"
+        android:layout_marginBottom="30dp"
+        android:text="@string/hn_citipages_id"
+        android:textAlignment="center"
+        android:textSize="@dimen/_20ssp"
+        android:textColor="@color/colorTextTitle"
+        app:layout_constraintTop_toBottomOf="@id/layout_screentitle_shareimage"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleimageview_user_profile"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:src="@drawable/image_placeholder"
+            app:civ_border_width="0dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:elevation="@dimen/_10sdp"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/support_circle_view"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:background="@drawable/circle_hollow"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textview_hnid_text_view_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sf_pro_rounded_regular"
+        android:text="@string/hnid"
+        android:textColor="@color/colorCenterLinearGradient"
+        android:textSize="@dimen/_14ssp" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textview_hnid_view_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sf_pro_rounded_regular"
+        android:text="@string/a64cf6c0_ef8b_4362_8b44_c94001fca408"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14ssp" />
+</LinearLayout>
