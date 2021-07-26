@@ -3,7 +3,7 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24"
-    android:tint="@color/colorStartLinearGradient">
+    android:tint="@color/colorCenterLinearGradient">
   <path
       android:fillColor="@android:color/white"
       android:pathData="M14,12h4v1.5h-4z"/>

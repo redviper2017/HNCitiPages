@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
@@ -39,6 +40,8 @@ import hn.techcom.com.hnapp.Models.PostList;
 import hn.techcom.com.hnapp.Models.Profile;
 import hn.techcom.com.hnapp.Models.Result;
 import hn.techcom.com.hnapp.Models.SingleUserInfoResponse;
+import hn.techcom.com.hnapp.Models.SupportingProfileList;
+import hn.techcom.com.hnapp.Models.User;
 import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Utils.Utils;
@@ -59,10 +62,18 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private CircleImageView profilePhoto;
     private ProgressBar progressBar;
     private MaterialCardView updateProfileButton;
+    private MaterialTextView postCountText, supportingCountText, supporterCountText;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_PICK = 2;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private AlertDialog dialog;
+
+    ArrayList<User> supportingProfilesArrayList, supporterProfilesArrayList;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +87,23 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         MaterialTextView email               = findViewById(R.id.textview_email_view_profile);
         MaterialTextView phone               = findViewById(R.id.textview_phone_view_profile);
         MaterialTextView hnid                = findViewById(R.id.textview_hnid_view_profile);
+        postCountText                        = findViewById(R.id.post_count_viewprofile);
+        supportingCountText                  = findViewById(R.id.supporting_count_viewprofile);
+        supporterCountText                   = findViewById(R.id.supporter_count_viewprofile);
         profilePhoto                         = findViewById(R.id.circleimageview_user_profile);
-        progressBar              = findViewById(R.id.user_profile_photo_progressbar);
+        progressBar                          = findViewById(R.id.user_profile_photo_progressbar);
         View updatePhotoButton               = findViewById(R.id.fab_update_image);
-        updateProfileButton = findViewById(R.id.update_profile_button);
+        updateProfileButton                  = findViewById(R.id.update_profile_button);
+        CardView viewPostsButton             = findViewById(R.id.view_posts_button);
+        CardView viewSupportersButton        = findViewById(R.id.view_supporters_button);
+        CardView viewSupportingButton        = findViewById(R.id.view_supporting_button);
 
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(this);
+
+        getLatestPostsListBySingleUser(userProfile.getHnid());
+        getSupportingProfiles();
+        getSupporterProfiles();
 
         Log.d("ProfileFragment","registered user profile = "+userProfile.toString());
 
@@ -105,6 +126,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
         updatePhotoButton.setOnClickListener(this);
         updateProfileButton.setOnClickListener(this);
+        viewPostsButton.setOnClickListener(this);
+        viewSupportersButton.setOnClickListener(this);
+        viewSupportingButton.setOnClickListener(this);
     }
 
     @Override
@@ -113,6 +137,12 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             updatePhotoDialog();
         if (view.getId() == R.id.update_profile_button)
             updateProfilePhoto();
+        if (view.getId() == R.id.view_posts_button)
+            Toast.makeText(this,"Loading all posts...",Toast.LENGTH_SHORT).show();
+        if (view.getId() == R.id.view_supporters_button)
+            Toast.makeText(this,"Loading all supporters...",Toast.LENGTH_SHORT).show();
+        if (view.getId() == R.id.view_supporting_button)
+            Toast.makeText(this,"Loading all supporting profiles...",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -309,6 +339,87 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(Call<SingleUserInfoResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    //get initial supporting profile list
+    public void getSupportingProfiles(){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<SupportingProfileList> call = service.getSupportingProfiles(userProfile.getHnid());
+        call.enqueue(new Callback<SupportingProfileList>(){
+            @Override
+            public void onResponse(Call<SupportingProfileList> call, Response<SupportingProfileList> response) {
+                if(response.code() == 200){
+                    SupportingProfileList supportingProfileList = response.body();
+                    Log.d(TAG, "number of supporting profile = "+ supportingProfileList.getCount());
+
+                    if(supportingProfileList.getCount()>0) {
+                        supportingProfilesArrayList = new ArrayList<>();
+                        supportingProfilesArrayList.addAll(supportingProfileList.getResults());
+                        supportingCountText.setText(String.valueOf(supportingProfilesArrayList.size()));
+                    }else{
+                        supportingCountText.setText("0");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SupportingProfileList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    //get initial supporter profile list
+    public void getSupporterProfiles(){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<SupportingProfileList> call = service.getSupporterProfiles(userProfile.getHnid());
+        call.enqueue(new Callback<SupportingProfileList>(){
+            @Override
+            public void onResponse(Call<SupportingProfileList> call, Response<SupportingProfileList> response) {
+                if(response.code() == 200){
+                    SupportingProfileList supporterProfileList = response.body();
+                    Log.d(TAG, "number of supporter profile = "+ supporterProfileList.getCount());
+
+                    if(supporterProfileList.getCount()>0) {
+                        supporterProfilesArrayList = new ArrayList<>();
+                        supporterProfilesArrayList.addAll(supporterProfileList.getResults());
+                        supporterCountText.setText(String.valueOf(supporterProfilesArrayList.size()));
+                    }else{
+                        supporterCountText.setText("0");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SupportingProfileList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    //get initial user posts list
+    public void getLatestPostsListBySingleUser(String target_hnid) {
+
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getLatestPostsBySingleUser(target_hnid,userProfile.getHnid());
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(Call<PostList> call, Response<PostList> response) {
+                if (response.code() == 200){
+                    Log.d(TAG,"total number of post by this user = "+response.body().getResults().size());
+                    PostList postList = response.body();
+                    if (postList.getCount() > 0)
+                        postCountText.setText(String.valueOf(postList.getCount()));
+                    else
+                        postCountText.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostList> call, Throwable t) {
 
             }
         });
