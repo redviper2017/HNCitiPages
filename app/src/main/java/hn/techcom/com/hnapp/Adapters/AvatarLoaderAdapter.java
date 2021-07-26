@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -101,9 +100,9 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
             this.nameView   = itemView.findViewById(R.id.textview_row_avatar);
             this.layout     = itemView.findViewById(R.id.layout_row_user);
 
-            layout.setOnLongClickListener(new View.OnLongClickListener() {
+            layout.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onLongClick(View view) {
+                public void onClick(View view) {
 
                     Log.d(TAG,"View this profile of = "+nameList.get(getAbsoluteAdapterPosition()) + " " + hnidList.get(getAbsoluteAdapterPosition()));
                     Log.d(TAG,"post count for this profile = "+postCountList.get(getAbsoluteAdapterPosition()));
@@ -116,7 +115,6 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
                             supporterCountList.get(getAbsoluteAdapterPosition()),
                             supportingCountList.get(getAbsoluteAdapterPosition()),
                             postCountList.get(getAbsoluteAdapterPosition()));
-                    return true;
                 }
             });
         }
