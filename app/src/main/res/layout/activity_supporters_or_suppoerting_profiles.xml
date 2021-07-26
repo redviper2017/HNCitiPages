@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.SupportersOrSuppoertingProfilesActivity"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/count_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="121"
+            android:fontFamily="@font/pacifico"
+            android:textColor="@color/colorTextTitle"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold"/>
+        <RelativeLayout
+            android:id="@+id/layout_screentitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/count_text"
+            android:orientation="horizontal"
+            android:background="@color/colorSurface">
+
+            <include
+                android:id="@+id/text_screen_title"
+                layout="@layout/screen_title_view"/>
+
+            <include
+                android:id="@+id/image_button_back"
+                layout="@layout/custom_image_button_back"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+    <EditText
+        android:id="@+id/searchview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:drawableStart="@drawable/search_ic"
+        android:drawablePadding="5dp"
+        android:hint="Search..."
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:background="@drawable/rounded_corner_rectangle"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>

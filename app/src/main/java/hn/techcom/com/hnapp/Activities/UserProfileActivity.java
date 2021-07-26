@@ -1,7 +1,9 @@
 package hn.techcom.com.hnapp.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -23,6 +25,7 @@ import androidx.core.content.FileProvider;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -139,10 +142,26 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             updateProfilePhoto();
         if (view.getId() == R.id.view_posts_button)
             Toast.makeText(this,"Loading all posts...",Toast.LENGTH_SHORT).show();
-        if (view.getId() == R.id.view_supporters_button)
-            Toast.makeText(this,"Loading all supporters...",Toast.LENGTH_SHORT).show();
-        if (view.getId() == R.id.view_supporting_button)
-            Toast.makeText(this,"Loading all supporting profiles...",Toast.LENGTH_SHORT).show();
+        if (view.getId() == R.id.view_supporters_button) {
+            Toast.makeText(this, "Loading all supporters...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, SupportersOrSuppoertingProfilesActivity.class);
+            intent.putExtra("Show","Supporters");
+            intent.putExtra("SupporterCount",String.valueOf(supporterProfilesArrayList.size()));
+
+            storeProfiles("Supporters");
+
+            startActivity(intent);
+        }
+        if (view.getId() == R.id.view_supporting_button) {
+            Toast.makeText(this, "Loading all supporting profiles...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, SupportersOrSuppoertingProfilesActivity.class);
+            intent.putExtra("Show","Supporting Profiles");
+            intent.putExtra("SupportingCount",String.valueOf(supportingProfilesArrayList.size()));
+
+            storeProfiles("Supporting");
+
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -423,5 +442,19 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+    }
+
+    private void storeProfiles(String profilesListType){
+        SharedPreferences sharedPreferences = this.getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json;
+        if (profilesListType.equals("Supporters"))
+            json = gson.toJson(supporterProfilesArrayList);
+        else
+            json = gson.toJson(supportingProfilesArrayList);
+
+        editor.putString(profilesListType, json);
+        editor.apply();
     }
 }

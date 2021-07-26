@@ -160,6 +160,7 @@
                             android:layout_height="wrap_content"
                             android:text=""
                             android:textColor="@color/colorText"
+                            android:fontFamily="@font/pacifico"
                             android:textStyle="bold"
                             android:textSize="@dimen/_20ssp"
                             android:layout_gravity="center"/>
@@ -167,7 +168,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Posts"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:layout_gravity="center"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
@@ -194,13 +195,14 @@
                             android:text=""
                             android:textColor="@color/colorText"
                             android:textStyle="bold"
+                            android:fontFamily="@font/pacifico"
                             android:textSize="@dimen/_20ssp"
                             android:layout_gravity="center"/>
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Supporters"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:layout_gravity="center"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
@@ -228,13 +230,14 @@
                             android:text=""
                             android:textColor="@color/colorText"
                             android:textStyle="bold"
+                            android:fontFamily="@font/pacifico"
                             android:textSize="@dimen/_20ssp"
                             android:layout_gravity="center"/>
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Supporting"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_12ssp"
                             android:layout_gravity="center"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
@@ -250,7 +253,7 @@
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
             android:layout_below="@id/layout_info"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
