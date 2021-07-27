@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
@@ -119,10 +120,12 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             //setting up user avatar
             String profilePhotoUrl = comment.getUser().getProfileImgThumbnail();
-            Picasso
-                    .get()
-                    .load(profilePhotoUrl)
-                    .into(avatar);
+//            Picasso
+//                    .get()
+//                    .load(profilePhotoUrl)
+//                    .into(avatar);
+
+            Glide.with(context).load(profilePhotoUrl).centerCrop().into(avatar);
 
             Log.d(TAG,"comment = "+comment.getComment());
             commentPost.setText(String.valueOf(comment.getComment()));
