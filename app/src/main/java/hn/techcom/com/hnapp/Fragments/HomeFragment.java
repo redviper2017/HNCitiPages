@@ -166,6 +166,7 @@ public class HomeFragment
     public void onPause() {
         super.onPause();
         storeRecentPosts();
+        onPlayerPlayed(playerView, imageView, playButton);
     }
 
     private void filter(String text) {
