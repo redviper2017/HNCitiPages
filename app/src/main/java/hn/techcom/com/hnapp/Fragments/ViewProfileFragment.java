@@ -79,6 +79,9 @@ public class ViewProfileFragment
 
     private AlertDialog dialog;
 
+    private AndExoPlayerView playerView;
+    private ImageView imageView, playButton;
+
 
     public ViewProfileFragment() {
 
@@ -173,6 +176,12 @@ public class ViewProfileFragment
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        onPlayerPlayed(playerView, imageView, playButton);
     }
 
     //get initial user posts list
@@ -394,7 +403,17 @@ public class ViewProfileFragment
     }
 
     @Override
-    public void onPlayerPlayed(AndExoPlayerView playerView, ImageView imageviewPortrait, ImageView playButtonPortrait) {
+    public void onPlayerPlayed(AndExoPlayerView playerView, ImageView imageview, ImageView playButton) {
+        if (this.playerView != null) {
+            this.playerView.stopPlayer();
+            this.playerView.setVisibility(View.GONE);
+            if (this.imageView != null)
+                this.imageView.setVisibility(View.VISIBLE);
+            this.playButton.setVisibility(View.VISIBLE);
+        }
 
+        this.playerView = playerView;
+        this.imageView = imageview;
+        this.playButton = playButton;
     }
 }

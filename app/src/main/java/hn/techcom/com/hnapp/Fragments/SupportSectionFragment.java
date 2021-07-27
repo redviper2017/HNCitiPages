@@ -85,6 +85,9 @@ public class SupportSectionFragment
 
     private ArrayList<Result> recentPostList;
 
+    private AndExoPlayerView playerView;
+    private ImageView imageView, playButton;
+
     //Constants
     private static final String TAG = "SupportSectionFragment";
 
@@ -165,6 +168,12 @@ public class SupportSectionFragment
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        onPlayerPlayed(playerView, imageView, playButton);
     }
 
     private void filter(String text) {
@@ -497,7 +506,17 @@ public class SupportSectionFragment
     }
 
     @Override
-    public void onPlayerPlayed(AndExoPlayerView playerView, ImageView imageviewPortrait, ImageView playButtonPortrait) {
+    public void onPlayerPlayed(AndExoPlayerView playerView, ImageView imageview, ImageView playButton) {
+        if (this.playerView != null) {
+            this.playerView.stopPlayer();
+            this.playerView.setVisibility(View.GONE);
+            if (this.imageView != null)
+                this.imageView.setVisibility(View.VISIBLE);
+            this.playButton.setVisibility(View.VISIBLE);
+        }
 
+        this.playerView = playerView;
+        this.imageView = imageview;
+        this.playButton = playButton;
     }
 }
