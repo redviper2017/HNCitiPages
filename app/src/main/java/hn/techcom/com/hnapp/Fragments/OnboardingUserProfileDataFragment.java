@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -146,7 +147,9 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
 //                Bitmap imageBitmap = (Bitmap) extras.get("data");
 //                profileImage.setImageBitmap(imageBitmap);
 //            }
-            profileImage.setImageURI(Uri.fromFile(new File(currentPhotoPath)));
+//            profileImage.setImageURI(Uri.fromFile(new File(currentPhotoPath)));
+
+            Glide.with(requireContext()).load(new File(currentPhotoPath)).centerCrop().into(profileImage);
 
             Log.d(TAG,"new image file = "+newImageFile);
         }
