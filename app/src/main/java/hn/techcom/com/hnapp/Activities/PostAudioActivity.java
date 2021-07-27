@@ -83,6 +83,12 @@ public class PostAudioActivity extends AppCompatActivity implements View.OnClick
     private String recordedFilePathFinal;
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        audioPlayer.stopPlayer();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_audio);

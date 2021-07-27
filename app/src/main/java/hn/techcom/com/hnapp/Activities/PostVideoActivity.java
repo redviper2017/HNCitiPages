@@ -84,6 +84,12 @@ public class PostVideoActivity extends AppCompatActivity implements View.OnClick
     private String newVideoAspectRatio;
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        videoPlayer.stopPlayer();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_video);
