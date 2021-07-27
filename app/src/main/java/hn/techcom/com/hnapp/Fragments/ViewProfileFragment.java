@@ -29,6 +29,7 @@ import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -127,10 +128,12 @@ public class ViewProfileFragment
         profileName.setText(name);
         usernameText.setText(username);
         locationText.setText(location);
-        Picasso
-                .get()
-                .load(thumbnail)
-                .into(profileThumbnail);
+//        Picasso
+//                .get()
+//                .load(thumbnail)
+//                .into(profileThumbnail);
+
+        Glide.with(requireContext()).load(thumbnail).centerCrop().into(profileThumbnail);
 
         postCountText.setText(postCount);
         supporterCountText.setText(supporterCount);
