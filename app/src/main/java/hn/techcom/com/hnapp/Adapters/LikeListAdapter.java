@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
@@ -93,10 +94,12 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             //setting up user avatar
             String profilePhotoUrl = like.getUser().getProfileImgThumbnail();
-            Picasso
-                    .get()
-                    .load(profilePhotoUrl)
-                    .into(avatar);
+//            Picasso
+//                    .get()
+//                    .load(profilePhotoUrl)
+//                    .into(avatar);
+
+            Glide.with(context).load(profilePhotoUrl).centerCrop().into(avatar);
         }
 
         @Override
