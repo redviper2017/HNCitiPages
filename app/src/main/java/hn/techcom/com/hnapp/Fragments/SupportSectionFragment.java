@@ -350,7 +350,8 @@ public class SupportSectionFragment
                 supportingCountList,
                 postCountList,
                 firstImageList,
-                this
+                this,
+                getContext()
         );
         profileRecyclerView.setAdapter(avatarLoaderAdapter);
     }

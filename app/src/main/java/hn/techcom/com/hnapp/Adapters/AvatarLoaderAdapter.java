@@ -1,5 +1,6 @@
 package hn.techcom.com.hnapp.Adapters;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
@@ -20,6 +22,7 @@ import hn.techcom.com.hnapp.R;
 
 public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapter.ViewHolder> {
 
+    private Context context;
     private final ArrayList<String>
             avatarUrlList,
             nameList,
@@ -48,7 +51,8 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
             ArrayList<Integer> supportingCountList,
             ArrayList<Integer> postCountList,
             ArrayList<String> firstImageList,
-            OnAvatarLongClickListener onAvatarLongClickListener) {
+            OnAvatarLongClickListener onAvatarLongClickListener,
+            Context context) {
         this.avatarUrlList = avatarUrlList;
         this.nameList = nameList;
         this.usernameList = usernameList;
@@ -60,6 +64,7 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
         this.supportingCountList = supportingCountList;
         this.postCountList = postCountList;
         this.firstImageList = firstImageList;
+        this.context = context;
     }
 
     @NonNull
@@ -81,10 +86,12 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
 
         if (avatarUrlList.get(position) != null) {
             String completeUrl = avatarUrlList.get(position);
-            Picasso
-                    .get()
-                    .load(completeUrl)
-                    .into(holder.avatarView);
+//            Picasso
+//                    .get()
+//                    .load(completeUrl)
+//                    .into(holder.avatarView);
+
+            Glide.with(context).load(completeUrl).centerCrop().into(holder.avatarView);
         }
     }
 
