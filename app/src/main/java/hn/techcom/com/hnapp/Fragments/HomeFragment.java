@@ -400,7 +400,8 @@ public class HomeFragment
         if (this.playerView != null) {
             this.playerView.stopPlayer();
             this.playerView.setVisibility(View.GONE);
-            this.imageView.setVisibility(View.VISIBLE);
+            if (this.imageView != null)
+                this.imageView.setVisibility(View.VISIBLE);
             this.playButton.setVisibility(View.VISIBLE);
         }
 

@@ -102,13 +102,21 @@
 <!--        app:andexo_play_when_ready="false"-->
 <!--        app:andexo_show_controller="true"-->
 <!--        app:andexo_resize_mode="Zoom" />-->
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/audio_player_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:visibility="gone">
         <ImageView
+            android:id="@+id/play_button_audio"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:src="@drawable/play_audio_ic"
+            android:elevation="@dimen/_10sdp"
+            android:layout_centerInParent="true"
+            android:visibility="visible"/>
+        <ImageView
+            android:id="@+id/imageview_audio"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_150sdp"
             android:src="@drawable/audio_placeholder_2"
@@ -117,13 +125,14 @@
             android:id="@+id/audio_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/imageview_audio"
             app:andexo_aspect_ratio="aspect_mp3"
             app:andexo_play_when_ready="true"
             app:andexo_mute="mute"
             app:andexo_show_controller="true"
-            app:andexo_loop="infinite"
+            app:andexo_loop="finite"
             android:visibility="visible"/>
-    </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_video_landscape"

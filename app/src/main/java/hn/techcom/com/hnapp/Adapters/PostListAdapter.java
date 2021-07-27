@@ -507,11 +507,10 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public CircleImageView avatar;
         private AndExoPlayerView videoPlayerPortrait, videoPlayerLandscape, audioPlayer;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
-        private LinearLayout audioPlayerLayout;
         private View supportCircleView;
 
-        private ImageView imageviewLandscape, imageviewPortrait, playButtonLandscape, playButtonPortrait;
-        private RelativeLayout videoLandscapeLayout, videoPortraitLayout;
+        private ImageView imageviewLandscape, imageviewPortrait, playButtonLandscape, playButtonPortrait, playButtonAudio;
+        private RelativeLayout videoLandscapeLayout, videoPortraitLayout, audioPlayerLayout;
 
         public AudioVideoViewHolder(@NonNull View view) {
             super(view);
@@ -536,6 +535,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             imageviewLandscape   = view.findViewById(R.id.imageview_video_landscape);
             imageviewPortrait    = view.findViewById(R.id.imageview_video_portrait);
 
+            playButtonAudio      = view.findViewById(R.id.play_button_audio);
+
             playButtonLandscape  = view.findViewById(R.id.play_button_landscape);
             videoLandscapeLayout = view.findViewById(R.id.layout_video_landscape);
 
@@ -553,6 +554,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             playButtonLandscape.setOnClickListener(this);
             playButtonPortrait.setOnClickListener(this);
+            playButtonAudio.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -635,8 +637,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 videoPlayerLandscape.setVisibility(View.GONE);
                 videoPlayerPortrait.setVisibility(View.GONE);
                 audioPlayerLayout.setVisibility(View.VISIBLE);
-                audioPlayer.setSource(videoUrl);
-                audioPlayer.setPlayWhenReady(false);
+                audioPlayer.stopPlayer();
+                audioPlayer.setVisibility(View.GONE);
+                playButtonAudio.setVisibility(View.VISIBLE);
+//                audioPlayer.setSource(videoUrl);
+//                audioPlayer.setPlayWhenReady(false);
             }else{
                 if (post.getFiles().get(0).getAspect().equals("portrait")){
                     videoLandscapeLayout.setVisibility(View.GONE);
@@ -701,6 +706,14 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 videoPlayerPortrait.setSource(videoUrl);
                 videoPlayerPortrait.setPlayWhenReady(true);
                 onPlayerPlayedListener.onPlayerPlayed(videoPlayerPortrait, imageviewPortrait, playButtonPortrait);
+            }
+            if (view.getId() == R.id.play_button_audio){
+                String audioUrl = allPosts.get(position).getFiles().get(0).getMedia();
+                playButtonAudio.setVisibility(View.GONE);
+                audioPlayer.setVisibility(View.VISIBLE);
+                audioPlayer.setSource(audioUrl);
+                audioPlayer.setPlayWhenReady(true);
+                onPlayerPlayedListener.onPlayerPlayed(audioPlayer, null, playButtonAudio);
             }
         }
     }
