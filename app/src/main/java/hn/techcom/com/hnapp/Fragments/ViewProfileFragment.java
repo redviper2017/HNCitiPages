@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -24,25 +25,24 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
+import com.potyvideo.library.AndExoPlayerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hnapp.Activities.ViewCommentsActivity;
 import hn.techcom.com.hnapp.Activities.ViewLikesActivity;
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
-import hn.techcom.com.hnapp.Interfaces.OnAvatarLongClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnCommentClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnFavoriteButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
+import hn.techcom.com.hnapp.Interfaces.OnPlayerPlayedListener;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.PostList;
@@ -65,7 +65,8 @@ public class ViewProfileFragment
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
         OnCommentClickListener,
-        OnLoadMoreListener{
+        OnLoadMoreListener,
+        OnPlayerPlayedListener {
 
     private Utils myUtils;
     private RecyclerView recyclerView;
@@ -252,6 +253,7 @@ public class ViewProfileFragment
                 this,
                 this,
                 this,
+                this,
                 this);
         recyclerView.setAdapter(postListAdapter);
         swipeRefreshLayout.setRefreshing(false);
@@ -389,5 +391,10 @@ public class ViewProfileFragment
         builder.setView(alertView);
         dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onPlayerPlayed(AndExoPlayerView playerView, ImageView imageviewPortrait, ImageView playButtonPortrait) {
+
     }
 }

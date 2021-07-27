@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.potyvideo.library.AndExoPlayerView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
+import hn.techcom.com.hnapp.Interfaces.OnPlayerPlayedListener;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.PostList;
@@ -59,7 +62,7 @@ public class HomeFragment
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
         OnCommentClickListener,
-        OnLoadMoreListener {
+        OnLoadMoreListener, OnPlayerPlayedListener {
     //Constants
     private static final String TAG = "HomeFragment";
 
@@ -74,6 +77,9 @@ public class HomeFragment
     private boolean isLoading = false;
     private String nextGlobalPostListUrl;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private AndExoPlayerView playerView;
+    private ImageView imageView, playButton;
 
     public HomeFragment() {}
 
@@ -261,6 +267,7 @@ public class HomeFragment
                 this,
                 this,
                 this,
+                this,
                 this);
         recyclerView.setAdapter(postListAdapter);
         swipeRefreshLayout.setRefreshing(false);
@@ -385,5 +392,19 @@ public class HomeFragment
     @Override
     public void onLoadMore() {
 
+    }
+
+    @Override
+    public void onPlayerPlayed(AndExoPlayerView playerView, ImageView imageview, ImageView playButton) {
+        if (this.playerView != null) {
+            this.playerView.stopPlayer();
+            this.playerView.setVisibility(View.GONE);
+            this.imageView.setVisibility(View.VISIBLE);
+            this.playButton.setVisibility(View.VISIBLE);
+        }
+
+        this.playerView = playerView;
+        this.imageView = imageview;
+        this.playButton = playButton;
     }
 }

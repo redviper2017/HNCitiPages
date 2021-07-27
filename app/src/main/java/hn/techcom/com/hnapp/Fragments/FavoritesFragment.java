@@ -16,9 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.textview.MaterialTextView;
+import com.potyvideo.library.AndExoPlayerView;
 
 import java.util.ArrayList;
 
@@ -32,6 +34,7 @@ import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
+import hn.techcom.com.hnapp.Interfaces.OnPlayerPlayedListener;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.PostList;
@@ -54,7 +57,8 @@ public class FavoritesFragment
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
         OnCommentClickListener,
-        OnLoadMoreListener {
+        OnLoadMoreListener,
+        OnPlayerPlayedListener {
 
     private static final String TAG = "FavoritesFragment";
     private Utils myUtils;
@@ -234,6 +238,7 @@ public class FavoritesFragment
                 this,
                 this,
                 this,
+                this,
                 this);
         recyclerView.setAdapter(postListAdapter);
         swipeRefreshLayout.setRefreshing(false);
@@ -340,4 +345,8 @@ public class FavoritesFragment
         });
     }
 
+    @Override
+    public void onPlayerPlayed(AndExoPlayerView playerView, ImageView imageviewPortrait, ImageView playButtonPortrait) {
+
+    }
 }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -23,12 +24,11 @@ import android.widget.Toast;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
+import com.potyvideo.library.AndExoPlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import hn.techcom.com.hnapp.Activities.PostAudioActivity;
 import hn.techcom.com.hnapp.Activities.ViewCommentsActivity;
 import hn.techcom.com.hnapp.Activities.ViewLikesActivity;
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
@@ -39,6 +39,7 @@ import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
+import hn.techcom.com.hnapp.Interfaces.OnPlayerPlayedListener;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.Location;
@@ -63,7 +64,8 @@ public class VisitSectionFragment
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
         OnCommentClickListener,
-        OnLoadMoreListener {
+        OnLoadMoreListener,
+        OnPlayerPlayedListener {
 
     private static final String TAG = "VisitSectionFragment";
     private Utils myUtils;
@@ -453,6 +455,7 @@ public class VisitSectionFragment
                 this,
                 this,
                 this,
+                this,
                 this);
         recyclerView.setAdapter(postListAdapter);
         swipeRefreshLayout.setRefreshing(false);
@@ -557,5 +560,10 @@ public class VisitSectionFragment
                 Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onPlayerPlayed(AndExoPlayerView playerView, ImageView imageviewPortrait, ImageView playButtonPortrait) {
+
     }
 }

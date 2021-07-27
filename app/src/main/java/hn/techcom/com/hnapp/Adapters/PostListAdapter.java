@@ -30,6 +30,7 @@ import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
+import hn.techcom.com.hnapp.Interfaces.OnPlayerPlayedListener;
 import hn.techcom.com.hnapp.Models.Result;
 import hn.techcom.com.hnapp.R;
 
@@ -60,6 +61,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final OnCommentClickListener onCommentClickListener;
     private final OnLoadMoreListener onLoadMoreListener;
 
+    private final OnPlayerPlayedListener onPlayerPlayedListener;
+
     public PostListAdapter(
             ArrayList<Result> allPosts,
             Context context,
@@ -68,7 +71,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             OnFavoriteButtonClickListener onFavoriteButtonClickListener,
             OnLikeCountButtonListener onLikeCountButtonListener,
             OnCommentClickListener onCommentClickListener,
-            OnLoadMoreListener onLoadMoreListener)
+            OnLoadMoreListener onLoadMoreListener,
+            OnPlayerPlayedListener onPlayerPlayedListener)
     {
         this.allPosts = allPosts;
         this.context = context;
@@ -78,6 +82,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.onLikeCountButtonListener = onLikeCountButtonListener;
         this.onCommentClickListener = onCommentClickListener;
         this.onLoadMoreListener = onLoadMoreListener;
+        this.onPlayerPlayedListener = onPlayerPlayedListener;
 
         Log.d(TAG,"post list size in adapter = "+allPosts.size());
     }
@@ -683,15 +688,19 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 String videoUrl = allPosts.get(position).getFiles().get(0).getMedia();
                 playButtonLandscape.setVisibility(View.GONE);
                 imageviewLandscape.setVisibility(View.GONE);
+                videoPlayerLandscape.setVisibility(View.VISIBLE);
                 videoPlayerLandscape.setSource(videoUrl);
                 videoPlayerLandscape.setPlayWhenReady(true);
+                onPlayerPlayedListener.onPlayerPlayed(videoPlayerLandscape, imageviewLandscape, playButtonLandscape);
             }
             if (view.getId() == R.id.play_button_portrait){
                 String videoUrl = allPosts.get(position).getFiles().get(0).getMedia();
                 playButtonPortrait.setVisibility(View.GONE);
                 imageviewPortrait.setVisibility(View.GONE);
+                videoPlayerPortrait.setVisibility(View.VISIBLE);
                 videoPlayerPortrait.setSource(videoUrl);
                 videoPlayerPortrait.setPlayWhenReady(true);
+                onPlayerPlayedListener.onPlayerPlayed(videoPlayerPortrait, imageviewPortrait, playButtonPortrait);
             }
         }
     }

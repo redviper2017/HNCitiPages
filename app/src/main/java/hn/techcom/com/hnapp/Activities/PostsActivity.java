@@ -16,17 +16,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.potyvideo.library.AndExoPlayerView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import hn.techcom.com.hnapp.Adapters.PostListAdapter;
-import hn.techcom.com.hnapp.Adapters.ProfileListAdapter;
 import hn.techcom.com.hnapp.Fragments.InteractWithPostBottomSheetFragment;
 import hn.techcom.com.hnapp.Interfaces.GetDataService;
 import hn.techcom.com.hnapp.Interfaces.OnCommentClickListener;
@@ -35,6 +36,7 @@ import hn.techcom.com.hnapp.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hnapp.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hnapp.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hnapp.Interfaces.OnOptionsButtonClickListener;
+import hn.techcom.com.hnapp.Interfaces.OnPlayerPlayedListener;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.PostList;
@@ -58,7 +60,8 @@ public class PostsActivity
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
         OnCommentClickListener,
-        OnLoadMoreListener {
+        OnLoadMoreListener,
+        OnPlayerPlayedListener {
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -229,6 +232,7 @@ public class PostsActivity
                 this,
                 this,
                 this,
+                this,
                 this);
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setRefreshing(false);
@@ -336,4 +340,8 @@ public class PostsActivity
         });
     }
 
+    @Override
+    public void onPlayerPlayed(AndExoPlayerView playerView, ImageView imageviewPortrait, ImageView playButtonPortrait) {
+
+    }
 }
