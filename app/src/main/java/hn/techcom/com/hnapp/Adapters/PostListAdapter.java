@@ -322,10 +322,12 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 likes.setVisibility(View.GONE);
 
             String profilePhotoUrl = post.getUser().getProfileImgThumbnail();
-            Picasso
-                    .get()
-                    .load(profilePhotoUrl)
-                    .into(avatar);
+//            Picasso
+//                    .get()
+//                    .load(profilePhotoUrl)
+//                    .into(avatar);
+
+            Glide.with(context).load(profilePhotoUrl).centerCrop().into(avatar);
 
             //Toggling support avatar circle
             if(post.getUser().getIsSupported())
@@ -452,10 +454,12 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 likes.setVisibility(View.GONE);
 
             String profilePhotoUrl = post.getUser().getProfileImgThumbnail();
-            Picasso
-                    .get()
-                    .load(profilePhotoUrl)
-                    .into(avatar);
+//            Picasso
+//                    .get()
+//                    .load(profilePhotoUrl)
+//                    .into(avatar);
+
+            Glide.with(context).load(profilePhotoUrl).centerCrop().into(avatar);
 
             //Toggling support avatar circle
             if(post.getUser().getIsSupported())
@@ -467,17 +471,21 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (post.getFiles().get(0).getAspect().equals("portrait")){
                 landscapeImageView.setVisibility(View.GONE);
                 portraitImageView.setVisibility(View.VISIBLE);
-                Picasso
-                        .get()
-                        .load(imageUrl)
-                        .into(portraitImageView);
+//                Picasso
+//                        .get()
+//                        .load(imageUrl)
+//                        .into(portraitImageView);
+
+                Glide.with(context).load(imageUrl).centerCrop().into(portraitImageView);
             }else{
                 landscapeImageView.setVisibility(View.VISIBLE);
                 portraitImageView.setVisibility(View.GONE);
-                Picasso
-                        .get()
-                        .load(imageUrl)
-                        .into(landscapeImageView);
+//                Picasso
+//                        .get()
+//                        .load(imageUrl)
+//                        .into(landscapeImageView);
+
+                Glide.with(context).load(imageUrl).centerCrop().into(landscapeImageView);
             }
         }
 
@@ -620,10 +628,12 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 likes.setVisibility(View.GONE);
 
             String profilePhotoUrl = post.getUser().getProfileImgThumbnail();
-            Picasso
-                    .get()
-                    .load(profilePhotoUrl)
-                    .into(avatar);
+//            Picasso
+//                    .get()
+//                    .load(profilePhotoUrl)
+//                    .into(avatar);
+
+            Glide.with(context).load(profilePhotoUrl).centerCrop().into(avatar);
 
             //Toggling support avatar circle
             if(post.getUser().getIsSupported())
