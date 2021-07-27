@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +49,7 @@ public class ProfileListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return profilesList == null ? 0 : profilesList.size();
     }
 
-    private static class ProfileViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class ProfileViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public MaterialTextView name, location;
         public CircleImageView avatar;
@@ -70,10 +71,12 @@ public class ProfileListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             //setting up user avatar
             String profilePhotoUrl = profile.getProfileImgThumbnail();
-            Picasso
-                    .get()
-                    .load(profilePhotoUrl)
-                    .into(avatar);
+//            Picasso
+//                    .get()
+//                    .load(profilePhotoUrl)
+//                    .into(avatar);
+
+            Glide.with(context).load(profilePhotoUrl).centerCrop().into(avatar);
         }
 
         @Override
