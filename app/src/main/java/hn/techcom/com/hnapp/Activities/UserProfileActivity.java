@@ -23,6 +23,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
@@ -129,10 +130,13 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
         String profilePhotoUrl = userProfile.getProfileImgThumbnail();
         Log.d(TAG,"loaded profile photo url = "+profilePhotoUrl);
-        Picasso
-                .get()
-                .load(profilePhotoUrl)
-                .into(profilePhoto);
+//        Picasso
+//                .get()
+//                .load(profilePhotoUrl)
+//                .into(profilePhoto);
+
+        Glide.with(this).load(profilePhotoUrl).centerCrop().into(profilePhoto);
+
         progressBar.setVisibility(View.GONE);
 
         updatePhotoButton.setOnClickListener(this);
