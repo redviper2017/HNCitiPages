@@ -6,6 +6,7 @@ import hn.techcom.com.hnapp.Models.DeleteResponse;
 import hn.techcom.com.hnapp.Models.FavoriteResponse;
 import hn.techcom.com.hnapp.Models.LikeResponse;
 import hn.techcom.com.hnapp.Models.Location;
+import hn.techcom.com.hnapp.Models.NetworkLocation;
 import hn.techcom.com.hnapp.Models.NewPostResponse;
 import hn.techcom.com.hnapp.Models.Post;
 import hn.techcom.com.hnapp.Models.PostList;
@@ -242,4 +243,8 @@ public interface GetDataService {
     //Get single user info
     @GET("users/single_userinfo/{hnid}/")
     Call<SingleUserInfoResponse> getUserInfo(@Path("hnid") String hnid);
+
+    //Get Network location
+    @GET("http://ip-api.com/json/")
+    Call<NetworkLocation> getNetworkLocation();
 }

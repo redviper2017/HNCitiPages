@@ -3,7 +3,6 @@ package hn.techcom.com.hnapp.Fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,12 +10,12 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -43,11 +42,16 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
+import hn.techcom.com.hnapp.Interfaces.GetDataService;
+import hn.techcom.com.hnapp.Models.NetworkLocation;
 import hn.techcom.com.hnapp.Models.Profile;
+import hn.techcom.com.hnapp.Network.RetrofitClientInstance;
 import hn.techcom.com.hnapp.R;
 import hn.techcom.com.hnapp.Utils.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -148,7 +152,7 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
     }
 
     private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -186,9 +190,13 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
 
                         setLocationOnMap();
 
+                        Log.d(TAG,"User's location taken from = " + " Device");
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }else {
+                    getNetworkLocationFromAPI();
                 }
             }
         });
@@ -228,7 +236,6 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
             if(!checkPermission()){
                 requestPermission();
             }else {
-                locationEnabled();
                 getLocation();
                 getCurrentLocationButton.setVisibility(View.GONE);
             }
@@ -256,7 +263,6 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
                     boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
 
                     if (locationAccepted) {
-                        locationEnabled();
                         getLocation();
                         getCurrentLocationButton.setVisibility(View.GONE);
                     }
@@ -300,39 +306,37 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
                 .show();
     }
 
-    private void locationEnabled () {
-        LocationManager lm = (LocationManager)
-                requireContext().getSystemService(Context. LOCATION_SERVICE ) ;
-        boolean gps_enabled = false;
-        boolean network_enabled = false;
-        try {
-            gps_enabled = lm.isProviderEnabled(LocationManager. GPS_PROVIDER ) ;
-        } catch (Exception e) {
-            e.printStackTrace() ;
-        }
-        try {
-            network_enabled = lm.isProviderEnabled(LocationManager. NETWORK_PROVIDER ) ;
-        } catch (Exception e) {
-            e.printStackTrace() ;
-        }
-        if (!gps_enabled && !network_enabled) {
-            new AlertDialog.Builder(requireContext())
-                    .setMessage( "Please turn your device's location first and then come back." )
-                    .setPositiveButton( "Ok" , new
-                            DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick (DialogInterface paramDialogInterface , int paramInt) {
-                                    requireActivity().onBackPressed();
-                                }
-                            })
-//                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            getActivity().onBackPressed();
-//                        }
-//                    })
-                    .show() ;
-        }
+    private void getNetworkLocationFromAPI(){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<NetworkLocation> call = service.getNetworkLocation();
+        call.enqueue(new Callback<NetworkLocation>() {
+            @Override
+            public void onResponse(Call<NetworkLocation> call, Response<NetworkLocation> response) {
+                if (response.code() == 200) {
+                    NetworkLocation networkLocation = response.body();
+                    if (networkLocation != null){
+
+                        //Set city and country
+                        city.setText(networkLocation.getCity());
+                        country.setText(networkLocation.getCountry());
+
+                        //Set latitude and longitude
+                        latitude = networkLocation.getLat();
+                        longitude = networkLocation.getLon();
+
+                        Log.d(TAG,"User's location taken from = " + " Network");
+                        setLocationOnMap();
+                    }
+                }
+                else
+                    Toast.makeText(getContext(),"Sorry you're location cannot be fetched at this moment, please try again.",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<NetworkLocation> call, Throwable t) {
+
+            }
+        });
     }
 }
 
