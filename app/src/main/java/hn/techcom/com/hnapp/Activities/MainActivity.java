@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +23,12 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -56,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Utils myUtils;
 
+    private final int UPDATE_REQUEST_CODE = 1612;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -84,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        callInAppUpdate();
+
         //hooks
         BottomAppBar bottomAppBar = findViewById(R.id.bottomappbar_home);
         FloatingActionButton newPostFab = findViewById(R.id.fab_post);
@@ -98,6 +110,12 @@ public class MainActivity extends AppCompatActivity {
                 shareSheetFragment.show(getSupportFragmentManager(), shareSheetFragment.getTag());
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        callInAppUpdate();
     }
 
     @Override
@@ -162,6 +180,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null){
+            if (requestCode == UPDATE_REQUEST_CODE) {
+                Toast.makeText(this, "Downloading start", Toast.LENGTH_SHORT).show();
+                if (resultCode != RESULT_OK) {
+                    Log.d(TAG,"onActivityResult: Update flow failed! Result code: " + resultCode);
+                    // If the update is cancelled or fails,
+                    // you can request to start the update again.
+                }
+            }
+        }
+    }
+
     //Custom methods
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE);
@@ -188,5 +221,31 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .create()
                 .show();
+    }
+
+    private void callInAppUpdate(){
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
+
+        // Returns an intent object that you use to check for an update.
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+        // Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                // This example applies an immediate update. To apply a flexible update
+                // instead, pass in AppUpdateType.FLEXIBLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                // Request the update.
+
+                try {
+                    appUpdateManager.startUpdateFlowForResult(appUpdateInfo,AppUpdateType.IMMEDIATE,
+                            MainActivity.this,
+                            UPDATE_REQUEST_CODE);
+                }
+                catch (IntentSender.SendIntentException exception){
+                    Log.d(TAG,"callInAppUpdate: "+exception.getMessage());
+                }
+            }
+        });
     }
 }
