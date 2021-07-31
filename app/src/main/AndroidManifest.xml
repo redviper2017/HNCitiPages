@@ -27,9 +27,15 @@
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity"
         tools:targetApi="m">
-        <activity android:name=".Activities.PostsActivity"></activity>
-        <activity android:name=".Activities.SupportersOrSuppoertingProfilesActivity" />
-        <activity android:name=".Activities.UserProfileActivity" />
+        <activity
+            android:name=".Activities.PostsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.SupportersOrSuppoertingProfilesActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.UserProfileActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activities.ViewCommentsActivity"
             android:screenOrientation="portrait" />
