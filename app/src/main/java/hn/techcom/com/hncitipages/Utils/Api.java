@@ -1,0 +1,45 @@
+package hn.techcom.com.hncitipages.Utils;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import hn.techcom.com.hncitipages.Interfaces.GetDataService;
+import hn.techcom.com.hncitipages.Models.SupporterProfile;
+import hn.techcom.com.hncitipages.Network.RetrofitClientInstance;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public final class Api {
+
+    private static final String TAG = "Api";
+
+    private Api() {
+    }
+
+    public static ArrayList<SupporterProfile> fetchSupportedProfiles(int userId) {
+        final ArrayList<SupporterProfile> resultArrayList = new ArrayList<>();
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<List<SupporterProfile>> call = service.getSupportedProfiles(String.valueOf(userId));
+        call.enqueue(new Callback<List<SupporterProfile>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<SupporterProfile>> call,@NonNull Response<List<SupporterProfile>> response) {
+                ArrayList<SupporterProfile> userSupportedProfiles = new ArrayList<>(Objects.requireNonNull(response.body()));
+                Log.d(TAG,"this user is supported by = "+userSupportedProfiles.get(0).getFullName());
+
+                resultArrayList.addAll(userSupportedProfiles);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<SupporterProfile>> call,@NonNull Throwable t) {
+                Log.d(TAG,"request failed = "+"True");
+            }
+        });
+        return resultArrayList;
+    }
+}

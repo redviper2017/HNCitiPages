@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="hn.techcom.com.hnapp">
+    package="hn.techcom.com.hncitipages">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -28,40 +28,40 @@
         tools:ignore="LockedOrientationActivity"
         tools:targetApi="m">
         <activity
-            android:name=".Activities.PostsActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.PostsActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activities.SupportersOrSuppoertingProfilesActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.SupportersOrSuppoertingProfilesActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activities.UserProfileActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.UserProfileActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activities.ViewCommentsActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.ViewCommentsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.ViewLikesActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.ViewLikesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.PostAudioActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.PostAudioActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.PostImageActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.PostImageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.PostStoryActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.PostStoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.PostVideoActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.PostVideoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.TermsActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.TermsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.SignInActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.SignInActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.OnboardingActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.OnboardingActivity"
             android:screenOrientation="portrait" />
 
         <meta-data
@@ -69,7 +69,7 @@
             android:value="@string/map_key" />
 
         <activity
-            android:name=".Activities.MainActivity"
+            android:name="hn.techcom.com.hncitipages.Activities.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -81,7 +81,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="hn.techcom.com.hnapp.fileprovider"
+            android:authorities="hn.techcom.com.hncitipages.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

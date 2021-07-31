@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1022009655122-bhgro9lv782qgha3vgec55irknk1r5l5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hn.techcom.com.hnapp",
+            "certificate_hash": "2604922d0f83d7c28f7f3ca38b909c83583b16f8"
+          }
+        },
+        {
           "client_id": "1022009655122-h6our4jjud7tpbnap39prdfsctjvlaaf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -28,6 +36,43 @@
           "android_info": {
             "package_name": "hn.techcom.com.hnapp",
             "certificate_hash": "041324fce2cbcdac28bdccd0773adcc0156582da"
+          }
+        },
+        {
+          "client_id": "1022009655122-04k8s9iqa8em4olr4lm5jtsmvvhjmat0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD88-XqrXTKKg2IETSiOHc1QEYfjvSDmFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1022009655122-04k8s9iqa8em4olr4lm5jtsmvvhjmat0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022009655122:android:e025af6e32fd803485048b",
+        "android_client_info": {
+          "package_name": "hn.techcom.com.hncitipages"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1022009655122-qt3b6unqbg8kij5638c90pd770apqugp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hn.techcom.com.hncitipages",
+            "certificate_hash": "2604922d0f83d7c28f7f3ca38b909c83583b16f8"
           }
         },
         {

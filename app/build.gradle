@@ -10,11 +10,11 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "hn.techcom.com.hnapp"
+        applicationId "hn.techcom.com.hncitipages"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 12
-        versionName "3.0.1"
+        versionCode 1
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
