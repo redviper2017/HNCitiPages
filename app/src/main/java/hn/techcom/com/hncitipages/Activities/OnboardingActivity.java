@@ -28,7 +28,7 @@ public class OnboardingActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        locationEnabled();
+//        locationEnabled();
     }
 
     private void locationEnabled () {
