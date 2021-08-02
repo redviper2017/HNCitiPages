@@ -177,7 +177,8 @@ public class HomeFragment
                 if (post.getUser().getFullName().toLowerCase().contains(text))
                     filterNames.add(post);
 
-        postListAdapter.filterList(filterNames);
+        if(postListAdapter != null)
+            postListAdapter.filterList(filterNames);
     }
 
     //get initial global posts list
