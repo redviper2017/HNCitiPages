@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Fragments.HomeFragment;
+import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
 import hn.techcom.com.hncitipages.Fragments.SharePostBottomSheetFragment;
 import hn.techcom.com.hncitipages.Fragments.SupportSectionFragment;
 import hn.techcom.com.hncitipages.Fragments.VisitSectionFragment;
@@ -136,6 +137,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.navigation_visitsection:
                 fragmentSelected = new VisitSectionFragment();
+                break;
+            case R.id.navigation_profile:
+                fragmentSelected = new ProfileSectionFragment();
                 break;
             case android.R.id.home:
                 BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
