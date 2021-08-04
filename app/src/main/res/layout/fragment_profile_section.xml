@@ -20,20 +20,20 @@
             layout="@layout/screen_title_view"/>
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/searchview_profile_section"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:drawableStart="@drawable/search_ic"
-        android:drawablePadding="5dp"
-        android:hint="Search..."
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:background="@drawable/rounded_corner_rectangle"/>
+<!--    <EditText-->
+<!--        android:id="@+id/searchview_profile_section"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:padding="10dp"-->
+<!--        android:drawableStart="@drawable/search_ic"-->
+<!--        android:drawablePadding="5dp"-->
+<!--        android:hint="Search..."-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textColorHint="@color/black"-->
+<!--        android:background="@drawable/rounded_corner_rectangle"/>-->
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
