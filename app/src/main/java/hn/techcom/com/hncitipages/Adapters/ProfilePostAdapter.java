@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -27,6 +28,8 @@ import hn.techcom.com.hncitipages.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hncitipages.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnPlayerPlayedListener;
+import hn.techcom.com.hncitipages.Interfaces.OnPostCountClickListener;
+import hn.techcom.com.hncitipages.Interfaces.OnSupporterSupportingCountClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnUpdateProfileClickListener;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
@@ -59,6 +62,8 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final OnCommentClickListener onCommentClickListener;
     private final OnPlayerPlayedListener onPlayerPlayedListener;
     private final OnUpdateProfileClickListener onUpdateProfileClickListener;
+    private final OnPostCountClickListener onPostCountClickListener;
+    private final OnSupporterSupportingCountClickListener onSupporterSupportingCountClickListener;
 
     private Utils myUtils;
     private Profile userProfile;
@@ -75,7 +80,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             OnLikeCountButtonListener onLikeCountButtonListener,
             OnCommentClickListener onCommentClickListener,
             OnPlayerPlayedListener onPlayerPlayedListener,
-            OnUpdateProfileClickListener onUpdateProfileClickListener) {
+            OnUpdateProfileClickListener onUpdateProfileClickListener, OnPostCountClickListener onPostCountClickListener, OnSupporterSupportingCountClickListener onSupporterSupportingCountClickListener) {
         this.allPosts = allPosts;
         this.postCount = postCount;
         this.supporterCount = supporterCount;
@@ -88,6 +93,8 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.onCommentClickListener = onCommentClickListener;
         this.onPlayerPlayedListener = onPlayerPlayedListener;
         this.onUpdateProfileClickListener = onUpdateProfileClickListener;
+        this.onPostCountClickListener = onPostCountClickListener;
+        this.onSupporterSupportingCountClickListener = onSupporterSupportingCountClickListener;
 
         //getting user profile from local storage
         myUtils     = new Utils();
@@ -705,22 +712,26 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     //Profile view holder class
-    private class ProfileViewHolder extends RecyclerView.ViewHolder{
+    private class ProfileViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private MaterialTextView postCountText, supportingCountText, supporterCountText, nameText, locationText, usernameText, updateProfileButton;
         private CircleImageView profilePhoto;
+        private LinearLayout postCountLayout, supporterCountLayout, supportingCountLayout;
 
         public ProfileViewHolder(View view) {
             super(view);
 
-            postCountText       = view.findViewById(R.id.post_count_viewprofile);
-            supporterCountText  = view.findViewById(R.id.supporter_count_viewprofile);
-            supportingCountText = view.findViewById(R.id.supporting_count_viewprofile);
-            nameText            = view.findViewById(R.id.profile_name);
-            locationText        = view.findViewById(R.id.profile_location);
-            usernameText        = view.findViewById(R.id.profile_username);
-            updateProfileButton = view.findViewById(R.id.hnid_viewprofile);
-            profilePhoto        = view.findViewById(R.id.circleimageview_profile_view);
+            postCountText         = view.findViewById(R.id.post_count_viewprofile);
+            supporterCountText    = view.findViewById(R.id.supporter_count_viewprofile);
+            supportingCountText   = view.findViewById(R.id.supporting_count_viewprofile);
+            nameText              = view.findViewById(R.id.profile_name);
+            locationText          = view.findViewById(R.id.profile_location);
+            usernameText          = view.findViewById(R.id.profile_username);
+            updateProfileButton   = view.findViewById(R.id.update_profile_button);
+            profilePhoto          = view.findViewById(R.id.circleimageview_profile_view);
+            postCountLayout       = view.findViewById(R.id.post_count_layout);
+            supporterCountLayout  = view.findViewById(R.id.supporter_count_layout);
+            supportingCountLayout = view.findViewById(R.id.supporting_count_layout);
         }
 
         void bind(){
@@ -735,12 +746,22 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             usernameText.setText(userProfile.getUsername());
             Glide.with(context).load(userProfile.getProfileImgThumbnail()).centerCrop().into(profilePhoto);
 
-            updateProfileButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onUpdateProfileClickListener.onUpdateProfileClick();
-                }
-            });
+            updateProfileButton.setOnClickListener(this);
+            postCountLayout.setOnClickListener(this);
+            supporterCountLayout.setOnClickListener(this);
+            supportingCountLayout.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(v.getId() == R.id.update_profile_button)
+                onUpdateProfileClickListener.onUpdateProfileClick();
+            if (v.getId() == R.id.post_count_layout)
+                onPostCountClickListener.onPostCountClick();
+            if (v.getId() == R.id.supporter_count_layout)
+                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporters",String.valueOf(supporterCount));
+            if (v.getId() == R.id.supporting_count_layout)
+                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporting",String.valueOf(supportingCount));
         }
     }
 }

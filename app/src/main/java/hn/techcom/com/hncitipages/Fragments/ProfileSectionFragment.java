@@ -1,6 +1,8 @@
 package hn.techcom.com.hncitipages.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,10 +19,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.textview.MaterialTextView;
+import com.google.gson.Gson;
 import com.potyvideo.library.AndExoPlayerView;
 
 import java.util.ArrayList;
 
+import hn.techcom.com.hncitipages.Activities.SupportersOrSuppoertingProfilesActivity;
 import hn.techcom.com.hncitipages.Activities.UserProfileActivity;
 import hn.techcom.com.hncitipages.Activities.ViewCommentsActivity;
 import hn.techcom.com.hncitipages.Activities.ViewLikesActivity;
@@ -32,6 +36,8 @@ import hn.techcom.com.hncitipages.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hncitipages.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnPlayerPlayedListener;
+import hn.techcom.com.hncitipages.Interfaces.OnPostCountClickListener;
+import hn.techcom.com.hncitipages.Interfaces.OnSupporterSupportingCountClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnUpdateProfileClickListener;
 import hn.techcom.com.hncitipages.Models.FavoriteResponse;
 import hn.techcom.com.hncitipages.Models.LikeResponse;
@@ -57,7 +63,10 @@ public class ProfileSectionFragment
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
         OnCommentClickListener,
-        OnPlayerPlayedListener, OnUpdateProfileClickListener {
+        OnPlayerPlayedListener,
+        OnUpdateProfileClickListener,
+        OnPostCountClickListener,
+        OnSupporterSupportingCountClickListener {
 
     private static final String TAG = "ProfileSectionFragment";
     private Utils myUtils;
@@ -210,6 +219,7 @@ public class ProfileSectionFragment
                         initialPostList.add(null);
                     }
 
+                    initialPostList.add(0,initialPostList.get(0));
                     setRecyclerView(initialPostList);
                 }
             }
@@ -265,6 +275,8 @@ public class ProfileSectionFragment
                 supporterProfileCount,
                 supportingProfileCount,
                 getContext(),
+                this,
+                this,
                 this,
                 this,
                 this,
@@ -332,6 +344,27 @@ public class ProfileSectionFragment
         startActivity(new Intent(getContext(),UserProfileActivity.class));
     }
 
+    @Override
+    public void onPostCountClick() {
+        initialPostList.clear();
+        getLatestPostsListBySingleUser(userProfile.getHnid());
+    }
+
+
+    @Override
+    public void onSupporterSupportingCountClick(String show, String count) {
+        Intent intent = new Intent(getContext(), SupportersOrSuppoertingProfilesActivity.class);
+        intent.putExtra("Show", show);
+        if (show.equals("Supporters"))
+            intent.putExtra("SupporterCount", String.valueOf(supporterProfilesArrayList.size()));
+        else
+            intent.putExtra("SupportingCount", String.valueOf(supportingProfilesArrayList.size()));
+
+        storeProfiles(show);
+
+        startActivity(intent);
+    }
+
     //favorite or un-favorite post
     public void favoriteOrUnfavoritePost(String hnid, int postId, int position){
         RequestBody user = RequestBody.create(MediaType.parse("text/plain"), hnid);
@@ -397,4 +430,26 @@ public class ProfileSectionFragment
         });
     }
 
+    private void storeRecentPosts(){
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(initialPostList);
+        editor.putString("RecentPosts", json);
+        editor.apply();
+    }
+
+    private void storeProfiles(String profilesListType){
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json;
+        if (profilesListType.equals("Supporters"))
+            json = gson.toJson(supporterProfilesArrayList);
+        else
+            json = gson.toJson(supportingProfilesArrayList);
+
+        editor.putString(profilesListType, json);
+        editor.apply();
+    }
 }

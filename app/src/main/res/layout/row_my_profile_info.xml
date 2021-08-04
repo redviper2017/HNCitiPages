@@ -30,12 +30,16 @@
                 android:visibility="visible" />
 
         </RelativeLayout>
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <LinearLayout
+            android:id="@+id/post_count_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/_20sdp">
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:focusable="true">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/post_count_viewprofile"
                 android:layout_width="wrap_content"
@@ -51,8 +55,9 @@
                 android:text="Posts"
                 android:textSize="16sp"
                 android:layout_gravity="center"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-        <androidx.appcompat.widget.LinearLayoutCompat
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/supporter_count_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -73,8 +78,9 @@
                 android:text="Supporters"
                 android:textSize="16sp"
                 android:layout_gravity="center"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-        <androidx.appcompat.widget.LinearLayoutCompat
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/supporting_count_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -95,7 +101,7 @@
                 android:text="Supporting"
                 android:textSize="16sp"
                 android:layout_gravity="center"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -133,7 +139,7 @@
         </LinearLayout>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/hnid_viewprofile"
+            android:id="@+id/update_profile_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
