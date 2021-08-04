@@ -27,7 +27,7 @@
                 android:layout_height="80dp"
                 android:background="@drawable/circle_hollow"
                 android:padding="5dp"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
         </RelativeLayout>
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -106,15 +106,17 @@
             android:id="@+id/layout_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_toStartOf="@+id/hnid_viewprofile">
+            android:layout_toStartOf="@+id/hnid_viewprofile"
+            android:orientation="vertical">
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yasir Ahmed"
-                android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/profile_location"
                 android:layout_width="wrap_content"
@@ -135,14 +137,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="HN CitiPages ID"
-            android:drawableStart="@drawable/id_ic"
-            android:textSize="16sp"
-            android:textColor="@color/colorText"
-            android:textAlignment="center"
-            android:drawablePadding="5dp"
             android:layout_gravity="center"
-            android:gravity="center"/>
+            android:drawableStart="@drawable/id_ic"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="HN CitiPages ID"
+            android:textAlignment="center"
+            android:textColor="@color/colorText"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 </LinearLayout>
