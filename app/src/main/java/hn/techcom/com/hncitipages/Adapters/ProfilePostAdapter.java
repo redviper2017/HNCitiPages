@@ -27,9 +27,9 @@ import hn.techcom.com.hncitipages.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hncitipages.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnPlayerPlayedListener;
+import hn.techcom.com.hncitipages.Interfaces.OnUpdateProfileClickListener;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
-import hn.techcom.com.hncitipages.Models.User;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.Utils;
 
@@ -58,6 +58,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final OnLikeCountButtonListener onLikeCountButtonListener;
     private final OnCommentClickListener onCommentClickListener;
     private final OnPlayerPlayedListener onPlayerPlayedListener;
+    private final OnUpdateProfileClickListener onUpdateProfileClickListener;
 
     private Utils myUtils;
     private Profile userProfile;
@@ -73,7 +74,8 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             OnFavoriteButtonClickListener onFavoriteButtonClickListener,
             OnLikeCountButtonListener onLikeCountButtonListener,
             OnCommentClickListener onCommentClickListener,
-            OnPlayerPlayedListener onPlayerPlayedListener) {
+            OnPlayerPlayedListener onPlayerPlayedListener,
+            OnUpdateProfileClickListener onUpdateProfileClickListener) {
         this.allPosts = allPosts;
         this.postCount = postCount;
         this.supporterCount = supporterCount;
@@ -85,6 +87,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.onLikeCountButtonListener = onLikeCountButtonListener;
         this.onCommentClickListener = onCommentClickListener;
         this.onPlayerPlayedListener = onPlayerPlayedListener;
+        this.onUpdateProfileClickListener = onUpdateProfileClickListener;
 
         //getting user profile from local storage
         myUtils     = new Utils();
@@ -704,20 +707,20 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //Profile view holder class
     private class ProfileViewHolder extends RecyclerView.ViewHolder{
 
-        private MaterialTextView postCountText, supportingCountText, supporterCountText, nameText, locationText, usernameText, hnidTextButton;
+        private MaterialTextView postCountText, supportingCountText, supporterCountText, nameText, locationText, usernameText, updateProfileButton;
         private CircleImageView profilePhoto;
 
         public ProfileViewHolder(View view) {
             super(view);
 
-            postCountText = view.findViewById(R.id.post_count_viewprofile);
-            supporterCountText = view.findViewById(R.id.supporter_count_viewprofile);
+            postCountText       = view.findViewById(R.id.post_count_viewprofile);
+            supporterCountText  = view.findViewById(R.id.supporter_count_viewprofile);
             supportingCountText = view.findViewById(R.id.supporting_count_viewprofile);
-            nameText = view.findViewById(R.id.profile_name);
-            locationText = view.findViewById(R.id.profile_location);
-            usernameText = view.findViewById(R.id.profile_username);
-            hnidTextButton = view.findViewById(R.id.hnid_viewprofile);
-            profilePhoto = view.findViewById(R.id.circleimageview_profile_view);
+            nameText            = view.findViewById(R.id.profile_name);
+            locationText        = view.findViewById(R.id.profile_location);
+            usernameText        = view.findViewById(R.id.profile_username);
+            updateProfileButton = view.findViewById(R.id.hnid_viewprofile);
+            profilePhoto        = view.findViewById(R.id.circleimageview_profile_view);
         }
 
         void bind(){
@@ -731,6 +734,13 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             usernameText.setText(userProfile.getUsername());
             Glide.with(context).load(userProfile.getProfileImgThumbnail()).centerCrop().into(profilePhoto);
+
+            updateProfileButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onUpdateProfileClickListener.onUpdateProfileClick();
+                }
+            });
         }
     }
 }

@@ -25,7 +25,7 @@
                 android:id="@+id/profile_circle_view"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/circle_hollow"
+                android:background="@drawable/circle_hollow_1"
                 android:padding="5dp"
                 android:visibility="visible" />
 
@@ -138,12 +138,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/id_ic"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:drawableStart="@drawable/update_ic"
             android:drawablePadding="5dp"
+            android:drawableTint="@color/colorCenterLinearGradient"
+            android:focusable="true"
             android:gravity="center"
-            android:text="HN CitiPages ID"
+            android:text="Update Profile"
             android:textAlignment="center"
-            android:textColor="@color/colorText"
+            android:textColor="@color/colorCenterLinearGradient"
             android:textSize="16sp" />
 
     </RelativeLayout>

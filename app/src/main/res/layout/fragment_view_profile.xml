@@ -151,14 +151,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="HN CitiPages ID"
-            android:drawableStart="@drawable/id_ic"
-            android:textSize="16sp"
-            android:textColor="@color/colorText"
-            android:textAlignment="center"
-            android:drawablePadding="5dp"
             android:layout_gravity="center"
-            android:gravity="center"/>
+            android:drawableStart="@drawable/id_ic"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="HN CitiPages ID"
+            android:textAlignment="center"
+            android:textColor="@color/colorCenterLinearGradient"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 

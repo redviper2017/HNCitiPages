@@ -24,22 +24,20 @@ import java.util.ArrayList;
 import hn.techcom.com.hncitipages.Activities.UserProfileActivity;
 import hn.techcom.com.hncitipages.Activities.ViewCommentsActivity;
 import hn.techcom.com.hncitipages.Activities.ViewLikesActivity;
-import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
 import hn.techcom.com.hncitipages.Adapters.ProfilePostAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnFavoriteButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLikeCountButtonListener;
-import hn.techcom.com.hncitipages.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hncitipages.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnPlayerPlayedListener;
+import hn.techcom.com.hncitipages.Interfaces.OnUpdateProfileClickListener;
 import hn.techcom.com.hncitipages.Models.FavoriteResponse;
 import hn.techcom.com.hncitipages.Models.LikeResponse;
 import hn.techcom.com.hncitipages.Models.PostList;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
-import hn.techcom.com.hncitipages.Models.SingleUserInfoResponse;
 import hn.techcom.com.hncitipages.Models.SupportingProfileList;
 import hn.techcom.com.hncitipages.Models.User;
 import hn.techcom.com.hncitipages.Network.RetrofitClientInstance;
@@ -59,7 +57,7 @@ public class ProfileSectionFragment
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
         OnCommentClickListener,
-        OnPlayerPlayedListener {
+        OnPlayerPlayedListener, OnUpdateProfileClickListener {
 
     private static final String TAG = "ProfileSectionFragment";
     private Utils myUtils;
@@ -272,6 +270,7 @@ public class ProfileSectionFragment
                 this,
                 this,
                 this,
+                this,
                 this);
         recyclerView.setAdapter(profilePostAdapter);
         swipeRefreshLayout.setRefreshing(false);
@@ -327,6 +326,12 @@ public class ProfileSectionFragment
         this.imageView = imageview;
         this.playButton = playButton;
     }
+
+    @Override
+    public void onUpdateProfileClick() {
+        startActivity(new Intent(getContext(),UserProfileActivity.class));
+    }
+
     //favorite or un-favorite post
     public void favoriteOrUnfavoritePost(String hnid, int postId, int position){
         RequestBody user = RequestBody.create(MediaType.parse("text/plain"), hnid);
@@ -391,4 +396,5 @@ public class ProfileSectionFragment
             }
         });
     }
+
 }
