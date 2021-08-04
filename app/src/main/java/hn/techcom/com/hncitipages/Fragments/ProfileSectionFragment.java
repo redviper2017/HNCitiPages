@@ -3,6 +3,7 @@ package hn.techcom.com.hncitipages.Fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -114,6 +115,27 @@ public class ProfileSectionFragment
             }
         });
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (!recyclerView.canScrollVertically(1) && dy>0){
+                    //scrolled to bottom
+                    Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
+                    if (initialPostList.get(initialPostList.size()-1) == null) {
+                        initialPostList.remove(initialPostList.size() - 1);
+                        getPostsListBySingleUserFromPage(nextPageUrl);
+                    }
+                }
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -200,6 +222,42 @@ public class ProfileSectionFragment
             }
         });
     }
+
+    //get user posts list from next page
+    public void getPostsListBySingleUserFromPage(String nextPage){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getPostsBySingleUserFromPage(nextPage);
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(Call<PostList> call, Response<PostList> response) {
+                if(response.code() == 200){
+                    PostList postList = response.body();
+                    Log.d(TAG, "total number of supporting profile posts = "+postList.getCount());
+                    if(postList != null){
+                        nextPageUrl = postList.getNext();
+                        ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
+
+                        initialPostList.remove(initialPostList.size() - 1);
+                        initialPostList.addAll(postArrayList);
+
+
+                        profilePostAdapter.notifyDataSetChanged();
+                        if (postList.getNext() != null) {
+                            initialPostList.add(null);
+                            Log.d(TAG, "total number of user posts fetched = " + initialPostList.size());
+                            getPostsListBySingleUserFromPage(postList.getNext());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostList> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     public void setRecyclerView(ArrayList<Result> postList){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

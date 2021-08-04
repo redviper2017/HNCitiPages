@@ -147,7 +147,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return allPosts == null ? 0 : allPosts.size()+1;
+        return allPosts == null ? 0 : allPosts.size();
     }
 
     @Override
