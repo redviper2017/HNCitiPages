@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.potyvideo.library.AndExoPlayerView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Activities.SupportersOrSuppoertingProfilesActivity;
 import hn.techcom.com.hncitipages.Activities.UserProfileActivity;
@@ -353,16 +354,19 @@ public class ProfileSectionFragment
 
     @Override
     public void onSupporterSupportingCountClick(String show, String count) {
-        Intent intent = new Intent(getContext(), SupportersOrSuppoertingProfilesActivity.class);
-        intent.putExtra("Show", show);
+        Fragment fragment = new SupportingSupporterListFragment();
+        Bundle args = new Bundle();
+        args.putString("Show", show);
+
         if (show.equals("Supporters"))
-            intent.putExtra("SupporterCount", String.valueOf(supporterProfilesArrayList.size()));
+            args.putString("SupporterCount", String.valueOf(supporterProfilesArrayList.size()));
         else
-            intent.putExtra("SupportingCount", String.valueOf(supportingProfilesArrayList.size()));
+            args.putString("SupportingCount", String.valueOf(supportingProfilesArrayList.size()));
+
+        fragment.setArguments(args);
 
         storeProfiles(show);
-
-        startActivity(intent);
+        getParentFragmentManager().beginTransaction().replace(R.id.framelayout_main, fragment,null).addToBackStack(null).commit();
     }
 
     //favorite or un-favorite post
@@ -430,17 +434,8 @@ public class ProfileSectionFragment
         });
     }
 
-    private void storeRecentPosts(){
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(initialPostList);
-        editor.putString("RecentPosts", json);
-        editor.apply();
-    }
-
     private void storeProfiles(String profilesListType){
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json;
