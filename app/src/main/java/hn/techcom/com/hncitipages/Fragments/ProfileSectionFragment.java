@@ -359,9 +359,9 @@ public class ProfileSectionFragment
         args.putString("Show", show);
 
         if (show.equals("Supporters"))
-            args.putString("SupporterCount", String.valueOf(supporterProfilesArrayList.size()));
+            args.putString("SupporterCount", String.valueOf(supporterProfileCount));
         else
-            args.putString("SupportingCount", String.valueOf(supportingProfilesArrayList.size()));
+            args.putString("SupportingCount", String.valueOf(supportingProfileCount));
 
         fragment.setArguments(args);
 
