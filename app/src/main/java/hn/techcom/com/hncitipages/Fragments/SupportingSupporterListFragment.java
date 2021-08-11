@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,8 +24,16 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Adapters.ProfileListAdapter;
+import hn.techcom.com.hncitipages.Interfaces.GetDataService;
+import hn.techcom.com.hncitipages.Models.Profile;
+import hn.techcom.com.hncitipages.Models.SupportingProfileList;
 import hn.techcom.com.hncitipages.Models.User;
+import hn.techcom.com.hncitipages.Network.RetrofitClientInstance;
 import hn.techcom.com.hncitipages.R;
+import hn.techcom.com.hncitipages.Utils.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SupportingSupporterListFragment extends Fragment implements View.OnClickListener{
 
@@ -32,6 +41,8 @@ public class SupportingSupporterListFragment extends Fragment implements View.On
     private String showListOf;
     private RecyclerView recyclerView;
     private ProfileListAdapter adapter;
+    private Utils myUtils;
+    private Profile userProfile;
 
     public SupportingSupporterListFragment() {
         // Required empty public constructor
@@ -42,13 +53,16 @@ public class SupportingSupporterListFragment extends Fragment implements View.On
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_supporting_supporter_list, container, false);
 
-        showListOf = requireArguments().getString("Show");
+        myUtils     = new Utils();
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+        showListOf  = requireArguments().getString("Show");
 
         //Hooks
-        ImageButton backButton       = view.findViewById(R.id.image_button_back);
-        MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title);
-        MaterialTextView countText   = view.findViewById(R.id.count_text);
-        recyclerView                 = view.findViewById(R.id.recyclerview);
+        ImageButton backButton                = view.findViewById(R.id.image_button_back);
+        MaterialTextView screenTitle          = view.findViewById(R.id.text_screen_title);
+        MaterialTextView countText            = view.findViewById(R.id.count_text);
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        recyclerView                          = view.findViewById(R.id.recyclerview);
 
         ArrayList<User> profilesList = getProfiles();
 
@@ -74,6 +88,15 @@ public class SupportingSupporterListFragment extends Fragment implements View.On
 
         //OnClick Listeners
         backButton.setOnClickListener(this);
+
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                profilesList.clear();
+//                if (showListOf.equals("Supporters"))
+//                    getLatestPostsListBySingleUser(userProfile.getHnid());
+//            }
+//        });
 
         // Inflate the layout for this fragment
         return view;

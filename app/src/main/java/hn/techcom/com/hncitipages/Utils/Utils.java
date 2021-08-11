@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Models.Profile;
+import hn.techcom.com.hncitipages.Models.User;
 
 public class Utils {
 
@@ -42,5 +44,15 @@ public class Utils {
 
         }
         return fullName;
+    }
+
+    //store supporters & supporting profiles to shared preference
+    public void storeProfiles(String profilesListType, ArrayList<User> profilesArrayList, Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(profilesArrayList);
+        editor.putString(profilesListType, json);
+        editor.apply();
     }
 }

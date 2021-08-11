@@ -358,14 +358,17 @@ public class ProfileSectionFragment
         Bundle args = new Bundle();
         args.putString("Show", show);
 
-        if (show.equals("Supporters"))
+        if (show.equals("Supporters")) {
             args.putString("SupporterCount", String.valueOf(supporterProfileCount));
-        else
+            myUtils.storeProfiles(show, supporterProfilesArrayList, requireContext());
+        }
+        else {
             args.putString("SupportingCount", String.valueOf(supportingProfileCount));
+            myUtils.storeProfiles(show, supportingProfilesArrayList, requireContext());
+        }
 
         fragment.setArguments(args);
 
-        storeProfiles(show);
         getParentFragmentManager().beginTransaction().replace(R.id.framelayout_main, fragment,null).addToBackStack(null).commit();
     }
 
@@ -432,19 +435,5 @@ public class ProfileSectionFragment
                 Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private void storeProfiles(String profilesListType){
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json;
-        if (profilesListType.equals("Supporters"))
-            json = gson.toJson(supporterProfilesArrayList);
-        else
-            json = gson.toJson(supportingProfilesArrayList);
-
-        editor.putString(profilesListType, json);
-        editor.apply();
     }
 }
