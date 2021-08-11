@@ -173,9 +173,14 @@ public interface GetDataService {
             @Part("comment") RequestBody comment
     );
 
-    //Get Supported Profiles
+    //Get Supporting Profiles
     @GET("users/supporting/{hnid}/")
     Call<SupportingProfileList> getSupportingProfiles(@Path("hnid") String hnid);
+
+    //Get Supporting Profiles from page
+    @GET()
+    Call<SupportingProfileList> getSupportingProfilesFromPage(@Url String url);
+
 
     //Get Supporters Profile
     @GET("users/supporters/{hnid}/")
