@@ -232,12 +232,17 @@ public class MainActivity extends AppCompatActivity {
         // Returns an intent object that you use to check for an update.
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
 
+
+
         // Checks that the platform will allow the specified type of update.
         appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 // This example applies an immediate update. To apply a flexible update
                 // instead, pass in AppUpdateType.FLEXIBLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                Log.d(TAG,"available version = "+appUpdateInfo.availableVersionCode());
+                Log.d(TAG,"update req = "+appUpdateInfo.updateAvailability());
+
                 // Request the update.
 
                 try {
@@ -249,6 +254,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG,"callInAppUpdate: "+exception.getMessage());
                 }
             }
+            Log.d(TAG,"available version = "+appUpdateInfo.availableVersionCode());
+            Log.d(TAG,"update req = "+appUpdateInfo.updateAvailability());
         });
     }
 }
