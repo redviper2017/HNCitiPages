@@ -28,6 +28,7 @@ import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -186,14 +187,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null){
-            if (requestCode == UPDATE_REQUEST_CODE) {
-                Toast.makeText(this, "Downloading start", Toast.LENGTH_SHORT).show();
-                if (resultCode != RESULT_OK) {
-                    Log.d(TAG,"onActivityResult: Update flow failed! Result code: " + resultCode);
-                    // If the update is cancelled or fails,
-                    // you can request to start the update again.
-                }
+
+        if (requestCode == UPDATE_REQUEST_CODE) {
+            Toast.makeText(this, "Downloading start", Toast.LENGTH_SHORT).show();
+            if (resultCode != RESULT_OK) {
+                Log.d(TAG,"onActivityResult: Update flow failed! Result code: " + resultCode);
             }
         }
     }
@@ -227,35 +225,48 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void callInAppUpdate(){
-        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
 
         // Returns an intent object that you use to check for an update.
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
 
+        appUpdateInfoTask.addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo result) {
+                if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)){
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, MainActivity.this, UPDATE_REQUEST_CODE);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
 
         // Checks that the platform will allow the specified type of update.
-        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                // This example applies an immediate update. To apply a flexible update
-                // instead, pass in AppUpdateType.FLEXIBLE
-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                Log.d(TAG,"available version = "+appUpdateInfo.availableVersionCode());
-                Log.d(TAG,"update req = "+appUpdateInfo.updateAvailability());
-
-                // Request the update.
-
-                try {
-                    appUpdateManager.startUpdateFlowForResult(appUpdateInfo,AppUpdateType.IMMEDIATE,
-                            MainActivity.this,
-                            UPDATE_REQUEST_CODE);
-                }
-                catch (IntentSender.SendIntentException exception){
-                    Log.d(TAG,"callInAppUpdate: "+exception.getMessage());
-                }
-            }
-            Log.d(TAG,"available version = "+appUpdateInfo.availableVersionCode());
-            Log.d(TAG,"update req = "+appUpdateInfo.updateAvailability());
-        });
+//        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+//                // This example applies an immediate update. To apply a flexible update
+//                // instead, pass in AppUpdateType.FLEXIBLE
+//                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+//                Log.d(TAG,"available version = "+appUpdateInfo.availableVersionCode());
+//                Log.d(TAG,"update req = "+appUpdateInfo.updateAvailability());
+//
+//                // Request the update.
+//
+//                try {
+//                    appUpdateManager.startUpdateFlowForResult(appUpdateInfo,AppUpdateType.IMMEDIATE,
+//                            MainActivity.this,
+//                            UPDATE_REQUEST_CODE);
+//                }
+//                catch (IntentSender.SendIntentException exception){
+//                    Log.d(TAG,"callInAppUpdate: "+exception.getMessage());
+//                }
+//            }
+//            Log.d(TAG,"available version = "+appUpdateInfo.availableVersionCode());
+//            Log.d(TAG,"update req = "+appUpdateInfo.updateAvailability());
+//        });
     }
 }
