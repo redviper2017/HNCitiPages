@@ -3,6 +3,7 @@ package hn.techcom.com.hncitipages.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,7 +46,7 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
     private CircleImageView avatar;
     private EditText commentEditText;
     private ImageButton postCommentButton;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
     private int postId;
     private Utils myUtils;
     private Profile userProfile;
@@ -72,6 +73,7 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
         avatar                         = findViewById(R.id.avatar_post);
         commentEditText                = findViewById(R.id.comment_editText);
         postCommentButton              = findViewById(R.id.post_comment_button);
+        swipeRefreshLayout             = findViewById(R.id.swipeRefresh);
 
         commentsArrayList = new ArrayList<>();
 
@@ -88,9 +90,15 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
 
         //OnClick Listeners
         backButton.setOnClickListener(this);
-
-
         postCommentButton.setOnClickListener(this);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                commentsArrayList.clear();
+                viewCommentsOnPost();
+            }
+        });
     }
 
     @Override

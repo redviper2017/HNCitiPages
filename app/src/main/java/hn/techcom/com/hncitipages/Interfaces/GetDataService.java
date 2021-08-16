@@ -122,9 +122,13 @@ public interface GetDataService {
     @GET("posts/get_like_post/{post_id}/")
     Call<ViewLikesResponse> viewLikes(@Path("post_id") int post_id);
 
-    //Get comments on post
+    //Get latest comments on post
     @GET("posts/get_post_comment/{post_id}/")
     Call<ViewCommentResponse> viewComments(@Path("post_id") int post_id);
+
+    //Get comments from page
+    @GET()
+    Call<ViewCommentResponse> viewCommentsFromPage(@Url String url);
 
     //Like/Un-Like Post
     @Multipart
