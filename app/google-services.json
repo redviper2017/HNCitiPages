@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1022009655122-0mqqbvu0blvphii4qvan8qvp9daojkkr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hn.techcom.com.hnapp",
+            "certificate_hash": "fccafbe6c622b56b55dfaf8bb0070ece43a58210"
+          }
+        },
+        {
           "client_id": "1022009655122-bhgro9lv782qgha3vgec55irknk1r5l5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -67,6 +75,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1022009655122-39qa1665t1udmhi9ge5o3jep8mt2jcbf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hn.techcom.com.hncitipages",
+            "certificate_hash": "fccafbe6c622b56b55dfaf8bb0070ece43a58210"
+          }
+        },
         {
           "client_id": "1022009655122-qt3b6unqbg8kij5638c90pd770apqugp.apps.googleusercontent.com",
           "client_type": 1,

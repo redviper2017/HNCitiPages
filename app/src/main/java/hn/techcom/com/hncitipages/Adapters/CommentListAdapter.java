@@ -26,6 +26,7 @@ import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
 import hn.techcom.com.hncitipages.Models.Reply;
 import hn.techcom.com.hncitipages.Models.ResultViewComments;
 import hn.techcom.com.hncitipages.R;
+import hn.techcom.com.hncitipages.Utils.Utils;
 
 public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     //Constants
@@ -84,20 +85,24 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private class CommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public MaterialTextView name, location;
-        public CircleImageView avatar;
+        public CircleImageView avatar, replyAvatar;
         private MaterialTextView commentPost;
         private RecyclerView repliesRecyclerview;
         private ReplyListAdapter replyListAdapter;
         private ImageButton replyButton, postReplyButton;
         private LinearLayout replyLayout;
         private EditText replyText;
+        private Utils myUtils;
 
         public CommentViewHolder(@NonNull View view) {
             super(view);
 
+            myUtils = new Utils();
+
             name           = view.findViewById(R.id.name_post);
             location       = view.findViewById(R.id.location_post);
             avatar         = view.findViewById(R.id.avatar_post);
+            replyAvatar    = view.findViewById(R.id.avatar_post_reply);
             commentPost    = view.findViewById(R.id.comment_post);
             repliesRecyclerview = view.findViewById(R.id.recyclerview_posts_replies);
             replyButton    = view.findViewById(R.id.reply_button_comment);
@@ -124,6 +129,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //                    .into(avatar);
 
             Glide.with(context).load(profilePhotoUrl).centerCrop().into(avatar);
+
+            Glide.with(context).load(myUtils.getNewUserFromSharedPreference(context).getProfileImgThumbnail()).centerCrop().into(replyAvatar);
 
             Log.d(TAG,"comment = "+comment.getComment());
             commentPost.setText(String.valueOf(comment.getComment()));
