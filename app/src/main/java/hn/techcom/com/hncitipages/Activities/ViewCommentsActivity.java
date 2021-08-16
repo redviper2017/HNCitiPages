@@ -53,6 +53,8 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
     private ArrayList<ResultViewComments> commentsArrayList;
     private static final String TAG = "ViewCommentsActivity";
 
+    private boolean postingComment = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +88,8 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
 
         //OnClick Listeners
         backButton.setOnClickListener(this);
+
+
         postCommentButton.setOnClickListener(this);
     }
 
@@ -93,11 +97,17 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         if(view.getId() == R.id.image_button_back)
             super.onBackPressed();
-        if(view.getId() == R.id.post_comment_button)
-            if(!TextUtils.isEmpty(commentEditText.getText()))
-                postComment(userProfile.getHnid(),postId);
-            else
-                Toast.makeText(this,"Oops! you've forgot to enter your comment..",Toast.LENGTH_LONG).show();
+        if(view.getId() == R.id.post_comment_button) {
+            if (!postingComment) {
+                postingComment = true;
+                if (!TextUtils.isEmpty(commentEditText.getText()))
+                    postComment(userProfile.getHnid(), postId);
+                else {
+                    Toast.makeText(this, "Oops! you've forgot to enter your comment..", Toast.LENGTH_SHORT).show();
+                    postingComment = false;
+                }
+            }
+        }
 
     }
 
@@ -151,7 +161,7 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Call<ResultViewComments> call, Response<ResultViewComments> response) {
                 if(response.code() == 201){
                     ResultViewComments commentResponse = response.body();
-                    Toast.makeText(ViewCommentsActivity.this, "Your comment has been posted successfully!", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(ViewCommentsActivity.this, "Your comment has been posted successfully!", Toast.LENGTH_LONG).show();
                     commentEditText.setText("");
                     if (commentListAdapter != null)
                         if(commentsArrayList.size() != 0) {
@@ -165,6 +175,7 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
 
                 }else
                     Toast.makeText(ViewCommentsActivity.this,"Unable to post comment! Try again later..",Toast.LENGTH_LONG).show();
+                postingComment = false;
             }
 
             @Override
