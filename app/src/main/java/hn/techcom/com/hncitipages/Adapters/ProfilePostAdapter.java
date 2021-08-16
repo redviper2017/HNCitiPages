@@ -99,6 +99,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         //getting user profile from local storage
         myUtils     = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(context);
+        Log.d(TAG,"inside ProfilePostAdapter = "+"YES");
     }
 
     @NonNull

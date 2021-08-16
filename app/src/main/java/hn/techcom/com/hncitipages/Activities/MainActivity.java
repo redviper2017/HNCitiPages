@@ -41,12 +41,18 @@ import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
 import hn.techcom.com.hncitipages.Fragments.SharePostBottomSheetFragment;
 import hn.techcom.com.hncitipages.Fragments.SupportSectionFragment;
 import hn.techcom.com.hncitipages.Fragments.VisitSectionFragment;
+import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Models.Post;
+import hn.techcom.com.hncitipages.Models.PostList;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.SupporterProfile;
+import hn.techcom.com.hncitipages.Network.RetrofitClientInstance;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.BottomSheetFragment;
 import hn.techcom.com.hncitipages.Utils.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.RECORD_AUDIO;
@@ -64,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private Utils myUtils;
+    private Profile userProfile;
+    private int userPostCount = 0;
 
     private final int UPDATE_REQUEST_CODE = 1612;
 
@@ -72,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         myUtils = new Utils();
+        userProfile = myUtils.getNewUserFromSharedPreference(MainActivity.this);
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         Profile localUser = myUtils.getNewUserFromSharedPreference(this);
@@ -82,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             if (checkPermission()) {
+                getLatestPostsListBySingleUser();
                 Fragment fragment = new HomeFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
             }else{
@@ -140,7 +151,10 @@ public class MainActivity extends AppCompatActivity {
                 fragmentSelected = new VisitSectionFragment();
                 break;
             case R.id.navigation_profile:
-                fragmentSelected = new ProfileSectionFragment();
+                if (userPostCount != 0)
+                    fragmentSelected = new ProfileSectionFragment();
+                else
+                    Toast.makeText(MainActivity.this,"You have to make your first post to view this section",Toast.LENGTH_SHORT).show();
                 break;
             case android.R.id.home:
                 BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
@@ -269,4 +283,26 @@ public class MainActivity extends AppCompatActivity {
 //            Log.d(TAG,"update req = "+appUpdateInfo.updateAvailability());
 //        });
     }
+
+    //get initial user posts list
+    public void getLatestPostsListBySingleUser() {
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getLatestPostsBySingleUser(userProfile.getHnid(),userProfile.getHnid());
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(Call<PostList> call, Response<PostList> response) {
+                if (response.code() == 200){
+                    Log.d(TAG,"total number of post by this user = "+response.body().getResults().size());
+                    PostList postList = response.body();
+                    userPostCount = postList.getCount();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostList> call, Throwable t) {
+
+            }
+        });
+    }
+
 }

@@ -198,7 +198,6 @@ public class ProfileSectionFragment
 
     //get initial user posts list
     public void getLatestPostsListBySingleUser(String target_hnid) {
-
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getLatestPostsBySingleUser(target_hnid,userProfile.getHnid());
         call.enqueue(new Callback<PostList>() {
@@ -220,7 +219,8 @@ public class ProfileSectionFragment
                         initialPostList.add(null);
                     }
 
-                    initialPostList.add(0,initialPostList.get(0));
+                    if(initialPostList.size() != 0)
+                        initialPostList.add(0,initialPostList.get(0));
                     setRecyclerView(initialPostList);
                 }
             }
