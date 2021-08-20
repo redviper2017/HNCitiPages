@@ -202,7 +202,7 @@ public class ViewProfileFragment
                         ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
 
                         recentPostList.clear();
-                        recentPostList.addAll(postArrayList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
 
                         if (postList.getNext() != null)
                             recentPostList.add(null);
@@ -234,7 +234,7 @@ public class ViewProfileFragment
                         ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
 
                         recentPostList.remove(recentPostList.size() - 1);
-                        recentPostList.addAll(postArrayList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
 
 
                         postListAdapter.notifyDataSetChanged();

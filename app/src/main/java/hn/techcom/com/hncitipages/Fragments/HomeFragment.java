@@ -198,7 +198,7 @@ public class HomeFragment
                         ArrayList<Result> postList = new ArrayList<>(latestGlobalPostList.getResults());
 
                         recentPostList.clear();
-                        recentPostList.addAll(postList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
 
                         if(latestGlobalPostList.getNext() != null)
                             recentPostList.add(null);
@@ -236,7 +236,7 @@ public class HomeFragment
                         ArrayList<Result> postList = new ArrayList<>(globalPostList.getResults());
 
                         recentPostList.remove(recentPostList.size() - 1);
-                        recentPostList.addAll(postList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
 
 
                         postListAdapter.notifyDataSetChanged();

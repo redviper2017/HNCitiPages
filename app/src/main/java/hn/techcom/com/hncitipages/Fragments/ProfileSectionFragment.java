@@ -221,7 +221,7 @@ public class ProfileSectionFragment
 
                     if(initialPostList.size() != 0)
                         initialPostList.add(0,initialPostList.get(0));
-                    setRecyclerView(initialPostList);
+                    setRecyclerView(myUtils.removeMediaPostsWithoutFilePath(initialPostList));
                 }
             }
 
@@ -247,7 +247,7 @@ public class ProfileSectionFragment
                         ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
 
                         initialPostList.remove(initialPostList.size() - 1);
-                        initialPostList.addAll(postArrayList);
+                        initialPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
 
 
                         profilePostAdapter.notifyDataSetChanged();

@@ -326,7 +326,7 @@ public class VisitSectionFragment
                         ArrayList<Result> postList = new ArrayList<>(cityPostList.getResults());
 
                         recentPostList.clear();
-                        recentPostList.addAll(postList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
 
                         if (nextCityPostListUrl != null)
                             recentPostList.add(null);
@@ -365,7 +365,7 @@ public class VisitSectionFragment
                         ArrayList<Result> postList = new ArrayList<>(countryPostList.getResults());
 
                         recentPostList.clear();
-                        recentPostList.addAll(postList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
 
                         if (nextCityPostListUrl != null)
                             recentPostList.add(null);
@@ -399,7 +399,7 @@ public class VisitSectionFragment
                         ArrayList<Result> postList = new ArrayList<>(cityPostList.getResults());
 
                         recentPostList.remove(recentPostList.size() - 1);
-                        recentPostList.addAll(postList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
 
                         postListAdapter.notifyDataSetChanged();
 
@@ -433,7 +433,7 @@ public class VisitSectionFragment
 
 
                         recentPostList.remove(recentPostList.size() - 1);
-                        recentPostList.addAll(postList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
 
 
                         postListAdapter.notifyDataSetChanged();

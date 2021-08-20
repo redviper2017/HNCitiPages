@@ -179,7 +179,7 @@ public class FavoritesFragment
                         ArrayList<Result> postList = new ArrayList<>(latestFavoritePostList.getResults());
 
                         recentPostList.clear();
-                        recentPostList.addAll(postList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
 
                         if(latestFavoritePostList.getNext() != null)
                             recentPostList.add(null);
@@ -216,7 +216,7 @@ public class FavoritesFragment
                         ArrayList<Result> postList = new ArrayList<>(favoritePostList.getResults());
 
                         recentPostList.remove(recentPostList.size() - 1);
-                        recentPostList.addAll(postList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
 
 
                         postListAdapter.notifyDataSetChanged();

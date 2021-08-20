@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Models.Profile;
+import hn.techcom.com.hncitipages.Models.Result;
 import hn.techcom.com.hncitipages.Models.User;
 
 public class Utils {
@@ -54,5 +55,14 @@ public class Utils {
         String json = gson.toJson(profilesArrayList);
         editor.putString(profilesListType, json);
         editor.apply();
+    }
+
+    //remove media posts without file path
+    public ArrayList<Result> removeMediaPostsWithoutFilePath(ArrayList<Result> postList){
+        for(int i=0; i<postList.size(); i++)
+            if (!postList.get(i).getPosttype().equals("S") && postList.get(i).getFiles().size() == 0)
+                postList.remove(postList.get(i));
+
+        return postList;
     }
 }

@@ -235,7 +235,7 @@ public class SupportSectionFragment
                         ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
 
                         recentPostList.clear();
-                        recentPostList.addAll(postArrayList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
                         if(postList.getNext() != null)
                             recentPostList.add(null);
 
@@ -269,7 +269,7 @@ public class SupportSectionFragment
 
 
                         recentPostList.remove(recentPostList.size() - 1);
-                        recentPostList.addAll(postArrayList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
 
 
                         postListAdapter.notifyDataSetChanged();
