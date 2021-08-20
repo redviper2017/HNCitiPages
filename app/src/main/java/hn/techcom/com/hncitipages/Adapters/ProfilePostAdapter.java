@@ -232,7 +232,10 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
 
             name.setText(post.getUser().getFullName());
-            location.setText(address);
+            if (address.contains("N/A"))
+                location.setVisibility(View.GONE);
+            else
+                location.setText(address);
             text.setText(post.getText());
 
             //see more button toggle for large texts
