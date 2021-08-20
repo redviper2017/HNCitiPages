@@ -258,9 +258,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
-
             name.setText(post.getUser().getFullName());
-            location.setText(address);
+            if (post.getUser().getCity().equals("N/A") || post.getUser().getCountry().equals("N/A"))
+                location.setVisibility(View.GONE);
+            else
+                location.setText(address);
             text.setText(post.getText());
 
             //see more button toggle for large texts
@@ -390,7 +392,10 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
 
             name.setText(post.getUser().getFullName());
-            location.setText(address);
+            if (post.getUser().getCity().equals("N/A") || post.getUser().getCountry().equals("N/A"))
+                location.setVisibility(View.GONE);
+            else
+                location.setText(address);
             text.setText(post.getText());
 
             //see more button toggle for large texts
@@ -565,7 +570,10 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
 
             name.setText(post.getUser().getFullName());
-            location.setText(address);
+            if (post.getUser().getCity().equals("N/A") || post.getUser().getCountry().equals("N/A"))
+                location.setVisibility(View.GONE);
+            else
+                location.setText(address);
             text.setText(post.getText());
 
             //see more button toggle for large texts

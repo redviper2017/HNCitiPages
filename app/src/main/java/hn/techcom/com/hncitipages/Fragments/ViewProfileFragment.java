@@ -125,7 +125,10 @@ public class ViewProfileFragment
 
         profileName.setText(name);
         usernameText.setText(username);
-        locationText.setText(location);
+        if (location.contains("N/A"))
+            locationText.setVisibility(View.GONE);
+        else
+            locationText.setText(location);
 //        Picasso
 //                .get()
 //                .load(thumbnail)
