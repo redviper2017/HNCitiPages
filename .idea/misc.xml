@@ -8,6 +8,7 @@
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/activity_full_screen_image_view.xml" value="0.1234375" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/activity_image_fullscreen.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/activity_main.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/activity_sign_in.xml" value="0.20625" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/activity_supporters_or_suppoerting_profiles.xml" value="0.265625" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/activity_user_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/activity_view_comments.xml" value="0.209375" />
@@ -21,6 +22,8 @@
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_comments.xml" value="0.209375" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_image_post.xml" value="0.265625" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_my_profile_info.xml" value="0.265625" />
+        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_story_post.xml" value="0.4" />
+        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_video_post.xml" value="0.16041666666666668" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/view_hnid_alert_layout.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/menu/bottomappbar_menu.xml" value="0.2" />
       </map>

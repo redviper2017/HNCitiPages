@@ -30,6 +30,7 @@ import hn.techcom.com.hncitipages.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnPlayerPlayedListener;
 import hn.techcom.com.hncitipages.Models.Result;
 import hn.techcom.com.hncitipages.R;
+import hn.techcom.com.hncitipages.Utils.Utils;
 
 public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
@@ -60,6 +61,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private final OnPlayerPlayedListener onPlayerPlayedListener;
 
+    private Utils myUtils;
+
     public PostListAdapter(
             ArrayList<Result> allPosts,
             Context context,
@@ -82,6 +85,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.onPlayerPlayedListener = onPlayerPlayedListener;
 
         Log.d(TAG,"post list size in adapter = "+allPosts.size());
+        myUtils = new Utils();
     }
 
     @NonNull
@@ -228,7 +232,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //Story view holder class
     private class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location, text, likes, comments, seeMoreButton;
+        public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
         private View supportCircleView;
@@ -248,6 +252,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             favoriteButton    = view.findViewById(R.id.favorite_button_post);
             commentButton     = view.findViewById(R.id.comment_button_post);
             supportCircleView = view.findViewById(R.id.support_circle_view);
+            time              = view.findViewById(R.id.time_post);
 
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
@@ -264,7 +269,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else
                 location.setText(address);
             text.setText(post.getText());
-
+            time.setText(post.getCreatedOn());
             //see more button toggle for large texts
 //            Handler handler = new Handler();
 //            handler.postDelayed(new Runnable() {
@@ -357,7 +362,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //Image view holder class
     private class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location, text, likes, comments, seeMoreButton;
+        public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
         public AspectRatioImageView landscapeImageView, portraitImageView;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
@@ -380,6 +385,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             favoriteButton     = view.findViewById(R.id.favorite_button_post);
             commentButton      = view.findViewById(R.id.comment_button_post);
             supportCircleView  = view.findViewById(R.id.support_circle_view);
+            time               = view.findViewById(R.id.time_post);
 
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
@@ -397,6 +403,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else
                 location.setText(address);
             text.setText(post.getText());
+            time.setText(post.getCreatedOn());
 
             //see more button toggle for large texts
 //            Handler handler = new Handler();
@@ -513,7 +520,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //Video view holder class
     private class AudioVideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location, text, likes, comments, seeMoreButton;
+        public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
         private AndExoPlayerView videoPlayerPortrait, videoPlayerLandscape, audioPlayer;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
@@ -541,7 +548,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             favoriteButton       = view.findViewById(R.id.favorite_button_post);
             commentButton        = view.findViewById(R.id.comment_button_post);
             supportCircleView    = view.findViewById(R.id.support_circle_view);
-
+            time                 = view.findViewById(R.id.time_post);
             imageviewLandscape   = view.findViewById(R.id.imageview_video_landscape);
             imageviewPortrait    = view.findViewById(R.id.imageview_video_portrait);
 
@@ -575,7 +582,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else
                 location.setText(address);
             text.setText(post.getText());
-
+            time.setText(post.getCreatedOn());
             //see more button toggle for large texts
 //            Handler handler = new Handler();
 //            handler.postDelayed(new Runnable() {
@@ -645,8 +652,6 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 supportCircleView.setVisibility(View.VISIBLE);
             else
                 supportCircleView.setVisibility(View.GONE);
-
-            String videoUrl = post.getFiles().get(0).getMedia();
 
             if(post.getPosttype().equals("A")){
                 videoPlayerLandscape.setVisibility(View.GONE);

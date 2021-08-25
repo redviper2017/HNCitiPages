@@ -2,17 +2,26 @@ package hn.techcom.com.hncitipages.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
+import com.snov.timeagolibrary.PrettyTimeAgo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
 import hn.techcom.com.hncitipages.Models.User;
 
 public class Utils {
+
+    private static final String TAG = "Utils";
 
     //fetch registered user profile from local storage
     public Profile getNewUserFromSharedPreference(Context context) {
@@ -65,4 +74,90 @@ public class Utils {
 
         return postList;
     }
+
+    //set relative time in post list
+    public ArrayList<Result> setPostRelativeTime(ArrayList<Result> postList){
+        for (Result post : postList) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
+            try {
+                long ts = Objects.requireNonNull(dateFormat.parse(post.getCreatedOn())).getTime()/1000;
+                post.setCreatedOn(getTimeAgo(ts));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return postList;
+    }
+
+    //format UTC time to "Time Ago"
+    public String getTimeAgo(long time){
+        int SECOND_MILLIS = 1000;
+        int MINUTE_MILLIS = 60 * SECOND_MILLIS;
+        int HOUR_MILLIS = 60 * MINUTE_MILLIS;
+        int DAY_MILLIS = 24 * HOUR_MILLIS;
+        if (time < 1000000000000L) {
+            time *= 1000;
+        }
+        long now = System.currentTimeMillis();
+        Log.d(TAG,"post time now in milliseonds = "+now);
+        Log.d(TAG,"system time now in milliseonds = "+time);
+        if (time > now || time <= 0) {
+            return null;
+        }
+        final long diff = now - time;
+        if (diff < MINUTE_MILLIS) {
+            return "just now";
+        } else if (diff < 2 * MINUTE_MILLIS) {
+            return "a minute ago";
+        } else if (diff < 50 * MINUTE_MILLIS) {
+            return diff / MINUTE_MILLIS + " minutes ago";
+        } else if (diff < 90 * MINUTE_MILLIS) {
+            return "an hour ago";
+        } else if (diff < 24 * HOUR_MILLIS) {
+            return diff / HOUR_MILLIS + " hours ago";
+        } else if (diff < 48 * HOUR_MILLIS) {
+            return "yesterday";
+        } else {
+            return diff / DAY_MILLIS + " days ago";
+        }
+    }
+
+    //convert UTC time to local time
+    public String utcToLocalTime(String utcTime) {
+        Log.d(TAG, "time got from server = " + utcTime);
+        SimpleDateFormat oldFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
+        oldFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date value = null;
+        String dueDateAsNormal = "";
+        try {
+            value = oldFormatter.parse(utcTime);
+            SimpleDateFormat newFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
+
+            newFormatter.setTimeZone(TimeZone.getDefault());
+            dueDateAsNormal = newFormatter.format(value);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "time returned from all post adapter = " + dueDateAsNormal);
+        return dueDateAsNormal;
+    }
+
+//    public String getTimeAgo(Result post, Context context){
+//        String timestamp = post.getCreatedOn();
+//
+//        try {
+//            String timeAgoWithStringDate = PrettyTimeAgo.getTimeAgo(
+//                    context,
+//                    timestamp,
+//                    "yyyy-MM-dd'T'HH:mm:ss.SSS"
+//            );
+//            Log.d(TAG,"Post created on = "+timestamp);
+//            Log.d(TAG,"Post created on time ago = "+timeAgoWithStringDate);
+//            return timeAgoWithStringDate;
+//        } catch (ParseException e) {
+//            // Do error handling here
+//            e.printStackTrace();
+//            return "N/A";
+//        }
+//    }
 }

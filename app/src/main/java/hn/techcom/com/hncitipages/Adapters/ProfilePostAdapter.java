@@ -200,7 +200,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //Story view holder class
     private class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location, text, likes, comments, seeMoreButton;
+        public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
         private View supportCircleView;
@@ -220,6 +220,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             favoriteButton    = view.findViewById(R.id.favorite_button_post);
             commentButton     = view.findViewById(R.id.comment_button_post);
             supportCircleView = view.findViewById(R.id.support_circle_view);
+            time              = view.findViewById(R.id.time_post);
 
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
@@ -237,7 +238,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             else
                 location.setText(address);
             text.setText(post.getText());
-
+            time.setText(post.getCreatedOn());
             //see more button toggle for large texts
 //            Handler handler = new Handler();
 //            handler.postDelayed(new Runnable() {
@@ -330,7 +331,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //Image view holder class
     private class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location, text, likes, comments, seeMoreButton;
+        public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
         public AspectRatioImageView landscapeImageView, portraitImageView;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
@@ -353,6 +354,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             favoriteButton     = view.findViewById(R.id.favorite_button_post);
             commentButton      = view.findViewById(R.id.comment_button_post);
             supportCircleView  = view.findViewById(R.id.support_circle_view);
+            time               = view.findViewById(R.id.time_post);
 
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
@@ -367,7 +369,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             name.setText(post.getUser().getFullName());
             location.setText(address);
             text.setText(post.getText());
-
+            time.setText(post.getCreatedOn());
             //see more button toggle for large texts
 //            Handler handler = new Handler();
 //            handler.postDelayed(new Runnable() {
@@ -483,7 +485,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //Video view holder class
     private class AudioVideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location, text, likes, comments, seeMoreButton;
+        public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
         private AndExoPlayerView videoPlayerPortrait, videoPlayerLandscape, audioPlayer;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
@@ -511,7 +513,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             favoriteButton       = view.findViewById(R.id.favorite_button_post);
             commentButton        = view.findViewById(R.id.comment_button_post);
             supportCircleView    = view.findViewById(R.id.support_circle_view);
-
+            time                 = view.findViewById(R.id.time_post);
             imageviewLandscape   = view.findViewById(R.id.imageview_video_landscape);
             imageviewPortrait    = view.findViewById(R.id.imageview_video_portrait);
 
@@ -542,7 +544,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             name.setText(post.getUser().getFullName());
             location.setText(address);
             text.setText(post.getText());
-
+            time.setText(post.getCreatedOn());
             //see more button toggle for large texts
 //            Handler handler = new Handler();
 //            handler.postDelayed(new Runnable() {

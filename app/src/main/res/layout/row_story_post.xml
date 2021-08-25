@@ -14,21 +14,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="@dimen/_5sdp">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/avatar_post"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:civ_border_width="0dp"
-            android:src="@drawable/profile_ic"
-            android:padding="5dp"
+            android:layout_width="@dimen/_50ssp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true" />
+            android:padding="5dp"
+            android:src="@drawable/profile_ic"
+            app:civ_border_width="0dp" />
         <View
             android:id="@+id/support_circle_view"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
             android:background="@drawable/circle_hollow"
             android:padding="5dp"
             android:layout_marginStart="5dp"
@@ -64,6 +65,17 @@
                 android:focusable="true"
                 android:fontFamily="@font/varela_round"
                 android:text="Dhaka, Bangladesh"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/time_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/varela_round"
+                android:text="just now"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp" />
         </LinearLayout>

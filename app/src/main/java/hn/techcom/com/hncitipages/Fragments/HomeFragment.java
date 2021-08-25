@@ -27,7 +27,11 @@ import com.google.gson.reflect.TypeToken;
 import com.potyvideo.library.AndExoPlayerView;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Activities.ViewCommentsActivity;
 import hn.techcom.com.hncitipages.Activities.ViewLikesActivity;
@@ -196,6 +200,7 @@ public class HomeFragment
                         nextGlobalPostListUrl = latestGlobalPostList.getNext();
 
                         ArrayList<Result> postList = new ArrayList<>(latestGlobalPostList.getResults());
+                        postList = myUtils.setPostRelativeTime(postList);
 
                         recentPostList.clear();
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
@@ -234,6 +239,7 @@ public class HomeFragment
                         nextGlobalPostListUrl = globalPostList.getNext();
 
                         ArrayList<Result> postList = new ArrayList<>(globalPostList.getResults());
+                        postList = myUtils.setPostRelativeTime(postList);
 
                         recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));

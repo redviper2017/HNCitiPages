@@ -177,6 +177,7 @@ public class FavoritesFragment
                         nextFavoritePostListUrl = latestFavoritePostList.getNext();
 
                         ArrayList<Result> postList = new ArrayList<>(latestFavoritePostList.getResults());
+                        postList = myUtils.setPostRelativeTime(postList);
 
                         recentPostList.clear();
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
