@@ -98,7 +98,7 @@
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:src="@drawable/dummy_image"
-        app:ari_ratio="0.6"
+        app:ari_ratio="0.8"
         android:visibility="visible"/>
     <!-- Layout - portrait image -->
     <com.santalu.aspectratioimageview.AspectRatioImageView
@@ -107,7 +107,7 @@
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:src="@drawable/dummy_image_2"
-        app:ari_ratio="1.1"
+        app:ari_ratio="1.4"
         android:visibility="gone"/>
     <!-- Layout - text -->
     <com.google.android.material.textview.MaterialTextView
