@@ -333,7 +333,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
-        public AspectRatioImageView landscapeImageView;
+        public ImageView landscapeImageView;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
         private View supportCircleView;
 
@@ -441,7 +441,11 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             else
                 supportCircleView.setVisibility(View.GONE);
 
-            Glide.with(context).load(imageUrl).centerCrop().into(landscapeImageView);
+            Glide
+                    .with(context)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.landscape_image_placeholder)
+                    .into(landscapeImageView);
 
             //Placing image into respective imageview based on aspect ratio
 //            if (post.getFiles().get(0).getAspect().equals("portrait")){
