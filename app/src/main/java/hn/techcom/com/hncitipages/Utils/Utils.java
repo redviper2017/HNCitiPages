@@ -95,6 +95,10 @@ public class Utils {
         int MINUTE_MILLIS = 60 * SECOND_MILLIS;
         int HOUR_MILLIS = 60 * MINUTE_MILLIS;
         int DAY_MILLIS = 24 * HOUR_MILLIS;
+        int WEEK_MILLIS = 7 * DAY_MILLIS;
+        int MONTH_MILLIS = 4 * WEEK_MILLIS;
+        int YEAR_MILLIS = 12 * MONTH_MILLIS;
+
         if (time < 1000000000000L) {
             time *= 1000;
         }
@@ -115,11 +119,22 @@ public class Utils {
             return "an hour ago";
         } else if (diff < 24 * HOUR_MILLIS) {
             return diff / HOUR_MILLIS + " hours ago";
-        } else if (diff < 48 * HOUR_MILLIS) {
+        } else if (diff < 2 * DAY_MILLIS) {
             return "yesterday";
-        } else {
+        } else if (diff < 7 * DAY_MILLIS){
             return diff / DAY_MILLIS + " days ago";
-        }
+        } else if (diff < 2 * WEEK_MILLIS){
+            return "a week ago";
+        } else if (diff < 4L * WEEK_MILLIS){
+            return diff / WEEK_MILLIS + " weeks ago";
+        }else if (diff < 2L * MONTH_MILLIS){
+            return "a month ago";
+        }else if (diff < 12L * MONTH_MILLIS){
+            return diff / MONTH_MILLIS + " months ago";
+        }else if (diff < 2 * YEAR_MILLIS){
+            return  "a year ago";
+        }else
+            return diff / YEAR_MILLIS + " years ago";
     }
 
     //convert UTC time to local time
