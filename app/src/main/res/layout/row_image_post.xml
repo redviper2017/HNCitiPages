@@ -92,23 +92,22 @@
             android:layout_alignParentEnd="true"/>
     </RelativeLayout>
     <!-- Layout - landscape image -->
-    <com.santalu.aspectratioimageview.AspectRatioImageView
+    <ImageView
         android:id="@+id/imageview_landscape_post"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
+        android:layout_height="wrap_content"
         android:src="@drawable/dummy_image"
-        app:ari_ratio="0.8"
+        android:adjustViewBounds="true"
         android:visibility="visible"/>
     <!-- Layout - portrait image -->
-    <com.santalu.aspectratioimageview.AspectRatioImageView
-        android:id="@+id/imageview_portrait_post"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/dummy_image_2"
-        app:ari_ratio="1.4"
-        android:visibility="gone"/>
+<!--    <com.santalu.aspectratioimageview.AspectRatioImageView-->
+<!--        android:id="@+id/imageview_portrait_post"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:src="@drawable/dummy_image_2"-->
+<!--        app:ari_ratio="1.4"-->
+<!--        android:visibility="gone"/>-->
     <!-- Layout - text -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_post"

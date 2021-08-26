@@ -333,7 +333,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
-        public AspectRatioImageView landscapeImageView, portraitImageView;
+        public AspectRatioImageView landscapeImageView;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
         private View supportCircleView;
 
@@ -347,7 +347,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             comments           = view.findViewById(R.id.text_comment_count_post);
             avatar             = view.findViewById(R.id.avatar_post);
             landscapeImageView = view.findViewById(R.id.imageview_landscape_post);
-            portraitImageView  = view.findViewById(R.id.imageview_portrait_post);
+
             seeMoreButton      = view.findViewById(R.id.seemore_post);
             optionsButton      = view.findViewById(R.id.options_icon_post);
             likeButton         = view.findViewById(R.id.like_button_post);
@@ -441,26 +441,29 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             else
                 supportCircleView.setVisibility(View.GONE);
 
+            Glide.with(context).load(imageUrl).centerCrop().into(landscapeImageView);
+
             //Placing image into respective imageview based on aspect ratio
-            if (post.getFiles().get(0).getAspect().equals("portrait")){
-                landscapeImageView.setVisibility(View.GONE);
-                portraitImageView.setVisibility(View.VISIBLE);
-//                Picasso
-//                        .get()
-//                        .load(imageUrl)
-//                        .into(portraitImageView);
-
-                Glide.with(context).load(imageUrl).centerCrop().into(portraitImageView);
-            }else{
-                landscapeImageView.setVisibility(View.VISIBLE);
-                portraitImageView.setVisibility(View.GONE);
-//                Picasso
-//                        .get()
-//                        .load(imageUrl)
-//                        .into(landscapeImageView);
-
-                Glide.with(context).load(imageUrl).centerCrop().into(landscapeImageView);
-            }
+//            if (post.getFiles().get(0).getAspect().equals("portrait")){
+//                landscapeImageView.setVisibility(View.GONE);
+//                portraitImageView.setVisibility(View.VISIBLE);
+////                Picasso
+////                        .get()
+////                        .load(imageUrl)
+////                        .into(portraitImageView);
+//
+//                Glide.with(context).load(imageUrl).centerCrop().into(portraitImageView);
+//            }
+//            else{
+//                landscapeImageView.setVisibility(View.VISIBLE);
+//                portraitImageView.setVisibility(View.GONE);
+////                Picasso
+////                        .get()
+////                        .load(imageUrl)
+////                        .into(landscapeImageView);
+//
+//                Glide.with(context).load(imageUrl).centerCrop().into(landscapeImageView);
+//            }
         }
 
         @Override

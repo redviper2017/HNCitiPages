@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
 import com.santalu.aspectratioimageview.AspectRatioImageView;
@@ -364,7 +365,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
-        public AspectRatioImageView landscapeImageView, portraitImageView;
+        public ImageView landscapeImageView;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
         private View supportCircleView;
 
@@ -378,7 +379,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             comments           = view.findViewById(R.id.text_comment_count_post);
             avatar             = view.findViewById(R.id.avatar_post);
             landscapeImageView = view.findViewById(R.id.imageview_landscape_post);
-            portraitImageView  = view.findViewById(R.id.imageview_portrait_post);
+
             seeMoreButton      = view.findViewById(R.id.seemore_post);
             optionsButton      = view.findViewById(R.id.options_icon_post);
             likeButton         = view.findViewById(R.id.like_button_post);
@@ -476,26 +477,35 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else
                 supportCircleView.setVisibility(View.GONE);
 
+//            if (post.getFiles().get(0).getAspect().equals("portrait"))
+                Glide
+                        .with(context)
+                        .load(imageUrl)
+                        .placeholder(R.drawable.landscape_image_placeholder)
+                        .into(landscapeImageView);
+
+
             //Placing image into respective imageview based on aspect ratio
-            if (post.getFiles().get(0).getAspect().equals("portrait")){
-                landscapeImageView.setVisibility(View.GONE);
-                portraitImageView.setVisibility(View.VISIBLE);
-//                Picasso
-//                        .get()
-//                        .load(imageUrl)
-//                        .into(portraitImageView);
-
-                Glide.with(context).load(imageUrl).centerCrop().into(portraitImageView);
-            }else{
-                landscapeImageView.setVisibility(View.VISIBLE);
-                portraitImageView.setVisibility(View.GONE);
-//                Picasso
-//                        .get()
-//                        .load(imageUrl)
-//                        .into(landscapeImageView);
-
-                Glide.with(context).load(imageUrl).centerCrop().into(landscapeImageView);
-            }
+//            if (post.getFiles().get(0).getAspect().equals("portrait")){
+//                landscapeImageView.setVisibility(View.GONE);
+//                portraitImageView.setVisibility(View.VISIBLE);
+////                Picasso
+////                        .get()
+////                        .load(imageUrl)
+////                        .into(portraitImageView);
+//
+//                Glide.with(context).load(imageUrl).centerCrop().into(portraitImageView);
+//            }
+//            else{
+//                landscapeImageView.setVisibility(View.VISIBLE);
+//                portraitImageView.setVisibility(View.GONE);
+////                Picasso
+////                        .get()
+////                        .load(imageUrl)
+////                        .into(landscapeImageView);
+//
+//                Glide.with(context).load(imageUrl).centerCrop().into(landscapeImageView);
+//            }
         }
 
         @Override
