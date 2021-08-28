@@ -203,6 +203,7 @@ public class ViewProfileFragment
                         nextUserPostListUrl = postList.getNext();
 
                         ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
+                        postArrayList = myUtils.setPostRelativeTime(postArrayList);
 
                         recentPostList.clear();
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
@@ -231,16 +232,17 @@ public class ViewProfileFragment
             public void onResponse(Call<PostList> call, Response<PostList> response) {
                 if(response.code() == 200){
                     PostList postList = response.body();
-                    Log.d(TAG, "total number of supporting profile posts = "+postList.getCount());
+//                    Log.d(TAG, "total number of supporting profile posts = "+postList.getCount());
                     if(postList != null){
                         nextUserPostListUrl = postList.getNext();
                         ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
+                        postArrayList = myUtils.setPostRelativeTime(postArrayList);
 
                         recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
 
 
-                        postListAdapter.notifyDataSetChanged();
+                        postListAdapter.notifyItemRangeChanged(0,recentPostList.size());
                         if (postList.getNext() != null) {
                             recentPostList.add(null);
                             Log.d(TAG, "total number of user posts fetched = " + recentPostList.size());
