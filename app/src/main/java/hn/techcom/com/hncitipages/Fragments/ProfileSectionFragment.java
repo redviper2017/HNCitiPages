@@ -205,17 +205,20 @@ public class ProfileSectionFragment
             public void onResponse(Call<PostList> call, Response<PostList> response) {
                 if (response.code() == 200){
                     Log.d(TAG,"total number of post by this user = "+response.body().getResults().size());
-                    PostList postList = response.body();
+                    PostList latestPostListByUser = response.body();
 
-                    postCount = postList.getCount();
+                    postCount = latestPostListByUser.getCount();
 
-                    if (postList.getCount() > 0) {
+                    if (latestPostListByUser.getCount() > 0) {
+                        ArrayList<Result> postList = new ArrayList<>(latestPostListByUser.getResults());
+                        postList = myUtils.setPostRelativeTime(postList);
+
                         initialPostList.clear();
-                        initialPostList.addAll(postList.getResults());
+                        initialPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
                     }
 
-                    if (postList.getNext() != null) {
-                        nextPageUrl = postList.getNext();
+                    if (latestPostListByUser.getNext() != null) {
+                        nextPageUrl = latestPostListByUser.getNext();
                         initialPostList.add(null);
                     }
 
@@ -238,30 +241,32 @@ public class ProfileSectionFragment
         Call<PostList> call = service.getPostsBySingleUserFromPage(nextPage);
         call.enqueue(new Callback<PostList>() {
             @Override
-            public void onResponse(Call<PostList> call, Response<PostList> response) {
+            public void onResponse(@NonNull Call<PostList> call, @NonNull Response<PostList> response) {
                 if(response.code() == 200){
-                    PostList postList = response.body();
-                    Log.d(TAG, "total number of supporting profile posts = "+postList.getCount());
-                    if(postList != null){
-                        nextPageUrl = postList.getNext();
-                        ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
+                    PostList postListByUser = response.body();
+//                    Log.d(TAG, "total number of supporting profile posts = "+postListByUser.getCount());
+                    if(postListByUser != null){
+                        nextPageUrl = postListByUser.getNext();
+
+                        ArrayList<Result> postArrayList = new ArrayList<>(postListByUser.getResults());
+                        postArrayList = myUtils.setPostRelativeTime(postArrayList);
 
                         initialPostList.remove(initialPostList.size() - 1);
                         initialPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
 
 
-                        profilePostAdapter.notifyDataSetChanged();
-                        if (postList.getNext() != null) {
+                        profilePostAdapter.notifyItemRangeChanged(0,initialPostList.size());
+                        if (postListByUser.getNext() != null) {
                             initialPostList.add(null);
                             Log.d(TAG, "total number of user posts fetched = " + initialPostList.size());
-                            getPostsListBySingleUserFromPage(postList.getNext());
+                            getPostsListBySingleUserFromPage(postListByUser.getNext());
                         }
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<PostList> call, Throwable t) {
+            public void onFailure(@NonNull Call<PostList> call, @NonNull Throwable t) {
 
             }
         });
