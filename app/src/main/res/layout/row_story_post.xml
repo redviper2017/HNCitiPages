@@ -58,6 +58,18 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/title_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/varela_round"
+                android:text="CTO, HN CitiPages"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                android:visibility="gone"/>
+
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/location_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

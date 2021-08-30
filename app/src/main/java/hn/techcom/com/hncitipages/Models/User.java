@@ -10,6 +10,9 @@ public class User {
     @SerializedName("user_type")
     @Expose
     private String userType;
+    @SerializedName("title")
+    @Expose
+    private String title;
     @SerializedName("email")
     @Expose
     private String email;
@@ -64,6 +67,14 @@ public class User {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getEmail() {

@@ -84,7 +84,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class CommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location;
+        public MaterialTextView name, location, title;
         public CircleImageView avatar, replyAvatar;
         private MaterialTextView commentPost;
         private RecyclerView repliesRecyclerview;
@@ -100,6 +100,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             myUtils = new Utils();
 
             name           = view.findViewById(R.id.name_post);
+            title          = view.findViewById(R.id.title_post);
             location       = view.findViewById(R.id.location_post);
             avatar         = view.findViewById(R.id.avatar_post);
             replyAvatar    = view.findViewById(R.id.avatar_post_reply);
@@ -116,13 +117,25 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         void bind(ResultViewComments comment){
             String address = comment.getUser().getCity() + ", " + comment.getUser().getCountry();
+            String user_title = comment.getUser().getTitle();
 
             //setting up user name and location
             name.setText(comment.getUser().getFullName());
-            if (!address.contains("N/A"))
-                location.setText(address);
-            else
+            if (!user_title.equals("User")){
+                title.setVisibility(View.VISIBLE);
                 location.setVisibility(View.GONE);
+
+                String user_title_text = user_title + ", HN CitiPages";
+                title.setText(user_title_text);
+            }else {
+                if (comment.getUser().getCity().equals("N/A") || comment.getUser().getCountry().equals("N/A"))
+                    location.setVisibility(View.GONE);
+                else {
+                    location.setVisibility(View.VISIBLE);
+                    title.setVisibility(View.GONE);
+                    location.setText(address);
+                }
+            }
 
             //setting up user avatar
             String profilePhotoUrl = comment.getUser().getProfileImgThumbnail();

@@ -233,7 +233,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //Story view holder class
     private class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
+        public MaterialTextView name, title, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
         private View supportCircleView;
@@ -242,6 +242,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(view);
 
             name              = view.findViewById(R.id.name_post);
+            title             = view.findViewById(R.id.title_post);
             location          = view.findViewById(R.id.location_post);
             text              = view.findViewById(R.id.text_post);
             likes             = view.findViewById(R.id.text_like_count_post);
@@ -264,11 +265,24 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
+            String user_title = post.getUser().getTitle();
+
             name.setText(post.getUser().getFullName());
-            if (post.getUser().getCity().equals("N/A") || post.getUser().getCountry().equals("N/A"))
+            if (!user_title.equals("User")){
+                title.setVisibility(View.VISIBLE);
                 location.setVisibility(View.GONE);
-            else
-                location.setText(address);
+
+                String user_title_text = user_title + ", HN CitiPages";
+                title.setText(user_title_text);
+            }else {
+                if (post.getUser().getCity().equals("N/A") || post.getUser().getCountry().equals("N/A"))
+                    location.setVisibility(View.GONE);
+                else {
+                    location.setVisibility(View.VISIBLE);
+                    title.setVisibility(View.GONE);
+                    location.setText(address);
+                }
+            }
             text.setText(post.getText());
             time.setText(post.getCreatedOn());
             //see more button toggle for large texts
@@ -363,7 +377,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //Image view holder class
     private class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
+        public MaterialTextView name, title, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
         public ImageView landscapeImageView;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
@@ -373,6 +387,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(view);
 
             name               = view.findViewById(R.id.name_post);
+            title              = view.findViewById(R.id.title_post);
             location           = view.findViewById(R.id.location_post);
             text               = view.findViewById(R.id.text_post);
             likes              = view.findViewById(R.id.text_like_count_post);
@@ -397,12 +412,24 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
+            String user_title = post.getUser().getTitle();
 
             name.setText(post.getUser().getFullName());
-            if (post.getUser().getCity().equals("N/A") || post.getUser().getCountry().equals("N/A"))
+            if (!user_title.equals("User")){
+                title.setVisibility(View.VISIBLE);
                 location.setVisibility(View.GONE);
-            else
-                location.setText(address);
+
+                String user_title_text = user_title + ", HN CitiPages";
+                title.setText(user_title_text);
+            }else {
+                if (post.getUser().getCity().equals("N/A") || post.getUser().getCountry().equals("N/A"))
+                    location.setVisibility(View.GONE);
+                else {
+                    location.setVisibility(View.VISIBLE);
+                    title.setVisibility(View.GONE);
+                    location.setText(address);
+                }
+            }
             text.setText(post.getText());
             time.setText(post.getCreatedOn());
 
@@ -530,7 +557,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //Video view holder class
     private class AudioVideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location, text, likes, comments, seeMoreButton, time;
+        public MaterialTextView name, title, location, text, likes, comments, seeMoreButton, time;
         public CircleImageView avatar;
         private AndExoPlayerView videoPlayerPortrait, videoPlayerLandscape, audioPlayer;
         private ImageButton optionsButton, likeButton, favoriteButton, commentButton;
@@ -543,6 +570,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(view);
 
             name                 = view.findViewById(R.id.name_post);
+            title                = view.findViewById(R.id.title_post);
             location             = view.findViewById(R.id.location_post);
             text                 = view.findViewById(R.id.text_post);
             likes                = view.findViewById(R.id.text_like_count_post);
@@ -585,12 +613,25 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
+            String user_title = post.getUser().getTitle();
 
             name.setText(post.getUser().getFullName());
-            if (post.getUser().getCity().equals("N/A") || post.getUser().getCountry().equals("N/A"))
+            if (!user_title.equals("User")){
+                title.setVisibility(View.VISIBLE);
                 location.setVisibility(View.GONE);
-            else
-                location.setText(address);
+
+                String user_title_text = user_title + ", HN CitiPages";
+                title.setText(user_title_text);
+            }else {
+                if (post.getUser().getCity().equals("N/A") || post.getUser().getCountry().equals("N/A"))
+                    location.setVisibility(View.GONE);
+                else {
+                    location.setVisibility(View.VISIBLE);
+                    title.setVisibility(View.GONE);
+                    location.setText(address);
+                }
+            }
+
             text.setText(post.getText());
             time.setText(post.getCreatedOn());
             //see more button toggle for large texts

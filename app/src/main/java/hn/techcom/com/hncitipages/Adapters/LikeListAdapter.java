@@ -73,27 +73,40 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private class LikeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location;
+        public MaterialTextView name, location, title;
         public CircleImageView avatar;
 
         public LikeViewHolder(@NonNull View view) {
             super(view);
 
             name           = view.findViewById(R.id.name_post);
+            title          = view.findViewById(R.id.title_post);
             location       = view.findViewById(R.id.location_post);
             avatar         = view.findViewById(R.id.avatar_post);
         }
 
         void bind(ResultViewLikes like) {
             String address = like.getUser().getCity() + ", " + like.getUser().getCountry();
+            String user_title = like.getUser().getTitle();
 
             //setting up user name and location
             name.setText(like.getUser().getFullName());
 
-            if (!address.contains("N/A"))
-                location.setText(address);
-            else
+            if (!user_title.equals("User")){
+                title.setVisibility(View.VISIBLE);
                 location.setVisibility(View.GONE);
+
+                String user_title_text = user_title + ", HN CitiPages";
+                title.setText(user_title_text);
+            }else {
+                if (like.getUser().getCity().equals("N/A") || like.getUser().getCountry().equals("N/A"))
+                    location.setVisibility(View.GONE);
+                else {
+                    location.setVisibility(View.VISIBLE);
+                    title.setVisibility(View.GONE);
+                    location.setText(address);
+                }
+            }
 
             //setting up user avatar
             String profilePhotoUrl = like.getUser().getProfileImgThumbnail();
