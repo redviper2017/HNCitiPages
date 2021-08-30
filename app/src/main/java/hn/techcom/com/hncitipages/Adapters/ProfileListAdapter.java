@@ -49,27 +49,40 @@ public class ProfileListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class ProfileViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public MaterialTextView name, location;
+        public MaterialTextView name, location, title;
         public CircleImageView avatar;
 
         public ProfileViewHolder(@NonNull View view) {
             super(view);
 
             name           = view.findViewById(R.id.name_post);
+            title          = view.findViewById(R.id.title_post);
             location       = view.findViewById(R.id.location_post);
             avatar         = view.findViewById(R.id.avatar_post);
         }
 
         void bind(User profile) {
             String address = profile.getCity() + ", " + profile.getCountry();
+            String user_title = profile.getTitle();
 
             //setting up user name and location
             name.setText(profile.getFullName());
 
-            if (!address.contains("N/A"))
-                location.setText(address);
-            else
+            if (!user_title.equals("User")){
+                title.setVisibility(View.VISIBLE);
                 location.setVisibility(View.GONE);
+
+                String user_title_text = user_title + ", HN CitiPages";
+                title.setText(user_title_text);
+            }else {
+                if (profile.getCity().equals("N/A") || profile.getCountry().equals("N/A"))
+                    location.setVisibility(View.GONE);
+                else {
+                    location.setVisibility(View.VISIBLE);
+                    title.setVisibility(View.GONE);
+                    location.setText(address);
+                }
+            }
 
             //setting up user avatar
             String profilePhotoUrl = profile.getProfileImgThumbnail();
