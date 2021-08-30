@@ -65,7 +65,11 @@ public class ProfileListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             //setting up user name and location
             name.setText(profile.getFullName());
-            location.setText(address);
+
+            if (!address.contains("N/A"))
+                location.setText(address);
+            else
+                location.setVisibility(View.GONE);
 
             //setting up user avatar
             String profilePhotoUrl = profile.getProfileImgThumbnail();
