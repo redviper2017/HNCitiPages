@@ -193,9 +193,10 @@ public class PostsActivity
                         nextPageUrl = postList.getNext();
 
                         ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
+                        postArrayList = myUtils.setPostRelativeTime(postArrayList);
 
                         recentPostList.remove(recentPostList.size() - 1);
-                        recentPostList.addAll(postArrayList);
+                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
 
 
                         adapter.notifyDataSetChanged();
