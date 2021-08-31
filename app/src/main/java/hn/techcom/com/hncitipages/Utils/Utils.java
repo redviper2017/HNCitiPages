@@ -80,7 +80,7 @@ public class Utils {
         for (Result post : postList) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
             try {
-                long ts = Objects.requireNonNull(dateFormat.parse(post.getCreatedOn())).getTime()/1000;
+                long ts = Objects.requireNonNull(dateFormat.parse(utcToLocalTime(post.getCreatedOn()))).getTime()/1000;
                 post.setCreatedOn(getTimeAgo(ts));
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -153,7 +153,6 @@ public class Utils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.d(TAG, "time returned from all post adapter = " + dueDateAsNormal);
         return dueDateAsNormal;
     }
 
