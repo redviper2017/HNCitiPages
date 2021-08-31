@@ -452,18 +452,20 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         Call<PostList> call = service.getLatestPostsBySingleUser(target_hnid,userProfile.getHnid());
         call.enqueue(new Callback<PostList>() {
             @Override
-            public void onResponse(Call<PostList> call, Response<PostList> response) {
+            public void onResponse(@NonNull Call<PostList> call, @NonNull Response<PostList> response) {
                 if (response.code() == 200){
                     Log.d(TAG,"total number of post by this user = "+response.body().getResults().size());
-                    PostList postList = response.body();
+                    PostList userPostList = response.body();
+                    ArrayList<Result> postList = new ArrayList<>(userPostList.getResults());
+                    postList = myUtils.setPostRelativeTime(postList);
 
-                    postCount = postList.getCount();
-                    if (postList.getNext() != null)
-                        nextPageUrl = postList.getNext();
+                    postCount = userPostList.getCount();
+                    if (userPostList.getNext() != null)
+                        nextPageUrl = userPostList.getNext();
 
-                    if (postList.getCount() > 0) {
-                        initialPostList.addAll(postList.getResults());
-                        postCountText.setText(String.valueOf(postList.getCount()));
+                    if (userPostList.getCount() > 0) {
+                        initialPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
+                        postCountText.setText(String.valueOf(userPostList.getCount()));
                     }
                     else
                         postCountText.setText("0");
@@ -471,7 +473,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             }
 
             @Override
-            public void onFailure(Call<PostList> call, Throwable t) {
+            public void onFailure(@NonNull Call<PostList> call, @NonNull Throwable t) {
 
             }
         });
