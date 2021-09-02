@@ -36,6 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import hn.techcom.com.hncitipages.Fragments.ExploreFragment;
 import hn.techcom.com.hncitipages.Fragments.HomeFragment;
 import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
 import hn.techcom.com.hncitipages.Fragments.SharePostBottomSheetFragment;
@@ -156,6 +157,9 @@ public class MainActivity extends AppCompatActivity {
                 else
                     Toast.makeText(MainActivity.this,"You have to make your first post to view this section",Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.navigation_explore:
+                fragmentSelected = new ExploreFragment();
+                break;
             case android.R.id.home:
                 BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
                 bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
@@ -163,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         }
         // Begin the transaction
         if(fragmentSelected != null)
-            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragmentSelected)).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragmentSelected)).addToBackStack(null).commit();
         return true;
     }
 

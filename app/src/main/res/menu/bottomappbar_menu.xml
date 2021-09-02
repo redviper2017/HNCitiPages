@@ -25,4 +25,10 @@
         android:enabled="true"
         android:icon="@drawable/my_profile_ic"
         android:title="My Profile" />
+    <item
+        android:id="@+id/navigation_explore"
+        app:showAsAction="always"
+        android:enabled="true"
+        android:icon="@drawable/explore_ic"
+        android:title="Explore" />
 </menu>

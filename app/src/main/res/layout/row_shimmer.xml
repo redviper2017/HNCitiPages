@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+    <!-- Layout - user info & options menu button -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/_5sdp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/avatar_post"
+            android:layout_width="@dimen/_50ssp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:padding="5dp"
+            android:background="@color/colorLightGrey"
+            app:civ_border_width="0dp" />
+        <View
+            android:id="@+id/support_circle_view"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@drawable/circle_hollow"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/options_icon_post"
+            android:layout_toEndOf="@id/avatar_post"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/name_post"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:background="@color/colorLightGrey"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/location_post"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/colorLightGrey"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/time_post"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/colorLightGrey"/>
+        </LinearLayout>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterButton
+            android:id="@+id/options_icon_post"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/colorLightGrey" />
+    </RelativeLayout>
+
+    <!-- Layout - text -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_post"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_200sdp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorLightGrey"
+        android:ellipsize="end"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/seemore_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/see_more"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:fontFamily="@font/sf_pro_rounded_regular"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginEnd="20dp"
+        android:autoLink="all"
+        android:ellipsize="end"
+        android:layout_gravity="end"
+        android:visibility="gone"/>
+
+    <!-- Layout - like,favorite,comment buttons; like count & comment count -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:orientation="horizontal">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:id="@+id/like_button_post"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="5dp"
+                android:background="@color/colorLightGrey" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:id="@+id/favorrite_button_post"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="5dp"
+                android:background="@color/colorLightGrey" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:id="@+id/comment_button_post"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="5dp"
+                android:background="@color/colorLightGrey" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_like_count_post"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/colorLightGrey"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_comment_count_post"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorLightGrey" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

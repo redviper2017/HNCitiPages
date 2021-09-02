@@ -11,6 +11,7 @@ import hn.techcom.com.hncitipages.Models.NewPostResponse;
 import hn.techcom.com.hncitipages.Models.PostList;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Reply;
+import hn.techcom.com.hncitipages.Models.Result;
 import hn.techcom.com.hncitipages.Models.ResultViewComments;
 import hn.techcom.com.hncitipages.Models.SingleUserInfoResponse;
 import hn.techcom.com.hncitipages.Models.SupportingProfileList;
@@ -255,4 +256,12 @@ public interface GetDataService {
     //Get Network location
     @GET("http://ip-api.com/json/")
     Call<NetworkLocation> getNetworkLocation();
+
+    //Get Latest Post by Type (i.e. S - Story, V - Videos, A - Audios, I - Images)
+    @GET("posts/get/{hnid}/pbt/{type}")
+    Call<PostList> getLatestPostByType(@Path("hnid") String hnid, @Path("type") String type);
+
+    //Get Latest Post by Type from page (i.e. S - Story, V - Videos, A - Audios, I - Images)
+    @GET()
+    Call<PostList> getPostsByTypeFromPage(@Url String url);
 }
