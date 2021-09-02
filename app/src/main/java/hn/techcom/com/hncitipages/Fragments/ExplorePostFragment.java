@@ -149,6 +149,8 @@ public class ExplorePostFragment
 
     //get initial global posts list
     public void getLatestPosts(String type){
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
         shimmerFrameLayout.startShimmer();
         Log.d(TAG,"getLatestPost called = "+"YES");
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
