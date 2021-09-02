@@ -3,12 +3,14 @@ package hn.techcom.com.hncitipages.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
@@ -29,7 +31,8 @@ public class ViewLikesActivity extends AppCompatActivity implements View.OnClick
     private RecyclerView recyclerView;
     private LikeListAdapter likesListAdapter;
     private MaterialTextView screenTitle;
-
+    private ShimmerFrameLayout shimmerFrameLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private static final String TAG = "ViewLikesActivity";
     private ArrayList<ResultViewLikes> likesArrayList;
 
@@ -48,13 +51,22 @@ public class ViewLikesActivity extends AppCompatActivity implements View.OnClick
         screenTitle                    = findViewById(R.id.text_screen_title_view_likes);
         likeCountText                  = findViewById(R.id.text_like_count_view_likes);
         recyclerView                   = findViewById(R.id.recyclerview_posts_likes);
-
+        swipeRefreshLayout             = findViewById(R.id.swipeRefresh);
+        shimmerFrameLayout             = findViewById(R.id.shimmerLayout);
         likesArrayList                 = new ArrayList<>();
 
         viewLikesOnPost();
 
         //OnClick Listeners
         backButton.setOnClickListener(this);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                likesArrayList.clear();
+                viewLikesOnPost();
+            }
+        });
     }
 
     @Override
@@ -64,6 +76,10 @@ public class ViewLikesActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void viewLikesOnPost(){
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        shimmerFrameLayout.startShimmer();
+
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ViewLikesResponse> call = service.viewLikes(postId);
         call.enqueue(new Callback<ViewLikesResponse>() {
@@ -92,6 +108,9 @@ public class ViewLikesActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void setRecyclerView(ArrayList<ResultViewLikes> likeList){
+        shimmerFrameLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setRefreshing(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         likesListAdapter = new LikeListAdapter(recyclerView, likeList, this);
         recyclerView.setAdapter(likesListAdapter);
