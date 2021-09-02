@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 import com.potyvideo.library.AndExoPlayerView;
@@ -83,7 +84,7 @@ public class ProfileSectionFragment
     private SwipeRefreshLayout swipeRefreshLayout;
     private AndExoPlayerView playerView;
     private ImageView imageView, playButton;
-
+    private ShimmerFrameLayout shimmerFrameLayout;
     public ProfileSectionFragment() {
         // Required empty public constructor
     }
@@ -108,6 +109,7 @@ public class ProfileSectionFragment
         supporterCountText           = view.findViewById(R.id.supporter_count_viewprofile);
         recyclerView                 = view.findViewById(R.id.recyclerview_posts_profile_section);
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
+        shimmerFrameLayout           = view.findViewById(R.id.shimmerLayout);
 
         getLatestPostsListBySingleUser(userProfile.getHnid());
         getSupportingProfiles();
@@ -198,6 +200,10 @@ public class ProfileSectionFragment
 
     //get initial user posts list
     public void getLatestPostsListBySingleUser(String target_hnid) {
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        shimmerFrameLayout.startShimmer();
+
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getLatestPostsBySingleUser(target_hnid,userProfile.getHnid());
         call.enqueue(new Callback<PostList>() {
@@ -274,6 +280,8 @@ public class ProfileSectionFragment
 
 
     public void setRecyclerView(ArrayList<Result> postList){
+        shimmerFrameLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         profilePostAdapter = new ProfilePostAdapter(
                 initialPostList,

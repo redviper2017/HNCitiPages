@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
@@ -78,7 +79,8 @@ public class VisitSectionFragment
     private FloatingActionButton changeLocationButton, currentLocationButton;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private  AlertDialog dialog;
+    private ShimmerFrameLayout shimmerFrameLayout;
+    private AlertDialog dialog;
     private MaterialTextView location;
     private LinearLayout cityLayout;
     private PostListAdapter postListAdapter;
@@ -102,7 +104,7 @@ public class VisitSectionFragment
         currentLocationButton        = view.findViewById(R.id.current_location_fab);
         recyclerView                 = view.findViewById(R.id.recyclerview_posts_visitsection);
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
-
+        shimmerFrameLayout           = view.findViewById(R.id.shimmerLayout);
         citiesList     = new ArrayList<>();
         countriesList  = new ArrayList<>();
         recentPostList = new ArrayList<>();
@@ -307,6 +309,10 @@ public class VisitSectionFragment
     }
 
     public void getLatestPostsByCity(String city){
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        shimmerFrameLayout.startShimmer();
+
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getLatestPostsFromCity(userProfile.getHnid(),city);
 
@@ -456,6 +462,8 @@ public class VisitSectionFragment
     }
 
     public void setRecyclerView(ArrayList<Result> postList){
+        shimmerFrameLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postListAdapter = new PostListAdapter(
                 postList,

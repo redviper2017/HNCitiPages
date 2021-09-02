@@ -18,16 +18,7 @@
                 android:layout_height="80dp"
                 app:civ_border_width="0dp"
                 android:padding="5dp"
-                app:civ_border_color="@android:color/white"
-                android:src="@drawable/dummy_profile_avatar"/>
-
-            <View
-                android:id="@+id/profile_circle_view"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/circle_hollow_1"
-                android:padding="5dp"
-                android:visibility="visible" />
+                android:background="@color/colorLightGrey"/>
 
         </RelativeLayout>
         <LinearLayout
@@ -42,18 +33,15 @@
             android:focusable="true">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/post_count_viewprofile"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_30sdp"
                 android:layout_height="wrap_content"
-                android:text="1,380"
-                android:textColor="@color/colorText"
-                android:textStyle="bold"
-                android:textSize="20sp"
+                android:background="@color/colorLightGrey"
                 android:layout_gravity="center"/>
             <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_40sdp"
                 android:layout_height="wrap_content"
-                android:text="Posts"
-                android:textSize="16sp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/colorLightGrey"
                 android:layout_gravity="center"/>
         </LinearLayout>
         <LinearLayout
@@ -65,18 +53,15 @@
             android:layout_marginStart="@dimen/_20sdp">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/supporter_count_viewprofile"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_30sdp"
                 android:layout_height="wrap_content"
-                android:text="103K"
-                android:textColor="@color/colorText"
-                android:textStyle="bold"
-                android:textSize="20sp"
+                android:background="@color/colorLightGrey"
                 android:layout_gravity="center"/>
             <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_60sdp"
                 android:layout_height="wrap_content"
-                android:text="Supporters"
-                android:textSize="16sp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/colorLightGrey"
                 android:layout_gravity="center"/>
         </LinearLayout>
         <LinearLayout
@@ -88,18 +73,15 @@
             android:layout_marginStart="@dimen/_20sdp">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/supporting_count_viewprofile"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_30sdp"
                 android:layout_height="wrap_content"
-                android:text="339"
-                android:textColor="@color/colorText"
-                android:textStyle="bold"
-                android:textSize="20sp"
+                android:background="@color/colorLightGrey"
                 android:layout_gravity="center"/>
             <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_60sdp"
                 android:layout_height="wrap_content"
-                android:text="Supporting"
-                android:textSize="16sp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/colorLightGrey"
                 android:layout_gravity="center"/>
         </LinearLayout>
     </LinearLayout>
@@ -116,44 +98,33 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/profile_name"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_70sdp"
                 android:layout_height="wrap_content"
-                android:text="Yasir Ahmed"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:background="@color/colorLightGrey"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/profile_location"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_90sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_height="wrap_content"
-                android:text="Dhaka, Bangladesh"
-                android:textSize="16sp" />
+                android:background="@color/colorLightGrey"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/profile_username"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_110sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_height="wrap_content"
-                android:text="HNDev #KUWL126B"
-                android:textSize="16sp" />
+                android:background="@color/colorLightGrey"/>
         </LinearLayout>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/update_profile_button"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_90sdp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_gravity="center"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:drawableStart="@drawable/update_ic"
-            android:drawablePadding="5dp"
-            android:drawableTint="@color/colorCenterLinearGradient"
-            android:focusable="true"
-            android:gravity="center"
-            android:text="Update Profile"
-            android:textAlignment="center"
-            android:textColor="@color/colorCenterLinearGradient"
-            android:textSize="16sp" />
+            android:background="@color/colorLightGrey"
+            android:gravity="center" />
 
     </RelativeLayout>
 </LinearLayout>

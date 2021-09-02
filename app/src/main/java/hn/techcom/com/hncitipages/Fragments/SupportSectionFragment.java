@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -82,7 +83,8 @@ public class SupportSectionFragment
     private AvatarLoaderAdapter avatarLoaderAdapter;
     private String nextSupportingPostListUrl;
     private SwipeRefreshLayout swipeRefreshLayout;
-
+    private ShimmerFrameLayout shimmerFrameLayout;
+    private ShimmerFrameLayout avatarShimmerFrameLayout;
     private ArrayList<Result> recentPostList;
 
     private AndExoPlayerView playerView;
@@ -107,6 +109,8 @@ public class SupportSectionFragment
         profileRecyclerView          = view.findViewById(R.id.recyclerview_supported_avatars_supportsection);
         searchView                   = view.findViewById(R.id.searchview_supportedsection);
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
+        shimmerFrameLayout           = view.findViewById(R.id.shimmerLayout);
+        avatarShimmerFrameLayout     = view.findViewById(R.id.shimmerLayout_avatar);
 
         recentPostList = new ArrayList<>();
 
@@ -189,6 +193,10 @@ public class SupportSectionFragment
 
     //get initial supporting profile list
     public void getSupportingProfiles(){
+        avatarShimmerFrameLayout.setVisibility(View.VISIBLE);
+        profileRecyclerView.setVisibility(View.GONE);
+        avatarShimmerFrameLayout.startShimmer();
+
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<SupportingProfileList> call = service.getSupportingProfiles(userProfile.getHnid());
         call.enqueue(new Callback<SupportingProfileList>(){
@@ -220,6 +228,10 @@ public class SupportSectionFragment
 
     //get initial supporting profile posts list
     public void getSupportingProfilePosts(){
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        shimmerFrameLayout.startShimmer();
+
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getLatestSupportingProfilePosts(userProfile.getHnid());
 
@@ -291,6 +303,9 @@ public class SupportSectionFragment
     }
 
     public void setRecyclerView(ArrayList<Result> postList){
+        shimmerFrameLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postListAdapter = new PostListAdapter(
                 postList, getContext(),
@@ -306,6 +321,9 @@ public class SupportSectionFragment
     }
 
     public void setProfilesRecyclerView(ArrayList<User> supportingProfileList){
+        avatarShimmerFrameLayout.setVisibility(View.GONE);
+        profileRecyclerView.setVisibility(View.VISIBLE);
+
         ArrayList<String> avatarList = new ArrayList<>();
         ArrayList<String> nameList = new ArrayList<>();
         ArrayList<String> usernameList = new ArrayList<>();

@@ -19,19 +19,23 @@
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/custom_image_button_back.xml" value="0.1" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_explore.xml" value="0.176" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_explore_post.xml" value="0.16" />
+        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_favorites.xml" value="0.1329861111111111" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_full_image_view.xml" value="0.265625" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_profile_section.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_support_section.xml" value="0.265625" />
+        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_support_section.xml" value="0.1" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_supported_profile_section.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_supporting_supporter_list.xml" value="0.1" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_view_profile.xml" value="0.265625" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_visit_section.xml" value="0.265625" />
+        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_avatar_shimmer.xml" value="0.1329861111111111" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_comments.xml" value="0.176" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_image_post.xml" value="0.176" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_likes.xml" value="0.16" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_my_profile_info.xml" value="0.265625" />
+        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_profile_shimmer.xml" value="0.1329861111111111" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_shimmer.xml" value="0.264" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_story_post.xml" value="0.136" />
+        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_user_avatar.xml" value="0.1329861111111111" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/row_video_post.xml" value="0.2" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/screen_title_view.xml" value="0.16776315789473684" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/view_hnid_alert_layout.xml" value="0.19166666666666668" />

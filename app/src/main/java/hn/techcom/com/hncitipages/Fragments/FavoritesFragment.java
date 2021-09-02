@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
 
@@ -69,7 +70,7 @@ public class FavoritesFragment
     private EditText searchView;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-
+    private ShimmerFrameLayout shimmerFrameLayout;
     private AndExoPlayerView playerView;
     private ImageView imageView, playButton;
 
@@ -92,6 +93,7 @@ public class FavoritesFragment
         recyclerView                 = view.findViewById(R.id.recyclerview_posts_favorites);
         searchView                   = view.findViewById(R.id.searchview_favorites);
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
+        shimmerFrameLayout           = view.findViewById(R.id.shimmerLayout);
 
         screenTitle.setText(R.string.favorites);
         getLatestFavoritePostList();
@@ -164,6 +166,10 @@ public class FavoritesFragment
     }
 
     public void getLatestFavoritePostList(){
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        shimmerFrameLayout.startShimmer();
+
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getLatestFavoritePosts(userProfile.getHnid());
 
@@ -239,6 +245,8 @@ public class FavoritesFragment
     }
 
     public void setRecyclerView(ArrayList<Result> postList){
+        shimmerFrameLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postListAdapter = new PostListAdapter(
                 postList,
