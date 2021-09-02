@@ -2,10 +2,13 @@ package hn.techcom.com.hncitipages.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -89,6 +92,7 @@ public class ExplorePostFragment
         recyclerView                 = view.findViewById(R.id.recyclerview_explore_post);
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
         shimmerFrameLayout           = view.findViewById(R.id.shimmerLayout);
+        EditText searchView          = view.findViewById(R.id.searchview_explore_post);
 
         Bundle bundle = this.getArguments();
 
@@ -153,6 +157,24 @@ public class ExplorePostFragment
                 }
 
         });
+
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString().toLowerCase());
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -369,5 +391,17 @@ public class ExplorePostFragment
                 Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void filter(String text) {
+        ArrayList<Result> filterNames = new ArrayList<>();
+
+        for (Result post : recentPostList)
+            if(post != null)
+                if (post.getUser().getFullName().toLowerCase().contains(text))
+                    filterNames.add(post);
+
+        if(postListAdapter != null)
+            postListAdapter.filterList(filterNames);
     }
 }
