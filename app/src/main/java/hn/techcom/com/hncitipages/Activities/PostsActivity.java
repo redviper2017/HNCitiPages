@@ -250,8 +250,8 @@ public class PostsActivity
     }
 
     @Override
-    public void onCommentClick(int postId) {
-        myUtils.onCommentCountClick(postId,this);
+    public void onCommentClick(int postId,int count) {
+        myUtils.onCommentCountClick(postId,count,this);
     }
 
     @Override

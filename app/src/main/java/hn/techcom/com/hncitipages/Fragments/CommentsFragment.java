@@ -49,7 +49,7 @@ public class CommentsFragment
     private MaterialTextView screenTitle;
     private CommentListAdapter commentListAdapter;
     private EditText commentEditText;
-    private int postId;
+    private int postId, count;
     private Profile userProfile;
     private ShimmerFrameLayout shimmerFrameLayout;
     private ArrayList<ResultViewComments> commentsArrayList;
@@ -69,6 +69,7 @@ public class CommentsFragment
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             postId = bundle.getInt("post_id");
+            count  = bundle.getInt("count");
             Log.d(TAG,"post id in CommentsFragment = "+postId);
         }
 
@@ -85,6 +86,11 @@ public class CommentsFragment
         commentsArrayList = new ArrayList<>();
 
         viewCommentsOnPost();
+        commentCountText.setText(String.valueOf(count));
+        if(count == 1)
+            screenTitle.setText(R.string.comment);
+        else
+            screenTitle.setText(R.string.comments);
 
         //Setting up user avatar on comment bottom bar
         Utils myUtils = new Utils();
@@ -159,11 +165,6 @@ public class CommentsFragment
                     if (list != null) {
                         if(list.getResults().size() != 0) {
                             commentsArrayList.addAll(list.getResults());
-                            commentCountText.setText(String.valueOf(commentsArrayList.size()));
-                            if(list.getCount() == 1)
-                                screenTitle.setText(R.string.comment);
-                            else
-                                screenTitle.setText(R.string.comments);
                             setRecyclerView(commentsArrayList);
                         }  else {
                             screenTitle.setText(R.string.comments);
@@ -197,7 +198,9 @@ public class CommentsFragment
                     if (commentListAdapter != null)
                         if(commentsArrayList.size() != 0) {
                             commentsArrayList.add(0, commentResponse);
-                            commentListAdapter.notifyDataSetChanged();
+                            commentListAdapter.notifyItemInserted(0);
+                            count++;
+                            commentCountText.setText(String.valueOf(count));
                         }
                         else {
                             commentsArrayList.add(commentResponse);
@@ -232,10 +235,13 @@ public class CommentsFragment
                 if(response.code() == 201) {
                     Reply reply = response.body();
                     commentsArrayList.get(position).getReplies().add(reply);
-                    commentListAdapter.notifyDataSetChanged();
+                    commentListAdapter.notifyItemChanged(position);
 
                     replyButton.setImageResource(R.drawable.reply_ic);
                     replyLayout.setVisibility(View.GONE);
+
+                    count++;
+                    commentCountText.setText(String.valueOf(count));
                 }
 
             }

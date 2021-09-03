@@ -183,8 +183,8 @@ public class ExplorePostFragment
     }
 
     @Override
-    public void onCommentClick(int postId) {
-        myUtils.onCommentCountClick(postId,getContext());
+    public void onCommentClick(int postId,int count) {
+        myUtils.onCommentCountClick(postId,count,getContext());
     }
 
     @Override

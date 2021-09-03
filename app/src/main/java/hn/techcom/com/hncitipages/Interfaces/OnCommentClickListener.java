@@ -1,5 +1,5 @@
 package hn.techcom.com.hncitipages.Interfaces;
 
 public interface OnCommentClickListener {
-    void onCommentClick(int postId);
+    void onCommentClick(int postId, int count);
 }

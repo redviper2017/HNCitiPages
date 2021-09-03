@@ -172,10 +172,11 @@ public class Utils {
         ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
 
-    public void onCommentCountClick(int postId, Context context){
+    public void onCommentCountClick(int postId, int count, Context context){
         Fragment fragment = new CommentsFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("post_id",postId);
+        bundle.putInt("count",count);
         fragment.setArguments(bundle);
         ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }

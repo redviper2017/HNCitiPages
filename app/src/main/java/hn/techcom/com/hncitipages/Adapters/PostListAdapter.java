@@ -359,6 +359,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
             int postId   = allPosts.get(position).getId();
+            int count    = allPosts.get(position).getCommentCount();
             String hnid_user = allPosts.get(position).getUser().getHnid();
             boolean supporting = allPosts.get(position).getUser().getIsSupported();
             if(view.getId() == R.id.options_icon_post)
@@ -370,7 +371,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if(view.getId() == R.id.text_like_count_post)
                 onLikeCountButtonListener.onLikeCountButtonClick(postId);
             if(view.getId() == R.id.comment_button_post || view.getId() == R.id.text_comment_count_post)
-                onCommentClickListener.onCommentClick(postId);
+                onCommentClickListener.onCommentClick(postId,count);
         }
     }
 
@@ -539,6 +540,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
             int postId   = allPosts.get(position).getId();
+            int count    = allPosts.get(position).getCommentCount();
             String hnid_user = allPosts.get(position).getUser().getHnid();
             boolean supporting = allPosts.get(position).getUser().getIsSupported();
             if(view.getId() == R.id.options_icon_post)
@@ -550,7 +552,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if(view.getId() == R.id.text_like_count_post)
                 onLikeCountButtonListener.onLikeCountButtonClick(postId);
             if(view.getId() == R.id.comment_button_post || view.getId() == R.id.text_comment_count_post)
-                onCommentClickListener.onCommentClick(postId);
+                onCommentClickListener.onCommentClick(postId,count);
         }
     }
 
@@ -748,6 +750,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onClick(View view) {
             int position = getAbsoluteAdapterPosition();
             int postId   = allPosts.get(position).getId();
+            int count    = allPosts.get(position).getCommentCount();
             String hnid_user = allPosts.get(position).getUser().getHnid();
             boolean supporting = allPosts.get(position).getUser().getIsSupported();
             if(view.getId() == R.id.options_icon_post)
@@ -759,7 +762,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if(view.getId() == R.id.text_like_count_post)
                 onLikeCountButtonListener.onLikeCountButtonClick(postId);
             if(view.getId() == R.id.comment_button_post || view.getId() == R.id.text_comment_count_post)
-                onCommentClickListener.onCommentClick(postId);
+                onCommentClickListener.onCommentClick(postId,count);
             if (view.getId() == R.id.play_button_landscape){
                 String videoUrl = allPosts.get(position).getFiles().get(0).getMedia();
                 playButtonLandscape.setVisibility(View.GONE);
