@@ -25,7 +25,6 @@ import com.potyvideo.library.AndExoPlayerView;
 import java.util.ArrayList;
 
 import hn.techcom.com.hncitipages.Activities.ViewCommentsActivity;
-import hn.techcom.com.hncitipages.Activities.ViewLikesActivity;
 import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
@@ -204,9 +203,7 @@ public class ExplorePostFragment
 
     @Override
     public void onLikeCountButtonClick(int postId) {
-        Intent intent = new Intent(getContext(), ViewLikesActivity.class);
-        intent.putExtra("POST_ID",postId);
-        startActivity(intent);
+        myUtils.onLikeCountClick(postId,getContext());
     }
 
     @Override

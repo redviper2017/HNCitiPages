@@ -1,8 +1,13 @@
 package hn.techcom.com.hncitipages.Utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.snov.timeagolibrary.PrettyTimeAgo;
@@ -15,9 +20,11 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
+import hn.techcom.com.hncitipages.Fragments.LikesFragment;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
 import hn.techcom.com.hncitipages.Models.User;
+import hn.techcom.com.hncitipages.R;
 
 public class Utils {
 
@@ -156,22 +163,11 @@ public class Utils {
         return dueDateAsNormal;
     }
 
-//    public String getTimeAgo(Result post, Context context){
-//        String timestamp = post.getCreatedOn();
-//
-//        try {
-//            String timeAgoWithStringDate = PrettyTimeAgo.getTimeAgo(
-//                    context,
-//                    timestamp,
-//                    "yyyy-MM-dd'T'HH:mm:ss.SSS"
-//            );
-//            Log.d(TAG,"Post created on = "+timestamp);
-//            Log.d(TAG,"Post created on time ago = "+timeAgoWithStringDate);
-//            return timeAgoWithStringDate;
-//        } catch (ParseException e) {
-//            // Do error handling here
-//            e.printStackTrace();
-//            return "N/A";
-//        }
-//    }
+    public void onLikeCountClick(int postId, Context context){
+        Fragment fragment = new LikesFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("post_id",postId);
+        fragment.setArguments(bundle);
+        ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
+    }
 }

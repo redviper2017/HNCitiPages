@@ -1,16 +1,7 @@
 package hn.techcom.com.hncitipages.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,18 +9,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.gson.Gson;
 import com.potyvideo.library.AndExoPlayerView;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-import hn.techcom.com.hncitipages.Activities.SupportersOrSuppoertingProfilesActivity;
 import hn.techcom.com.hncitipages.Activities.UserProfileActivity;
 import hn.techcom.com.hncitipages.Activities.ViewCommentsActivity;
-import hn.techcom.com.hncitipages.Activities.ViewLikesActivity;
 import hn.techcom.com.hncitipages.Adapters.ProfilePostAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
@@ -327,9 +320,7 @@ public class ProfileSectionFragment
 
     @Override
     public void onLikeCountButtonClick(int postId) {
-        Intent intent = new Intent(getContext(), ViewLikesActivity.class);
-        intent.putExtra("POST_ID",postId);
-        startActivity(intent);
+        myUtils.onLikeCountClick(postId,getContext());
     }
 
     @Override

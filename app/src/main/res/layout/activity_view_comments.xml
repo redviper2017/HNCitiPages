@@ -7,7 +7,7 @@
     android:paddingStart="5dp"
     android:paddingEnd="5dp"
     android:background="@color/white"
-    tools:context=".Activities.ViewLikesActivity">
+    tools:context=".Activities.ViewCommentsActivity">
     <!-- Like Count -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_like_count_view_comments"

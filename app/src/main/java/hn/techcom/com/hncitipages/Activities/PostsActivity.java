@@ -268,9 +268,7 @@ public class PostsActivity
 
     @Override
     public void onLikeCountButtonClick(int postId) {
-        Intent intent = new Intent(this, ViewLikesActivity.class);
-        intent.putExtra("POST_ID",postId);
-        startActivity(intent);
+        myUtils.onLikeCountClick(postId,this);
     }
 
     @Override

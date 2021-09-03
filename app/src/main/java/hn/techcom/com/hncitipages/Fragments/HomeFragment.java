@@ -28,14 +28,10 @@ import com.google.gson.reflect.TypeToken;
 import com.potyvideo.library.AndExoPlayerView;
 
 import java.lang.reflect.Type;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Activities.ViewCommentsActivity;
-import hn.techcom.com.hncitipages.Activities.ViewLikesActivity;
 import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
@@ -370,9 +366,11 @@ public class HomeFragment
 
     @Override
     public void onLikeCountButtonClick(int postId) {
-        Intent intent = new Intent(getContext(), ViewLikesActivity.class);
-        intent.putExtra("POST_ID",postId);
-        startActivity(intent);
+        Fragment fragment = new LikesFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("post_id",postId);
+        fragment.setArguments(bundle);
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
 
     @Override

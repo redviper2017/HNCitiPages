@@ -39,9 +39,6 @@
             android:name="hn.techcom.com.hncitipages.Activities.ViewCommentsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="hn.techcom.com.hncitipages.Activities.ViewLikesActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="hn.techcom.com.hncitipages.Activities.PostAudioActivity"
             android:screenOrientation="portrait" />
         <activity
