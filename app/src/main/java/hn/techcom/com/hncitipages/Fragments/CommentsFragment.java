@@ -53,6 +53,7 @@ public class CommentsFragment
     private Profile userProfile;
     private ShimmerFrameLayout shimmerFrameLayout;
     private ArrayList<ResultViewComments> commentsArrayList;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private static final String TAG = "CommentsFragment";
 
     private boolean postingComment = false;
@@ -81,7 +82,7 @@ public class CommentsFragment
         CircleImageView avatar                = view.findViewById(R.id.avatar_post);
         commentEditText                       = view.findViewById(R.id.comment_editText);
         ImageButton postCommentButton         = view.findViewById(R.id.post_comment_button);
-        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout                    = view.findViewById(R.id.swipeRefresh);
         shimmerFrameLayout                    = view.findViewById(R.id.shimmerLayout);
         commentsArrayList = new ArrayList<>();
 
@@ -147,6 +148,7 @@ public class CommentsFragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         commentListAdapter = new CommentListAdapter(recyclerView, commentList, getContext(), this);
         recyclerView.setAdapter(commentListAdapter);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     public void viewCommentsOnPost(){
