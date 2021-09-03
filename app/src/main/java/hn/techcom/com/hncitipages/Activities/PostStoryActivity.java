@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -130,7 +131,10 @@ public class PostStoryActivity extends AppCompatActivity implements View.OnClick
         if(view.getId() == R.id.image_button_back)
             super.onBackPressed();
         if(view.getId() == R.id.share_story_button)
-            shareNewStory();
+            if (!TextUtils.isEmpty(storyText.getText()) && Objects.requireNonNull(storyText.getText()).toString().trim().length() > 0)
+                shareNewStory();
+            else
+                Toast.makeText(this,"Oops! you've forgot to enter your story",Toast.LENGTH_SHORT).show();
         if(view.getId() == R.id.clear_story_button){
             storyText.setText("");
             postCategorySpinner.setSelection(0);
