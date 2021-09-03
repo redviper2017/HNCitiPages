@@ -27,6 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hncitipages.Adapters.CommentListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
+import hn.techcom.com.hncitipages.Models.CommentResponse;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Reply;
 import hn.techcom.com.hncitipages.Models.ResultViewComments;
@@ -54,6 +55,7 @@ public class CommentsFragment
     private ShimmerFrameLayout shimmerFrameLayout;
     private ArrayList<ResultViewComments> commentsArrayList;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private String nextPageUrl;
     private static final String TAG = "CommentsFragment";
 
     private boolean postingComment = false;
@@ -114,6 +116,26 @@ public class CommentsFragment
             }
         });
 
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (!recyclerView.canScrollVertically(1) && dy>0){
+                    if (commentsArrayList.get(commentsArrayList.size()-1) == null){
+                        commentsArrayList.remove(commentsArrayList.size()-1);
+                        viewCommentsOnPostFromPage();
+                    }
+                }
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -166,7 +188,14 @@ public class CommentsFragment
 
                     if (list != null) {
                         if(list.getResults().size() != 0) {
+                            commentsArrayList.clear();
                             commentsArrayList.addAll(list.getResults());
+
+                            if (list.getNext() != null){
+                                nextPageUrl = (String) list.getNext();
+                                commentsArrayList.add(null);
+                            }
+
                             setRecyclerView(commentsArrayList);
                         }  else {
                             screenTitle.setText(R.string.comments);
@@ -177,7 +206,37 @@ public class CommentsFragment
             }
 
             @Override
-            public void onFailure(Call<ViewCommentResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<ViewCommentResponse> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    public void viewCommentsOnPostFromPage(){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<ViewCommentResponse> call = service.viewCommentsFromPage(nextPageUrl);
+        call.enqueue(new Callback<ViewCommentResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ViewCommentResponse> call, @NonNull Response<ViewCommentResponse> response) {
+                if (response.code() == 200){
+                    ViewCommentResponse list = response.body();
+                    if (list != null){
+                        nextPageUrl = (String) list.getNext();
+
+                        commentsArrayList.remove(commentsArrayList.size()-1);
+                        commentsArrayList.addAll(list.getResults());
+                        commentListAdapter.notifyDataSetChanged();
+
+                        if (nextPageUrl != null){
+                            commentsArrayList.add(null);
+                            viewCommentsOnPostFromPage();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ViewCommentResponse> call, @NonNull Throwable t) {
 
             }
         });
@@ -200,7 +259,7 @@ public class CommentsFragment
                     if (commentListAdapter != null)
                         if(commentsArrayList.size() != 0) {
                             commentsArrayList.add(0, commentResponse);
-                            commentListAdapter.notifyItemInserted(0);
+                            commentListAdapter.notifyDataSetChanged();
                             count++;
                             commentCountText.setText(String.valueOf(count));
                         }
@@ -237,7 +296,7 @@ public class CommentsFragment
                 if(response.code() == 201) {
                     Reply reply = response.body();
                     commentsArrayList.get(position).getReplies().add(reply);
-                    commentListAdapter.notifyItemChanged(position);
+                    commentListAdapter.notifyDataSetChanged();
 
                     replyButton.setImageResource(R.drawable.reply_ic);
                     replyLayout.setVisibility(View.GONE);

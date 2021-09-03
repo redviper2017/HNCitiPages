@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private boolean isLoading;
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
+    private static final int VIEW_TYPE_LOADING = 0;
+    private static final int VIEW_TYPE_COMMENT = 1;
 
     private Context context;
     private RecyclerView recyclerView;
@@ -67,19 +70,37 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_comments, parent, false);
-        return new CommentViewHolder(view);
+        View view;
+        if (viewType == VIEW_TYPE_LOADING) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_loading_post, parent, false);
+            return new LoadingViewHolder(view);
+        }else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_comments, parent, false);
+            return new CommentViewHolder(view);
+        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ResultViewComments comment = allComments.get(position);
-        ((CommentViewHolder) holder).bind(comment);
+        if (holder.getItemViewType() == VIEW_TYPE_LOADING)
+            ((LoadingViewHolder) holder).bind();
+        else if (holder.getItemViewType() == VIEW_TYPE_COMMENT)
+            ((CommentViewHolder) holder).bind(comment);
+
     }
 
     @Override
     public int getItemCount() {
         return allComments == null ? 0 : allComments.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (allComments.get(position) == null)
+            return VIEW_TYPE_LOADING;
+        else
+            return VIEW_TYPE_COMMENT;
     }
 
     private class CommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -187,6 +208,21 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             repliesRecyclerview.setLayoutManager(new LinearLayoutManager(context));
             replyListAdapter = new ReplyListAdapter(context, this.repliesRecyclerview, replyList);
             repliesRecyclerview.setAdapter(replyListAdapter);
+        }
+    }
+
+    //Loading view holder class
+    private class LoadingViewHolder extends RecyclerView.ViewHolder {
+
+        public ProgressBar progressBar;
+
+        public LoadingViewHolder(View view) {
+            super(view);
+
+            progressBar = view.findViewById(R.id.progressbar);
+        }
+        void bind(){
+            progressBar.setIndeterminate(true);
         }
     }
 }
