@@ -1,6 +1,5 @@
 package hn.techcom.com.hncitipages.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,7 +23,6 @@ import com.potyvideo.library.AndExoPlayerView;
 
 import java.util.ArrayList;
 
-import hn.techcom.com.hncitipages.Activities.ViewCommentsActivity;
 import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
@@ -262,9 +260,7 @@ public class FavoritesFragment
 
     @Override
     public void onCommentClick(int postId) {
-        Intent intent = new Intent(getContext(), ViewCommentsActivity.class);
-        intent.putExtra("POST_ID",postId);
-        startActivity(intent);
+        myUtils.onCommentCountClick(postId,getContext());
     }
 
     @Override

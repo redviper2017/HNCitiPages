@@ -1,20 +1,23 @@
-package hn.techcom.com.hncitipages.Activities;
+package hn.techcom.com.hncitipages.Fragments;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
@@ -37,51 +40,55 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ViewCommentsActivity extends AppCompatActivity implements View.OnClickListener, OnReplyClickListener {
+public class CommentsFragment
+        extends Fragment
+        implements View.OnClickListener, OnReplyClickListener {
 
     private MaterialTextView commentCountText;
     private RecyclerView recyclerView;
     private MaterialTextView screenTitle;
     private CommentListAdapter commentListAdapter;
-    private CircleImageView avatar;
     private EditText commentEditText;
-    private ImageButton postCommentButton;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private int postId;
-    private Utils myUtils;
     private Profile userProfile;
-
+    private ShimmerFrameLayout shimmerFrameLayout;
     private ArrayList<ResultViewComments> commentsArrayList;
-    private static final String TAG = "ViewCommentsActivity";
+    private static final String TAG = "CommentsFragment";
 
     private boolean postingComment = false;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_comments);
+    public CommentsFragment() {
+        // Required empty public constructor
+    }
 
-        //get the post id to view comments
-        Intent intent = getIntent();
-        postId = intent.getIntExtra("POST_ID",-1);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_comments, container, false);
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            postId = bundle.getInt("post_id");
+            Log.d(TAG,"post id in CommentsFragment = "+postId);
+        }
 
         //Hooks
-        ImageButton backButton         = findViewById(R.id.image_button_back);
-        screenTitle                    = findViewById(R.id.text_screen_title_view_comments);
-        commentCountText               = findViewById(R.id.text_like_count_view_comments);
-        recyclerView                   = findViewById(R.id.recyclerview_posts_comments);
-        avatar                         = findViewById(R.id.avatar_post);
-        commentEditText                = findViewById(R.id.comment_editText);
-        postCommentButton              = findViewById(R.id.post_comment_button);
-        swipeRefreshLayout             = findViewById(R.id.swipeRefresh);
-
+        ImageButton backButton                = view.findViewById(R.id.image_button_back);
+        screenTitle                           = view.findViewById(R.id.text_screen_title_view_comments);
+        commentCountText                      = view.findViewById(R.id.text_like_count_view_comments);
+        recyclerView                          = view.findViewById(R.id.recyclerview_posts_comments);
+        CircleImageView avatar                = view.findViewById(R.id.avatar_post);
+        commentEditText                       = view.findViewById(R.id.comment_editText);
+        ImageButton postCommentButton         = view.findViewById(R.id.post_comment_button);
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        shimmerFrameLayout                    = view.findViewById(R.id.shimmerLayout);
         commentsArrayList = new ArrayList<>();
 
         viewCommentsOnPost();
 
         //Setting up user avatar on comment bottom bar
-        myUtils = new Utils();
-        userProfile = myUtils.getNewUserFromSharedPreference(this);
+        Utils myUtils = new Utils();
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
         String profilePhotoUrl = userProfile.getProfileImgThumbnail();
         Picasso
                 .get()
@@ -99,46 +106,69 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
                 viewCommentsOnPost();
             }
         });
+
+        // Inflate the layout for this fragment
+        return view;
     }
 
     @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.image_button_back)
-            super.onBackPressed();
-        if(view.getId() == R.id.post_comment_button) {
+    public void onClick(View v) {
+        if(v.getId() == R.id.image_button_back)
+            requireActivity().getSupportFragmentManager().popBackStack();
+        if(v.getId() == R.id.post_comment_button) {
             if (!postingComment) {
                 postingComment = true;
                 if (!TextUtils.isEmpty(commentEditText.getText()))
                     postComment(userProfile.getHnid(), postId);
                 else {
-                    Toast.makeText(this, "Oops! you've forgot to enter your comment..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Oops! you've forgot to enter your comment..", Toast.LENGTH_SHORT).show();
                     postingComment = false;
                 }
             }
         }
+    }
 
+    @Override
+    public void onReplyClick(int commentId, String reply, int position, LinearLayout replyLayout, ImageButton replyButton) {
+        Log.d(TAG,"replied text = "+reply);
+        postReply(commentId,reply, position, replyLayout, replyButton);
+    }
+
+    public void setRecyclerView(ArrayList<ResultViewComments> commentList){
+        shimmerFrameLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        commentListAdapter = new CommentListAdapter(recyclerView, commentList, getContext(), this);
+        recyclerView.setAdapter(commentListAdapter);
     }
 
     public void viewCommentsOnPost(){
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        shimmerFrameLayout.startShimmer();
+
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ViewCommentResponse> call = service.viewComments(postId);
         call.enqueue(new Callback<ViewCommentResponse>() {
             @Override
-            public void onResponse(Call<ViewCommentResponse> call, Response<ViewCommentResponse> response) {
+            public void onResponse(@NonNull Call<ViewCommentResponse> call, @NonNull Response<ViewCommentResponse> response) {
                 if(response.code() == 200) {
                     ViewCommentResponse list = response.body();
 
-                    if(list.getResults().size() != 0) {
-                        commentsArrayList.addAll(list.getResults());
-                        commentCountText.setText(String.valueOf(commentsArrayList.size()));
-                        if(list.getCount() == 1)
-                            screenTitle.setText(R.string.comment);
-                        else
+                    if (list != null) {
+                        if(list.getResults().size() != 0) {
+                            commentsArrayList.addAll(list.getResults());
+                            commentCountText.setText(String.valueOf(commentsArrayList.size()));
+                            if(list.getCount() == 1)
+                                screenTitle.setText(R.string.comment);
+                            else
+                                screenTitle.setText(R.string.comments);
+                            setRecyclerView(commentsArrayList);
+                        }  else {
                             screenTitle.setText(R.string.comments);
-                        setRecyclerView(commentsArrayList);
-                    }  else {
-                        screenTitle.setText(R.string.comments);
-                        setRecyclerView(commentsArrayList);
+                            setRecyclerView(commentsArrayList);
+                        }
                     }
                 }
             }
@@ -148,12 +178,6 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
 
             }
         });
-    }
-
-    public void setRecyclerView(ArrayList<ResultViewComments> commentList){
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        commentListAdapter = new CommentListAdapter(recyclerView, commentList, this, this);
-        recyclerView.setAdapter(commentListAdapter);
     }
 
     public void postComment(String hnid, int postId){
@@ -166,37 +190,30 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
 
         call.enqueue(new Callback<ResultViewComments>(){
             @Override
-            public void onResponse(Call<ResultViewComments> call, Response<ResultViewComments> response) {
+            public void onResponse(@NonNull Call<ResultViewComments> call, @NonNull Response<ResultViewComments> response) {
                 if(response.code() == 201){
                     ResultViewComments commentResponse = response.body();
-//                    Toast.makeText(ViewCommentsActivity.this, "Your comment has been posted successfully!", Toast.LENGTH_LONG).show();
                     commentEditText.setText("");
                     if (commentListAdapter != null)
                         if(commentsArrayList.size() != 0) {
                             commentsArrayList.add(0, commentResponse);
                             commentListAdapter.notifyDataSetChanged();
                         }
-                    else {
-                        commentsArrayList.add(commentResponse);
-                        commentListAdapter.notifyDataSetChanged();
-                    }
+                        else {
+                            commentsArrayList.add(commentResponse);
+                            commentListAdapter.notifyDataSetChanged();
+                        }
 
                 }else
-                    Toast.makeText(ViewCommentsActivity.this,"Unable to post comment! Try again later..",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"Unable to post comment! Try again later..",Toast.LENGTH_LONG).show();
                 postingComment = false;
             }
 
             @Override
-            public void onFailure(Call<ResultViewComments> call, Throwable t) {
-                Toast.makeText(ViewCommentsActivity.this,"Oops! something is wrong, please try again later..",Toast.LENGTH_LONG).show();
+            public void onFailure(@NonNull Call<ResultViewComments> call, @NonNull Throwable t) {
+                Toast.makeText(getContext(),"Oops! something is wrong, please try again later..",Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    @Override
-    public void onReplyClick(int commentId, String reply, int position, LinearLayout replyLayout, ImageButton replyButton) {
-        Log.d(TAG,"replied text = "+reply);
-        postReply(commentId,reply, position, replyLayout, replyButton);
     }
 
     public void postReply(int commentId, String reply, int position, LinearLayout replyLayout, ImageButton replyButton){
@@ -210,7 +227,7 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
 
         call.enqueue(new Callback<Reply>() {
             @Override
-            public void onResponse(Call<Reply> call, Response<Reply> response) {
+            public void onResponse(@NonNull Call<Reply> call, @NonNull Response<Reply> response) {
 
                 if(response.code() == 201) {
                     Reply reply = response.body();
@@ -224,7 +241,7 @@ public class ViewCommentsActivity extends AppCompatActivity implements View.OnCl
             }
 
             @Override
-            public void onFailure(Call<Reply> call, Throwable t) {
+            public void onFailure(@NonNull Call<Reply> call, @NonNull Throwable t) {
 
             }
         });

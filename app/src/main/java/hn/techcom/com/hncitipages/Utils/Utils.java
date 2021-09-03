@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
+import hn.techcom.com.hncitipages.Fragments.CommentsFragment;
 import hn.techcom.com.hncitipages.Fragments.LikesFragment;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
@@ -165,6 +166,14 @@ public class Utils {
 
     public void onLikeCountClick(int postId, Context context){
         Fragment fragment = new LikesFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("post_id",postId);
+        fragment.setArguments(bundle);
+        ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
+    }
+
+    public void onCommentCountClick(int postId, Context context){
+        Fragment fragment = new CommentsFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("post_id",postId);
         fragment.setArguments(bundle);

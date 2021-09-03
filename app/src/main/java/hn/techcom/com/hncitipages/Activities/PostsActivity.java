@@ -251,9 +251,7 @@ public class PostsActivity
 
     @Override
     public void onCommentClick(int postId) {
-        Intent intent = new Intent(this, ViewCommentsActivity.class);
-        intent.putExtra("POST_ID",postId);
-        startActivity(intent);
+        myUtils.onCommentCountClick(postId,this);
     }
 
     @Override

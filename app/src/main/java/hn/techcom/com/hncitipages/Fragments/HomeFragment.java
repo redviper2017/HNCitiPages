@@ -1,7 +1,6 @@
 package hn.techcom.com.hncitipages.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,7 +30,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import hn.techcom.com.hncitipages.Activities.ViewCommentsActivity;
 import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
@@ -381,9 +379,7 @@ public class HomeFragment
 
     @Override
     public void onCommentClick(int postId) {
-        Intent intent = new Intent(getContext(), ViewCommentsActivity.class);
-        intent.putExtra("POST_ID",postId);
-        startActivity(intent);
+        myUtils.onCommentCountClick(postId,getContext());
     }
 
     private void storeRecentPosts(){

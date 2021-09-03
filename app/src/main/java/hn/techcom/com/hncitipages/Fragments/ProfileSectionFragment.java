@@ -22,7 +22,6 @@ import com.potyvideo.library.AndExoPlayerView;
 import java.util.ArrayList;
 
 import hn.techcom.com.hncitipages.Activities.UserProfileActivity;
-import hn.techcom.com.hncitipages.Activities.ViewCommentsActivity;
 import hn.techcom.com.hncitipages.Adapters.ProfilePostAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
@@ -303,9 +302,7 @@ public class ProfileSectionFragment
 
     @Override
     public void onCommentClick(int postId) {
-        Intent intent = new Intent(getContext(), ViewCommentsActivity.class);
-        intent.putExtra("POST_ID",postId);
-        startActivity(intent);
+        myUtils.onCommentCountClick(postId,getContext());
     }
 
     @Override
