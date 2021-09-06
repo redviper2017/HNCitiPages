@@ -401,8 +401,6 @@ public class VisitSectionFragment
 
                         ArrayList<Result> postList = new ArrayList<>(cityPostList.getResults());
                         postList = myUtils.setPostRelativeTime(postList);
-
-                        recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
 
                         postListAdapter.notifyDataSetChanged();
@@ -434,9 +432,6 @@ public class VisitSectionFragment
                         nextCountryPostListUrl = countryPostList.getNext();
 
                         ArrayList<Result> postList = new ArrayList<>(countryPostList.getResults());
-
-
-                        recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
 
 

@@ -234,7 +234,6 @@ public class ViewProfileFragment
                         ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
                         postArrayList = myUtils.setPostRelativeTime(postArrayList);
 
-                        recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
 
 

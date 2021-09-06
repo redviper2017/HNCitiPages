@@ -217,8 +217,6 @@ public class FavoritesFragment
                         nextFavoritePostListUrl = favoritePostList.getNext();
 
                         ArrayList<Result> postList = new ArrayList<>(favoritePostList.getResults());
-
-                        recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
 
 

@@ -282,7 +282,6 @@ public class ExplorePostFragment
                         nextPageUrl = latestPostList.getNext();
                         ArrayList<Result> postList = new ArrayList<>(latestPostList.getResults());
                         postList = myUtils.setPostRelativeTime(postList);
-                        recentPostList.remove(recentPostList.size() - 1);
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
                         postListAdapter.notifyDataSetChanged();
                         if (latestPostList.getNext() != null) {

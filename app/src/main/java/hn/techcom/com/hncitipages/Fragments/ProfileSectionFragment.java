@@ -249,7 +249,6 @@ public class ProfileSectionFragment
                         ArrayList<Result> postArrayList = new ArrayList<>(postListByUser.getResults());
                         postArrayList = myUtils.setPostRelativeTime(postArrayList);
 
-                        initialPostList.remove(initialPostList.size() - 1);
                         initialPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
 
 
