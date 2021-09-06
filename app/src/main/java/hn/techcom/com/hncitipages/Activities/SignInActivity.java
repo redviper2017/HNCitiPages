@@ -264,10 +264,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void emailValidation(String email, String name) {
-        String baseUrl = "http://167.99.13.238:8000/api/users/emailvalidate/" + email + "/";
-        Log.d(TAG, "base url = " + baseUrl);
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<ValidationResponse> call = service.validateEmail(baseUrl);
+        Call<ValidationResponse> call = service.validateEmail(email);
         call.enqueue(new Callback<ValidationResponse>() {
             @Override
             public void onResponse(Call<ValidationResponse> call, Response<ValidationResponse> response) {

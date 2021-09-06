@@ -222,8 +222,6 @@ public class CommentsFragment
                     ViewCommentResponse list = response.body();
                     if (list != null){
                         nextPageUrl = (String) list.getNext();
-
-                        commentsArrayList.remove(commentsArrayList.size()-1);
                         commentsArrayList.addAll(list.getResults());
                         commentListAdapter.notifyDataSetChanged();
 

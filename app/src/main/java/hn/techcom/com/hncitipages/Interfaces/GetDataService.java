@@ -40,8 +40,8 @@ public interface GetDataService {
 
 
     // Email validation
-    @GET()
-    Call<ValidationResponse> validateEmail(@Url String url);
+    @GET("users/emailvalidate/{email}/")
+    Call<ValidationResponse> validateEmail(@Path("email") String email);
 
 
     // Register New User
