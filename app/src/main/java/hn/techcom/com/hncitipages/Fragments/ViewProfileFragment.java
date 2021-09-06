@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
 
@@ -71,11 +74,12 @@ public class ViewProfileFragment
     private static final String TAG = "ViewProfileFragment";
     private String nextUserPostListUrl;
     private PostListAdapter postListAdapter;
-
     private AlertDialog dialog;
-
     private AndExoPlayerView playerView;
     private ImageView imageView, playButton;
+    private ShimmerFrameLayout shimmerFrameLayout;
+    private LinearLayout profileInfo, lineView;
+    private RelativeLayout userInfo;
 
 
     public ViewProfileFragment() {
@@ -104,6 +108,10 @@ public class ViewProfileFragment
         recyclerView                         = view.findViewById(R.id.recyclerview_posts_viewprofile);
         swipeRefreshLayout                   = view.findViewById(R.id.swipeRefresh);
         MaterialTextView viewHnIdButton      = view.findViewById(R.id.hnid_viewprofile);
+        shimmerFrameLayout                   = view.findViewById(R.id.shimmerLayout);
+        profileInfo                          = view.findViewById(R.id.layout_profile_info);
+        userInfo                             = view.findViewById(R.id.layout_user_info);
+        lineView                             = view.findViewById(R.id.line_layout);
 
         String hnid = requireArguments().getString("hnid");
         String name = requireArguments().getString("name");
@@ -186,6 +194,12 @@ public class ViewProfileFragment
 
     //get initial user posts list
     public void getLatestPostsListBySingleUser(String target_hnid) {
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        profileInfo.setVisibility(View.GONE);
+        userInfo.setVisibility(View.GONE);
+        lineView.setVisibility(View.GONE);
+        shimmerFrameLayout.startShimmer();
 
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<PostList> call = service.getLatestPostsBySingleUser(target_hnid,userProfile.getHnid());
@@ -255,6 +269,11 @@ public class ViewProfileFragment
     }
 
     public void setRecyclerView(ArrayList<Result> postList){
+        shimmerFrameLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        profileInfo.setVisibility(View.VISIBLE);
+        userInfo.setVisibility(View.VISIBLE);
+        lineView.setVisibility(View.VISIBLE);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postListAdapter = new PostListAdapter(
                 postList, getContext(),
