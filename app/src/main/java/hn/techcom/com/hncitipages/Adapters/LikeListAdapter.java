@@ -16,8 +16,11 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hncitipages.Interfaces.OnLoadMoreListener;
+import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.ResultViewLikes;
+import hn.techcom.com.hncitipages.Models.User;
 import hn.techcom.com.hncitipages.R;
+import hn.techcom.com.hncitipages.Utils.Utils;
 
 public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     //Constants
@@ -25,16 +28,24 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean isLoading;
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
-
+    private Utils myUtils;
     private Context context;
     private RecyclerView recyclerView;
     private ArrayList<ResultViewLikes> allLikes = new ArrayList<>();
     private OnLoadMoreListener onLoadMoreListener;
+    private ViewProfileListener viewProfileListener;
 
-    public LikeListAdapter(RecyclerView recyclerView, ArrayList<ResultViewLikes> allLikes, Context context) {
+    public LikeListAdapter(
+            RecyclerView recyclerView,
+            ArrayList<ResultViewLikes> allLikes,
+            Context context,
+            ViewProfileListener viewProfileListener) {
         this.recyclerView = recyclerView;
         this.allLikes = allLikes;
         this.context = context;
+        this.viewProfileListener = viewProfileListener;
+
+        myUtils = new Utils();
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -83,6 +94,9 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             title          = view.findViewById(R.id.title_post);
             location       = view.findViewById(R.id.location_post);
             avatar         = view.findViewById(R.id.avatar_post);
+
+            //Click listeners
+            name.setOnClickListener(this);
         }
 
         void bind(ResultViewLikes like) {
@@ -90,7 +104,7 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             String user_title = like.getUser().getTitle();
 
             //setting up user name and location
-            name.setText(like.getUser().getFullName());
+            name.setText(myUtils.capitalizeName(like.getUser().getFullName()));
 
             if (!user_title.equals("User")){
                 title.setVisibility(View.VISIBLE);
@@ -120,7 +134,16 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         public void onClick(View view) {
+            if (view.getId() == R.id.name_post) {
+                int position = getAbsoluteAdapterPosition();
+                User user = allLikes.get(position).getUser();
 
+                String hnid = user.getHnid();
+                String name = user.getFullName();
+
+                if (view.getId() == R.id.name_post)
+                    viewProfileListener.viewProfile(hnid, name);
+            }
         }
     }
 }

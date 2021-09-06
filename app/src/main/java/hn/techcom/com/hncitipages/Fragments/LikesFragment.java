@@ -22,6 +22,7 @@ import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Adapters.LikeListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
+import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.ResultViewLikes;
 import hn.techcom.com.hncitipages.Models.ViewLikesResponse;
 import hn.techcom.com.hncitipages.Network.RetrofitClientInstance;
@@ -30,7 +31,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LikesFragment extends Fragment implements View.OnClickListener{
+public class LikesFragment extends Fragment
+        implements
+        View.OnClickListener,
+        ViewProfileListener {
 
     private MaterialTextView likeCountText;
     private RecyclerView recyclerView;
@@ -125,7 +129,19 @@ public class LikesFragment extends Fragment implements View.OnClickListener{
         recyclerView.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setRefreshing(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        likesListAdapter = new LikeListAdapter(recyclerView, likeList, getContext());
+        likesListAdapter = new LikeListAdapter(recyclerView, likeList, getContext(), this);
         recyclerView.setAdapter(likesListAdapter);
+    }
+
+    @Override
+    public void viewProfile(String hnid, String name) {
+
+        Fragment fragment = new ProfileSectionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("hnid",hnid);
+        bundle.putString("name",name);
+
+        fragment.setArguments(bundle);
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
 }

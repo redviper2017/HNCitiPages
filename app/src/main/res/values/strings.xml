@@ -105,7 +105,7 @@
     <string name="share_video">Share Video</string>
     <string name="share_audio">Share Audio</string>
     <string name="support_user">Support User</string>
-    <string name="un_support_user">Stop Supporting User</string>
+    <string name="un_support_user">Stop Supporting</string>
     <string name="add_a_comment">Add a comment...</string>
     <string name="start_recording_disclaimer">Tap the button above to start recording.</string>
     <string name="stop_recording_disclaimer">Tap the button above to stop recording.</string>
@@ -119,4 +119,5 @@
     <string name="hn_citipages_id">HN CitiPages ID</string>
     <string name="hnid">HNID</string>
     <string name="a64cf6c0_ef8b_4362_8b44_c94001fca408">a64cf6c0-ef8b-4362-8b44-c94001fca408</string>
+    <string name="update_profile">Update Profile</string>
 </resources>

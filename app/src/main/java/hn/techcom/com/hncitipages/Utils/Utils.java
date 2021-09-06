@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -22,10 +23,18 @@ import java.util.TimeZone;
 
 import hn.techcom.com.hncitipages.Fragments.CommentsFragment;
 import hn.techcom.com.hncitipages.Fragments.LikesFragment;
+import hn.techcom.com.hncitipages.Interfaces.GetDataService;
+import hn.techcom.com.hncitipages.Models.LikeResponse;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
 import hn.techcom.com.hncitipages.Models.User;
+import hn.techcom.com.hncitipages.Network.RetrofitClientInstance;
 import hn.techcom.com.hncitipages.R;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Utils {
 
@@ -179,5 +188,31 @@ public class Utils {
         bundle.putInt("count",count);
         fragment.setArguments(bundle);
         ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
+    }
+
+    public void supportOrUnsupport(String hnid_user, String hnid_this_user, Context context){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+
+        RequestBody supporter = RequestBody.create(MediaType.parse("text/plain"), hnid_this_user);
+        RequestBody supporting = RequestBody.create(MediaType.parse("text/plain"), hnid_user);
+
+
+        Call<LikeResponse> call = service.supportOrUnsupportUser(supporter,supporting);
+        call.enqueue(new Callback<LikeResponse>() {
+            @Override
+            public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
+                if(response.code() == 201){
+                    LikeResponse supportResponse = response.body();
+                    Toast.makeText(context, Objects.requireNonNull(supportResponse).getMessage(), Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(context, "Sorry, the user cannot be supported at this moment. Try again..", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LikeResponse> call, Throwable t) {
+                Toast.makeText(context,"Sorry, the support request has been failed. Try again..", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

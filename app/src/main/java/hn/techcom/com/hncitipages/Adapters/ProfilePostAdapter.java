@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -33,16 +34,13 @@ import hn.techcom.com.hncitipages.Interfaces.OnSupporterSupportingCountClickList
 import hn.techcom.com.hncitipages.Interfaces.OnUpdateProfileClickListener;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
+import hn.techcom.com.hncitipages.Models.SingleUserInfoResponse;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.Utils;
 
 public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-
     private Context context;
-
-    private  ArrayList<Result> allPosts = new ArrayList<>();
-
-    private int postCount, supporterCount, supportingCount;
+    private  ArrayList<Result> allPosts;
 
     //Constants
     private static final int VIEW_TYPE_PROFILE = -1;
@@ -66,13 +64,12 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final OnSupporterSupportingCountClickListener onSupporterSupportingCountClickListener;
 
     private Utils myUtils;
-    private Profile userProfile;
+    private SingleUserInfoResponse profile;
+    private final Profile userProfile;
 
     public ProfilePostAdapter(
             ArrayList<Result> allPosts,
-            int postCount,
-            int supporterCount,
-            int supportingCount,
+            SingleUserInfoResponse profile,
             Context context,
             OnOptionsButtonClickListener onOptionsButtonClickListener,
             OnLikeButtonClickListener onLikeButtonClickListener,
@@ -82,9 +79,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             OnPlayerPlayedListener onPlayerPlayedListener,
             OnUpdateProfileClickListener onUpdateProfileClickListener, OnPostCountClickListener onPostCountClickListener, OnSupporterSupportingCountClickListener onSupporterSupportingCountClickListener) {
         this.allPosts = allPosts;
-        this.postCount = postCount;
-        this.supporterCount = supporterCount;
-        this.supportingCount = supportingCount;
+        this.profile  = profile;
         this.context = context;
         this.onOptionsButtonClickListener = onOptionsButtonClickListener;
         this.onLikeButtonClickListener = onLikeButtonClickListener;
@@ -98,7 +93,9 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         //getting user profile from local storage
         myUtils     = new Utils();
+        //getting logged in user's profile
         userProfile = myUtils.getNewUserFromSharedPreference(context);
+
         Log.d(TAG,"inside ProfilePostAdapter = "+"YES");
     }
 
@@ -778,6 +775,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private MaterialTextView postCountText, supportingCountText, supporterCountText, nameText, locationText, usernameText, updateProfileButton;
         private CircleImageView profilePhoto;
         private LinearLayout postCountLayout, supporterCountLayout, supportingCountLayout;
+        private View profilePhotoRing;
 
         public ProfileViewHolder(View view) {
             super(view);
@@ -793,19 +791,35 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             postCountLayout       = view.findViewById(R.id.post_count_layout);
             supporterCountLayout  = view.findViewById(R.id.supporter_count_layout);
             supportingCountLayout = view.findViewById(R.id.supporting_count_layout);
+            profilePhotoRing      = view.findViewById(R.id.profile_circle_view);
         }
 
         void bind(){
-            postCountText.setText(String.valueOf(postCount));
-            supporterCountText.setText(String.valueOf(supporterCount));
-            supportingCountText.setText(String.valueOf(supportingCount));
-            nameText.setText(userProfile.getFullName());
+            postCountText.setText(String.valueOf(profile.getPostCount()));
+            supporterCountText.setText(String.valueOf(profile.getSupporterCount()));
+            supportingCountText.setText(String.valueOf(profile.getSupportingCount()));
+            nameText.setText(profile.getFullName());
 
-            String location = userProfile.getCity() + ", " + userProfile.getCountry();
+            String location = profile.getCity() + ", " + profile.getCountry();
             locationText.setText(location);
 
-            usernameText.setText(userProfile.getUsername());
-            Glide.with(context).load(userProfile.getProfileImgThumbnail()).centerCrop().into(profilePhoto);
+            usernameText.setText(profile.getUsername());
+            Glide.with(context).load(profile.getProfileImgThumbnail()).centerCrop().into(profilePhoto);
+
+            if (profile.getHnid().equals(userProfile.getHnid())){
+                updateProfileButton.setText(R.string.update_profile);
+                updateProfileButton.setTag("update");
+            }else {
+                if (profile.getIsSupported()) {
+                    profilePhotoRing.setBackground(ResourcesCompat.getDrawable(context.getResources(),R.drawable.circle_hollow,context.getTheme()));
+                    updateProfileButton.setText(R.string.un_support_user);
+                }
+                else{
+                    profilePhotoRing.setBackground(ResourcesCompat.getDrawable(context.getResources(),R.drawable.circle_hollow_1,context.getTheme()));
+                    updateProfileButton.setText(R.string.support_user);
+                }
+                updateProfileButton.setTag("support");
+            }
 
             updateProfileButton.setOnClickListener(this);
             postCountLayout.setOnClickListener(this);
@@ -815,14 +829,25 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Override
         public void onClick(View v) {
-            if(v.getId() == R.id.update_profile_button)
-                onUpdateProfileClickListener.onUpdateProfileClick();
+            if(v.getId() == R.id.update_profile_button) {
+                if (v.getTag().equals("update"))
+                    onUpdateProfileClickListener.onUpdateProfileClick();
+                else {
+                    profile.setIsSupported(!profile.getIsSupported());
+                    if (profile.getIsSupported())
+                        profile.setPostCount(profile.getPostCount()+1);
+                    else
+                        profile.setPostCount(profile.getPostCount()-1);
+                    notifyItemChanged(0);
+                    myUtils.supportOrUnsupport(profile.getHnid(), userProfile.getHnid(), context);
+                }
+            }
             if (v.getId() == R.id.post_count_layout)
                 onPostCountClickListener.onPostCountClick();
             if (v.getId() == R.id.supporter_count_layout)
-                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporters",String.valueOf(supporterCount));
+                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporters",String.valueOf(profile.getSupporterCount()));
             if (v.getId() == R.id.supporting_count_layout)
-                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporting",String.valueOf(supportingCount));
+                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporting",String.valueOf(profile.getSupportingCount()));
         }
     }
 }

@@ -2,6 +2,7 @@ package hn.techcom.com.hncitipages.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -26,9 +27,11 @@ import com.potyvideo.library.AndExoPlayerView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
 import hn.techcom.com.hncitipages.Fragments.InteractWithPostBottomSheetFragment;
+import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnFavoriteButtonClickListener;
@@ -37,6 +40,7 @@ import hn.techcom.com.hncitipages.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hncitipages.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnPlayerPlayedListener;
+import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.FavoriteResponse;
 import hn.techcom.com.hncitipages.Models.LikeResponse;
 import hn.techcom.com.hncitipages.Models.PostList;
@@ -61,7 +65,8 @@ public class PostsActivity
         OnLikeCountButtonListener,
         OnCommentClickListener,
         OnLoadMoreListener,
-        OnPlayerPlayedListener {
+        OnPlayerPlayedListener,
+        ViewProfileListener {
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -242,6 +247,7 @@ public class PostsActivity
                 this,
                 this,
                 this,
+                this,
                 this);
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setRefreshing(false);
@@ -358,5 +364,16 @@ public class PostsActivity
         this.playerView = playerView;
         this.imageView = imageview;
         this.playButton = playButton;
+    }
+
+    @Override
+    public void viewProfile(String hnid, String name) {
+        Fragment fragment = new ProfileSectionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("hnid",hnid);
+        bundle.putString("name",name);
+
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
 }

@@ -22,22 +22,33 @@ public class Profile {
     @SerializedName("gender")
     @Expose
     private String gender;
+    @SerializedName("title")
+    @Expose
+    private String title;
     @SerializedName("full_name")
     @Expose
     private String fullName;
     @SerializedName("email")
     @Expose
     private String email;
+    @SerializedName("supporterCount")
+    @Expose
+    private Integer supporterCount;
+    @SerializedName("supportingCount")
+    @Expose
+    private Integer supportingCount;
+    @SerializedName("postCount")
+    @Expose
+    private Integer postCount;
     @SerializedName("profile_img")
     @Expose
     private String profileImg;
-    @SerializedName("first_img")
-    @Expose
-    private String firstImg;
-
     @SerializedName("profile_img_thumbnail")
     @Expose
     private String profileImgThumbnail;
+    @SerializedName("first_img")
+    @Expose
+    private String firstImg;
     @SerializedName("mobile_number")
     @Expose
     private String mobileNumber;
@@ -153,5 +164,37 @@ public class Profile {
                 ", firstImg='" + firstImg + '\'' +
                 ", mobileNumber='" + mobileNumber + '\'' +
                 '}';
+    }
+
+    public Integer getSupporterCount() {
+        return supporterCount;
+    }
+
+    public void setSupporterCount(Integer supporterCount) {
+        this.supporterCount = supporterCount;
+    }
+
+    public Integer getSupportingCount() {
+        return supportingCount;
+    }
+
+    public void setSupportingCount(Integer supportingCount) {
+        this.supportingCount = supportingCount;
+    }
+
+    public Integer getPostCount() {
+        return postCount;
+    }
+
+    public void setPostCount(Integer postCount) {
+        this.postCount = postCount;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

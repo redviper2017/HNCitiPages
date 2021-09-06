@@ -38,6 +38,7 @@ import hn.techcom.com.hncitipages.Models.LikeResponse;
 import hn.techcom.com.hncitipages.Models.PostList;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
+import hn.techcom.com.hncitipages.Models.SingleUserInfoResponse;
 import hn.techcom.com.hncitipages.Models.SupportingProfileList;
 import hn.techcom.com.hncitipages.Models.User;
 import hn.techcom.com.hncitipages.Network.RetrofitClientInstance;
@@ -64,11 +65,11 @@ public class ProfileSectionFragment
 
     private static final String TAG = "ProfileSectionFragment";
     private Utils myUtils;
-    private Profile userProfile;
+
     private ArrayList<User> supportingProfilesArrayList, supporterProfilesArrayList;
     private ArrayList<Result> initialPostList;
-    private int postCount, supportingProfileCount, supporterProfileCount;
-    private String nextPageUrl;
+
+    private String nextPageUrl,hnid,name;
     private ProfilePostAdapter profilePostAdapter;
 
     private MaterialTextView postCountText, supportingCountText, supporterCountText;
@@ -77,6 +78,10 @@ public class ProfileSectionFragment
     private AndExoPlayerView playerView;
     private ImageView imageView, playButton;
     private ShimmerFrameLayout shimmerFrameLayout;
+
+    private SingleUserInfoResponse profile;
+    private Profile userProfile;
+
     public ProfileSectionFragment() {
         // Required empty public constructor
     }
@@ -89,7 +94,6 @@ public class ProfileSectionFragment
         //getting user profile from local storage
         myUtils                     = new Utils();
         userProfile                 = myUtils.getNewUserFromSharedPreference(getContext());
-
         supporterProfilesArrayList  = new ArrayList<>();
         supportingProfilesArrayList = new ArrayList<>();
         initialPostList             = new ArrayList<>();
@@ -103,17 +107,26 @@ public class ProfileSectionFragment
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
         shimmerFrameLayout           = view.findViewById(R.id.shimmerLayout);
 
-        getLatestPostsListBySingleUser(userProfile.getHnid());
-        getSupportingProfiles();
-        getSupporterProfiles();
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            hnid = bundle.getString("hnid");
+            name = bundle.getString("name");
+        }
 
-        screenTitle.setText(R.string.my_profile);
+        getUserProfile();
+        getLatestPostsListBySingleUser();
+
+        if (hnid.equals(userProfile.getHnid())) {
+            screenTitle.setText(R.string.my_profile);
+        }else {
+            screenTitle.setText(myUtils.capitalizeName(name));
+        }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 initialPostList.clear();
-                getLatestPostsListBySingleUser(userProfile.getHnid());
+                getLatestPostsListBySingleUser();
             }
         });
 
@@ -142,62 +155,33 @@ public class ProfileSectionFragment
         return view;
     }
 
-    //get initial supporting profile list
-    public void getSupportingProfiles(){
+    //get user profile
+    public void getUserProfile(){
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<SupportingProfileList> call = service.getSupportingProfiles(userProfile.getHnid());
-        call.enqueue(new Callback<SupportingProfileList>(){
+        Call<SingleUserInfoResponse> call = service.getUserInfo(hnid);
+        call.enqueue(new Callback<SingleUserInfoResponse>() {
             @Override
-            public void onResponse(Call<SupportingProfileList> call, Response<SupportingProfileList> response) {
-                if(response.code() == 200){
-                    SupportingProfileList supportingProfileList = response.body();
-                    Log.d(TAG, "number of supporting profile = "+ supportingProfileList.getCount());
-                    supportingProfileCount = supportingProfileList.getCount();
-                    if(supportingProfileList.getCount()>0) {
-                        supportingProfilesArrayList.addAll(supportingProfileList.getResults());
-                    }
+            public void onResponse(@NonNull Call<SingleUserInfoResponse> call, @NonNull Response<SingleUserInfoResponse> response) {
+                if (response.code() == 200) {
+                    profile = response.body();
                 }
             }
 
             @Override
-            public void onFailure(Call<SupportingProfileList> call, Throwable t) {
-
-            }
-        });
-    }
-
-    //get initial supporter profile list
-    public void getSupporterProfiles(){
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<SupportingProfileList> call = service.getSupporterProfiles(userProfile.getHnid());
-        call.enqueue(new Callback<SupportingProfileList>(){
-            @Override
-            public void onResponse(Call<SupportingProfileList> call, Response<SupportingProfileList> response) {
-                if(response.code() == 200){
-                    SupportingProfileList supporterProfileList = response.body();
-                    Log.d(TAG, "number of supporter profile = "+ supporterProfileList.getCount());
-                    supporterProfileCount = supporterProfileList.getCount();
-                    if(supporterProfileList.getCount()>0) {
-                        supporterProfilesArrayList.addAll(supporterProfileList.getResults());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SupportingProfileList> call, Throwable t) {
+            public void onFailure(@NonNull Call<SingleUserInfoResponse> call, @NonNull Throwable t) {
 
             }
         });
     }
 
     //get initial user posts list
-    public void getLatestPostsListBySingleUser(String target_hnid) {
+    public void getLatestPostsListBySingleUser() {
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         shimmerFrameLayout.startShimmer();
 
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<PostList> call = service.getLatestPostsBySingleUser(target_hnid,userProfile.getHnid());
+        Call<PostList> call = service.getLatestPostsBySingleUser(hnid,userProfile.getHnid());
         call.enqueue(new Callback<PostList>() {
             @Override
             public void onResponse(Call<PostList> call, Response<PostList> response) {
@@ -205,24 +189,19 @@ public class ProfileSectionFragment
                     Log.d(TAG,"total number of post by this user = "+response.body().getResults().size());
                     PostList latestPostListByUser = response.body();
 
-                    postCount = latestPostListByUser.getCount();
-
                     if (latestPostListByUser.getCount() > 0) {
                         ArrayList<Result> postList = new ArrayList<>(latestPostListByUser.getResults());
                         postList = myUtils.setPostRelativeTime(postList);
 
                         initialPostList.clear();
                         initialPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
+                        initialPostList.add(0, initialPostList.get(0));
+                        if (latestPostListByUser.getNext() != null) {
+                            nextPageUrl = latestPostListByUser.getNext();
+                            initialPostList.add(null);
+                        }
+                        setRecyclerView(initialPostList);
                     }
-
-                    if (latestPostListByUser.getNext() != null) {
-                        nextPageUrl = latestPostListByUser.getNext();
-                        initialPostList.add(null);
-                    }
-
-                    if(initialPostList.size() != 0)
-                        initialPostList.add(0,initialPostList.get(0));
-                    setRecyclerView(myUtils.removeMediaPostsWithoutFilePath(initialPostList));
                 }
             }
 
@@ -276,9 +255,7 @@ public class ProfileSectionFragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         profilePostAdapter = new ProfilePostAdapter(
                 initialPostList,
-                postCount,
-                supporterProfileCount,
-                supportingProfileCount,
+                profile,
                 getContext(),
                 this,
                 this,
@@ -348,7 +325,7 @@ public class ProfileSectionFragment
     @Override
     public void onPostCountClick() {
         initialPostList.clear();
-        getLatestPostsListBySingleUser(userProfile.getHnid());
+        getLatestPostsListBySingleUser();
     }
 
 
@@ -359,11 +336,11 @@ public class ProfileSectionFragment
         args.putString("Show", show);
 
         if (show.equals("Supporters")) {
-            args.putString("SupporterCount", String.valueOf(supporterProfileCount));
+            args.putString("SupporterCount", String.valueOf(count));
             myUtils.storeProfiles(show, supporterProfilesArrayList, requireContext());
         }
         else {
-            args.putString("SupportingCount", String.valueOf(supportingProfileCount));
+            args.putString("SupportingCount", String.valueOf(count));
             myUtils.storeProfiles(show, supportingProfilesArrayList, requireContext());
         }
 

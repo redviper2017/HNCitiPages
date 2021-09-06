@@ -34,9 +34,21 @@ public class SingleUserInfoResponse {
     @SerializedName("username")
     @Expose
     private String username;
+    @SerializedName("title")
+    @Expose
+    private String title;
     @SerializedName("isSupported")
     @Expose
     private Boolean isSupported;
+    @SerializedName("supporterCount")
+    @Expose
+    private Integer supporterCount;
+    @SerializedName("supportingCount")
+    @Expose
+    private Integer supportingCount;
+    @SerializedName("postCount")
+    @Expose
+    private Integer postCount;
     @SerializedName("profile_img_thumbnail")
     @Expose
     private String profileImgThumbnail;
@@ -137,4 +149,35 @@ public class SingleUserInfoResponse {
         this.profileImgThumbnail = profileImgThumbnail;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Integer getSupporterCount() {
+        return supporterCount;
+    }
+
+    public void setSupporterCount(Integer supporterCount) {
+        this.supporterCount = supporterCount;
+    }
+
+    public Integer getSupportingCount() {
+        return supportingCount;
+    }
+
+    public void setSupportingCount(Integer supportingCount) {
+        this.supportingCount = supportingCount;
+    }
+
+    public Integer getPostCount() {
+        return postCount;
+    }
+
+    public void setPostCount(Integer postCount) {
+        this.postCount = postCount;
+    }
 }

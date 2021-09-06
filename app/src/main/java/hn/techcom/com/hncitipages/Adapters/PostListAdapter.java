@@ -29,7 +29,9 @@ import hn.techcom.com.hncitipages.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hncitipages.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnPlayerPlayedListener;
+import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.Result;
+import hn.techcom.com.hncitipages.Models.User;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.Utils;
 
@@ -59,7 +61,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final OnLikeCountButtonListener onLikeCountButtonListener;
     private final OnCommentClickListener onCommentClickListener;
     private final OnLoadMoreListener onLoadMoreListener;
-
+    private ViewProfileListener viewProfileListener;
     private final OnPlayerPlayedListener onPlayerPlayedListener;
 
     private Utils myUtils;
@@ -73,7 +75,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             OnLikeCountButtonListener onLikeCountButtonListener,
             OnCommentClickListener onCommentClickListener,
             OnLoadMoreListener onLoadMoreListener,
-            OnPlayerPlayedListener onPlayerPlayedListener)
+            OnPlayerPlayedListener onPlayerPlayedListener,
+            ViewProfileListener viewProfileListener)
     {
         this.allPosts = allPosts;
         this.context = context;
@@ -84,7 +87,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.onCommentClickListener = onCommentClickListener;
         this.onLoadMoreListener = onLoadMoreListener;
         this.onPlayerPlayedListener = onPlayerPlayedListener;
-
+        this.viewProfileListener = viewProfileListener;
         Log.d(TAG,"post list size in adapter = "+allPosts.size());
         myUtils = new Utils();
     }
@@ -262,6 +265,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             likes.setOnClickListener(this);
             comments.setOnClickListener(this);
             commentButton.setOnClickListener(this);
+            name.setOnClickListener(this);
+            avatar.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -372,6 +377,15 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 onLikeCountButtonListener.onLikeCountButtonClick(postId);
             if(view.getId() == R.id.comment_button_post || view.getId() == R.id.text_comment_count_post)
                 onCommentClickListener.onCommentClick(postId,count);
+            if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
+                User user = allPosts.get(position).getUser();
+
+                String hnid = user.getHnid();
+                String name = user.getFullName();
+
+                if (view.getId() == R.id.name_post)
+                    viewProfileListener.viewProfile(hnid, name);
+            }
         }
     }
 
@@ -410,6 +424,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             likes.setOnClickListener(this);
             comments.setOnClickListener(this);
             commentButton.setOnClickListener(this);
+            name.setOnClickListener(this);
+            avatar.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -553,6 +569,15 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 onLikeCountButtonListener.onLikeCountButtonClick(postId);
             if(view.getId() == R.id.comment_button_post || view.getId() == R.id.text_comment_count_post)
                 onCommentClickListener.onCommentClick(postId,count);
+            if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
+                User user = allPosts.get(position).getUser();
+
+                String hnid = user.getHnid();
+                String name = user.getFullName();
+
+                if (view.getId() == R.id.name_post)
+                    viewProfileListener.viewProfile(hnid, name);
+            }
         }
     }
 
@@ -602,16 +627,15 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             optionsButton.setOnClickListener(this);
             likeButton.setOnClickListener(this);
-
-
             favoriteButton.setOnClickListener(this);
             likes.setOnClickListener(this);
             comments.setOnClickListener(this);
             commentButton.setOnClickListener(this);
-
             playButtonLandscape.setOnClickListener(this);
             playButtonPortrait.setOnClickListener(this);
             playButtonAudio.setOnClickListener(this);
+            name.setOnClickListener(this);
+            avatar.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -788,6 +812,15 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 audioPlayer.setSource(audioUrl);
                 audioPlayer.setPlayWhenReady(true);
                 onPlayerPlayedListener.onPlayerPlayed(audioPlayer, null, playButtonAudio);
+            }
+            if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
+                User user = allPosts.get(position).getUser();
+
+                String hnid = user.getHnid();
+                String name = user.getFullName();
+
+                if (view.getId() == R.id.name_post)
+                    viewProfileListener.viewProfile(hnid, name);
             }
         }
     }

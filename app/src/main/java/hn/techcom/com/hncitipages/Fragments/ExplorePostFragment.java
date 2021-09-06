@@ -22,6 +22,7 @@ import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
@@ -32,6 +33,7 @@ import hn.techcom.com.hncitipages.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hncitipages.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnPlayerPlayedListener;
+import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.FavoriteResponse;
 import hn.techcom.com.hncitipages.Models.LikeResponse;
 import hn.techcom.com.hncitipages.Models.PostList;
@@ -54,7 +56,9 @@ public class ExplorePostFragment
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
         OnCommentClickListener,
-        OnLoadMoreListener, OnPlayerPlayedListener {
+        OnLoadMoreListener,
+        OnPlayerPlayedListener,
+        ViewProfileListener {
 
     private String postType;
     private Utils myUtils;
@@ -314,6 +318,7 @@ public class ExplorePostFragment
                 this,
                 this,
                 this,
+                this,
                 this);
         recyclerView.setAdapter(postListAdapter);
         swipeRefreshLayout.setRefreshing(false);
@@ -395,5 +400,16 @@ public class ExplorePostFragment
 
         if(postListAdapter != null)
             postListAdapter.filterList(filterNames);
+    }
+
+    @Override
+    public void viewProfile(String hnid, String name) {
+        Fragment fragment = new ProfileSectionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("hnid",hnid);
+        bundle.putString("name",name);
+
+        fragment.setArguments(bundle);
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
 }

@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -68,6 +69,8 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private static final int REQUEST_IMAGE_PICK = 2;
     private static final int PERMISSION_REQUEST_CODE = 200;
     private AlertDialog dialog;
+    private LinearLayout titleLayout;
+    private MaterialTextView titleText;
 
     private ArrayList<User> supportingProfilesArrayList, supporterProfilesArrayList;
     private ArrayList<Result> initialPostList;
@@ -106,9 +109,17 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         CardView viewPostsButton             = findViewById(R.id.view_posts_button);
         CardView viewSupportersButton        = findViewById(R.id.view_supporters_button);
         CardView viewSupportingButton        = findViewById(R.id.view_supporting_button);
+        titleLayout                          = findViewById(R.id.title_text_layout);
+        titleText                            = findViewById(R.id.textView_title_view_profile);
 
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(this);
+
+        if(!userProfile.getTitle().equals("User")){
+            String title = userProfile.getTitle() + ", HN CitiPages";
+            titleText.setText(title);
+            titleLayout.setVisibility(View.VISIBLE);
+        }
 
         getLatestPostsListBySingleUser(userProfile.getHnid());
         getSupportingProfiles();

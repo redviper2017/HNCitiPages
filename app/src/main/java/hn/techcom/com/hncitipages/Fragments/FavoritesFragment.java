@@ -22,6 +22,7 @@ import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
@@ -32,6 +33,7 @@ import hn.techcom.com.hncitipages.Interfaces.OnLikeCountButtonListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hncitipages.Interfaces.OnOptionsButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnPlayerPlayedListener;
+import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.FavoriteResponse;
 import hn.techcom.com.hncitipages.Models.LikeResponse;
 import hn.techcom.com.hncitipages.Models.PostList;
@@ -55,7 +57,8 @@ public class FavoritesFragment
         OnLikeCountButtonListener,
         OnCommentClickListener,
         OnLoadMoreListener,
-        OnPlayerPlayedListener {
+        OnPlayerPlayedListener,
+        ViewProfileListener {
 
     private static final String TAG = "FavoritesFragment";
     private Utils myUtils;
@@ -251,6 +254,7 @@ public class FavoritesFragment
                 this,
                 this,
                 this,
+                this,
                 this);
         recyclerView.setAdapter(postListAdapter);
         swipeRefreshLayout.setRefreshing(false);
@@ -366,5 +370,16 @@ public class FavoritesFragment
         this.playerView = playerView;
         this.imageView = imageview;
         this.playButton = playButton;
+    }
+
+    @Override
+    public void viewProfile(String hnid, String name) {
+        Fragment fragment = new ProfileSectionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("hnid",hnid);
+        bundle.putString("name",name);
+
+        fragment.setArguments(bundle);
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
 }

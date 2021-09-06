@@ -150,7 +150,8 @@
             android:drawableTint="@color/colorCenterLinearGradient"
             android:focusable="true"
             android:gravity="center"
-            android:text="Update Profile"
+            android:tag="update"
+            android:text="@string/update_profile"
             android:textAlignment="center"
             android:textColor="@color/colorCenterLinearGradient"
             android:textSize="16sp" />
