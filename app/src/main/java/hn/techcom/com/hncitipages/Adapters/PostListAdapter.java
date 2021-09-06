@@ -382,9 +382,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 String hnid = user.getHnid();
                 String name = user.getFullName();
-
-                if (view.getId() == R.id.name_post)
-                    viewProfileListener.viewProfile(hnid, name);
+                viewProfileListener.viewProfile(hnid, name);
             }
         }
     }
@@ -574,9 +572,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 String hnid = user.getHnid();
                 String name = user.getFullName();
-
-                if (view.getId() == R.id.name_post)
-                    viewProfileListener.viewProfile(hnid, name);
+                viewProfileListener.viewProfile(hnid, name);
             }
         }
     }
@@ -818,9 +814,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 String hnid = user.getHnid();
                 String name = user.getFullName();
-
-                if (view.getId() == R.id.name_post)
-                    viewProfileListener.viewProfile(hnid, name);
+                viewProfileListener.viewProfile(hnid, name);
             }
         }
     }
