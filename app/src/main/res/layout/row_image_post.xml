@@ -25,6 +25,7 @@
             android:layout_marginEnd="5dp"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="@drawable/circular_ripple"
             android:padding="5dp"
             android:src="@drawable/profile_ic"
             app:civ_border_width="0dp" />
@@ -58,7 +59,8 @@
                 android:text="John Doe"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:background="?android:attr/selectableItemBackground"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/title_post"
