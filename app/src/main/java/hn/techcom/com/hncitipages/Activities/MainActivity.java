@@ -8,6 +8,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -21,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
@@ -32,6 +36,7 @@ import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -60,6 +65,7 @@ import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String CHANNEL_ID = "101";
     static ArrayList<SupporterProfile> userSupportedProfiles;
     static ArrayList<Post> globalPosts = new ArrayList<>();
     static ArrayList<Post> userSupportedProfilePosts = new ArrayList<>();
@@ -79,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        createNotificationChannel();
+        getToken();
 
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(MainActivity.this);
@@ -315,4 +324,33 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void getToken(){
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull com.google.android.gms.tasks.Task<String> task) {
+                //If task is failed then
+                if (!task.isSuccessful())
+                    Log.d(TAG,"onComplete: Failed to get FCM Token");
+
+                //If successful get token
+                String token = task.getResult();
+                Log.d(TAG,"onComplete: Successful to get FCM Token = "+token);
+            }
+        });
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "FirebaseNotificationChannel";
+            String description = "Received FIrebase notification";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            channel.setVibrationPattern(new long[]{ 0 });
+            channel.enableVibration(true);
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 }

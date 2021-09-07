@@ -32,6 +32,7 @@ import hn.techcom.com.hncitipages.Interfaces.OnPlayerPlayedListener;
 import hn.techcom.com.hncitipages.Interfaces.OnPostCountClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnSupporterSupportingCountClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnUpdateProfileClickListener;
+import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
 import hn.techcom.com.hncitipages.Models.SingleUserInfoResponse;
@@ -77,7 +78,9 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             OnLikeCountButtonListener onLikeCountButtonListener,
             OnCommentClickListener onCommentClickListener,
             OnPlayerPlayedListener onPlayerPlayedListener,
-            OnUpdateProfileClickListener onUpdateProfileClickListener, OnPostCountClickListener onPostCountClickListener, OnSupporterSupportingCountClickListener onSupporterSupportingCountClickListener) {
+            OnUpdateProfileClickListener onUpdateProfileClickListener,
+            OnPostCountClickListener onPostCountClickListener,
+            OnSupporterSupportingCountClickListener onSupporterSupportingCountClickListener) {
         this.allPosts = allPosts;
         this.profile  = profile;
         this.context = context;

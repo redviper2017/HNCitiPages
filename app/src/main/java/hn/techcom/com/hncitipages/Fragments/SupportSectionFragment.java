@@ -427,7 +427,7 @@ public class SupportSectionFragment
         bundle.putString("firstImage",firstImage);
         fragment.setArguments(bundle);
 
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
 
     //like or un-like post

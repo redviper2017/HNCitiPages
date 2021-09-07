@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hncitipages.Interfaces.OnAvatarLongClickListener;
+import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.R;
 
 public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapter.ViewHolder> {
@@ -37,7 +38,7 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
             postCountList;
     private static final String TAG = "AvatarLoaderAdapter";
 
-    private final OnAvatarLongClickListener onAvatarLongClickListener;
+    private ViewProfileListener viewProfileListener;
 
     public AvatarLoaderAdapter(
             ArrayList<String> avatarUrlList,
@@ -50,14 +51,14 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
             ArrayList<Integer> supportingCountList,
             ArrayList<Integer> postCountList,
             ArrayList<String> firstImageList,
-            OnAvatarLongClickListener onAvatarLongClickListener,
+            ViewProfileListener viewProfileListener,
             Context context) {
         this.avatarUrlList = avatarUrlList;
         this.nameList = nameList;
         this.usernameList = usernameList;
         this.locationList = locationList;
         this.hnidList = hnidList;
-        this.onAvatarLongClickListener = onAvatarLongClickListener;
+        this.viewProfileListener = viewProfileListener;
         this.thumbnailList = thumbnailList;
         this.supporterCountList = supporterCountList;
         this.supportingCountList = supportingCountList;
@@ -116,16 +117,11 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
 
                     Log.d(TAG,"View this profile of = "+nameList.get(getAbsoluteAdapterPosition()) + " " + hnidList.get(getAbsoluteAdapterPosition()));
                     Log.d(TAG,"post count for this profile = "+postCountList.get(getAbsoluteAdapterPosition()));
-                    onAvatarLongClickListener.onAvatarLongClick(
-                            hnidList.get(getAbsoluteAdapterPosition()),
-                            nameList.get(getAbsoluteAdapterPosition()),
-                            usernameList.get(getAbsoluteAdapterPosition()),
-                            locationList.get(getAbsoluteAdapterPosition()),
-                            thumbnailList.get(getAbsoluteAdapterPosition()),
-                            supporterCountList.get(getAbsoluteAdapterPosition()),
-                            supportingCountList.get(getAbsoluteAdapterPosition()),
-                            postCountList.get(getAbsoluteAdapterPosition()),
-                            firstImageList.get(getAbsoluteAdapterPosition()));
+
+                    String hnid = hnidList.get(getAbsoluteAdapterPosition());
+                    String name = nameList.get(getAbsoluteAdapterPosition());
+
+                    viewProfileListener.viewProfile(hnid, name);
                 }
             });
         }
