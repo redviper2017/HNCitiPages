@@ -82,6 +82,7 @@ public class HomeFragment
     private ShimmerFrameLayout shimmerFrameLayout;
     private AndExoPlayerView playerView;
     private ImageView imageView, playButton;
+    private LinearLayoutManager linearLayoutManager;
 
     public HomeFragment() {}
 
@@ -161,14 +162,11 @@ public class HomeFragment
     @Override
     public void onResume() {
         super.onResume();
-        if(getRecentPosts() != null)
-            setRecyclerView(getRecentPosts());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        storeRecentPosts();
         onPlayerPlayed(playerView, imageView, playButton);
     }
 
@@ -270,7 +268,8 @@ public class HomeFragment
     public void setRecyclerView(ArrayList<Result> postList){
         shimmerFrameLayout.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
         postListAdapter = new PostListAdapter(
                 postList,
                 getContext(),
