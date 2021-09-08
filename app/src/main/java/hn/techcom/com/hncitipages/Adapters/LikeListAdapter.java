@@ -140,9 +140,10 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 String hnid = user.getHnid();
                 String name = user.getFullName();
+                boolean isSupported = user.getIsSupported();
 
                 if (view.getId() == R.id.name_post)
-                    viewProfileListener.viewProfile(hnid, name);
+                    viewProfileListener.viewProfile(hnid, name, isSupported);
             }
         }
     }

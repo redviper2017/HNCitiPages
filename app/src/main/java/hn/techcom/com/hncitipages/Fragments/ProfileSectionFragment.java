@@ -72,7 +72,6 @@ public class ProfileSectionFragment
     private String nextPageUrl,hnid,name;
     private ProfilePostAdapter profilePostAdapter;
 
-    private MaterialTextView postCountText, supportingCountText, supporterCountText;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private AndExoPlayerView playerView;
@@ -100,9 +99,7 @@ public class ProfileSectionFragment
 
         //Hooks
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_profile);
-        postCountText                = view.findViewById(R.id.post_count_viewprofile);
-        supportingCountText          = view.findViewById(R.id.supporting_count_viewprofile);
-        supporterCountText           = view.findViewById(R.id.supporter_count_viewprofile);
+
         recyclerView                 = view.findViewById(R.id.recyclerview_posts_profile_section);
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
         shimmerFrameLayout           = view.findViewById(R.id.shimmerLayout);
@@ -254,7 +251,7 @@ public class ProfileSectionFragment
         recyclerView.setVisibility(View.VISIBLE);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         profilePostAdapter = new ProfilePostAdapter(
-                initialPostList,
+                postList,
                 profile,
                 getContext(),
                 this,

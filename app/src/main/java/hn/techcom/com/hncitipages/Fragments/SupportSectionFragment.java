@@ -32,6 +32,7 @@ import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Adapters.AvatarLoaderAdapter;
 import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
+import hn.techcom.com.hncitipages.Adapters.SupportingPostAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnAvatarLongClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
@@ -66,7 +67,6 @@ public class SupportSectionFragment
         OnFavoriteButtonClickListener,
         OnLikeCountButtonListener,
         OnCommentClickListener,
-        OnLoadMoreListener,
         OnAvatarLongClickListener,
         OnPlayerPlayedListener,
         ViewProfileListener {
@@ -74,16 +74,15 @@ public class SupportSectionFragment
     private Utils myUtils;
     private Profile userProfile;
 
-    private ProgressBar progressBar;
-    private RecyclerView recyclerView, profileRecyclerView;
+    private RecyclerView recyclerView;
     private EditText searchView;
-    private PostListAdapter postListAdapter;
-    private AvatarLoaderAdapter avatarLoaderAdapter;
+    private SupportingPostAdapter supportingPostAdapter;
     private String nextSupportingPostListUrl;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ShimmerFrameLayout shimmerFrameLayout;
-    private ShimmerFrameLayout avatarShimmerFrameLayout;
+
     private ArrayList<Result> recentPostList;
+    private SupportingProfileList allProfiles;
 
     private AndExoPlayerView playerView;
     private ImageView imageView, playButton;
@@ -102,13 +101,10 @@ public class SupportSectionFragment
 
         //Hooks
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_supportsection);
-        progressBar                  = view.findViewById(R.id.progress);
         recyclerView                 = view.findViewById(R.id.recyclerview_posts_supportsection);
-        profileRecyclerView          = view.findViewById(R.id.recyclerview_supported_avatars_supportsection);
         searchView                   = view.findViewById(R.id.searchview_supportedsection);
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
         shimmerFrameLayout           = view.findViewById(R.id.shimmerLayout);
-        avatarShimmerFrameLayout     = view.findViewById(R.id.shimmerLayout_avatar);
 
         recentPostList = new ArrayList<>();
 
@@ -186,39 +182,21 @@ public class SupportSectionFragment
                 if (post.getUser().getFullName().toLowerCase().contains(text))
                     filterNames.add(post);
 
-        postListAdapter.filterList(filterNames);
+        supportingPostAdapter.filterList(filterNames);
     }
 
     //get initial supporting profile list
     public void getSupportingProfiles(){
-        avatarShimmerFrameLayout.setVisibility(View.VISIBLE);
-        profileRecyclerView.setVisibility(View.GONE);
-        avatarShimmerFrameLayout.startShimmer();
-
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<SupportingProfileList> call = service.getSupportingProfiles(userProfile.getHnid());
         call.enqueue(new Callback<SupportingProfileList>(){
             @Override
-            public void onResponse(Call<SupportingProfileList> call, Response<SupportingProfileList> response) {
-                if(response.code() == 200){
-                    SupportingProfileList supportingProfileList = response.body();
-                    Log.d(TAG, "number of supporting profile = "+ supportingProfileList.getCount());
-
-                    if(supportingProfileList.getCount()>0) {
-                        ArrayList<User> profilesArraytList = new ArrayList<>();
-                        profilesArraytList.addAll(supportingProfileList.getResults());
-                        Log.d(TAG,"number of posts of user = "+profilesArraytList.get(0).getPostCount());
-                        Log.d(TAG,"number of supporting of user = "+profilesArraytList.get(0).getSupportingCount());
-                        Log.d(TAG,"number of supporter of user = "+profilesArraytList.get(0).getSupporterCount());
-                        setProfilesRecyclerView(profilesArraytList);
-                    }else{
-                        Toast.makeText(getContext(),"Oops! seems like you haven't supported anyone yet. Please support someone and come back hear to see their posts.",Toast.LENGTH_LONG).show();
-                    }
-                }
+            public void onResponse(@NonNull Call<SupportingProfileList> call, @NonNull Response<SupportingProfileList> response) {
+                if(response.code() == 200) allProfiles = response.body();
             }
 
             @Override
-            public void onFailure(Call<SupportingProfileList> call, Throwable t) {
+            public void onFailure(@NonNull Call<SupportingProfileList> call, @NonNull Throwable t) {
 
             }
         });
@@ -249,7 +227,7 @@ public class SupportSectionFragment
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
                         if(postList.getNext() != null)
                             recentPostList.add(null);
-
+                        recentPostList.add(0,recentPostList.get(0));
                         setRecyclerView(recentPostList);
                     }
                 }
@@ -273,20 +251,18 @@ public class SupportSectionFragment
                 if(response.code() == 200){
                     PostList postList = response.body();
                     Log.d(TAG, "number of supporting profile posts = "+postList.getCount());
-                    if (postList != null) {
-                        nextSupportingPostListUrl = postList.getNext();
+                    nextSupportingPostListUrl = postList.getNext();
 
-                        ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
-                        postArrayList = myUtils.setPostRelativeTime(postArrayList);
+                    ArrayList<Result> postArrayList = new ArrayList<>(postList.getResults());
+                    postArrayList = myUtils.setPostRelativeTime(postArrayList);
 
-                        recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
+                    recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
 
-                        postListAdapter.notifyDataSetChanged();
-                        if (postList.getNext() != null) {
-                            recentPostList.add(null);
-                            Log.d(TAG,"total number of global posts fetched = "+recentPostList.size());
-                            getSupportingProfilePostsFromNextPage(postList.getNext());
-                        }
+                    supportingPostAdapter.notifyDataSetChanged();
+                    if (postList.getNext() != null) {
+                        recentPostList.add(null);
+                        Log.d(TAG,"total number of global posts fetched = "+recentPostList.size());
+                        getSupportingProfilePostsFromNextPage(postList.getNext());
                     }
                 }
             }
@@ -303,73 +279,18 @@ public class SupportSectionFragment
         recyclerView.setVisibility(View.VISIBLE);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        postListAdapter = new PostListAdapter(
-                postList, getContext(),
-                this,
-                this,
+        supportingPostAdapter = new SupportingPostAdapter(
+                getContext(),
+                postList,
+                allProfiles,
                 this,
                 this,
                 this,
                 this,
                 this,
                 this);
-        recyclerView.setAdapter(postListAdapter);
+        recyclerView.setAdapter(supportingPostAdapter);
         swipeRefreshLayout.setRefreshing(false);
-    }
-
-    public void setProfilesRecyclerView(ArrayList<User> supportingProfileList){
-        avatarShimmerFrameLayout.setVisibility(View.GONE);
-        profileRecyclerView.setVisibility(View.VISIBLE);
-
-        ArrayList<String> avatarList = new ArrayList<>();
-        ArrayList<String> nameList = new ArrayList<>();
-        ArrayList<String> usernameList = new ArrayList<>();
-        ArrayList<String> locationList = new ArrayList<>();
-        ArrayList<String> hnidList = new ArrayList<>();
-        ArrayList<String> thumbnailList = new ArrayList<>();
-        ArrayList<Integer> supporterCountList = new ArrayList<>();
-        ArrayList<Integer> supportingCountList = new ArrayList<>();
-        ArrayList<Integer> postCountList = new ArrayList<>();
-        ArrayList<String> firstImageList = new ArrayList<>();
-
-        for (User supportingProfile : supportingProfileList) {
-            Log.d(TAG,"supporting count = "+supportingProfile.getSupportingCount());
-
-            avatarList.add(supportingProfile.getProfileImgThumbnail());
-            nameList.add(supportingProfile.getFullName());
-            usernameList.add(supportingProfile.getUsername());
-            locationList.add(supportingProfile.getCity()+", "+supportingProfile.getCountry());
-            hnidList.add(supportingProfile.getHnid());
-            thumbnailList.add(supportingProfile.getProfileImgThumbnail());
-            supportingCountList.add(supportingProfile.getSupportingCount());
-            supporterCountList.add(supportingProfile.getSupporterCount());
-            postCountList.add(supportingProfile.getPostCount());
-            firstImageList.add(supportingProfile.getFirstImg());
-        }
-
-        Log.d(TAG, "Supporting count list size  = "+supportingCountList.size());
-
-        LinearLayoutManager horizontalLayout = new LinearLayoutManager(
-                getContext(),
-                LinearLayoutManager.HORIZONTAL,
-                false
-        );
-        profileRecyclerView.setLayoutManager(horizontalLayout);
-        avatarLoaderAdapter = new AvatarLoaderAdapter(
-                avatarList,
-                nameList,
-                thumbnailList,
-                usernameList,
-                hnidList,
-                locationList,
-                supporterCountList,
-                supportingCountList,
-                postCountList,
-                firstImageList,
-                this,
-                getContext()
-        );
-        profileRecyclerView.setAdapter(avatarLoaderAdapter);
     }
 
     @Override
@@ -394,8 +315,8 @@ public class SupportSectionFragment
 
     @Override
     public void onOptionsButtonClick(int position, int postId, String hnid_user, boolean supporting) {
-        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment(position, postId, recentPostList, postListAdapter, hnid_user, supporting);
-        interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
+//        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment(position, postId, recentPostList, supportingPostAdapter, hnid_user, supporting);
+//        interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
     }
 
     @Override
@@ -454,7 +375,7 @@ public class SupportSectionFragment
                     else
                         recentPostList.get(position).setLikeCount(recentPostList.get(position).getLikeCount() - 1);
 
-                    postListAdapter.notifyDataSetChanged();
+                    supportingPostAdapter.notifyDataSetChanged();
                 }else
                     Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
             }
@@ -476,46 +397,23 @@ public class SupportSectionFragment
 
         call.enqueue(new Callback<FavoriteResponse>() {
             @Override
-            public void onResponse(Call<FavoriteResponse> call, Response<FavoriteResponse> response) {
+            public void onResponse(@NonNull Call<FavoriteResponse> call, @NonNull Response<FavoriteResponse> response) {
                 if(response.code() == 201){
                     FavoriteResponse favoriteResponse = response.body();
-                    Toast.makeText(getContext(), favoriteResponse.getMessage(), Toast.LENGTH_LONG).show();
 
                     //Toggling favorite button image
                     recentPostList.get(position).setFavourite(!recentPostList.get(position).getFavourite());
 
-                    postListAdapter.notifyDataSetChanged();
+                    supportingPostAdapter.notifyDataSetChanged();
                 }else
                     Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onFailure(Call<FavoriteResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<FavoriteResponse> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private void storeRecentPosts(){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(recentPostList);
-        editor.putString("RecentPosts", json);
-        editor.apply();
-    }
-
-    private ArrayList<Result> getRecentPosts(){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("RecentPosts", null);
-        Type type = new TypeToken<ArrayList<Result>>() {}.getType();
-        return gson.fromJson(json, type);
-    }
-
-    @Override
-    public void onLoadMore() {
-
     }
 
     @Override
@@ -534,11 +432,12 @@ public class SupportSectionFragment
     }
 
     @Override
-    public void viewProfile(String hnid, String name) {
+    public void viewProfile(String hnid, String name, boolean isSupported) {
         Fragment fragment = new ProfileSectionFragment();
         Bundle bundle = new Bundle();
         bundle.putString("hnid",hnid);
         bundle.putString("name",name);
+        bundle.putBoolean("isSupported",isSupported);
 
         fragment.setArguments(bundle);
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();

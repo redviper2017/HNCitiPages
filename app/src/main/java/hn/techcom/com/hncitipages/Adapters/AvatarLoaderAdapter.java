@@ -18,53 +18,28 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hncitipages.Interfaces.OnAvatarLongClickListener;
 import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
+import hn.techcom.com.hncitipages.Models.SupportingProfileList;
+import hn.techcom.com.hncitipages.Models.User;
 import hn.techcom.com.hncitipages.R;
+import hn.techcom.com.hncitipages.Utils.Utils;
 
 public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapter.ViewHolder> {
 
     private Context context;
-    private final ArrayList<String>
-            avatarUrlList,
-            nameList,
-            usernameList,
-            locationList,
-            hnidList,
-            thumbnailList,
-            firstImageList;
-
-    private final ArrayList<Integer>
-            supporterCountList,
-            supportingCountList,
-            postCountList;
-    private static final String TAG = "AvatarLoaderAdapter";
-
+    ArrayList<User> initialProfileList = new ArrayList<>();
     private ViewProfileListener viewProfileListener;
+    private static final String TAG = "AvatarLoaderAdapter";
+    private Utils myUtils;
 
     public AvatarLoaderAdapter(
-            ArrayList<String> avatarUrlList,
-            ArrayList<String> nameList,
-            ArrayList<String> usernameList,
-            ArrayList<String> locationList,
-            ArrayList<String> hnidList,
-            ArrayList<String> thumbnailList,
-            ArrayList<Integer> supporterCountList,
-            ArrayList<Integer> supportingCountList,
-            ArrayList<Integer> postCountList,
-            ArrayList<String> firstImageList,
-            ViewProfileListener viewProfileListener,
-            Context context) {
-        this.avatarUrlList = avatarUrlList;
-        this.nameList = nameList;
-        this.usernameList = usernameList;
-        this.locationList = locationList;
-        this.hnidList = hnidList;
-        this.viewProfileListener = viewProfileListener;
-        this.thumbnailList = thumbnailList;
-        this.supporterCountList = supporterCountList;
-        this.supportingCountList = supportingCountList;
-        this.postCountList = postCountList;
-        this.firstImageList = firstImageList;
+            Context context,
+            SupportingProfileList allProfiles,
+            ViewProfileListener viewProfileListener) {
         this.context = context;
+        this.viewProfileListener = viewProfileListener;
+
+        initialProfileList.addAll(allProfiles.getResults());
+        myUtils = new Utils();
     }
 
     @NonNull
@@ -72,32 +47,22 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.row_user_avatar, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.d(TAG, "avatar url = " + avatarUrlList.get(position));
-        Log.d(TAG, "name = " + nameList.get(position));
+        User user = initialProfileList.get(position);
+        String name = myUtils.capitalizeName(user.getFullName());
+        String avatarUrl = user.getProfileImgThumbnail();
 
-        String name = capitalizeName(nameList.get(position));
         holder.nameView.setText(name);
-
-        if (avatarUrlList.get(position) != null) {
-            String completeUrl = avatarUrlList.get(position);
-//            Picasso
-//                    .get()
-//                    .load(completeUrl)
-//                    .into(holder.avatarView);
-
-            Glide.with(context).load(completeUrl).centerCrop().into(holder.avatarView);
-        }
+        Glide.with(context).load(avatarUrl).centerCrop().into(holder.avatarView);
     }
 
     @Override
     public int getItemCount() {
-        return avatarUrlList.size();
+        return initialProfileList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -114,29 +79,14 @@ public class AvatarLoaderAdapter extends RecyclerView.Adapter<AvatarLoaderAdapte
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    User user = initialProfileList.get(getAbsoluteAdapterPosition());
+                    String hnid = user.getHnid();
+                    String name = user.getFullName();
 
-                    Log.d(TAG,"View this profile of = "+nameList.get(getAbsoluteAdapterPosition()) + " " + hnidList.get(getAbsoluteAdapterPosition()));
-                    Log.d(TAG,"post count for this profile = "+postCountList.get(getAbsoluteAdapterPosition()));
-
-                    String hnid = hnidList.get(getAbsoluteAdapterPosition());
-                    String name = nameList.get(getAbsoluteAdapterPosition());
-
-                    viewProfileListener.viewProfile(hnid, name);
+                    //As all profiles here are supporting profiles
+                    viewProfileListener.viewProfile(hnid, name, true);
                 }
             });
         }
-    }
-
-    public String capitalizeName(String name) {
-        String fullName = "";
-        String[] splited = name.split("\\s+");
-        for (String part : splited) {
-            if (fullName.equals(""))
-                fullName = fullName + part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase();
-            else
-                fullName = fullName + " " + part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase();
-
-        }
-        return fullName;
     }
 }

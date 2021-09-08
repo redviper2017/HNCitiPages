@@ -380,9 +380,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
                 User user = allPosts.get(position).getUser();
 
-                String hnid = user.getHnid();
-                String name = user.getFullName();
-                viewProfileListener.viewProfile(hnid, name);
+                String hnid         = user.getHnid();
+                String name         = user.getFullName();
+                boolean isSupported = user.getIsSupported();
+
+                viewProfileListener.viewProfile(hnid, name, isSupported);
             }
         }
     }
@@ -570,9 +572,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
                 User user = allPosts.get(position).getUser();
 
-                String hnid = user.getHnid();
-                String name = user.getFullName();
-                viewProfileListener.viewProfile(hnid, name);
+                String hnid         = user.getHnid();
+                String name         = user.getFullName();
+                boolean isSupported = user.getIsSupported();
+
+                viewProfileListener.viewProfile(hnid, name, isSupported);
             }
         }
     }
@@ -812,9 +816,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
                 User user = allPosts.get(position).getUser();
 
-                String hnid = user.getHnid();
-                String name = user.getFullName();
-                viewProfileListener.viewProfile(hnid, name);
+                String hnid         = user.getHnid();
+                String name         = user.getFullName();
+                boolean isSupported = user.getIsSupported();
+
+                viewProfileListener.viewProfile(hnid, name, isSupported);
             }
         }
     }

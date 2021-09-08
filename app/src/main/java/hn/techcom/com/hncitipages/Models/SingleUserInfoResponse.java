@@ -1,5 +1,7 @@
 package hn.techcom.com.hncitipages.Models;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -179,5 +181,11 @@ public class SingleUserInfoResponse {
 
     public void setPostCount(Integer postCount) {
         this.postCount = postCount;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return ("hnid: "+hnid+", fullName: "+fullName+", userType: "+userType+", isSupported: "+isSupported);
     }
 }

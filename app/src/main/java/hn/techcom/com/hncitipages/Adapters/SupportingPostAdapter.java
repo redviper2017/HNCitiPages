@@ -1,6 +1,7 @@
 package hn.techcom.com.hncitipages.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +13,20 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
-import com.santalu.aspectratioimageview.AspectRatioImageView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnFavoriteButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLikeButtonClickListener;
@@ -36,12 +40,16 @@ import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
 import hn.techcom.com.hncitipages.Models.SingleUserInfoResponse;
+import hn.techcom.com.hncitipages.Models.SupportingProfileList;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.Utils;
 
-public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class SupportingPostAdapter
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+
     private Context context;
-    private  ArrayList<Result> allPosts;
+    private ArrayList<Result> allPosts;
+    private SupportingProfileList allProfiles;
 
     //Constants
     private static final int VIEW_TYPE_PROFILE = -1;
@@ -51,7 +59,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int VIEW_TYPE_VIDEO   = 3;
     private static final int VIEW_TYPE_AUDIO   = 4;
 
-    private static final String TAG = "ProfilePostAdapter";
+    private static final String TAG = "SupportingPostAdapter";
 
     //instance of interface
     private final OnOptionsButtonClickListener onOptionsButtonClickListener;
@@ -60,46 +68,25 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final OnLikeCountButtonListener onLikeCountButtonListener;
     private final OnCommentClickListener onCommentClickListener;
     private final OnPlayerPlayedListener onPlayerPlayedListener;
-    private final OnUpdateProfileClickListener onUpdateProfileClickListener;
-    private final OnPostCountClickListener onPostCountClickListener;
-    private final OnSupporterSupportingCountClickListener onSupporterSupportingCountClickListener;
 
     private Utils myUtils;
-    private SingleUserInfoResponse profile;
     private final Profile userProfile;
 
-    public ProfilePostAdapter(
-            ArrayList<Result> allPosts,
-            SingleUserInfoResponse profile,
-            Context context,
-            OnOptionsButtonClickListener onOptionsButtonClickListener,
-            OnLikeButtonClickListener onLikeButtonClickListener,
-            OnFavoriteButtonClickListener onFavoriteButtonClickListener,
-            OnLikeCountButtonListener onLikeCountButtonListener,
-            OnCommentClickListener onCommentClickListener,
-            OnPlayerPlayedListener onPlayerPlayedListener,
-            OnUpdateProfileClickListener onUpdateProfileClickListener,
-            OnPostCountClickListener onPostCountClickListener,
-            OnSupporterSupportingCountClickListener onSupporterSupportingCountClickListener) {
-        this.allPosts = allPosts;
-        this.profile  = profile;
+    public SupportingPostAdapter(Context context, ArrayList<Result> allPosts, SupportingProfileList allProfiles, OnOptionsButtonClickListener onOptionsButtonClickListener, OnLikeButtonClickListener onLikeButtonClickListener, OnFavoriteButtonClickListener onFavoriteButtonClickListener, OnLikeCountButtonListener onLikeCountButtonListener, OnCommentClickListener onCommentClickListener, OnPlayerPlayedListener onPlayerPlayedListener) {
         this.context = context;
+        this.allPosts = allPosts;
+        this.allProfiles = allProfiles;
         this.onOptionsButtonClickListener = onOptionsButtonClickListener;
         this.onLikeButtonClickListener = onLikeButtonClickListener;
         this.onFavoriteButtonClickListener = onFavoriteButtonClickListener;
         this.onLikeCountButtonListener = onLikeCountButtonListener;
         this.onCommentClickListener = onCommentClickListener;
         this.onPlayerPlayedListener = onPlayerPlayedListener;
-        this.onUpdateProfileClickListener = onUpdateProfileClickListener;
-        this.onPostCountClickListener = onPostCountClickListener;
-        this.onSupporterSupportingCountClickListener = onSupporterSupportingCountClickListener;
 
         //getting user profile from local storage
         myUtils     = new Utils();
         //getting logged in user's profile
         userProfile = myUtils.getNewUserFromSharedPreference(context);
-
-        Log.d(TAG,"inside ProfilePostAdapter = "+"YES");
     }
 
     @NonNull
@@ -110,25 +97,25 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case VIEW_TYPE_STORY:
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.row_story_post, parent, false);
-                return new ProfilePostAdapter.StoryViewHolder(view);
+                return new SupportingPostAdapter.StoryViewHolder(view);
 
             case VIEW_TYPE_IMAGE:
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.row_image_post, parent, false);
-                return new ProfilePostAdapter.ImageViewHolder(view);
+                return new SupportingPostAdapter.ImageViewHolder(view);
             case VIEW_TYPE_VIDEO:
             case VIEW_TYPE_AUDIO:
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.row_video_post, parent, false);
-                return new ProfilePostAdapter.AudioVideoViewHolder(view);
+                return new SupportingPostAdapter.AudioVideoViewHolder(view);
             case VIEW_TYPE_LOADING:
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.row_loading_post, parent, false);
-                return new ProfilePostAdapter.LoadingViewHolder(view);
+                return new SupportingPostAdapter.LoadingViewHolder(view);
             case VIEW_TYPE_PROFILE:
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.row_my_profile_info, parent, false);
-                return new ProfilePostAdapter.ProfileViewHolder(view);
+                        .inflate(R.layout.row_supporting_profiles, parent, false);
+                return new SupportingPostAdapter.ProfileViewHolder(view);
         }
         return null;
     }
@@ -138,20 +125,20 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         Result post = allPosts.get(position);
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_STORY:
-                ((ProfilePostAdapter.StoryViewHolder) holder).bind(post);
+                ((SupportingPostAdapter.StoryViewHolder) holder).bind(post);
                 break;
             case VIEW_TYPE_IMAGE:
-                ((ProfilePostAdapter.ImageViewHolder) holder).bind(post);
+                ((SupportingPostAdapter.ImageViewHolder) holder).bind(post);
                 break;
             case VIEW_TYPE_VIDEO:
             case VIEW_TYPE_AUDIO:
-                ((ProfilePostAdapter.AudioVideoViewHolder) holder).bind(post);
+                ((SupportingPostAdapter.AudioVideoViewHolder) holder).bind(post);
                 break;
             case VIEW_TYPE_LOADING:
-                ((ProfilePostAdapter.LoadingViewHolder) holder).bind();
+                ((SupportingPostAdapter.LoadingViewHolder) holder).bind();
                 break;
             case VIEW_TYPE_PROFILE:
-                ((ProfilePostAdapter.ProfileViewHolder) holder).bind();
+                ((SupportingPostAdapter.ProfileViewHolder) holder).bind();
                 break;
         }
     }
@@ -193,6 +180,11 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             portrait.stopPlayer();
         else if(landscapre != null)
             landscapre.stopPlayer();
+    }
+
+    public void filterList(ArrayList<Result> filterNames) {
+        allPosts = filterNames;
+        notifyDataSetChanged();
     }
 
     //View holder classes
@@ -773,79 +765,43 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     //Profile view holder class
-    private class ProfileViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class ProfileViewHolder extends RecyclerView.ViewHolder
+            implements ViewProfileListener {
 
-        private MaterialTextView postCountText, supportingCountText, supporterCountText, nameText, locationText, usernameText, updateProfileButton;
-        private CircleImageView profilePhoto;
-        private LinearLayout postCountLayout, supporterCountLayout, supportingCountLayout;
-        private View profilePhotoRing;
+        private RecyclerView recyclerView;
 
         public ProfileViewHolder(View view) {
             super(view);
-
-            postCountText         = view.findViewById(R.id.post_count_viewprofile);
-            supporterCountText    = view.findViewById(R.id.supporter_count_viewprofile);
-            supportingCountText   = view.findViewById(R.id.supporting_count_viewprofile);
-            nameText              = view.findViewById(R.id.profile_name);
-            locationText          = view.findViewById(R.id.profile_location);
-            usernameText          = view.findViewById(R.id.profile_username);
-            updateProfileButton   = view.findViewById(R.id.update_profile_button);
-            profilePhoto          = view.findViewById(R.id.circleimageview_profile_view);
-            postCountLayout       = view.findViewById(R.id.post_count_layout);
-            supporterCountLayout  = view.findViewById(R.id.supporter_count_layout);
-            supportingCountLayout = view.findViewById(R.id.supporting_count_layout);
-            profilePhotoRing      = view.findViewById(R.id.profile_circle_view);
+            recyclerView = view.findViewById(R.id.recyclerview);
         }
 
         void bind(){
-            postCountText.setText(String.valueOf(profile.getPostCount()));
-            supporterCountText.setText(String.valueOf(profile.getSupporterCount()));
-            supportingCountText.setText(String.valueOf(profile.getSupportingCount()));
-            nameText.setText(profile.getFullName());
+            Log.d(TAG,"allProfiles number = "+allProfiles.getResults().size());
+            AvatarLoaderAdapter avatarLoaderAdapter = new AvatarLoaderAdapter(
+                    context, allProfiles, this
+            );
+            // Set Horizontal Layout Manager
+            // for Recycler view
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.HORIZONTAL,
+                    false);
+            recyclerView.setLayoutManager(linearLayoutManager);
 
-            String location = profile.getCity() + ", " + profile.getCountry();
-            locationText.setText(location);
-
-            usernameText.setText(profile.getUsername());
-            Glide.with(context).load(profile.getProfileImgThumbnail()).centerCrop().into(profilePhoto);
-
-            if (profile.getHnid().equals(userProfile.getHnid())){
-                updateProfileButton.setText(R.string.update_profile);
-                updateProfileButton.setTag("update");
-            }else {
-                updateProfileButton.setText(R.string.support);
-                updateProfileButton.setTag("support");
-
-                Log.d(TAG,"user profile viewed: "+profile.toString());
-            }
-
-            updateProfileButton.setOnClickListener(this);
-            postCountLayout.setOnClickListener(this);
-            supporterCountLayout.setOnClickListener(this);
-            supportingCountLayout.setOnClickListener(this);
+            // Set adapter on recycler view
+            recyclerView.setAdapter(avatarLoaderAdapter);
         }
 
         @Override
-        public void onClick(View v) {
-            if(v.getId() == R.id.update_profile_button) {
-                if (v.getTag().equals("update"))
-                    onUpdateProfileClickListener.onUpdateProfileClick();
-                else {
-                    profile.setIsSupported(!profile.getIsSupported());
-                    if (profile.getIsSupported())
-                        profile.setPostCount(profile.getPostCount()+1);
-                    else
-                        profile.setPostCount(profile.getPostCount()-1);
-                    notifyItemChanged(0);
-                    myUtils.supportOrUnsupport(profile.getHnid(), userProfile.getHnid(), context);
-                }
-            }
-            if (v.getId() == R.id.post_count_layout)
-                onPostCountClickListener.onPostCountClick();
-            if (v.getId() == R.id.supporter_count_layout)
-                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporters",String.valueOf(profile.getSupporterCount()));
-            if (v.getId() == R.id.supporting_count_layout)
-                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporting",String.valueOf(profile.getSupportingCount()));
+        public void viewProfile(String hnid, String name, boolean isSupported) {
+            Fragment fragment = new ProfileSectionFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("hnid",hnid);
+            bundle.putString("name",name);
+            bundle.putBoolean("isSupported",isSupported);
+
+            fragment.setArguments(bundle);
+            ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
         }
     }
 }

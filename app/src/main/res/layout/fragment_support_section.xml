@@ -36,39 +36,6 @@
         android:background="@drawable/rounded_corner_rectangle"/>
 
     <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerLayout_avatar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <include layout="@layout/row_avatar_shimmer" />
-            <include layout="@layout/row_avatar_shimmer" />
-            <include layout="@layout/row_avatar_shimmer" />
-            <include layout="@layout/row_avatar_shimmer" />
-            <include layout="@layout/row_avatar_shimmer" />
-            <include layout="@layout/row_avatar_shimmer" />
-            <include layout="@layout/row_avatar_shimmer" />
-        </LinearLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_supported_avatars_supportsection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"
-            android:visibility="gone"/>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,6 +45,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <include layout="@layout/row_avatar_shimmer" />
+                <include layout="@layout/row_avatar_shimmer" />
+                <include layout="@layout/row_avatar_shimmer" />
+                <include layout="@layout/row_avatar_shimmer" />
+                <include layout="@layout/row_avatar_shimmer" />
+                <include layout="@layout/row_avatar_shimmer" />
+                <include layout="@layout/row_avatar_shimmer" />
+            </LinearLayout>
             <include layout="@layout/row_shimmer" />
             <include layout="@layout/row_shimmer" />
             <include layout="@layout/row_shimmer" />

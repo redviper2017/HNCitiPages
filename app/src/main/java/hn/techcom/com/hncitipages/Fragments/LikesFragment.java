@@ -134,12 +134,13 @@ public class LikesFragment extends Fragment
     }
 
     @Override
-    public void viewProfile(String hnid, String name) {
+    public void viewProfile(String hnid, String name, boolean isSupported) {
 
         Fragment fragment = new ProfileSectionFragment();
         Bundle bundle = new Bundle();
         bundle.putString("hnid",hnid);
         bundle.putString("name",name);
+        bundle.putBoolean("isSupported",isSupported);
 
         fragment.setArguments(bundle);
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
