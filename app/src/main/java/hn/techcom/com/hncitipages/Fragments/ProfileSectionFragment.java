@@ -70,6 +70,7 @@ public class ProfileSectionFragment
     private ArrayList<Result> initialPostList;
 
     private String nextPageUrl,hnid,name;
+    private boolean isSupported;
     private ProfilePostAdapter profilePostAdapter;
 
     private RecyclerView recyclerView;
@@ -108,6 +109,7 @@ public class ProfileSectionFragment
         if (bundle != null) {
             hnid = bundle.getString("hnid");
             name = bundle.getString("name");
+            isSupported = bundle.getBoolean("isSupported");
         }
 
         getUserProfile();
@@ -253,6 +255,7 @@ public class ProfileSectionFragment
         profilePostAdapter = new ProfilePostAdapter(
                 postList,
                 profile,
+                isSupported,
                 getContext(),
                 this,
                 this,

@@ -74,6 +74,7 @@ public class ViewSupportingProfile
 
     private SingleUserInfoResponse profile;
     private Profile userProfile;
+    private boolean isSupported;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class ViewSupportingProfile
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
         hnid = bundle.getString("hnid");
+        isSupported = bundle.getBoolean("isSupported");
 
         //getting user profile from local storage
         myUtils                     = new Utils();
@@ -286,6 +288,7 @@ public class ViewSupportingProfile
         profilePostAdapter = new ProfilePostAdapter(
                 initialPostList,
                 profile,
+                isSupported,
                 this,
                 this,
                 this,

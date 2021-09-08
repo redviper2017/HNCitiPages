@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -87,6 +88,7 @@ public class SupportSectionFragment
     private AndExoPlayerView playerView;
     private ImageView imageView, playButton;
     private LinearLayoutManager linearLayoutManager;
+    private LinearLayout notFoundLayout;
 
     //Constants
     private static final String TAG = "SupportSectionFragment";
@@ -106,6 +108,7 @@ public class SupportSectionFragment
         searchView                   = view.findViewById(R.id.searchview_supportedsection);
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
         shimmerFrameLayout           = view.findViewById(R.id.shimmerLayout);
+        notFoundLayout               = view.findViewById(R.id.notfound_layout);
 
         recentPostList = new ArrayList<>();
 
@@ -224,7 +227,7 @@ public class SupportSectionFragment
             public void onResponse(Call<PostList> call, Response<PostList> response) {
                 if(response.code() == 200){
                     PostList postList = response.body();
-                    if(postList != null) {
+                    if (postList != null && postList.getCount() > 0) {
                         Log.d(TAG, "number of supporting profile posts = " + postList.getCount());
                         nextSupportingPostListUrl = postList.getNext();
 
@@ -233,10 +236,15 @@ public class SupportSectionFragment
 
                         recentPostList.clear();
                         recentPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postArrayList));
-                        if(postList.getNext() != null)
+                        if (postList.getNext() != null)
                             recentPostList.add(null);
-                        recentPostList.add(0,recentPostList.get(0));
+                        recentPostList.add(0, recentPostList.get(0));
                         setRecyclerView(recentPostList);
+                    }else {
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.GONE);
+                        notFoundLayout.setVisibility(View.VISIBLE);
+                        swipeRefreshLayout.setVisibility(View.GONE);
                     }
                 }
             }

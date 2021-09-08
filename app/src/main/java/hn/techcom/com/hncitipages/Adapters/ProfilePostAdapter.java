@@ -66,11 +66,13 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private Utils myUtils;
     private SingleUserInfoResponse profile;
+    private boolean isSupported;
     private final Profile userProfile;
 
     public ProfilePostAdapter(
             ArrayList<Result> allPosts,
             SingleUserInfoResponse profile,
+            boolean isSupported,
             Context context,
             OnOptionsButtonClickListener onOptionsButtonClickListener,
             OnLikeButtonClickListener onLikeButtonClickListener,
@@ -83,6 +85,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             OnSupporterSupportingCountClickListener onSupporterSupportingCountClickListener) {
         this.allPosts = allPosts;
         this.profile  = profile;
+        this.isSupported = isSupported;
         this.context = context;
         this.onOptionsButtonClickListener = onOptionsButtonClickListener;
         this.onLikeButtonClickListener = onLikeButtonClickListener;
@@ -813,10 +816,17 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 updateProfileButton.setText(R.string.update_profile);
                 updateProfileButton.setTag("update");
             }else {
-                updateProfileButton.setText(R.string.support);
+                if (isSupported) {
+                    profilePhotoRing.setVisibility(View.VISIBLE);
+                    profilePhotoRing.setBackground(ResourcesCompat.getDrawable(context.getResources(),R.drawable.circle_hollow,context.getTheme()));
+                    updateProfileButton.setText(R.string.un_support_user);
+                }
+                else{
+//                    profilePhotoRing.setBackground(ResourcesCompat.getDrawable(context.getResources(),R.drawable.circle_hollow_1,context.getTheme()));
+                    profilePhotoRing.setVisibility(View.GONE);
+                    updateProfileButton.setText(R.string.support_user);
+                }
                 updateProfileButton.setTag("support");
-
-                Log.d(TAG,"user profile viewed: "+profile.toString());
             }
 
             updateProfileButton.setOnClickListener(this);
@@ -831,11 +841,22 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 if (v.getTag().equals("update"))
                     onUpdateProfileClickListener.onUpdateProfileClick();
                 else {
-                    profile.setIsSupported(!profile.getIsSupported());
-                    if (profile.getIsSupported())
-                        profile.setPostCount(profile.getPostCount()+1);
-                    else
-                        profile.setPostCount(profile.getPostCount()-1);
+                    if (!isSupported) {
+                        isSupported = true;
+                        profile.setSupporterCount(profile.getSupporterCount() + 1);
+                        for (Result post: allPosts)
+                            if (post.getUser().getHnid().equals(profile.getHnid()))
+                                post.getUser().setIsSupported(isSupported);
+                        notifyDataSetChanged();
+                    }
+                    else {
+                        isSupported=false;
+                        profile.setSupporterCount(profile.getSupporterCount() - 1);
+                        for (Result post: allPosts)
+                            if (post.getUser().getHnid().equals(profile.getHnid()))
+                                post.getUser().setIsSupported(isSupported);
+                        notifyDataSetChanged();
+                    }
                     notifyItemChanged(0);
                     myUtils.supportOrUnsupport(profile.getHnid(), userProfile.getHnid(), context);
                 }
