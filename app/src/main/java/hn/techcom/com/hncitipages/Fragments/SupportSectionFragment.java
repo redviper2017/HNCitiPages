@@ -86,6 +86,7 @@ public class SupportSectionFragment
 
     private AndExoPlayerView playerView;
     private ImageView imageView, playButton;
+    private LinearLayoutManager linearLayoutManager;
 
     //Constants
     private static final String TAG = "SupportSectionFragment";
@@ -121,11 +122,18 @@ public class SupportSectionFragment
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+//                {
+//                    searchView.setVisibility(View.VISIBLE);
+//                }
             }
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+
+//                if (dy > 0 || dy<0 && searchView.getVisibility() == View.VISIBLE)
+//                    searchView.setVisibility(View.GONE);
 
                 if (!recyclerView.canScrollVertically(1) && dy>0){
                     //scrolled to bottom
@@ -278,11 +286,13 @@ public class SupportSectionFragment
         shimmerFrameLayout.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
         supportingPostAdapter = new SupportingPostAdapter(
                 getContext(),
                 postList,
                 allProfiles,
+                this,
                 this,
                 this,
                 this,

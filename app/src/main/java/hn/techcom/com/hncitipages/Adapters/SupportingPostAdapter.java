@@ -41,6 +41,7 @@ import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
 import hn.techcom.com.hncitipages.Models.SingleUserInfoResponse;
 import hn.techcom.com.hncitipages.Models.SupportingProfileList;
+import hn.techcom.com.hncitipages.Models.User;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.Utils;
 
@@ -68,11 +69,22 @@ public class SupportingPostAdapter
     private final OnLikeCountButtonListener onLikeCountButtonListener;
     private final OnCommentClickListener onCommentClickListener;
     private final OnPlayerPlayedListener onPlayerPlayedListener;
+    private ViewProfileListener viewProfileListener;
 
     private Utils myUtils;
     private final Profile userProfile;
 
-    public SupportingPostAdapter(Context context, ArrayList<Result> allPosts, SupportingProfileList allProfiles, OnOptionsButtonClickListener onOptionsButtonClickListener, OnLikeButtonClickListener onLikeButtonClickListener, OnFavoriteButtonClickListener onFavoriteButtonClickListener, OnLikeCountButtonListener onLikeCountButtonListener, OnCommentClickListener onCommentClickListener, OnPlayerPlayedListener onPlayerPlayedListener) {
+    public SupportingPostAdapter(
+            Context context,
+            ArrayList<Result> allPosts,
+            SupportingProfileList allProfiles,
+            OnOptionsButtonClickListener onOptionsButtonClickListener,
+            OnLikeButtonClickListener onLikeButtonClickListener,
+            OnFavoriteButtonClickListener onFavoriteButtonClickListener,
+            OnLikeCountButtonListener onLikeCountButtonListener,
+            OnCommentClickListener onCommentClickListener,
+            OnPlayerPlayedListener onPlayerPlayedListener,
+            ViewProfileListener viewProfileListener) {
         this.context = context;
         this.allPosts = allPosts;
         this.allProfiles = allProfiles;
@@ -82,6 +94,7 @@ public class SupportingPostAdapter
         this.onLikeCountButtonListener = onLikeCountButtonListener;
         this.onCommentClickListener = onCommentClickListener;
         this.onPlayerPlayedListener = onPlayerPlayedListener;
+        this.viewProfileListener = viewProfileListener;
 
         //getting user profile from local storage
         myUtils     = new Utils();
@@ -221,6 +234,8 @@ public class SupportingPostAdapter
             likes.setOnClickListener(this);
             comments.setOnClickListener(this);
             commentButton.setOnClickListener(this);
+            name.setOnClickListener(this);
+            avatar.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -331,6 +346,15 @@ public class SupportingPostAdapter
                 onLikeCountButtonListener.onLikeCountButtonClick(postId);
             if(view.getId() == R.id.comment_button_post || view.getId() == R.id.text_comment_count_post)
                 onCommentClickListener.onCommentClick(postId,count);
+            if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
+                User user = allPosts.get(position).getUser();
+
+                String hnid         = user.getHnid();
+                String name         = user.getFullName();
+                boolean isSupported = user.getIsSupported();
+
+                viewProfileListener.viewProfile(hnid, name, isSupported);
+            }
         }
     }
 
@@ -369,6 +393,8 @@ public class SupportingPostAdapter
             likes.setOnClickListener(this);
             comments.setOnClickListener(this);
             commentButton.setOnClickListener(this);
+            name.setOnClickListener(this);
+            avatar.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -509,6 +535,15 @@ public class SupportingPostAdapter
                 onLikeCountButtonListener.onLikeCountButtonClick(postId);
             if(view.getId() == R.id.comment_button_post || view.getId() == R.id.text_comment_count_post)
                 onCommentClickListener.onCommentClick(postId,count);
+            if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
+                User user = allPosts.get(position).getUser();
+
+                String hnid         = user.getHnid();
+                String name         = user.getFullName();
+                boolean isSupported = user.getIsSupported();
+
+                viewProfileListener.viewProfile(hnid, name, isSupported);
+            }
         }
     }
 
@@ -568,6 +603,9 @@ public class SupportingPostAdapter
             playButtonLandscape.setOnClickListener(this);
             playButtonPortrait.setOnClickListener(this);
             playButtonAudio.setOnClickListener(this);
+
+            name.setOnClickListener(this);
+            avatar.setOnClickListener(this);
         }
         void bind(Result post){
             String address = post.getUser().getCity() + ", " + post.getUser().getCountry();
@@ -745,6 +783,15 @@ public class SupportingPostAdapter
                 audioPlayer.setSource(audioUrl);
                 audioPlayer.setPlayWhenReady(true);
                 onPlayerPlayedListener.onPlayerPlayed(audioPlayer, null, playButtonAudio);
+            }
+            if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
+                User user = allPosts.get(position).getUser();
+
+                String hnid         = user.getHnid();
+                String name         = user.getFullName();
+                boolean isSupported = user.getIsSupported();
+
+                viewProfileListener.viewProfile(hnid, name, isSupported);
             }
         }
     }
