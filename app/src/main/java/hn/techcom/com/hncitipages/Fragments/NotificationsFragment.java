@@ -210,7 +210,7 @@ public class NotificationsFragment
             bundle.putString("name",name);
             bundle.putBoolean("isSupported",isSupported);
             bundle.putString("hnid",id);
-            bundle.putString("postId", null);
+            bundle.putString("postId", "0");
 
             fragment.setArguments(bundle);
             requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();

@@ -286,4 +286,11 @@ public interface GetDataService {
     @GET("posts/get_single_post/{postId}/")
     Call<Result> getSinglePost(@Path("postId") String postId);
 
+    //Update fcm token for user
+//    @Multipart
+//    @POST("posts/like_post/")
+//    Call<LikeResponse> likeOrUnlikePost(
+//            @Part("user") RequestBody user,
+//            @Part("post") RequestBody post
+//    );
 }

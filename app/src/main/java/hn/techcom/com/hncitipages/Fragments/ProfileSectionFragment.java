@@ -113,7 +113,7 @@ public class ProfileSectionFragment
             postId = bundle.getString("postId");
         }
 
-        if (postId == null){
+        if (postId == null || postId.equals("0")){
             getUserProfile();
             getLatestPostsListBySingleUser();
 

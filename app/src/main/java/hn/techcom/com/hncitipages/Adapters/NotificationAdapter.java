@@ -90,13 +90,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 int position = getAbsoluteAdapterPosition();
                 String type = allNotifications.get(position).getNotificationType();
                 String name = allNotifications.get(position).getNotificationUser().getFullName();
-                int postId = allNotifications.get(position).getPost();
+
 
                 boolean isSupported = allNotifications.get(position).getNotificationUser().getIsSupported();
                 if (type.equals("S")) {
                     String id = allNotifications.get(position).getNotificationUser().getHnid();
-                    onNotificationClickListener.onNotificationClick(type,name,id,isSupported,postId);
+                    onNotificationClickListener.onNotificationClick(type,name,id,isSupported,0);
                 }else {
+                    int postId = allNotifications.get(position).getPost();
                     String id = String.valueOf(allNotifications.get(position).getId());
                     onNotificationClickListener.onNotificationClick(type,name,id,isSupported,postId);
                 }
