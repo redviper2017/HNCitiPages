@@ -3,6 +3,7 @@ package hn.techcom.com.hncitipages.Fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,13 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Objects;
-
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
+import hn.techcom.com.hncitipages.Adapters.ProfilePostAdapter;
+import hn.techcom.com.hncitipages.Adapters.SupportingPostAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Models.DeleteResponse;
 import hn.techcom.com.hncitipages.Models.LikeResponse;
@@ -32,24 +34,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragment {
+public class InterectionWithBottomSheetFragment1 extends BottomSheetDialogFragment {
 
     private NavigationView navigationView;
     private int postId, itemPosition;
     private ArrayList<Result> recentPostList;
-    private PostListAdapter postListAdapter;
+    private SupportingPostAdapter postListAdapter;
     private String hnid_user;
     private Utils myUtils;
     private Profile userProfile;
     private boolean supporting;
 
-    private static final String TAG = "PostBottomSheetFragment";
+    private static final String TAG = "BottomSheetFragment1";
 
-    public InteractWithPostBottomSheetFragment(
+    public InterectionWithBottomSheetFragment1(
             int position,
             int id,
             ArrayList<Result> recentPostList,
-            PostListAdapter postListAdapter, String hnid_user, boolean supporting) {
+            SupportingPostAdapter postListAdapter, String hnid_user, boolean supporting) {
         postId = id;
         itemPosition = position;
         this.recentPostList = recentPostList;
@@ -150,8 +152,7 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
         Call<LikeResponse> call = service.supportOrUnsupportUser(supporter,supporting);
         call.enqueue(new Callback<LikeResponse>() {
             @Override
-            public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
-                Log.d(TAG,"support api response code: "+response.code());
+            public void onResponse(@NonNull Call<LikeResponse> call, @NonNull Response<LikeResponse> response) {
                 if(response.code() == 201){
                     LikeResponse supportResponse = response.body();
                     Toast.makeText(getActivity(), Objects.requireNonNull(supportResponse).getMessage(), Toast.LENGTH_LONG).show();
@@ -164,7 +165,7 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
             }
 
             @Override
-            public void onFailure(Call<LikeResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<LikeResponse> call, @NonNull Throwable t) {
                 Toast.makeText(getActivity(),"Sorry, the support request has been failed. Try again..", Toast.LENGTH_LONG).show();
                 dismiss();
             }

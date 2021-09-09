@@ -869,4 +869,9 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporting",String.valueOf(profile.getSupportingCount()));
         }
     }
+
+    public void changeSupportingStatus(int position){
+        allPosts.get(position).getUser().setIsSupported(!allPosts.get(position).getUser().getIsSupported());
+        notifyDataSetChanged();
+    }
 }

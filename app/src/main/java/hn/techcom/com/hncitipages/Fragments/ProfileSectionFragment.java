@@ -164,6 +164,7 @@ public class ProfileSectionFragment
                 if (response.code() == 200) {
                     profile = response.body();
                 }
+                Log.d(TAG,"user profile code got in profile section = "+profile.getSupporterCount());
             }
 
             @Override
@@ -298,8 +299,8 @@ public class ProfileSectionFragment
 
     @Override
     public void onOptionsButtonClick(int position, int postId, String hnid_user, boolean supporting) {
-//        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment(position, postId, initialPostList, profilePostAdapter, hnid_user, supporting);
-//        interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
+        InteractWithPostBottomSheetFragment2 interactWithPostBottomSheetFragment2 = new InteractWithPostBottomSheetFragment2(position, postId, initialPostList, profilePostAdapter, hnid_user, supporting);
+        interactWithPostBottomSheetFragment2.show(getParentFragmentManager(), interactWithPostBottomSheetFragment2.getTag());
     }
 
     @Override

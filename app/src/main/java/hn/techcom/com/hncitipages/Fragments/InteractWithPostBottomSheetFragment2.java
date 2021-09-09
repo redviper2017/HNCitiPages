@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
+import hn.techcom.com.hncitipages.Adapters.ProfilePostAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Models.DeleteResponse;
 import hn.techcom.com.hncitipages.Models.LikeResponse;
@@ -32,12 +33,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragment {
+public class InteractWithPostBottomSheetFragment2 extends BottomSheetDialogFragment {
 
     private NavigationView navigationView;
     private int postId, itemPosition;
     private ArrayList<Result> recentPostList;
-    private PostListAdapter postListAdapter;
+    private ProfilePostAdapter postListAdapter;
     private String hnid_user;
     private Utils myUtils;
     private Profile userProfile;
@@ -45,11 +46,11 @@ public class InteractWithPostBottomSheetFragment extends BottomSheetDialogFragme
 
     private static final String TAG = "PostBottomSheetFragment";
 
-    public InteractWithPostBottomSheetFragment(
+    public InteractWithPostBottomSheetFragment2(
             int position,
             int id,
             ArrayList<Result> recentPostList,
-            PostListAdapter postListAdapter, String hnid_user, boolean supporting) {
+            ProfilePostAdapter postListAdapter, String hnid_user, boolean supporting) {
         postId = id;
         itemPosition = position;
         this.recentPostList = recentPostList;

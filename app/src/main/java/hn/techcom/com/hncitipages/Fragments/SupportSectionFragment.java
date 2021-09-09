@@ -333,8 +333,8 @@ public class SupportSectionFragment
 
     @Override
     public void onOptionsButtonClick(int position, int postId, String hnid_user, boolean supporting) {
-//        InteractWithPostBottomSheetFragment interactWithPostBottomSheetFragment = new InteractWithPostBottomSheetFragment(position, postId, recentPostList, supportingPostAdapter, hnid_user, supporting);
-//        interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
+        InterectionWithBottomSheetFragment1 interectionWithBottomSheetFragment1 = new InterectionWithBottomSheetFragment1(position, postId, recentPostList, supportingPostAdapter, hnid_user, supporting);
+        interectionWithBottomSheetFragment1.show(getParentFragmentManager(), interectionWithBottomSheetFragment1.getTag());
     }
 
     @Override

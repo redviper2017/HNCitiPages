@@ -851,4 +851,9 @@ public class SupportingPostAdapter
             ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
         }
     }
+
+    public void changeSupportingStatus(int position){
+        allPosts.get(position).getUser().setIsSupported(!allPosts.get(position).getUser().getIsSupported());
+        notifyDataSetChanged();
+    }
 }
