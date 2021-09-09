@@ -125,6 +125,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private LinearLayout replyLayout;
         private EditText replyText;
         private Utils myUtils;
+        public View supportCircle;
 
         public CommentViewHolder(@NonNull View view) {
             super(view);
@@ -142,6 +143,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             replyLayout    = view.findViewById(R.id.reply_layout);
             replyText      = view.findViewById(R.id.reply_editText);
             postReplyButton = view.findViewById(R.id.post_reply_button);
+            supportCircle  = view.findViewById(R.id.support_circle_view);
 
             replyButton.setOnClickListener(this);
             postReplyButton.setOnClickListener(this);
@@ -152,6 +154,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         void bind(ResultViewComments comment){
             String address = comment.getUser().getCity() + ", " + comment.getUser().getCountry();
             String user_title = comment.getUser().getTitle();
+            boolean isSupported = comment.getUser().getIsSupported();
 
             //setting up user name and location
             name.setText(comment.getUser().getFullName());
@@ -177,6 +180,11 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //                    .get()
 //                    .load(profilePhotoUrl)
 //                    .into(avatar);
+
+            if (isSupported)
+                supportCircle.setVisibility(View.VISIBLE);
+            else
+                supportCircle.setVisibility(View.GONE);
 
             Glide.with(context).load(profilePhotoUrl).centerCrop().into(avatar);
 

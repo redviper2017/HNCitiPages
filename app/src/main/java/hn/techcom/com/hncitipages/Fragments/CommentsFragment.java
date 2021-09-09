@@ -57,7 +57,9 @@ public class CommentsFragment
     private ShimmerFrameLayout shimmerFrameLayout;
     private ArrayList<ResultViewComments> commentsArrayList;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private String nextPageUrl;
+    private String nextPageUrl, hnid;
+    private Utils myUtils;
+
     private static final String TAG = "CommentsFragment";
 
     private boolean postingComment = false;
@@ -91,6 +93,11 @@ public class CommentsFragment
         shimmerFrameLayout                    = view.findViewById(R.id.shimmerLayout);
         commentsArrayList = new ArrayList<>();
 
+        //Setting up user avatar on comment bottom bar
+        Utils myUtils = new Utils();
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+        hnid = userProfile.getHnid();
+
         viewCommentsOnPost();
         commentCountText.setText(String.valueOf(count));
         if(count == 1)
@@ -98,9 +105,6 @@ public class CommentsFragment
         else
             screenTitle.setText(R.string.comments);
 
-        //Setting up user avatar on comment bottom bar
-        Utils myUtils = new Utils();
-        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
         String profilePhotoUrl = userProfile.getProfileImgThumbnail();
         Picasso
                 .get()
@@ -191,15 +195,20 @@ public class CommentsFragment
     }
 
     public void viewCommentsOnPost(){
+        Log.d(TAG,"new comment api response called = "+"YES");
+        Log.d(TAG,"new comment api response called with hnid = "+hnid);
+        Log.d(TAG,"new comment api response called with postId = "+postId);
+
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         shimmerFrameLayout.startShimmer();
 
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<ViewCommentResponse> call = service.viewComments(postId);
+        Call<ViewCommentResponse> call = service.viewComments(postId,hnid);
         call.enqueue(new Callback<ViewCommentResponse>() {
             @Override
             public void onResponse(@NonNull Call<ViewCommentResponse> call, @NonNull Response<ViewCommentResponse> response) {
+                Log.d(TAG,"new comment api response = "+response.code());
                 if(response.code() == 200) {
                     ViewCommentResponse list = response.body();
 

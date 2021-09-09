@@ -119,7 +119,7 @@ public interface GetDataService {
     @GET()
     Call<PostList> getGlobalPostsFromPage(@Url String url);
 
-    //Get Likes on post
+//    //Get Likes on post
 //    @GET("posts/get_like_post/{post_id}/")
 //    Call<ViewLikesResponse> viewLikes(@Path("post_id") int post_id);
 
@@ -127,9 +127,13 @@ public interface GetDataService {
     @GET("posts/get_like_post_update/{post_id}/{hnid}/")
     Call<ViewLikesResponse> viewLikes(@Path("post_id") int post_id, @Path("hnid") String hnid);
 
-    //Get latest comments on post
-    @GET("posts/get_post_comment/{post_id}/")
-    Call<ViewCommentResponse> viewComments(@Path("post_id") int post_id);
+//    //Get latest comments on post
+//    @GET("posts/get_post_comment/{post_id}/")
+//    Call<ViewCommentResponse> viewComments(@Path("post_id") int post_id);
+
+    //Get latest comments on post (from user's perspective) NEW API
+    @GET("posts/get_post_comment_update/{post_id}/{hnid}/")
+    Call<ViewCommentResponse> viewComments(@Path("post_id") int post_id, @Path("hnid") String hnid);
 
     //Get comments from page
     @GET()
