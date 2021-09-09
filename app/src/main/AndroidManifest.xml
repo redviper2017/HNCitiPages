@@ -42,9 +42,6 @@
             android:name=".Activities.SupportersOrSuppoertingProfilesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.UserProfileActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Activities.PostAudioActivity"
             android:screenOrientation="portrait" />
         <activity

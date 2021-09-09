@@ -36,7 +36,7 @@
             <item
                 android:id="@+id/nav_visit_profile"
                 android:icon="@drawable/ic_view_profile_green_24dp"
-                android:title="@string/view_profile" />
+                android:title="@string/my_profile" />
             </group>
         </menu>
     </item>

@@ -6,26 +6,38 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 import hn.techcom.com.hncitipages.Activities.SignInActivity;
-import hn.techcom.com.hncitipages.Activities.UserProfileActivity;
 import hn.techcom.com.hncitipages.Fragments.FavoritesFragment;
+import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
+import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.R;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment {
     NavigationView navigationView;
+    private Utils myUtils;
+    private Profile userProfile;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bottomsheet, container, false);
         navigationView = view.findViewById(R.id.navigation_view);
+
+        myUtils = new Utils();
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+
         return view;
     }
 
@@ -56,7 +68,17 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //                        dismiss();
 //                        break;
                     case R.id.nav_visit_profile:
-                        startActivity(new Intent(getContext(), UserProfileActivity.class));
+                        if (userProfile.getPostCount()>0) {
+                            Fragment fragmentSelected = new ProfileSectionFragment();
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("hnid", userProfile.getHnid());
+                            bundle.putString("name", userProfile.getFullName());
+
+                            fragmentSelected.setArguments(bundle);
+                            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragmentSelected)).addToBackStack(null).commit();
+                        }else
+                            Toast.makeText(getContext(),"You have to make your first post to view this section",Toast.LENGTH_SHORT).show();
                         dismiss();
                         break;
 //                    case R.id.nav_random_community:

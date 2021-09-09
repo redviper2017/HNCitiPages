@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Activities.UserProfileActivity"
+    tools:context=".Fragments.UpdateProfileFragment"
     android:orientation="vertical"
     android:background="@color/white">
 
@@ -60,9 +60,11 @@
 
         <LinearLayout
             android:id="@+id/layout_info"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/image_layout"
             android:paddingBottom="@dimen/_10sdp">
@@ -150,117 +152,6 @@
                     android:textColor="@color/black"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:textSize="@dimen/_14ssp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_10sdp">
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/view_posts_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground">
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_10sdp"
-                        android:layout_gravity="center">
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/post_count_viewprofile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="@color/colorText"
-                            android:fontFamily="@font/pacifico"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/_20ssp"
-                            android:layout_gravity="center"/>
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Posts"
-                            android:textSize="@dimen/_12ssp"
-                            android:layout_gravity="center"/>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/view_supporters_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground">
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_10sdp"
-                        android:layout_gravity="center">
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/supporter_count_viewprofile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="@color/colorText"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/pacifico"
-                            android:textSize="@dimen/_20ssp"
-                            android:layout_gravity="center"/>
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Supporters"
-                            android:textSize="@dimen/_12ssp"
-                            android:layout_gravity="center"/>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/view_supporting_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground">
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_10sdp"
-                        android:layout_gravity="center">
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/supporting_count_viewprofile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="@color/colorText"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/pacifico"
-                            android:textSize="@dimen/_20ssp"
-                            android:layout_gravity="center"/>
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Supporting"
-                            android:textSize="@dimen/_12ssp"
-                            android:layout_gravity="center"/>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>
 

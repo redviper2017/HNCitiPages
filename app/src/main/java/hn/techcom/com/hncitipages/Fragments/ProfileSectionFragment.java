@@ -1,6 +1,5 @@
 package hn.techcom.com.hncitipages.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +20,8 @@ import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-import hn.techcom.com.hncitipages.Activities.UserProfileActivity;
 import hn.techcom.com.hncitipages.Adapters.ProfilePostAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
@@ -39,7 +39,6 @@ import hn.techcom.com.hncitipages.Models.PostList;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
 import hn.techcom.com.hncitipages.Models.SingleUserInfoResponse;
-import hn.techcom.com.hncitipages.Models.SupportingProfileList;
 import hn.techcom.com.hncitipages.Models.User;
 import hn.techcom.com.hncitipages.Network.RetrofitClientInstance;
 import hn.techcom.com.hncitipages.R;
@@ -320,7 +319,8 @@ public class ProfileSectionFragment
 
     @Override
     public void onUpdateProfileClick() {
-        startActivity(new Intent(getContext(),UserProfileActivity.class));
+        Fragment fragment = new UserProfileFragment();
+        ((AppCompatActivity) requireContext()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
 
     @Override
