@@ -17,6 +17,7 @@ import hn.techcom.com.hncitipages.Models.ResultViewComments;
 import hn.techcom.com.hncitipages.Models.SingleUserInfoResponse;
 import hn.techcom.com.hncitipages.Models.SupportingProfileList;
 import hn.techcom.com.hncitipages.Models.SupporterProfile;
+import hn.techcom.com.hncitipages.Models.TokenUpdateResponse;
 import hn.techcom.com.hncitipages.Models.ValidationResponse;
 import hn.techcom.com.hncitipages.Models.ViewCommentResponse;
 import hn.techcom.com.hncitipages.Models.ViewLikesResponse;
@@ -287,10 +288,10 @@ public interface GetDataService {
     Call<Result> getSinglePost(@Path("postId") String postId);
 
     //Update fcm token for user
-//    @Multipart
-//    @POST("posts/like_post/")
-//    Call<LikeResponse> likeOrUnlikePost(
-//            @Part("user") RequestBody user,
-//            @Part("post") RequestBody post
-//    );
+    @Multipart
+    @POST("users/user_fcm_token/")
+    Call<TokenUpdateResponse> updateFCMToken(
+            @Part("user") RequestBody user,
+            @Part("fcm_token") RequestBody fcm_token
+    );
 }

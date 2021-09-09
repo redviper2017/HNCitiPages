@@ -52,10 +52,13 @@ import hn.techcom.com.hncitipages.Models.Post;
 import hn.techcom.com.hncitipages.Models.PostList;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.SupporterProfile;
+import hn.techcom.com.hncitipages.Models.TokenUpdateResponse;
 import hn.techcom.com.hncitipages.Network.RetrofitClientInstance;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.BottomSheetFragment;
 import hn.techcom.com.hncitipages.Utils.Utils;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -86,9 +89,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        createNotificationChannel();
-        getToken();
-
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(MainActivity.this);
 
@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         callInAppUpdate();
+        createNotificationChannel();
+        getToken();
 
         //hooks
         BottomAppBar bottomAppBar = findViewById(R.id.bottomappbar_home);
@@ -335,6 +337,8 @@ public class MainActivity extends AppCompatActivity {
                 //If successful get token
                 String token = task.getResult();
                 Log.d(TAG,"onComplete: Successful to get FCM Token = "+token);
+
+                updateFCMTokenForUser(token);
             }
         });
     }
@@ -352,5 +356,28 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    private void updateFCMTokenForUser(String token){
+        RequestBody user = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
+        RequestBody fcm_token = RequestBody.create(MediaType.parse("text/plain"), token);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<TokenUpdateResponse> call = service.updateFCMToken(user,fcm_token);
+        call.enqueue(new Callback<TokenUpdateResponse>() {
+            @Override
+            public void onResponse(Call<TokenUpdateResponse> call, Response<TokenUpdateResponse> response) {
+                if(response.code() == 201){
+                    TokenUpdateResponse tokenUpdateResponse = response.body();
+                    if (tokenUpdateResponse != null) {
+                        Log.d(TAG,"updated token of user = "+tokenUpdateResponse.getSuccess());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TokenUpdateResponse> call, Throwable t) {
+
+            }
+        });
     }
 }
