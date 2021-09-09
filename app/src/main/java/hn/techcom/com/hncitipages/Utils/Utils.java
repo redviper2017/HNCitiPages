@@ -25,6 +25,7 @@ import hn.techcom.com.hncitipages.Fragments.CommentsFragment;
 import hn.techcom.com.hncitipages.Fragments.LikesFragment;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Models.LikeResponse;
+import hn.techcom.com.hncitipages.Models.Notification;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
 import hn.techcom.com.hncitipages.Models.User;
@@ -99,6 +100,20 @@ public class Utils {
             try {
                 long ts = Objects.requireNonNull(dateFormat.parse(utcToLocalTime(post.getCreatedOn()))).getTime()/1000;
                 post.setCreatedOn(getTimeAgo(ts));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return postList;
+    }
+
+    //set notification relative time in post list
+    public ArrayList<Notification> setNotificationPostRelativeTime(ArrayList<Notification> postList){
+        for (Notification post : postList) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
+            try {
+                long ts = Objects.requireNonNull(dateFormat.parse(utcToLocalTime(post.getDate()))).getTime()/1000;
+                post.setDate(getTimeAgo(ts));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

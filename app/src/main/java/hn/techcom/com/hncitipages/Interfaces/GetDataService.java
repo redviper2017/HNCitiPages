@@ -277,4 +277,8 @@ public interface GetDataService {
     //GET all Notifications for user
     @GET("notifications/get_notifications/{hnid}/")
     Call<NotificationsResponse> getUserNotifications(@Path("hnid") String hnid);
+
+    //Get Notifications posts from a specified page
+    @GET()
+    Call<NotificationsResponse> getUserNotificationsFromPage(@Url String url);
 }

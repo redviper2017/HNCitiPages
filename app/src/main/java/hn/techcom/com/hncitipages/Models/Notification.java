@@ -7,6 +7,9 @@ public class Notification {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("to_user")
+    @Expose
+    private NotificationUser notificationUser;
     @SerializedName("notification_type")
     @Expose
     private String notificationType;
@@ -16,9 +19,6 @@ public class Notification {
     @SerializedName("date")
     @Expose
     private String date;
-    @SerializedName("to_user")
-    @Expose
-    private String toUser;
     @SerializedName("from_user")
     @Expose
     private String fromUser;
@@ -32,6 +32,14 @@ public class Notification {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public NotificationUser getNotificationUser() {
+        return notificationUser;
+    }
+
+    public void setNotificationUser(NotificationUser notificationUser) {
+        this.notificationUser = notificationUser;
     }
 
     public String getNotificationType() {
@@ -58,14 +66,6 @@ public class Notification {
         this.date = date;
     }
 
-    public String getToUser() {
-        return toUser;
-    }
-
-    public void setToUser(String toUser) {
-        this.toUser = toUser;
-    }
-
     public String getFromUser() {
         return fromUser;
     }
@@ -81,4 +81,5 @@ public class Notification {
     public void setPost(Integer post) {
         this.post = post;
     }
+
 }

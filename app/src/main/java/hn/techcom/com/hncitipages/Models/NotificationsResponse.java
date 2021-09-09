@@ -11,10 +11,10 @@ public class NotificationsResponse {
     private Integer count;
     @SerializedName("next")
     @Expose
-    private Object next;
+    private String next;
     @SerializedName("previous")
     @Expose
-    private Object previous;
+    private String previous;
     @SerializedName("results")
     @Expose
     private List<Notification> notification = null;
@@ -27,19 +27,19 @@ public class NotificationsResponse {
         this.count = count;
     }
 
-    public Object getNext() {
+    public String getNext() {
         return next;
     }
 
-    public void setNext(Object next) {
+    public void setNext(String next) {
         this.next = next;
     }
 
-    public Object getPrevious() {
+    public String getPrevious() {
         return previous;
     }
 
-    public void setPrevious(Object previous) {
+    public void setPrevious(String previous) {
         this.previous = previous;
     }
 
