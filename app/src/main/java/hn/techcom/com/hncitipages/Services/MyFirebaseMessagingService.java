@@ -40,6 +40,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
 
         Map<String, String> data = remoteMessage.getData();
+        Log.d(TAG,"data message = "+data.toString());
 
         String type = data.get("notification_type");
 

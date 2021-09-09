@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class NotificationsFragment
     private NotificationAdapter notificationAdapter;
 
     private String nextNotificationPageUrl;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
 
     private static final String TAG ="NotificationsFragment";
@@ -72,16 +74,17 @@ public class NotificationsFragment
         userProfile = myUtils.getNewUserFromSharedPreference(getContext());
         hnid = userProfile.getHnid();
 
-        getNotifications();
-
         //Hooks
         ImageButton backButton         = view.findViewById(R.id.image_button_back);
         screenTitle                    = view.findViewById(R.id.text_screen_title_view_likes);
         notificationCountText          = view.findViewById(R.id.text_notification_count_view_likes);
         recyclerView                   = view.findViewById(R.id.recyclerview_posts_notifications);
         swipeRefreshLayout             = view.findViewById(R.id.swipeRefresh);
+        shimmerFrameLayout             = view.findViewById(R.id.shimmerLayout);
 
         notificationArrayList = new ArrayList<>();
+
+        getNotifications();
 
         backButton.setOnClickListener(this);
 
@@ -119,6 +122,10 @@ public class NotificationsFragment
     }
 
     public void getNotifications(){
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        shimmerFrameLayout.startShimmer();
+
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<NotificationsResponse> call = service.getUserNotifications(hnid);
 
@@ -190,8 +197,9 @@ public class NotificationsFragment
     }
 
     public void setRecyclerView(ArrayList<Notification> notificationArrayList){
-//        shimmerFrameLayout.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+
         swipeRefreshLayout.setRefreshing(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         notificationAdapter = new NotificationAdapter(notificationArrayList, getContext(),this);

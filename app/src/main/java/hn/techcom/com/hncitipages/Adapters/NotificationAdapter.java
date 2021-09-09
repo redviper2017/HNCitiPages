@@ -59,6 +59,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public CircleImageView avatar;
         public MaterialTextView message, time;
         private LinearLayout notificationLayout;
+        private View supportCircle;
 
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +67,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             avatar             = itemView.findViewById(R.id.avatar_post);
             message            = itemView.findViewById(R.id.message_post);
             time               = itemView.findViewById(R.id.time_post);
+            supportCircle      = itemView.findViewById(R.id.support_circle_view);
             notificationLayout = itemView.findViewById(R.id.layout_notification_post);
 
             notificationLayout.setOnClickListener(this);
@@ -81,6 +83,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             time.setText(fromUserTime);
             message.setText(Html.fromHtml(messageString));
+            if (notification.getNotificationUser().getIsSupported())
+                supportCircle.setVisibility(View.VISIBLE);
+            else
+                supportCircle.setVisibility(View.GONE);
             Glide.with(context).load(fromUserImage).centerCrop().into(avatar);
         }
 
