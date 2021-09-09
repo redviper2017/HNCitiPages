@@ -8,6 +8,7 @@ import hn.techcom.com.hncitipages.Models.LikeResponse;
 import hn.techcom.com.hncitipages.Models.Location;
 import hn.techcom.com.hncitipages.Models.NetworkLocation;
 import hn.techcom.com.hncitipages.Models.NewPostResponse;
+import hn.techcom.com.hncitipages.Models.NotificationsResponse;
 import hn.techcom.com.hncitipages.Models.PostList;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Reply;
@@ -272,4 +273,8 @@ public interface GetDataService {
     //Get Latest Post by Type from page (i.e. S - Story, V - Videos, A - Audios, I - Images)
     @GET()
     Call<PostList> getPostsByTypeFromPage(@Url String url);
+
+    //GET all Notifications for user
+    @GET("notifications/get_notifications/{hnid}/")
+    Call<NotificationsResponse> getUserNotifications(@Path("hnid") String hnid);
 }

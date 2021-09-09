@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Activities.SignInActivity;
 import hn.techcom.com.hncitipages.Fragments.FavoritesFragment;
+import hn.techcom.com.hncitipages.Fragments.NotificationsFragment;
 import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.R;
@@ -67,6 +68,11 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AllHNPostsFragment()).commit();
 //                        dismiss();
 //                        break;
+                    case R.id.nav_visit_notifications:
+                        Fragment fragment= new NotificationsFragment();
+                        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
+                        dismiss();
+                        break;
                     case R.id.nav_visit_profile:
                         if (userProfile.getPostCount()>0) {
                             Fragment fragmentSelected = new ProfileSectionFragment();
