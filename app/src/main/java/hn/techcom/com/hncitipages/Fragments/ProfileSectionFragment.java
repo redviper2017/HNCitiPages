@@ -1,5 +1,6 @@
 package hn.techcom.com.hncitipages.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.potyvideo.library.AndExoPlayerView;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import hn.techcom.com.hncitipages.Activities.UpdateProfileActivity;
 import hn.techcom.com.hncitipages.Adapters.ProfilePostAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
@@ -350,8 +352,9 @@ public class ProfileSectionFragment
 
     @Override
     public void onUpdateProfileClick() {
-        Fragment fragment = new UserProfileFragment();
-        ((AppCompatActivity) requireContext()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment),null).addToBackStack(null).commit();
+//        Fragment fragment = new UserProfileFragment();
+//        ((AppCompatActivity) requireContext()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment),null).addToBackStack(null).commit();
+        startActivity(new Intent(getContext(), UpdateProfileActivity.class));
     }
 
     @Override

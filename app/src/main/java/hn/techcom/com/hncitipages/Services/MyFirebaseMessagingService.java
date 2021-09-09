@@ -43,11 +43,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG,"data message = "+data.toString());
 
         String type = data.get("notification_type");
+        String postId = data.get("post_id");
+        String name = data.get("title");
+        String hnid = data.get("sender_hnid");
+        boolean isSupported = Boolean.parseBoolean(data.get("isSupported"));
 
         if (type != null) {
             switch (type){
                 case "S":
-                    String hnid = data.get("sender_hnid");
+
                     showSupportNotification(Objects.requireNonNull(remoteMessage.getNotification()).getTitle(), remoteMessage.getNotification().getBody(), hnid);
                     break;
                 case "L":

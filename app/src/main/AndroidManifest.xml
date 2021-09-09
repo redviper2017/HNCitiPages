@@ -27,6 +27,9 @@
         tools:ignore="LockedOrientationActivity"
         tools:targetApi="m">
         <activity
+            android:name=".Activities.UpdateProfileActivity"
+            android:exported="true" />
+        <activity
             android:name=".Activities.ViewCommentedPost"
             android:exported="true" />
         <activity

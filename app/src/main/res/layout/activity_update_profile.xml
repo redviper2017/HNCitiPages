@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Activities.UpdateProfileActivity"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/layout_screentitle_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorSurface">
+
+        <include
+            android:id="@+id/text_screen_title_profile"
+            layout="@layout/screen_title_view"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+        <RelativeLayout
+            android:id="@+id/image_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:elevation="@dimen/_20sdp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleimageview_user_profile"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:src="@drawable/image_placeholder"
+                app:civ_border_width="0dp"/>
+
+            <View
+                android:id="@+id/support_circle_view"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:background="@drawable/circle_hollow_1"
+                android:visibility="visible"/>
+
+            <include
+                android:id="@+id/fab_update_image"
+                layout="@layout/custom_fab_update_profile_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/circleimageview_user_profile"
+                android:layout_alignEnd="@id/circleimageview_user_profile"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/image_layout"
+            android:paddingBottom="@dimen/_10sdp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview_name_view_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sf_pro_rounded_regular"
+                android:text="John Doe"
+                android:layout_gravity="center"
+                android:textColor="@color/colorCenterLinearGradient"
+                android:textSize="@dimen/_20ssp"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/_20sdp"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview_username_view_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sf_pro_rounded_regular"
+                android:text="JohnDoe #A546HtI"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp"
+                android:drawablePadding="@dimen/_10sdp"
+                android:drawableStart="@drawable/username_ic"
+                android:drawableTint="@color/colorCenterLinearGradient"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview_email_view_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sf_pro_rounded_regular"
+                android:text="john.doe@gmail.com"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/_10sdp"
+                android:drawableStart="@drawable/email_ic"
+                android:drawableTint="@color/colorCenterLinearGradient"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview_phone_view_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sf_pro_rounded_regular"
+                android:text="+19958572200"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/_10sdp"
+                android:drawableStart="@drawable/phone_ic"
+                android:drawableTint="@color/colorCenterLinearGradient"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/id_ic"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textview_hnid_view_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_rounded_regular"
+                    android:text="a64cf6c0-ef8b-4362-8b44-c94001fca408"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:textSize="@dimen/_14ssp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/title_text_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/title_ic"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textView_title_view_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_rounded_regular"
+                    android:text="title"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:textSize="@dimen/_14ssp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/update_profile_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="10dp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_below="@id/layout_info"
+            android:visibility="gone">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_button"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:text="Update Profile"
+                android:textAlignment="center"
+                android:textColor="@color/colorSurface"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:drawableStart="@drawable/update_ic"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <ProgressBar
+            android:id="@+id/user_profile_photo_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>
