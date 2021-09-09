@@ -23,9 +23,9 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:foreground="@drawable/circular_ripple"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="@drawable/circular_ripple"
             android:padding="5dp"
             android:src="@drawable/profile_ic"
             app:civ_border_width="0dp" />

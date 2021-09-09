@@ -1,6 +1,7 @@
 package hn.techcom.com.hncitipages.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,12 +23,16 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
 import hn.techcom.com.hncitipages.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
+import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.Reply;
 import hn.techcom.com.hncitipages.Models.ResultViewComments;
+import hn.techcom.com.hncitipages.Models.User;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.Utils;
 
@@ -43,12 +50,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private ArrayList<ResultViewComments> allComments = new ArrayList<>();
     private OnLoadMoreListener onLoadMoreListener;
     private OnReplyClickListener onReplyClickListener;
+    private ViewProfileListener viewProfileListener;
 
-    public CommentListAdapter(RecyclerView recyclerView, ArrayList<ResultViewComments> allComments, Context context, OnReplyClickListener onReplyClickListener) {
+    public CommentListAdapter(RecyclerView recyclerView, ArrayList<ResultViewComments> allComments, Context context, OnReplyClickListener onReplyClickListener, ViewProfileListener viewProfileListener) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.allComments = allComments;
         this.onReplyClickListener = onReplyClickListener;
+        this.viewProfileListener = viewProfileListener;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -103,7 +112,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return VIEW_TYPE_COMMENT;
     }
 
-    private class CommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class CommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ViewProfileListener{
 
         public MaterialTextView name, location, title;
         public CircleImageView avatar, replyAvatar;
@@ -134,6 +143,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             replyButton.setOnClickListener(this);
             postReplyButton.setOnClickListener(this);
+            name.setOnClickListener(this);
+            avatar.setOnClickListener(this);
         }
 
         void bind(ResultViewComments comment){
@@ -173,8 +184,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             commentPost.setText(String.valueOf(comment.getComment()));
 
             if(comment.getReplies().size() > 0) {
-                ArrayList<Reply> replyList = new ArrayList<>();
-                replyList.addAll(comment.getReplies());
+                ArrayList<Reply> replyList = new ArrayList<>(comment.getReplies());
                 setRecyclerView(replyList, repliesRecyclerview);
             }
         }
@@ -202,12 +212,34 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 else
                     Toast.makeText(context,"Oops! You've forgot to enter your reply",Toast.LENGTH_LONG).show();
             }
+            if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
+                int position = getAbsoluteAdapterPosition();
+                User user = allComments.get(position).getUser();
+
+                String hnid = user.getHnid();
+                String name = user.getFullName();
+                boolean isSupported = user.getIsSupported();
+
+                viewProfileListener.viewProfile(hnid, name, isSupported);
+            }
         }
 
         public void setRecyclerView(ArrayList<Reply> replyList, RecyclerView repliesRecyclerview){
             repliesRecyclerview.setLayoutManager(new LinearLayoutManager(context));
-            replyListAdapter = new ReplyListAdapter(context, this.repliesRecyclerview, replyList);
+            replyListAdapter = new ReplyListAdapter(context, this.repliesRecyclerview, replyList, this);
             repliesRecyclerview.setAdapter(replyListAdapter);
+        }
+
+        @Override
+        public void viewProfile(String hnid, String name, boolean isSupported) {
+            Fragment fragment = new ProfileSectionFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("hnid",hnid);
+            bundle.putString("name",name);
+            bundle.putBoolean("isSupported",isSupported);
+
+            fragment.setArguments(bundle);
+            ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
         }
     }
 

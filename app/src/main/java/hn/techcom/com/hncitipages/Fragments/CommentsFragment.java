@@ -22,11 +22,13 @@ import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hncitipages.Adapters.CommentListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
+import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.CommentResponse;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Reply;
@@ -43,7 +45,7 @@ import retrofit2.Response;
 
 public class CommentsFragment
         extends Fragment
-        implements View.OnClickListener, OnReplyClickListener {
+        implements View.OnClickListener, OnReplyClickListener, ViewProfileListener {
 
     private MaterialTextView commentCountText;
     private RecyclerView recyclerView;
@@ -168,9 +170,22 @@ public class CommentsFragment
         recyclerView.setVisibility(View.VISIBLE);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        commentListAdapter = new CommentListAdapter(recyclerView, commentList, getContext(), this);
+        commentListAdapter = new CommentListAdapter(recyclerView, commentList, getContext(), this, this);
         recyclerView.setAdapter(commentListAdapter);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void viewProfile(String hnid, String name, boolean isSupported) {
+
+        Fragment fragment = new ProfileSectionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("hnid",hnid);
+        bundle.putString("name",name);
+        bundle.putBoolean("isSupported",isSupported);
+
+        fragment.setArguments(bundle);
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
 
     public void viewCommentsOnPost(){

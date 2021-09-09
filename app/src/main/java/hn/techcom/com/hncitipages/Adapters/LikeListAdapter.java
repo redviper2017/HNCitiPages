@@ -97,6 +97,7 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             //Click listeners
             name.setOnClickListener(this);
+            avatar.setOnClickListener(this);
         }
 
         void bind(ResultViewLikes like) {
@@ -134,7 +135,7 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         public void onClick(View view) {
-            if (view.getId() == R.id.name_post) {
+            if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
                 int position = getAbsoluteAdapterPosition();
                 User user = allLikes.get(position).getUser();
 
@@ -142,8 +143,7 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 String name = user.getFullName();
                 boolean isSupported = user.getIsSupported();
 
-                if (view.getId() == R.id.name_post)
-                    viewProfileListener.viewProfile(hnid, name, isSupported);
+                viewProfileListener.viewProfile(hnid, name, isSupported);
             }
         }
     }

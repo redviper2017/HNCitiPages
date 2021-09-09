@@ -15,7 +15,9 @@ import com.google.android.material.textview.MaterialTextView;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.Reply;
+import hn.techcom.com.hncitipages.Models.User;
 import hn.techcom.com.hncitipages.R;
 
 public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -24,11 +26,13 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context context;
     private RecyclerView recyclerView;
     private ArrayList<Reply> allReplies = new ArrayList<>();
+    private ViewProfileListener viewProfileListener;
 
-    public ReplyListAdapter(Context context, RecyclerView recyclerView, ArrayList<Reply> allReplies) {
+    public ReplyListAdapter(Context context, RecyclerView recyclerView, ArrayList<Reply> allReplies, ViewProfileListener viewProfileListener) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.allReplies = allReplies;
+        this.viewProfileListener = viewProfileListener;
 
         Log.d(TAG, "ReplyListAdapter called = "+"YES");
     }
@@ -64,6 +68,9 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             location       = view.findViewById(R.id.location_post);
             avatar         = view.findViewById(R.id.avatar_post);
             replyPost      = view.findViewById(R.id.reply_post);
+
+            name.setOnClickListener(this);
+            avatar.setOnClickListener(this);
         }
 
         void bind(Reply reply){
@@ -87,7 +94,16 @@ public class ReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @Override
         public void onClick(View view) {
+            if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
+                int position = getAbsoluteAdapterPosition();
+                User user = allReplies.get(position).getUser();
 
+                String hnid = user.getHnid();
+                String name = user.getFullName();
+                boolean isSupported = user.getIsSupported();
+
+                viewProfileListener.viewProfile(hnid, name, isSupported);
+            }
         }
     }
 }
