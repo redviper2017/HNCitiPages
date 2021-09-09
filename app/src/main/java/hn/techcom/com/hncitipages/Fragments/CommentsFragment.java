@@ -61,6 +61,7 @@ public class CommentsFragment
     private static final String TAG = "CommentsFragment";
 
     private boolean postingComment = false;
+    private LinearLayoutManager linearLayoutManager;
 
     public CommentsFragment() {
         // Required empty public constructor
@@ -169,7 +170,8 @@ public class CommentsFragment
         shimmerFrameLayout.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
         commentListAdapter = new CommentListAdapter(recyclerView, commentList, getContext(), this, this);
         recyclerView.setAdapter(commentListAdapter);
         swipeRefreshLayout.setRefreshing(false);

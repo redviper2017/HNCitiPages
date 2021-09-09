@@ -320,7 +320,7 @@ public class ProfileSectionFragment
     @Override
     public void onUpdateProfileClick() {
         Fragment fragment = new UserProfileFragment();
-        ((AppCompatActivity) requireContext()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
+        ((AppCompatActivity) requireContext()).getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment),null).addToBackStack(null).commit();
     }
 
     @Override

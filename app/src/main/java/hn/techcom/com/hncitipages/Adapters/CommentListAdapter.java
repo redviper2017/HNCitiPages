@@ -52,6 +52,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private OnReplyClickListener onReplyClickListener;
     private ViewProfileListener viewProfileListener;
 
+    private LinearLayoutManager linearLayoutManager;
+
     public CommentListAdapter(RecyclerView recyclerView, ArrayList<ResultViewComments> allComments, Context context, OnReplyClickListener onReplyClickListener, ViewProfileListener viewProfileListener) {
         this.context = context;
         this.recyclerView = recyclerView;
@@ -225,7 +227,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void setRecyclerView(ArrayList<Reply> replyList, RecyclerView repliesRecyclerview){
-            repliesRecyclerview.setLayoutManager(new LinearLayoutManager(context));
+            linearLayoutManager = new LinearLayoutManager(context);
+            repliesRecyclerview.setLayoutManager(linearLayoutManager);
             replyListAdapter = new ReplyListAdapter(context, this.repliesRecyclerview, replyList, this);
             repliesRecyclerview.setAdapter(replyListAdapter);
         }
