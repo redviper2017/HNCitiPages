@@ -331,21 +331,15 @@ public class ProfileSectionFragment
 
 
     @Override
-    public void onSupporterSupportingCountClick(String show, String count) {
+    public void onSupporterSupportingCountClick(String show, String count, String hnid) {
         Fragment fragment = new SupportingSupporterListFragment();
-        Bundle args = new Bundle();
-        args.putString("Show", show);
 
-        if (show.equals("Supporters")) {
-            args.putString("SupporterCount", String.valueOf(count));
-            myUtils.storeProfiles(show, supporterProfilesArrayList, requireContext());
-        }
-        else {
-            args.putString("SupportingCount", String.valueOf(count));
-            myUtils.storeProfiles(show, supportingProfilesArrayList, requireContext());
-        }
+        Bundle bundle = new Bundle();
+        bundle.putString("show", show);
+        bundle.putString("count", count);
+        bundle.putString("hnid", hnid);
 
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
 
         getParentFragmentManager().beginTransaction().replace(R.id.framelayout_main, fragment,null).addToBackStack(null).commit();
     }

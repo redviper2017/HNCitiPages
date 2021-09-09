@@ -179,7 +179,7 @@ public class ViewSupportingProfile
     }
 
     @Override
-    public void onSupporterSupportingCountClick(String show, String count) {
+    public void onSupporterSupportingCountClick(String show, String count, String hnid) {
 
     }
 

@@ -39,14 +39,13 @@ import retrofit2.Response;
 public class SupportingSupporterListFragment extends Fragment implements View.OnClickListener{
 
     private static final String TAG = "SSListFragment";
-    private String showListOf;
+    private String showListOf, count, hnid;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProfileListAdapter adapter;
     private Utils myUtils;
     private Profile userProfile;
     private ArrayList<User> profilesList;
-    private String count;
 
     public SupportingSupporterListFragment() {
         // Required empty public constructor
@@ -59,7 +58,10 @@ public class SupportingSupporterListFragment extends Fragment implements View.On
 
         myUtils     = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(getContext());
-        showListOf  = requireArguments().getString("Show");
+        showListOf  = requireArguments().getString("show");
+        count       = requireArguments().getString("count");
+        hnid        = requireArguments().getString("hnid");
+        profilesList = new ArrayList<>();
 
         //Hooks
         ImageButton backButton                = view.findViewById(R.id.image_button_back);
@@ -68,10 +70,8 @@ public class SupportingSupporterListFragment extends Fragment implements View.On
         swipeRefreshLayout                    = view.findViewById(R.id.swipeRefresh);
         recyclerView                          = view.findViewById(R.id.recyclerview);
 
-        profilesList = getProfiles();
 
         if (showListOf.equals("Supporters")) {
-            count = requireArguments().getString("SupporterCount");
             countText.setText(count);
             if (Integer.parseInt(count) > 1)
                 screenTitle.setText(showListOf);
@@ -79,14 +79,17 @@ public class SupportingSupporterListFragment extends Fragment implements View.On
                 screenTitle.setText("Supporter");
         }
         else {
-            count = requireArguments().getString("SupportingCount");
             countText.setText(count);
             if (Integer.parseInt(count) > 1)
                 screenTitle.setText(showListOf);
             else
-                screenTitle.setText("Supporting Profile");
+                screenTitle.setText("Supporting");
         }
-        setRecyclerView(profilesList);
+
+        if (showListOf.equals("Supporters"))
+            getSupporterProfiles();
+        else
+            getSupportingProfiles();
 
         Log.d(TAG,"number of "+showListOf+" = "+profilesList.size());
 
@@ -96,7 +99,6 @@ public class SupportingSupporterListFragment extends Fragment implements View.On
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                profilesList.clear();
                 if (showListOf.equals("Supporters"))
                     getSupporterProfiles();
                 else
@@ -115,69 +117,21 @@ public class SupportingSupporterListFragment extends Fragment implements View.On
             getParentFragmentManager().popBackStack();
     }
 
-    private ArrayList<User> getProfiles(){
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MY_PREF", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-
-        String json;
-        if (showListOf.equals("Supporters"))
-            json = sharedPreferences.getString("Supporters", null);
-        else
-            json = sharedPreferences.getString("Supporting", null);
-
-        Type type = new TypeToken<ArrayList<User>>() {}.getType();
-        return gson.fromJson(json, type);
-    }
-
-    public void setRecyclerView(ArrayList<User> profilesList){
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ProfileListAdapter(getContext(), profilesList);
-        recyclerView.setAdapter(adapter);
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
     //get initial supporting profile list
     public void getSupportingProfiles(){
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<SupportingProfileList> call = service.getSupportingProfiles(userProfile.getHnid());
+        Call<SupportingProfileList> call = service.getSupportingProfiles(hnid);
         call.enqueue(new Callback<SupportingProfileList>(){
             @Override
             public void onResponse(@NonNull Call<SupportingProfileList> call, @NonNull Response<SupportingProfileList> response) {
                 if(response.code() == 200){
                     SupportingProfileList supportingProfileList = response.body();
-                    Log.d(TAG, "number of supporting profile = "+ Objects.requireNonNull(supportingProfileList).getCount());
-                    count = String.valueOf(supportingProfileList.getCount());
-                    if(supportingProfileList.getCount()>0) {
-                        profilesList.clear();
+                    profilesList.clear();
+                    if (supportingProfileList != null)
                         profilesList.addAll(supportingProfileList.getResults());
+
+                    if (profilesList.size()>0)
                         setRecyclerView(profilesList);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<SupportingProfileList> call, @NonNull Throwable t) {
-
-            }
-        });
-    }
-
-    //get initial supporter profile list
-    public void getSupporterProfiles(){
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<SupportingProfileList> call = service.getSupporterProfiles(userProfile.getHnid());
-        call.enqueue(new Callback<SupportingProfileList>(){
-            @Override
-            public void onResponse(Call<SupportingProfileList> call, Response<SupportingProfileList> response) {
-                if(response.code() == 200){
-                    SupportingProfileList supporterProfileList = response.body();
-                    Log.d(TAG, "number of supporter profile = "+ supporterProfileList.getCount());
-                    count = String.valueOf(supporterProfileList.getCount());
-                    if(supporterProfileList.getCount()>0) {
-                        profilesList.clear();
-                        profilesList.addAll(supporterProfileList.getResults());
-                        setRecyclerView(profilesList);
-                    }
                 }
             }
 
@@ -186,5 +140,36 @@ public class SupportingSupporterListFragment extends Fragment implements View.On
 
             }
         });
+    }
+    //get initial supporting profile list
+    public void getSupporterProfiles(){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<SupportingProfileList> call = service.getSupporterProfiles(hnid);
+        call.enqueue(new Callback<SupportingProfileList>(){
+            @Override
+            public void onResponse(@NonNull Call<SupportingProfileList> call, @NonNull Response<SupportingProfileList> response) {
+                if(response.code() == 200){
+                    SupportingProfileList supporterProfileList = response.body();
+                    profilesList.clear();
+                    if (supporterProfileList != null)
+                        profilesList.addAll(supporterProfileList.getResults());
+                }
+
+                if (profilesList.size()>0)
+                    setRecyclerView(profilesList);
+            }
+
+            @Override
+            public void onFailure(Call<SupportingProfileList> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void setRecyclerView(ArrayList<User> profilesList){
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new ProfileListAdapter(getContext(), profilesList);
+        recyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

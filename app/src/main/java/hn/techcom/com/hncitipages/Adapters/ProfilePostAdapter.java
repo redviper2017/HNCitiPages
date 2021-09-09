@@ -864,9 +864,9 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if (v.getId() == R.id.post_count_layout)
                 onPostCountClickListener.onPostCountClick();
             if (v.getId() == R.id.supporter_count_layout)
-                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporters",String.valueOf(profile.getSupporterCount()));
+                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporters",String.valueOf(profile.getSupporterCount()),String.valueOf(profile.getHnid()));
             if (v.getId() == R.id.supporting_count_layout)
-                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporting",String.valueOf(profile.getSupportingCount()));
+                onSupporterSupportingCountClickListener.onSupporterSupportingCountClick("Supporting",String.valueOf(profile.getSupportingCount()),String.valueOf(profile.getHnid()));
         }
     }
 
