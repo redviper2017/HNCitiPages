@@ -120,8 +120,12 @@ public interface GetDataService {
     Call<PostList> getGlobalPostsFromPage(@Url String url);
 
     //Get Likes on post
-    @GET("posts/get_like_post/{post_id}/")
-    Call<ViewLikesResponse> viewLikes(@Path("post_id") int post_id);
+//    @GET("posts/get_like_post/{post_id}/")
+//    Call<ViewLikesResponse> viewLikes(@Path("post_id") int post_id);
+
+    //Get Likes on post (from user's perspective) NEW API
+    @GET("posts/get_like_post_update/{post_id}/{hnid}/")
+    Call<ViewLikesResponse> viewLikes(@Path("post_id") int post_id, @Path("hnid") String hnid);
 
     //Get latest comments on post
     @GET("posts/get_post_comment/{post_id}/")

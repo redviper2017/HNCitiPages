@@ -1,6 +1,7 @@
 package hn.techcom.com.hncitipages.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +87,7 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public MaterialTextView name, location, title;
         public CircleImageView avatar;
+        public View supportCircle;
 
         public LikeViewHolder(@NonNull View view) {
             super(view);
@@ -94,6 +96,7 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             title          = view.findViewById(R.id.title_post);
             location       = view.findViewById(R.id.location_post);
             avatar         = view.findViewById(R.id.avatar_post);
+            supportCircle  = view.findViewById(R.id.support_circle_view);
 
             //Click listeners
             name.setOnClickListener(this);
@@ -103,6 +106,7 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         void bind(ResultViewLikes like) {
             String address = like.getUser().getCity() + ", " + like.getUser().getCountry();
             String user_title = like.getUser().getTitle();
+            boolean isSupported = like.getUser().getIsSupported();
 
             //setting up user name and location
             name.setText(myUtils.capitalizeName(like.getUser().getFullName()));
@@ -129,6 +133,12 @@ public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //                    .get()
 //                    .load(profilePhotoUrl)
 //                    .into(avatar);
+
+            Log.d(TAG,"isSupported inside like adapter = "+isSupported);
+            if (isSupported)
+                supportCircle.setVisibility(View.VISIBLE);
+            else
+                supportCircle.setVisibility(View.GONE);
 
             Glide.with(context).load(profilePhotoUrl).centerCrop().into(avatar);
         }

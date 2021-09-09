@@ -23,10 +23,12 @@ import java.util.Objects;
 import hn.techcom.com.hncitipages.Adapters.LikeListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
+import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.ResultViewLikes;
 import hn.techcom.com.hncitipages.Models.ViewLikesResponse;
 import hn.techcom.com.hncitipages.Network.RetrofitClientInstance;
 import hn.techcom.com.hncitipages.R;
+import hn.techcom.com.hncitipages.Utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,6 +47,9 @@ public class LikesFragment extends Fragment
     private static final String TAG = "LikesFragment";
     private ArrayList<ResultViewLikes> likesArrayList;
     private int postId;
+    private String hnid;
+    private Utils myUtils;
+    private Profile userProfile;
 
     public LikesFragment() {
         // Required empty public constructor
@@ -60,6 +65,10 @@ public class LikesFragment extends Fragment
             postId = bundle.getInt("post_id");
             Log.d(TAG,"post id in LikesFragment = "+postId);
         }
+
+        myUtils = new Utils();
+        userProfile = myUtils.getNewUserFromSharedPreference(getContext());
+        hnid = userProfile.getHnid();
 
         //Hooks
         ImageButton backButton         = view.findViewById(R.id.image_button_back);
@@ -98,11 +107,12 @@ public class LikesFragment extends Fragment
         shimmerFrameLayout.startShimmer();
 
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<ViewLikesResponse> call = service.viewLikes(postId);
+        Call<ViewLikesResponse> call = service.viewLikes(postId,hnid);
         call.enqueue(new Callback<ViewLikesResponse>() {
             @Override
             public void onResponse(@NonNull Call<ViewLikesResponse> call, @NonNull Response<ViewLikesResponse> response) {
                 if(response.code() == 200) {
+                    Log.d(TAG,"new like api response code = "+response.code());
                     ViewLikesResponse list = response.body();
 
                     if (list != null && list.getResults().size() != 0) {
