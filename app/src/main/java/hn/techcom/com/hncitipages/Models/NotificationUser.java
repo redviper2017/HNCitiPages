@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class NotificationUser {
-
     @SerializedName("hnid")
     @Expose
     private String hnid;
@@ -14,6 +13,9 @@ public class NotificationUser {
     @SerializedName("profile_img_thumbnail")
     @Expose
     private String profileImgThumbnail;
+    @SerializedName("isSupported")
+    @Expose
+    private Boolean isSupported;
 
     public String getHnid() {
         return hnid;
@@ -39,4 +41,11 @@ public class NotificationUser {
         this.profileImgThumbnail = profileImgThumbnail;
     }
 
+    public Boolean getIsSupported() {
+        return isSupported;
+    }
+
+    public void setIsSupported(Boolean isSupported) {
+        this.isSupported = isSupported;
+    }
 }

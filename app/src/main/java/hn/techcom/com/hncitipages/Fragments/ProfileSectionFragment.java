@@ -68,7 +68,7 @@ public class ProfileSectionFragment
     private ArrayList<User> supportingProfilesArrayList, supporterProfilesArrayList;
     private ArrayList<Result> initialPostList;
 
-    private String nextPageUrl,hnid,name;
+    private String nextPageUrl,hnid,name,type,postId;
     private boolean isSupported;
     private ProfilePostAdapter profilePostAdapter;
 
@@ -109,45 +109,53 @@ public class ProfileSectionFragment
             hnid = bundle.getString("hnid");
             name = bundle.getString("name");
             isSupported = bundle.getBoolean("isSupported");
+            type = bundle.getString("type");
+            postId = bundle.getString("postId");
         }
 
-        getUserProfile();
-        getLatestPostsListBySingleUser();
+        if (postId == null){
+            getUserProfile();
+            getLatestPostsListBySingleUser();
 
-        if (hnid.equals(userProfile.getHnid())) {
-            screenTitle.setText(R.string.my_profile);
-        }else {
-            screenTitle.setText(myUtils.capitalizeName(name));
-        }
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                initialPostList.clear();
-                getLatestPostsListBySingleUser();
-            }
-        });
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            if (hnid.equals(userProfile.getHnid())) {
+                screenTitle.setText(R.string.my_profile);
+            }else {
+                screenTitle.setText(myUtils.capitalizeName(name));
             }
 
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    initialPostList.clear();
+                    getLatestPostsListBySingleUser();
+                }
+            });
 
-                if (!recyclerView.canScrollVertically(1) && dy>0){
-                    //scrolled to bottom
-                    Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
-                    if (initialPostList.get(initialPostList.size()-1) == null) {
-                        initialPostList.remove(initialPostList.size() - 1);
-                        getPostsListBySingleUserFromPage(nextPageUrl);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
+
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+
+                    if (!recyclerView.canScrollVertically(1) && dy>0){
+                        //scrolled to bottom
+                        Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
+                        if (initialPostList.get(initialPostList.size()-1) == null) {
+                            initialPostList.remove(initialPostList.size() - 1);
+                            getPostsListBySingleUserFromPage(nextPageUrl);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+        else {
+            getUserProfile();
+            getSinglePostNotified();
+        }
 
         // Inflate the layout for this fragment
         return view;
@@ -242,6 +250,29 @@ public class ProfileSectionFragment
 
             @Override
             public void onFailure(@NonNull Call<PostList> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    public void getSinglePostNotified(){
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<Result> call = service.getSinglePost(postId);
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                if (response.code() == 200){
+                    initialPostList.clear();
+                    Result post = response.body();
+                    initialPostList.add(post);
+                    initialPostList.add(post);
+                    initialPostList = myUtils.setPostRelativeTime(initialPostList);
+                    setRecyclerView(initialPostList);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
 
             }
         });

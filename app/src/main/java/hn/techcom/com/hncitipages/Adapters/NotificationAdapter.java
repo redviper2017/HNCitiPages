@@ -74,7 +74,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         void bind(Notification notification){
             String fromUserFullname = notification.getNotificationUser().getFullName();
             String fromUserMessage = notification.getMessage();
-            String fromUserHnid = notification.getFromUser();
+            String fromUserHnid = notification.getNotificationUser().getHnid();
             String fromUserImage = notification.getNotificationUser().getProfileImgThumbnail();
             String fromUserTime = notification.getDate();
             String messageString = "<b>" + fromUserFullname + "</b> " + fromUserMessage.toLowerCase();
@@ -89,15 +89,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (v.getId() == R.id.layout_notification_post) {
                 int position = getAbsoluteAdapterPosition();
                 String type = allNotifications.get(position).getNotificationType();
-                String name = allNotifications.get(position).getNotificationUser().getFullName();;
+                String name = allNotifications.get(position).getNotificationUser().getFullName();
+                int postId = allNotifications.get(position).getPost();
 
-                boolean isSupported = false;
+                boolean isSupported = allNotifications.get(position).getNotificationUser().getIsSupported();
                 if (type.equals("S")) {
                     String id = allNotifications.get(position).getNotificationUser().getHnid();
-                    onNotificationClickListener.onNotificationClick(type,name,id,isSupported);
+                    onNotificationClickListener.onNotificationClick(type,name,id,isSupported,postId);
                 }else {
-                    String id = String.valueOf(allNotifications.get(position).getPost());
-                    onNotificationClickListener.onNotificationClick(type,name,id,isSupported);
+                    String id = String.valueOf(allNotifications.get(position).getId());
+                    onNotificationClickListener.onNotificationClick(type,name,id,isSupported,postId);
                 }
             }
         }

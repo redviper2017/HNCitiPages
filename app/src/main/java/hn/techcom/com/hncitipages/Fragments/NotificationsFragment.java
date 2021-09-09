@@ -127,6 +127,7 @@ public class NotificationsFragment
             public void onResponse(@NonNull Call<NotificationsResponse> call, @NonNull Response<NotificationsResponse> response) {
                 if (response.code() == 200){
                     NotificationsResponse notificationsResponse = response.body();
+                    Log.d(TAG,"my notification number = "+notificationsResponse.getCount());
                     if (notificationsResponse != null && notificationsResponse.getNotification().size() != 0) {
                         Log.d(TAG,"total number of notifications received = "+notificationsResponse.getCount());
                         notificationArrayList.addAll(notificationsResponse.getNotification());
@@ -198,21 +199,33 @@ public class NotificationsFragment
     }
 
     @Override
-    public void onNotificationClick(String type, String name, String id, boolean isSupported) {
-        Fragment fragment = null;
+    public void onNotificationClick(String type, String name, String id, boolean isSupported, int postId) {
 
-        Bundle bundle = new Bundle();
-        bundle.putString("type",type);
-        bundle.putString("name",name);
-        bundle.putBoolean("isSupported",isSupported);
-        bundle.putString("hnid",id);
 
-        if (type.equals("S"))
-            fragment = new ProfileSectionFragment();
-        else {
+        if (type.equals("S")) {
+            Fragment fragment = new ProfileSectionFragment();
 
+            Bundle bundle = new Bundle();
+            bundle.putString("type",type);
+            bundle.putString("name",name);
+            bundle.putBoolean("isSupported",isSupported);
+            bundle.putString("hnid",id);
+            bundle.putString("postId", null);
+
+            fragment.setArguments(bundle);
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
+        }else {
+            Fragment fragment = new ProfileSectionFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("type",type);
+            bundle.putString("name",userProfile.getFullName());
+            bundle.putBoolean("isSupported",false);
+            bundle.putString("hnid",userProfile.getHnid());
+            bundle.putString("postId", String.valueOf(postId));
+
+            fragment.setArguments(bundle);
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
         }
-        fragment.setArguments(bundle);
-        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
 }

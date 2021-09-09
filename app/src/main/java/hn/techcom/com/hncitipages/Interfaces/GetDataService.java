@@ -281,4 +281,9 @@ public interface GetDataService {
     //Get Notifications posts from a specified page
     @GET()
     Call<NotificationsResponse> getUserNotificationsFromPage(@Url String url);
+
+    //Get single post
+    @GET("posts/get_single_post/{postId}/")
+    Call<Result> getSinglePost(@Path("postId") String postId);
+
 }
