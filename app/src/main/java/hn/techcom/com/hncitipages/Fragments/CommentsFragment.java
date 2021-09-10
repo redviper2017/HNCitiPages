@@ -277,7 +277,8 @@ public class CommentsFragment
         call.enqueue(new Callback<ResultViewComments>(){
             @Override
             public void onResponse(@NonNull Call<ResultViewComments> call, @NonNull Response<ResultViewComments> response) {
-                if(response.code() == 201){
+                Log.d(TAG,"comment post api response code: "+response.code());
+
                     ResultViewComments commentResponse = response.body();
                     commentEditText.setText("");
                     if (commentListAdapter != null)
@@ -292,8 +293,6 @@ public class CommentsFragment
                             commentListAdapter.notifyDataSetChanged();
                         }
 
-                }else
-                    Toast.makeText(getContext(),"Unable to post comment! Try again later..",Toast.LENGTH_LONG).show();
                 postingComment = false;
             }
 
