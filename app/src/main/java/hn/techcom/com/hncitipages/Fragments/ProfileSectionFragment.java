@@ -421,7 +421,7 @@ public class ProfileSectionFragment
         call.enqueue(new Callback<LikeResponse>() {
             @Override
             public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
-                if(response.code() == 201){
+
                     LikeResponse likeResponse = response.body();
                     Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
 
@@ -435,8 +435,6 @@ public class ProfileSectionFragment
                         initialPostList.get(position).setLikeCount(initialPostList.get(position).getLikeCount() - 1);
 
                     profilePostAdapter.notifyDataSetChanged();
-                }else
-                    Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
             }
 
             @Override

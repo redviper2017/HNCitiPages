@@ -335,7 +335,7 @@ public class ExplorePostFragment
         call.enqueue(new Callback<LikeResponse>() {
             @Override
             public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
-                if(response.code() == 201){
+
                     LikeResponse likeResponse = response.body();
                     Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
 
@@ -349,8 +349,6 @@ public class ExplorePostFragment
                         recentPostList.get(position).setLikeCount(recentPostList.get(position).getLikeCount() - 1);
 
                     postListAdapter.notifyDataSetChanged();
-                }else
-                    Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
             }
 
             @Override

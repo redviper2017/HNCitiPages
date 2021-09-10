@@ -113,7 +113,6 @@ public class InteractWithPostBottomSheetFragment2 extends BottomSheetDialogFragm
         call.enqueue(new Callback<DeleteResponse>() {
             @Override
             public void onResponse(Call<DeleteResponse> call, Response<DeleteResponse> response) {
-                if(response.code() == 200){
                     DeleteResponse deleteResponse = response.body();
                     Toast.makeText(getActivity(), Objects.requireNonNull(deleteResponse).getSuccess(), Toast.LENGTH_LONG).show();
 
@@ -128,9 +127,6 @@ public class InteractWithPostBottomSheetFragment2 extends BottomSheetDialogFragm
                     postListAdapter.notifyDataSetChanged();
 
                     dismiss();
-                }
-                else
-                    Toast.makeText(getActivity(),"Sorry, the post cannot be deleted at this moment. Try again..", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -153,15 +149,11 @@ public class InteractWithPostBottomSheetFragment2 extends BottomSheetDialogFragm
             @Override
             public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
                 Log.d(TAG,"support api response code: "+response.code());
-                if(response.code() == 201){
+
                     LikeResponse supportResponse = response.body();
                     Toast.makeText(getActivity(), Objects.requireNonNull(supportResponse).getMessage(), Toast.LENGTH_LONG).show();
                     postListAdapter.changeSupportingStatus(itemPosition);
                     dismiss();
-                }else {
-                    Toast.makeText(getActivity(), "Sorry, the user cannot be supported at this moment. Try again..", Toast.LENGTH_LONG).show();
-                    dismiss();
-                }
             }
 
             @Override

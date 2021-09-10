@@ -95,16 +95,18 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="5dp"/>
+
         <androidx.constraintlayout.utils.widget.ImageFilterButton
             android:id="@+id/reply_button_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/reply_ic"
-            android:layout_marginEnd="20dp"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
             android:background="@color/transparent"
-            android:tag="reply"/>
+            android:src="@drawable/reply_ic"
+            android:tag="reply"
+            android:visibility="invisible"/>
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/reply_layout"
@@ -164,6 +166,7 @@
         android:layout_marginEnd="10dp"
         android:clipToPadding="false"
         android:layout_marginTop="10dp"
-        android:nestedScrollingEnabled="false" />
+        android:nestedScrollingEnabled="false"
+        android:visibility="gone"/>
 
 </LinearLayout>
