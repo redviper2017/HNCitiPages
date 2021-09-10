@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -52,6 +53,8 @@ public class NotificationsFragment
     private MaterialTextView screenTitle;
     private MaterialTextView notificationCountText;
 
+    private LinearLayout notFoundLayout;
+
     private ArrayList<Notification> notificationArrayList;
     private NotificationAdapter notificationAdapter;
 
@@ -81,6 +84,7 @@ public class NotificationsFragment
         recyclerView                   = view.findViewById(R.id.recyclerview_posts_notifications);
         swipeRefreshLayout             = view.findViewById(R.id.swipeRefresh);
         shimmerFrameLayout             = view.findViewById(R.id.shimmerLayout);
+        notFoundLayout                 = view.findViewById(R.id.notfound_layout);
 
         notificationArrayList = new ArrayList<>();
 
@@ -153,6 +157,12 @@ public class NotificationsFragment
                         }
 
                         setRecyclerView(notificationArrayList);
+                    }
+                    else {
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.GONE);
+                        notFoundLayout.setVisibility(View.VISIBLE);
+                        screenTitle.setText("Notificatios");
                     }
                 }
             }
