@@ -210,6 +210,9 @@ public class ProfileSectionFragment
                             initialPostList.add(null);
                         }
                         setRecyclerView(initialPostList);
+                    }else {
+                        requireActivity().getSupportFragmentManager().popBackStack();
+                        Toast.makeText(getContext(),"As this user hasn't made any posts yet you won't be able to visit their profile.",Toast.LENGTH_SHORT).show();
                     }
                 }
             }

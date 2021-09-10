@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             if (checkPermission()) {
+                getToken();
                 getLatestPostsListBySingleUser();
                 Fragment fragment = new HomeFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
@@ -118,8 +119,6 @@ public class MainActivity extends AppCompatActivity {
 
         callInAppUpdate();
         createNotificationChannel();
-        if (userProfile != null)
-            getToken();
 
         //hooks
         BottomAppBar bottomAppBar = findViewById(R.id.bottomappbar_home);
