@@ -118,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
         callInAppUpdate();
         createNotificationChannel();
-        getToken();
+        if (userProfile != null)
+            getToken();
 
         //hooks
         BottomAppBar bottomAppBar = findViewById(R.id.bottomappbar_home);

@@ -26,4 +26,9 @@
             android:id="@+id/text_screen_title_view_liked_post"
             layout="@layout/screen_title_view"/>
     </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/framelayout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Title" />
 </LinearLayout>

@@ -43,33 +43,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG,"data message = "+data.toString());
 
         String type = data.get("notification_type");
-        String postId = data.get("post_id");
+        int postId = Integer.parseInt(data.get("post_id"));
         String name = data.get("title");
-
+        String hnid = data.get("sender_hnid");
         boolean isSupported = Boolean.parseBoolean(data.get("isSupported"));
 
         if (type != null) {
-            switch (type){
-                case "S":
-                    String hnid = data.get("sender_hnid");
-                    showSupportNotification(Objects.requireNonNull(remoteMessage.getNotification()).getTitle(), remoteMessage.getNotification().getBody(), hnid);
-                    break;
-                case "L":
-                    String postid = data.get("post_id");
-                    showLikeNotification(Objects.requireNonNull(remoteMessage.getNotification()).getTitle(), remoteMessage.getNotification().getBody(), postid);
-                    break;
-                case "C":
-                    String comment_postid = data.get("post_id");
-                    showCommentNotification(Objects.requireNonNull(remoteMessage.getNotification()).getTitle(), remoteMessage.getNotification().getBody(), comment_postid);
-                    break;
-            }
+            showSupportNotification(Objects.requireNonNull(remoteMessage.getNotification()).getTitle(), remoteMessage.getNotification().getBody(), hnid);
         }
     }
 
     private void showSupportNotification(String title, String message, String hnid){
         Intent intent = new Intent(this, ViewSupportingProfile.class);
-
-
 
         Bundle bundle = new Bundle();
         bundle.putString("hnid", hnid);
@@ -79,67 +64,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG,"user hnid = "+bundle.getString("hnid"));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.newlogo)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                // Set the intent that will fire when the user taps the notification
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-
-        if (am.getRingerMode() != AudioManager.RINGER_MODE_SILENT)
-            builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-        // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(1, builder.build());
-    }
-
-    private void showLikeNotification(String title, String message, String postid){
-        Intent intent = new Intent(this, ViewLikedPost.class);
-
-
-        Bundle bundle = new Bundle();
-        bundle.putString("postid", postid);
-        bundle.putString("name",title);
-        intent.putExtras(bundle);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.newlogo)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                // Set the intent that will fire when the user taps the notification
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-
-        if (am.getRingerMode() != AudioManager.RINGER_MODE_SILENT)
-            builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-        // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(1, builder.build());
-    }
-
-    private void showCommentNotification(String title, String message, String postid){
-        Intent intent = new Intent(this, ViewCommentedPost.class);
-
-        Bundle bundle = new Bundle();
-        bundle.putString("postid", postid);
-        bundle.putString("name",title);
-        intent.putExtras(bundle);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
