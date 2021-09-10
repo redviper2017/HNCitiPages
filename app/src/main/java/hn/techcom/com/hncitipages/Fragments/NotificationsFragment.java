@@ -145,11 +145,12 @@ public class NotificationsFragment
                             screenTitle.setText("Notification");
 
                         nextNotificationPageUrl = notificationsResponse.getNext();
+
+                        notificationArrayList = myUtils.setNotificationPostRelativeTime(notificationArrayList);
+
                         if (nextNotificationPageUrl != null) {
                             notificationArrayList.add(null);
                         }
-
-                        notificationArrayList = myUtils.setNotificationPostRelativeTime(notificationArrayList);
 
                         setRecyclerView(notificationArrayList);
                     }

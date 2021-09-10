@@ -45,13 +45,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String type = data.get("notification_type");
         String postId = data.get("post_id");
         String name = data.get("title");
-        String hnid = data.get("sender_hnid");
+
         boolean isSupported = Boolean.parseBoolean(data.get("isSupported"));
 
         if (type != null) {
             switch (type){
                 case "S":
-
+                    String hnid = data.get("sender_hnid");
                     showSupportNotification(Objects.requireNonNull(remoteMessage.getNotification()).getTitle(), remoteMessage.getNotification().getBody(), hnid);
                     break;
                 case "L":
@@ -70,12 +70,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this, ViewSupportingProfile.class);
 
 
+
         Bundle bundle = new Bundle();
         bundle.putString("hnid", hnid);
         bundle.putString("name",title);
         intent.putExtras(bundle);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        Log.d(TAG,"user hnid = "+bundle.getString("hnid"));
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 

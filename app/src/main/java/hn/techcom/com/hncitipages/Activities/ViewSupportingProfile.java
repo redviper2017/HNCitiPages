@@ -84,6 +84,7 @@ public class ViewSupportingProfile
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
         hnid = bundle.getString("hnid");
+        Log.d(TAG,"user hnid = "+hnid);
         isSupported = bundle.getBoolean("isSupported");
 
         //getting user profile from local storage
