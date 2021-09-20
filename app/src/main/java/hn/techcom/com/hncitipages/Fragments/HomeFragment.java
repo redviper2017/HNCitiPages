@@ -296,9 +296,9 @@ public class HomeFragment
         call.enqueue(new Callback<LikeResponse>() {
             @Override
             public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
-
+                    Log.d(TAG,"like post api response code = "+response.code());
                     LikeResponse likeResponse = response.body();
-                    Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), Objects.requireNonNull(likeResponse).getMessage(), Toast.LENGTH_LONG).show();
 
                     //Toggling like button image
                     recentPostList.get(position).setLiked(!recentPostList.get(position).getLiked());

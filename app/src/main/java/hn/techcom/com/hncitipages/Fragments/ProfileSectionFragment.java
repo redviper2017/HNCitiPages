@@ -173,7 +173,7 @@ public class ProfileSectionFragment
                 if (response.code() == 200) {
                     profile = response.body();
                 }
-                Log.d(TAG,"user profile code got in profile section = "+profile.getSupporterCount());
+//                Log.d(TAG,"user profile code got in profile section = "+profile.getSupporterCount());
             }
 
             @Override
