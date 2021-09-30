@@ -27,6 +27,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hncitipages.Adapters.CommentListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
+import hn.techcom.com.hncitipages.Interfaces.OnCommentOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
 import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.CommentResponse;
@@ -45,7 +46,11 @@ import retrofit2.Response;
 
 public class CommentsFragment
         extends Fragment
-        implements View.OnClickListener, OnReplyClickListener, ViewProfileListener {
+        implements
+        View.OnClickListener,
+        OnReplyClickListener,
+        ViewProfileListener,
+        OnCommentOptionButtonClickListener {
 
     private MaterialTextView commentCountText;
     private RecyclerView recyclerView;
@@ -176,7 +181,7 @@ public class CommentsFragment
 
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        commentListAdapter = new CommentListAdapter(recyclerView, commentList, getContext(), this, this);
+        commentListAdapter = new CommentListAdapter(recyclerView, commentList, getContext(), this, this,this);
         recyclerView.setAdapter(commentListAdapter);
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -335,5 +340,11 @@ public class CommentsFragment
 
             }
         });
+    }
+
+    @Override
+    public void onCommentOptionButtonClick(int id, String hnid) {
+        InteractionWithCommentBottomSheetFragment interactWithPostBottomSheetFragment = new InteractionWithCommentBottomSheetFragment(id, hnid);
+        interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
     }
 }

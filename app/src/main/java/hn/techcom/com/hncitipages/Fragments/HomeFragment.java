@@ -33,6 +33,7 @@ import java.util.Objects;
 import hn.techcom.com.hncitipages.Adapters.PostListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentClickListener;
+import hn.techcom.com.hncitipages.Interfaces.OnCommentOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnFavoriteButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLikeButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLikeCountButtonListener;
@@ -64,7 +65,7 @@ public class HomeFragment
         OnCommentClickListener,
         OnLoadMoreListener,
         OnPlayerPlayedListener,
-        ViewProfileListener {
+        ViewProfileListener{
     //Constants
     private static final String TAG = "HomeFragment";
 
@@ -429,4 +430,5 @@ public class HomeFragment
         fragment.setArguments(bundle);
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).addToBackStack(null).commit();
     }
+
 }

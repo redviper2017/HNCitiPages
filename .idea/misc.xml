@@ -48,6 +48,7 @@
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_full_image_view.xml" value="0.265625" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_interact_with_post_bottom_sheet2.xml" value="0.10032894736842106" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_interact_with_post_bottom_sheet_own.xml" value="0.1125" />
+        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_interaction_with_comment_bottom_sheet.xml" value="0.128" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_interection_with_bottom_sheet1.xml" value="0.1125" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_likes.xml" value="0.1" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/fragment_new_post.xml" value="0.152" />
@@ -82,6 +83,8 @@
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/screen_title_view.xml" value="0.16776315789473684" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/layout/view_hnid_alert_layout.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/menu/bottomappbar_menu.xml" value="0.2" />
+        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/menu/bottomsheet_interact_with_comment_own.xml" value="0.1" />
+        <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/menu/bottomsheet_interact_with_post_own.xml" value="0.10888157894736843" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/menu/drawer_menu.xml" value="0.2" />
       </map>
     </option>

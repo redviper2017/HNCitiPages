@@ -27,6 +27,7 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
+import hn.techcom.com.hncitipages.Interfaces.OnCommentOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
 import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
@@ -51,15 +52,17 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private OnLoadMoreListener onLoadMoreListener;
     private OnReplyClickListener onReplyClickListener;
     private ViewProfileListener viewProfileListener;
+    private OnCommentOptionButtonClickListener onCommentOptionButtonClickListener;
 
     private LinearLayoutManager linearLayoutManager;
 
-    public CommentListAdapter(RecyclerView recyclerView, ArrayList<ResultViewComments> allComments, Context context, OnReplyClickListener onReplyClickListener, ViewProfileListener viewProfileListener) {
+    public CommentListAdapter(RecyclerView recyclerView, ArrayList<ResultViewComments> allComments, Context context, OnReplyClickListener onReplyClickListener, ViewProfileListener viewProfileListener, OnCommentOptionButtonClickListener onCommentOptionButtonClickListener) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.allComments = allComments;
         this.onReplyClickListener = onReplyClickListener;
         this.viewProfileListener = viewProfileListener;
+        this.onCommentOptionButtonClickListener = onCommentOptionButtonClickListener;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -121,7 +124,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private MaterialTextView commentPost;
         private RecyclerView repliesRecyclerview;
         private ReplyListAdapter replyListAdapter;
-        private ImageButton replyButton, postReplyButton;
+        private ImageButton replyButton, postReplyButton, commentOptionsButton;
         private LinearLayout replyLayout;
         private EditText replyText;
         private Utils myUtils;
@@ -132,23 +135,25 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             myUtils = new Utils();
 
-            name           = view.findViewById(R.id.name_post);
-            title          = view.findViewById(R.id.title_post);
-            location       = view.findViewById(R.id.location_post);
-            avatar         = view.findViewById(R.id.avatar_post);
-            replyAvatar    = view.findViewById(R.id.avatar_post_reply);
-            commentPost    = view.findViewById(R.id.comment_post);
-            repliesRecyclerview = view.findViewById(R.id.recyclerview_posts_replies);
-            replyButton    = view.findViewById(R.id.reply_button_comment);
-            replyLayout    = view.findViewById(R.id.reply_layout);
-            replyText      = view.findViewById(R.id.reply_editText);
-            postReplyButton = view.findViewById(R.id.post_reply_button);
-            supportCircle  = view.findViewById(R.id.support_circle_view);
+            name                 = view.findViewById(R.id.name_post);
+            title                = view.findViewById(R.id.title_post);
+            location             = view.findViewById(R.id.location_post);
+            avatar               = view.findViewById(R.id.avatar_post);
+            replyAvatar          = view.findViewById(R.id.avatar_post_reply);
+            commentPost          = view.findViewById(R.id.comment_post);
+            repliesRecyclerview  = view.findViewById(R.id.recyclerview_posts_replies);
+            replyButton          = view.findViewById(R.id.reply_button_comment);
+            replyLayout          = view.findViewById(R.id.reply_layout);
+            replyText            = view.findViewById(R.id.reply_editText);
+            postReplyButton      = view.findViewById(R.id.post_reply_button);
+            supportCircle        = view.findViewById(R.id.support_circle_view);
+            commentOptionsButton = view.findViewById(R.id.options_icon_comment);
 
             replyButton.setOnClickListener(this);
             postReplyButton.setOnClickListener(this);
             name.setOnClickListener(this);
             avatar.setOnClickListener(this);
+            commentOptionsButton.setOnClickListener(this);
         }
 
         void bind(ResultViewComments comment){
@@ -232,6 +237,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 viewProfileListener.viewProfile(hnid, name, isSupported);
             }
+            if (view.getId() == R.id.options_icon_comment)
+                onCommentOptionButtonClickListener.onCommentOptionButtonClick(allComments.get(getAbsoluteAdapterPosition()).getId(),allComments.get(getAbsoluteAdapterPosition()).getUser().getHnid());
         }
 
         public void setRecyclerView(ArrayList<Reply> replyList, RecyclerView repliesRecyclerview){
