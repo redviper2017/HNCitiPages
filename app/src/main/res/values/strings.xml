@@ -121,4 +121,7 @@
     <string name="a64cf6c0_ef8b_4362_8b44_c94001fca408">a64cf6c0-ef8b-4362-8b44-c94001fca408</string>
     <string name="update_profile">Update Profile</string>
     <string name="images_amp_moments"><![CDATA[Images & Moments]]></string>
+    <string name="edit_comment">Edit Comment</string>
+    <string name="delete_comment">Delete Comment</string>
+    <string name="reply_to_comment">Reply to Comment</string>
 </resources>
