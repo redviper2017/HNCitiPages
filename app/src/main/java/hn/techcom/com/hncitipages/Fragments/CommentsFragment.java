@@ -30,7 +30,6 @@ import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
 import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
-import hn.techcom.com.hncitipages.Models.CommentResponse;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Reply;
 import hn.techcom.com.hncitipages.Models.ResultViewComments;
@@ -344,7 +343,7 @@ public class CommentsFragment
 
     @Override
     public void onCommentOptionButtonClick(int id, String hnid) {
-        InteractionWithCommentBottomSheetFragment interactWithPostBottomSheetFragment = new InteractionWithCommentBottomSheetFragment(id, hnid);
+        InteractionWithCommentBottomSheetFragmentOwn interactWithPostBottomSheetFragment = new InteractionWithCommentBottomSheetFragmentOwn(id, hnid);
         interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
     }
 }
