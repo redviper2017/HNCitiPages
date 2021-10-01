@@ -28,6 +28,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentOptionButtonClickListener;
+import hn.techcom.com.hncitipages.Interfaces.OnCommentReplyListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
 import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
@@ -56,7 +57,13 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private LinearLayoutManager linearLayoutManager;
 
-    public CommentListAdapter(RecyclerView recyclerView, ArrayList<ResultViewComments> allComments, Context context, OnReplyClickListener onReplyClickListener, ViewProfileListener viewProfileListener, OnCommentOptionButtonClickListener onCommentOptionButtonClickListener) {
+    public CommentListAdapter(
+            RecyclerView recyclerView,
+            ArrayList<ResultViewComments> allComments,
+            Context context,
+            OnReplyClickListener onReplyClickListener,
+            ViewProfileListener viewProfileListener,
+            OnCommentOptionButtonClickListener onCommentOptionButtonClickListener) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.allComments = allComments;

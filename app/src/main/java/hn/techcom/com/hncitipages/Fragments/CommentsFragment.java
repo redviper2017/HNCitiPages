@@ -1,6 +1,7 @@
 package hn.techcom.com.hncitipages.Fragments;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import hn.techcom.com.hncitipages.Adapters.CommentListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentDeleteListener;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentOptionButtonClickListener;
+import hn.techcom.com.hncitipages.Interfaces.OnCommentReplyListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
 import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.DeleteResponse;
@@ -52,7 +54,8 @@ public class CommentsFragment
         OnReplyClickListener,
         ViewProfileListener,
         OnCommentOptionButtonClickListener,
-        OnCommentDeleteListener {
+        OnCommentDeleteListener,
+        OnCommentReplyListener {
 
     private MaterialTextView commentCountText;
     private RecyclerView recyclerView;
@@ -347,7 +350,7 @@ public class CommentsFragment
 
     @Override
     public void onCommentOptionButtonClick(int id, String hnid, int absoluteAdapterPosition) {
-        interactWithPostBottomSheetFragment = new InteractionWithCommentBottomSheetFragmentOwn(id, hnid,this,absoluteAdapterPosition);
+        interactWithPostBottomSheetFragment = new InteractionWithCommentBottomSheetFragmentOwn(id, hnid,this, this,absoluteAdapterPosition);
         interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
     }
 
@@ -375,5 +378,17 @@ public class CommentsFragment
                 Toast.makeText(getActivity(),"Sorry, unable to delete the comment. Try again..", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onCommentReply(int id, int absoluteAdapterPosition) {
+        String replyingTo = "<B>" + commentsArrayList.get(absoluteAdapterPosition).getUser().getFullName() + "</B>";
+
+        commentEditText.setText(Html.fromHtml(replyingTo));
+        commentEditText.requestFocus();
+        commentEditText.setShowSoftInputOnFocus(true);
+
+        commentEditText.setSelection(commentEditText.length());
+        interactWithPostBottomSheetFragment.dismiss();
     }
 }

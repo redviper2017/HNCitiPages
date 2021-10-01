@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import hn.techcom.com.hncitipages.Interfaces.OnCommentDeleteListener;
+import hn.techcom.com.hncitipages.Interfaces.OnCommentReplyListener;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.Utils;
@@ -27,12 +28,19 @@ public class InteractionWithCommentBottomSheetFragmentOwn extends BottomSheetDia
 
     private NavigationView navigationView;
     private OnCommentDeleteListener onCommentDeleteListener;
+    private OnCommentReplyListener onCommentReplyListener;
 
-    public InteractionWithCommentBottomSheetFragmentOwn(int id, String hnid, OnCommentDeleteListener onCommentDeleteListener, int absoluteAdapterPosition) {
+    public InteractionWithCommentBottomSheetFragmentOwn(
+            int id,
+            String hnid,
+            OnCommentDeleteListener onCommentDeleteListener,
+            OnCommentReplyListener onCommentReplyListener,
+            int absoluteAdapterPosition) {
         // Required empty public constructor
         commentId = id;
         commentedUserHnid = hnid;
         this.onCommentDeleteListener = onCommentDeleteListener;
+        this.onCommentReplyListener = onCommentReplyListener;
         this.absoluteAdapterPosition = absoluteAdapterPosition;
     }
 
@@ -54,9 +62,10 @@ public class InteractionWithCommentBottomSheetFragmentOwn extends BottomSheetDia
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.delete_comment){
+                if (item.getItemId() == R.id.delete_comment)
                     onCommentDeleteListener.onCommentDelete(commentId, absoluteAdapterPosition);
-                }
+                if (item.getItemId() == R.id.reply_comment)
+                    onCommentReplyListener.onCommentReply(commentId,absoluteAdapterPosition);
                 return true;
             }
         });
