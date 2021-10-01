@@ -27,9 +27,11 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hncitipages.Adapters.CommentListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
+import hn.techcom.com.hncitipages.Interfaces.OnCommentDeleteListener;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
 import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
+import hn.techcom.com.hncitipages.Models.DeleteResponse;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Reply;
 import hn.techcom.com.hncitipages.Models.ResultViewComments;
@@ -49,7 +51,8 @@ public class CommentsFragment
         View.OnClickListener,
         OnReplyClickListener,
         ViewProfileListener,
-        OnCommentOptionButtonClickListener {
+        OnCommentOptionButtonClickListener,
+        OnCommentDeleteListener {
 
     private MaterialTextView commentCountText;
     private RecyclerView recyclerView;
@@ -68,6 +71,7 @@ public class CommentsFragment
 
     private boolean postingComment = false;
     private LinearLayoutManager linearLayoutManager;
+    private InteractionWithCommentBottomSheetFragmentOwn interactWithPostBottomSheetFragment;
 
     public CommentsFragment() {
         // Required empty public constructor
@@ -342,8 +346,34 @@ public class CommentsFragment
     }
 
     @Override
-    public void onCommentOptionButtonClick(int id, String hnid) {
-        InteractionWithCommentBottomSheetFragmentOwn interactWithPostBottomSheetFragment = new InteractionWithCommentBottomSheetFragmentOwn(id, hnid);
+    public void onCommentOptionButtonClick(int id, String hnid, int absoluteAdapterPosition) {
+        interactWithPostBottomSheetFragment = new InteractionWithCommentBottomSheetFragmentOwn(id, hnid,this,absoluteAdapterPosition);
         interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
+    }
+
+    @Override
+    public void onCommentDelete(int id, int absoluteAdapterPosition) {
+        deleteThisComment(id,absoluteAdapterPosition);
+    }
+
+    public void deleteThisComment(int id, int absoluteAdapterPosition){
+        Log.d(TAG,"delete comment with id = "+id);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<DeleteResponse> call = service.deleteComment(id);
+        call.enqueue(new Callback<DeleteResponse>() {
+            @Override
+            public void onResponse(Call<DeleteResponse> call, Response<DeleteResponse> response) {
+                DeleteResponse deleteResponse = response.body();
+                Toast.makeText(getActivity(), Objects.requireNonNull(deleteResponse).getSuccess(), Toast.LENGTH_SHORT).show();
+                commentsArrayList.remove(absoluteAdapterPosition);
+                commentListAdapter.notifyItemRemoved(absoluteAdapterPosition);
+                interactWithPostBottomSheetFragment.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<DeleteResponse> call, Throwable t) {
+                Toast.makeText(getActivity(),"Sorry, unable to delete the comment. Try again..", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

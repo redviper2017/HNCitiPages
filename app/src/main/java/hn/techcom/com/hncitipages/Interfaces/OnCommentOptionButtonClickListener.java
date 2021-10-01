@@ -1,5 +1,5 @@
 package hn.techcom.com.hncitipages.Interfaces;
 
 public interface OnCommentOptionButtonClickListener {
-    void onCommentOptionButtonClick(int id, String hnid);
+    void onCommentOptionButtonClick(int id, String hnid, int absoluteAdapterPosition);
 }

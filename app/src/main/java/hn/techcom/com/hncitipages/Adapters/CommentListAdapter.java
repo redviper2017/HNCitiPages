@@ -238,7 +238,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewProfileListener.viewProfile(hnid, name, isSupported);
             }
             if (view.getId() == R.id.options_icon_comment)
-                onCommentOptionButtonClickListener.onCommentOptionButtonClick(allComments.get(getAbsoluteAdapterPosition()).getId(),allComments.get(getAbsoluteAdapterPosition()).getUser().getHnid());
+                onCommentOptionButtonClickListener.onCommentOptionButtonClick(allComments.get(getAbsoluteAdapterPosition()).getId(),allComments.get(getAbsoluteAdapterPosition()).getUser().getHnid(),getAbsoluteAdapterPosition());
         }
 
         public void setRecyclerView(ArrayList<Reply> replyList, RecyclerView repliesRecyclerview){

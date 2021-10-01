@@ -2,6 +2,7 @@ package hn.techcom.com.hncitipages.Interfaces;
 
 import java.util.List;
 
+import hn.techcom.com.hncitipages.Models.CommentResponse;
 import hn.techcom.com.hncitipages.Models.DeleteResponse;
 import hn.techcom.com.hncitipages.Models.FavoriteResponse;
 import hn.techcom.com.hncitipages.Models.LikeResponse;
@@ -294,4 +295,7 @@ public interface GetDataService {
             @Part("user") RequestBody user,
             @Part("fcm_token") RequestBody fcm_token
     );
+
+    @POST("posts/delete_comment/{commentId}/")
+    Call<DeleteResponse> deleteComment(@Path("commentId") int commentId);
 }

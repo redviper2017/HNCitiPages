@@ -3,12 +3,16 @@ package hn.techcom.com.hncitipages.Fragments;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import hn.techcom.com.hncitipages.Interfaces.OnCommentDeleteListener;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.Utils;
@@ -19,13 +23,17 @@ public class InteractionWithCommentBottomSheetFragmentOwn extends BottomSheetDia
     private Profile userProfile;
     private String commentedUserHnid;
     private int commentId;
+    private int absoluteAdapterPosition;
 
     private NavigationView navigationView;
+    private OnCommentDeleteListener onCommentDeleteListener;
 
-    public InteractionWithCommentBottomSheetFragmentOwn(int id, String hnid) {
+    public InteractionWithCommentBottomSheetFragmentOwn(int id, String hnid, OnCommentDeleteListener onCommentDeleteListener, int absoluteAdapterPosition) {
         // Required empty public constructor
         commentId = id;
         commentedUserHnid = hnid;
+        this.onCommentDeleteListener = onCommentDeleteListener;
+        this.absoluteAdapterPosition = absoluteAdapterPosition;
     }
 
     @Override
@@ -42,6 +50,16 @@ public class InteractionWithCommentBottomSheetFragmentOwn extends BottomSheetDia
             view = inflater.inflate(R.layout.fragment_interact_with_comment_bottom_sheet, container, false);
 
         navigationView = view.findViewById(R.id.navigation_interact_with_post);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.delete_comment){
+                    onCommentDeleteListener.onCommentDelete(commentId, absoluteAdapterPosition);
+                }
+                return true;
+            }
+        });
 
         return view;
     }
