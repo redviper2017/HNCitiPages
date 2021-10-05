@@ -56,6 +56,7 @@ import retrofit2.Response;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
+import static android.app.Activity.RESULT_OK;
 
 public class OnboardingUserProfileDataFragment extends Fragment implements View.OnClickListener{
 
@@ -90,7 +91,10 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
+                Log.d(TAG,"onActivityResult called from activityResultLauncher = "+"YES");
 
+                Glide.with(requireContext()).load(new File(currentPhotoPath)).centerCrop().into(profileImage);
+                Log.d(TAG,"new image file = "+newImageFile);
             }
         });
     }
@@ -133,23 +137,23 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == Image_Capture_Code && resultCode == Activity.RESULT_OK) {
-//            if (data != null) {
-//                Bundle extras = data.getExtras();
-//                Bitmap imageBitmap = (Bitmap) extras.get("data");
-//                profileImage.setImageBitmap(imageBitmap);
-//            }
-//            profileImage.setImageURI(Uri.fromFile(new File(currentPhotoPath)));
-
-            Glide.with(requireContext()).load(new File(currentPhotoPath)).centerCrop().into(profileImage);
-
-            Log.d(TAG,"new image file = "+newImageFile);
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == Image_Capture_Code && resultCode == RESULT_OK) {
+////            if (data != null) {
+////                Bundle extras = data.getExtras();
+////                Bitmap imageBitmap = (Bitmap) extras.get("data");
+////                profileImage.setImageBitmap(imageBitmap);
+////            }
+////            profileImage.setImageURI(Uri.fromFile(new File(currentPhotoPath)));
+//
+//            Glide.with(requireContext()).load(new File(currentPhotoPath)).centerCrop().into(profileImage);
+//
+//            Log.d(TAG,"new image file = "+newImageFile);
+//        }
+//    }
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -183,7 +187,8 @@ public class OnboardingUserProfileDataFragment extends Fragment implements View.
                         "hn.techcom.com.hncitipages.fileprovider",
                         photoFile);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            startActivityForResult(takePictureIntent, Image_Capture_Code);
+//            startActivityForResult(takePictureIntent, Image_Capture_Code);
+            activityResultLauncher.launch(takePictureIntent);
         }
     }
 
