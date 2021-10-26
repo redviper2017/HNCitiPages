@@ -127,13 +127,11 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private class CommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ViewProfileListener{
 
         public MaterialTextView name, location, title;
-        public CircleImageView avatar, replyAvatar;
+        public CircleImageView avatar;
         private MaterialTextView commentPost;
         private RecyclerView repliesRecyclerview;
         private ReplyListAdapter replyListAdapter;
-        private ImageButton replyButton, postReplyButton, commentOptionsButton;
-        private LinearLayout replyLayout;
-        private EditText replyText;
+        private ImageButton commentOptionsButton;
         private Utils myUtils;
         public View supportCircle;
 
@@ -146,18 +144,12 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             title                = view.findViewById(R.id.title_post);
             location             = view.findViewById(R.id.location_post);
             avatar               = view.findViewById(R.id.avatar_post);
-            replyAvatar          = view.findViewById(R.id.avatar_post_reply);
             commentPost          = view.findViewById(R.id.comment_post);
             repliesRecyclerview  = view.findViewById(R.id.recyclerview_posts_replies);
-            replyButton          = view.findViewById(R.id.reply_button_comment);
-            replyLayout          = view.findViewById(R.id.reply_layout);
-            replyText            = view.findViewById(R.id.reply_editText);
-            postReplyButton      = view.findViewById(R.id.post_reply_button);
             supportCircle        = view.findViewById(R.id.support_circle_view);
             commentOptionsButton = view.findViewById(R.id.options_icon_comment);
 
-            replyButton.setOnClickListener(this);
-            postReplyButton.setOnClickListener(this);
+
             name.setOnClickListener(this);
             avatar.setOnClickListener(this);
             commentOptionsButton.setOnClickListener(this);
@@ -200,8 +192,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             Glide.with(context).load(profilePhotoUrl).centerCrop().into(avatar);
 
-            Glide.with(context).load(myUtils.getNewUserFromSharedPreference(context).getProfileImgThumbnail()).centerCrop().into(replyAvatar);
-
             Log.d(TAG,"comment = "+comment.getComment());
             commentPost.setText(String.valueOf(comment.getComment()));
 
@@ -213,27 +203,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Override
         public void onClick(View view) {
-            if(view.getId() == R.id.reply_button_comment) {
-                if(replyButton.getTag().equals("reply")) {
-                    replyButton.setTag("cancel");
-                    int position = getAbsoluteAdapterPosition();
-
-                    replyLayout.setVisibility(View.VISIBLE);
-                    replyButton.setImageResource(R.drawable.cancel_ic);
-                }else{
-                    replyButton.setTag("reply");
-                    replyButton.setImageResource(R.drawable.reply_ic);
-                    replyLayout.setVisibility(View.GONE);
-                }
-            }
-            if(view.getId() == R.id.post_reply_button){
-                int position = getAbsoluteAdapterPosition();
-                int commentId = allComments.get(position).getId();
-                if(!TextUtils.isEmpty(replyText.getText().toString()))
-                    onReplyClickListener.onReplyClick(commentId,replyText.getText().toString(), position, replyLayout, replyButton);
-                else
-                    Toast.makeText(context,"Oops! You've forgot to enter your reply",Toast.LENGTH_LONG).show();
-            }
             if (view.getId() == R.id.name_post || view.getId() == R.id.avatar_post) {
                 int position = getAbsoluteAdapterPosition();
                 User user = allComments.get(position).getUser();

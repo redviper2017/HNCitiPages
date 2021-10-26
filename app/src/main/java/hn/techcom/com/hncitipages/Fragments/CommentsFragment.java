@@ -1,5 +1,6 @@
 package hn.techcom.com.hncitipages.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -57,6 +59,7 @@ public class CommentsFragment
         OnCommentDeleteListener,
         OnCommentReplyListener {
 
+    private ImageButton postCommentButton;
     private MaterialTextView commentCountText;
     private RecyclerView recyclerView;
     private MaterialTextView screenTitle;
@@ -73,6 +76,11 @@ public class CommentsFragment
     private static final String TAG = "CommentsFragment";
 
     private boolean postingComment = false;
+
+    private int commentId = 0;
+    private String replyText="";
+
+
     private LinearLayoutManager linearLayoutManager;
     private InteractionWithCommentBottomSheetFragmentOwn interactWithPostBottomSheetFragment;
 
@@ -99,7 +107,7 @@ public class CommentsFragment
         recyclerView                          = view.findViewById(R.id.recyclerview_posts_comments);
         CircleImageView avatar                = view.findViewById(R.id.avatar_post);
         commentEditText                       = view.findViewById(R.id.comment_editText);
-        ImageButton postCommentButton         = view.findViewById(R.id.post_comment_button);
+        postCommentButton         = view.findViewById(R.id.post_comment_button);
         swipeRefreshLayout                    = view.findViewById(R.id.swipeRefresh);
         shimmerFrameLayout                    = view.findViewById(R.id.shimmerLayout);
         commentsArrayList = new ArrayList<>();
@@ -163,7 +171,7 @@ public class CommentsFragment
         if(v.getId() == R.id.image_button_back)
             requireActivity().getSupportFragmentManager().popBackStack();
         if(v.getId() == R.id.post_comment_button) {
-            if (!postingComment) {
+            if (!postingComment && postCommentButton.getTag().equals("post comment")) {
                 postingComment = true;
                 if (!TextUtils.isEmpty(commentEditText.getText()))
                     postComment(userProfile.getHnid(), postId);
@@ -172,13 +180,15 @@ public class CommentsFragment
                     postingComment = false;
                 }
             }
+            if (postCommentButton.getTag().equals("post reply") && commentId != 0 && !replyText.equals(""))
+                postReply(commentId,replyText);
         }
     }
 
     @Override
     public void onReplyClick(int commentId, String reply, int position, LinearLayout replyLayout, ImageButton replyButton) {
         Log.d(TAG,"replied text = "+reply);
-        postReply(commentId,reply, position, replyLayout, replyButton);
+//        postReply(commentId,reply, position, replyLayout, replyButton);
     }
 
     public void setRecyclerView(ArrayList<ResultViewComments> commentList){
@@ -314,11 +324,13 @@ public class CommentsFragment
         });
     }
 
-    public void postReply(int commentId, String reply, int position, LinearLayout replyLayout, ImageButton replyButton){
+    public void postReply(int commentId, String reply){
         RequestBody user = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
         RequestBody post = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(postId));
         RequestBody reply_comment = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(commentId));
         RequestBody comment = RequestBody.create(MediaType.parse("text/plain"), reply);
+
+        Log.d(TAG,"replied text to post = "+replyText);
 
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<Reply> call = service.replyOnPost(user,post,reply_comment,comment);
@@ -329,11 +341,14 @@ public class CommentsFragment
 
                 if(response.code() == 201) {
                     Reply reply = response.body();
-                    commentsArrayList.get(position).getReplies().add(reply);
-                    commentListAdapter.notifyDataSetChanged();
+//                    commentsArrayList.get(position).getReplies().add(reply);
+//                    commentListAdapter.notifyDataSetChanged();
+//
+//                    replyButton.setImageResource(R.drawable.reply_ic);
+//                    replyLayout.setVisibility(View.GONE);
 
-                    replyButton.setImageResource(R.drawable.reply_ic);
-                    replyLayout.setVisibility(View.GONE);
+                    commentEditText.clearFocus();
+                    commentEditText.setText("");
 
                     count++;
                     commentCountText.setText(String.valueOf(count));
@@ -382,13 +397,23 @@ public class CommentsFragment
 
     @Override
     public void onCommentReply(int id, int absoluteAdapterPosition) {
-        String replyingTo = "<B>" + commentsArrayList.get(absoluteAdapterPosition).getUser().getFullName() + "</B>";
+        String commentedUserName = commentsArrayList.get(absoluteAdapterPosition).getUser().getFullName();
+
+        String replyingTo = "<B>" + commentedUserName + " " + "</B>";
 
         commentEditText.setText(Html.fromHtml(replyingTo));
+
         commentEditText.requestFocus();
-        commentEditText.setShowSoftInputOnFocus(true);
+        InputMethodManager keyboard = (InputMethodManager)
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
         commentEditText.setSelection(commentEditText.length());
         interactWithPostBottomSheetFragment.dismiss();
+
+        replyText = commentEditText.getText().toString().replace(commentedUserName,commentEditText.getText());
+        commentId = commentsArrayList.get(absoluteAdapterPosition).getId();
+
+        postCommentButton.setTag("post reply");
     }
 }
