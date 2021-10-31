@@ -79,6 +79,7 @@ public class CommentsFragment
 
     private int commentId = 0;
     private String replyText="";
+    private String repliedToUsername;
 
 
     private LinearLayoutManager linearLayoutManager;
@@ -180,8 +181,14 @@ public class CommentsFragment
                     postingComment = false;
                 }
             }
-            if (postCommentButton.getTag().equals("post reply") && commentId != 0 && !replyText.equals(""))
-                postReply(commentId,replyText);
+            if (postCommentButton.getTag().equals("post reply") && commentId != 0 && !replyText.equals("")) {
+
+                Log.d(TAG,"replying to user = "+repliedToUsername);
+                replyText = commentEditText.getText().toString().replace(repliedToUsername,"");
+                Log.d(TAG,"reply to user = "+replyText);
+
+                postReply(commentId, replyText);
+            }
         }
     }
 
@@ -399,6 +406,8 @@ public class CommentsFragment
     public void onCommentReply(int id, int absoluteAdapterPosition) {
         String commentedUserName = commentsArrayList.get(absoluteAdapterPosition).getUser().getFullName();
 
+        repliedToUsername = commentedUserName;
+
         String replyingTo = "<B>" + commentedUserName + " " + "</B>";
 
         commentEditText.setText(Html.fromHtml(replyingTo));
@@ -411,7 +420,6 @@ public class CommentsFragment
         commentEditText.setSelection(commentEditText.length());
         interactWithPostBottomSheetFragment.dismiss();
 
-        replyText = commentEditText.getText().toString().replace(commentedUserName,commentEditText.getText());
         commentId = commentsArrayList.get(absoluteAdapterPosition).getId();
 
         postCommentButton.setTag("post reply");
