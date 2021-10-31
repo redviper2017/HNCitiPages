@@ -84,6 +84,14 @@
           }
         },
         {
+          "client_id": "1022009655122-76umkbqi4khr84q3r2m4m649dc6i3es4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hn.techcom.com.hncitipages",
+            "certificate_hash": "eaf3ea2ae57d237da99221fca09f2d8f9cac52c1"
+          }
+        },
+        {
           "client_id": "1022009655122-qt3b6unqbg8kij5638c90pd770apqugp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
