@@ -172,6 +172,9 @@ public class CommentsFragment
         if(v.getId() == R.id.image_button_back)
             requireActivity().getSupportFragmentManager().popBackStack();
         if(v.getId() == R.id.post_comment_button) {
+            Log.d(TAG,"on post button click flag value = "+postingComment);
+            Log.d(TAG,"on post button click tag value = "+postCommentButton.getTag());
+
             if (!postingComment && postCommentButton.getTag().equals("post comment")) {
                 postingComment = true;
                 if (!TextUtils.isEmpty(commentEditText.getText()))
@@ -181,12 +184,15 @@ public class CommentsFragment
                     postingComment = false;
                 }
             }
-            if (postCommentButton.getTag().equals("post reply") && commentId != 0 && !replyText.equals("")) {
+            if (postCommentButton.getTag().equals("post reply") && commentId != 0 && !postingComment) {
 
                 Log.d(TAG,"replying to user = "+repliedToUsername);
                 replyText = commentEditText.getText().toString().replace(repliedToUsername,"");
                 Log.d(TAG,"reply to user = "+replyText);
 
+                postingComment = true;
+
+                postCommentButton.setTag("post comment");
                 postReply(commentId, replyText);
             }
         }
@@ -326,6 +332,7 @@ public class CommentsFragment
 
             @Override
             public void onFailure(@NonNull Call<ResultViewComments> call, @NonNull Throwable t) {
+                postingComment = false;
                 Toast.makeText(getContext(),"Oops! something is wrong, please try again later..",Toast.LENGTH_LONG).show();
             }
         });
@@ -361,11 +368,14 @@ public class CommentsFragment
                     commentCountText.setText(String.valueOf(count));
                 }
 
+                postingComment = false;
+
             }
 
             @Override
             public void onFailure(@NonNull Call<Reply> call, @NonNull Throwable t) {
-
+                postingComment = false;
+                Toast.makeText(getContext(),"Oops! something is wrong, please try again later..",Toast.LENGTH_LONG).show();
             }
         });
     }
