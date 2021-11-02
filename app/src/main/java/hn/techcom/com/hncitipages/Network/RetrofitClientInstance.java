@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClientInstance {
     private static Retrofit retrofit;
     private static final String BASE_URL_DEV = "http://159.89.194.161:8000/api/";
-    private static final String BASE_URL_PRODUCTION = "http://167.99.13.238:8000/api/";
+    private static final String BASE_URL_PRODUCTION = "https://www.hnbackend.com/api/";
 
     public static Retrofit getRetrofitInstance() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
