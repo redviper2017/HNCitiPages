@@ -2,9 +2,18 @@ package hn.techcom.com.hncitipages.Fragments;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
+import static androidx.constraintlayout.motion.widget.Debug.getLocation;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,8 +21,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -27,24 +38,26 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.Utils;
 
-public class OnboardingUserLocationFragment extends Fragment implements View.OnClickListener {
+public class OnboardingUserLocationFragment
+        extends Fragment
+        implements LocationListener {
 
-    private static final int PERMISSION_REQUEST_CODE = 200;
     private static final String TAG = "LocationFragment";
 
     private MaterialTextView city, country;
-    private MaterialCardView getCurrentLocationButton;
-    private FusedLocationProviderClient fusedLocationProviderClient;
-
+    private ProgressBar progressBar;
     private Profile userProfile = null;
     private Utils myUtils;
 
-    double latitude, longitude;
-    private FrameLayout frameLayout;
+    private LocationManager locationManager;
 
     public OnboardingUserLocationFragment() {
         // Required empty public constructor
@@ -67,15 +80,22 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
         //Hooks
         city = view.findViewById(R.id.city_onboarding);
         country = view.findViewById(R.id.country_onboarding);
-        getCurrentLocationButton = view.findViewById(R.id.button_get_current_location);
+        progressBar = view.findViewById(R.id.progressbar);
+        MaterialCardView getCurrentLocationButton = view.findViewById(R.id.button_get_current_location);
 
-        frameLayout = view.findViewById(R.id.frameLayout_location_onboarding);
-
-        //Initialise fused location
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        //Runtime Permission
+        if (ContextCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(requireActivity(),new String[]{ACCESS_FINE_LOCATION},100);
+        }
 
         //Click listeners
-        getCurrentLocationButton.setOnClickListener(this);
+        getCurrentLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                getLocation();
+            }
+        });
 
         // Inflate the layout for this fragment
         return view;
@@ -108,116 +128,57 @@ public class OnboardingUserLocationFragment extends Fragment implements View.OnC
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onLocationChanged(@NonNull Location location) {
+        try {
+            Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+            String countryName = addresses.get(0).getCountryName();
+            String cityName = addresses.get(0).getLocality();
+
+            country.setText(countryName);
+            city.setText(cityName);
+
+            progressBar.setVisibility(View.GONE);
+
+//            Toast.makeText(requireContext(),"user country = "+countryName,Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-    }
-
-    private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        GeoLocationModel geoLocationModel = new EasyLocationFetch(requireContext(),getResources().getString(R.string.location_api)).getLocationData();
-        Toast.makeText(getContext(),"address = "+geoLocationModel.getCity(),Toast.LENGTH_LONG).show();
-//        geoLocationModel.getAddress()
-//        geoLocationModel.getCity()
-//        geoLocationModel.getLattitude()
-//        geoLocationModel.getLongitude()
-
-//        city.setText(geoLocationModel.getCity());
-//        country.setText(geoLocationModel.());
+    public void onLocationChanged(@NonNull List<Location> locations) {
 
     }
 
     @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.button_get_current_location) {
-
-            if(!checkPermission()){
-                requestPermission();
-            }else {
-                getLocation();
-                getCurrentLocationButton.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION);
-
-        return result == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPermission() {
-
-        ActivityCompat.requestPermissions(requireActivity(), new String[]{ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+    public void onFlushComplete(int requestCode) {
 
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0) {
+    public void onStatusChanged(String provider, int status, Bundle extras) {
 
-                    boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-
-                    if (locationAccepted) {
-                        getLocation();
-                        getCurrentLocationButton.setVisibility(View.GONE);
-                    }
-                    else {
-
-                        Snackbar.make(frameLayout, "Permission Denied, You cannot access location data.", Snackbar.LENGTH_LONG).show();
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
-                                showMessageOKCancel("You need to allow access to this permissions",
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                requestPermissions(new String[]{ACCESS_FINE_LOCATION},
-                                                        PERMISSION_REQUEST_CODE);
-                                            }
-                                        });
-                                return;
-                            }
-                        }
-
-                    }
-                }
-
-
-                break;
-        }
     }
 
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(requireContext())
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        getCurrentLocationButton.setVisibility(View.VISIBLE);
-                    }
-                })
-                .create()
-                .show();
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLocation(){
+        try {
+            locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,5000,5,this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
