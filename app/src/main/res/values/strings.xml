@@ -11,7 +11,7 @@
     <string name="select_post_type">Select the type of post you\'re sharing</string>
     <string name="caption">Give a caption</string>
     <string name="connect_to_your_city_and_its_people">ne big continent</string>
-    <string name="terms_agree">By Signing up for HN CitiPages, you agree to our Terms and Conditions. To learn more about our Privacy Policy,</string>
+    <string name="terms_agree">Before signing up for HN CitiPages, you must agree to our Terms and Conditions. To learn more about our Privacy Policy,</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
     <string name="please_read_carefully_the_following_terms_and_conditions_for_using_hn_citipages">Please read carefully the following terms and conditions for using HN CitiPages.</string>
     <string name="basic_terms_of_use">Basic Terms of Use</string>
@@ -50,6 +50,7 @@
     <string name="date_of_birth">Date of birth</string>
     <string name="gender">Gender</string>
     <string name="map_key" translatable="false">AIzaSyBw_CVmodX6buyvo28yMPj40MJhyGACmMU</string>
+    <string name="location_api">AIzaSyDmK8YazHpKFNdR-sUfrgxLhkmF_RxaCXw</string>
     <string name="get_my_current_location">Get my current location</string>
     <string name="confirm_your_location">Confirm your location</string>
     <string name="file_provider" translatable="false">hn.techcom.com.hnapp.fileprovider</string>
@@ -124,4 +125,5 @@
     <string name="edit_comment">Edit Comment</string>
     <string name="delete_comment">Delete Comment</string>
     <string name="reply_to_comment">Reply to Comment</string>
+    <string name="please_click_the_button_to_help_us_get_your_location">Please click the button to help us get your location</string>
 </resources>
