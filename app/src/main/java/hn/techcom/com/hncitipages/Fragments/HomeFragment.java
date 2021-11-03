@@ -76,8 +76,7 @@ public class HomeFragment
     public  ArrayList<PostList> globalPostList;
     private ArrayList<Result> recentPostList;
     private PostListAdapter postListAdapter;
-    private EditText searchView;
-    private boolean isLoading = false;
+
     private String nextGlobalPostListUrl;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ShimmerFrameLayout shimmerFrameLayout;
@@ -96,7 +95,7 @@ public class HomeFragment
         MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_supportsection);
 
         recyclerView       = view.findViewById(R.id.recyclerview_posts_supportsection);
-        searchView         = view.findViewById(R.id.searchview_supportedsection);
+
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         shimmerFrameLayout = view.findViewById(R.id.shimmerLayout);
 
@@ -128,23 +127,6 @@ public class HomeFragment
                         getGlobalPostsFromNextPage(nextGlobalPostListUrl);
                     }
                 }
-            }
-        });
-
-        searchView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                filter(editable.toString().toLowerCase());
             }
         });
 
