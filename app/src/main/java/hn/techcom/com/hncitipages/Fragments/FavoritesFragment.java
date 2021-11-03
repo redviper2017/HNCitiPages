@@ -301,10 +301,10 @@ public class FavoritesFragment
 
         call.enqueue(new Callback<LikeResponse>() {
             @Override
-            public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
+            public void onResponse(@NonNull Call<LikeResponse> call, @NonNull Response<LikeResponse> response) {
 
                     LikeResponse likeResponse = response.body();
-                    Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
 
                     //Toggling like button image
                     recentPostList.get(position).setLiked(!recentPostList.get(position).getLiked());
@@ -335,21 +335,21 @@ public class FavoritesFragment
 
         call.enqueue(new Callback<FavoriteResponse>() {
             @Override
-            public void onResponse(Call<FavoriteResponse> call, Response<FavoriteResponse> response) {
+            public void onResponse(@NonNull Call<FavoriteResponse> call, @NonNull Response<FavoriteResponse> response) {
                 if(response.code() == 201){
                     FavoriteResponse favoriteResponse = response.body();
-                    Toast.makeText(getContext(), favoriteResponse.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), favoriteResponse.getMessage(), Toast.LENGTH_LONG).show();
 
                     //Toggling favorite button image
                     recentPostList.get(position).setFavourite(!recentPostList.get(position).getFavourite());
 
                     postListAdapter.notifyDataSetChanged();
                 }else
-                    Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Sorry unable to favorite the post at this moment, try again later.", Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onFailure(Call<FavoriteResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<FavoriteResponse> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
             }
         });

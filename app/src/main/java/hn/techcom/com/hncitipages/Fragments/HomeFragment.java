@@ -281,7 +281,7 @@ public class HomeFragment
             public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
                     Log.d(TAG,"like post api response code = "+response.code());
                     LikeResponse likeResponse = response.body();
-                    Toast.makeText(getContext(), Objects.requireNonNull(likeResponse).getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), Objects.requireNonNull(likeResponse).getMessage(), Toast.LENGTH_LONG).show();
 
                     //Toggling like button image
                     recentPostList.get(position).setLiked(!recentPostList.get(position).getLiked());
@@ -296,7 +296,7 @@ public class HomeFragment
             }
 
             @Override
-            public void onFailure(Call<LikeResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<LikeResponse> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
             }
         });
@@ -315,14 +315,14 @@ public class HomeFragment
             public void onResponse(Call<FavoriteResponse> call, Response<FavoriteResponse> response) {
                 if(response.code() == 201){
                     FavoriteResponse favoriteResponse = response.body();
-                    Toast.makeText(getContext(), favoriteResponse.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), favoriteResponse.getMessage(), Toast.LENGTH_LONG).show();
 
                     //Toggling favorite button image
                     recentPostList.get(position).setFavourite(!recentPostList.get(position).getFavourite());
 
                     postListAdapter.notifyDataSetChanged();
                 }else
-                    Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Sorry unable to favorite the post at this moment, try again later.", Toast.LENGTH_LONG).show();
             }
 
             @Override

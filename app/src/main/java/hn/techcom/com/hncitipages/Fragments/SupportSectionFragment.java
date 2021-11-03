@@ -382,7 +382,7 @@ public class SupportSectionFragment
             public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
 
                     LikeResponse likeResponse = response.body();
-                    Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
 
                     //Toggling like button image
                     recentPostList.get(position).setLiked(!recentPostList.get(position).getLiked());
@@ -422,7 +422,7 @@ public class SupportSectionFragment
 
                     supportingPostAdapter.notifyDataSetChanged();
                 }else
-                    Toast.makeText(getContext(), "Sorry unable to like the post at this moment, try again later.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Sorry unable to favorite the post at this moment, try again later.", Toast.LENGTH_LONG).show();
             }
 
             @Override
