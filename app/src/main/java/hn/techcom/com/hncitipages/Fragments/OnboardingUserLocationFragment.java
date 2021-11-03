@@ -88,12 +88,22 @@ public class OnboardingUserLocationFragment
             ActivityCompat.requestPermissions(requireActivity(),new String[]{ACCESS_FINE_LOCATION},100);
         }
 
+        locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
+
         //Click listeners
         getCurrentLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                getLocation();
+
+                boolean network_enabled = false;
+                network_enabled = locationManager.isProviderEnabled(LocationManager. NETWORK_PROVIDER );
+                if (network_enabled)
+                    getLocation();
+                else {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(requireContext(), "Please turn on your device's location from settings then come back.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -174,7 +184,6 @@ public class OnboardingUserLocationFragment
     @SuppressLint("MissingPermission")
     private void getLocation(){
         try {
-            locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,5000,5,this);
         } catch (Exception e) {
             e.printStackTrace();
