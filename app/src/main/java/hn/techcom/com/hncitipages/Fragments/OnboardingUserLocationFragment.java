@@ -8,6 +8,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,6 +17,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,7 +104,18 @@ public class OnboardingUserLocationFragment
                     getLocation();
                 else {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(requireContext(), "Please turn on your device's location from settings then come back.", Toast.LENGTH_LONG).show();
+                    new AlertDialog.Builder(requireContext())
+                            .setTitle("Enable Location!")
+                            .setMessage("Please enable your device's location first then come back.")
+                            .setCancelable(false)
+                            .setPositiveButton("Enable", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            }).setNegativeButton("Cancel",null)
+                            .show();
+//                    Toast.makeText(requireContext(), "Please turn on your device's location from settings then come back.", Toast.LENGTH_LONG).show();
                 }
             }
         });
