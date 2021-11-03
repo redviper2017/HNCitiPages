@@ -69,19 +69,14 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity {
     private static final String CHANNEL_ID = "101";
-    static ArrayList<SupporterProfile> userSupportedProfiles;
-    static ArrayList<Post> globalPosts = new ArrayList<>();
-    static ArrayList<Post> userSupportedProfilePosts = new ArrayList<>();
     private static final int PERMISSION_REQUEST_CODE = 200;
 
     //currently its hard coded but later on it will taken from local db based on currently logged in user's username
-    private String currentUserUsername = "redviper";
 
     private static final String TAG = "MainActivity";
 
     private Utils myUtils;
     private Profile userProfile;
-    private int userPostCount = 0;
 
     private final int UPDATE_REQUEST_CODE = 1612;
 
@@ -315,7 +310,6 @@ public class MainActivity extends AppCompatActivity {
                 if (response.code() == 200){
                     Log.d(TAG,"total number of post by this user = "+response.body().getResults().size());
                     PostList postList = response.body();
-                    userPostCount = postList.getCount();
                 }
             }
 
