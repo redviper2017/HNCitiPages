@@ -126,4 +126,5 @@
     <string name="delete_comment">Delete Comment</string>
     <string name="reply_to_comment">Reply to Comment</string>
     <string name="please_click_the_button_to_help_us_get_your_location">Please click the button to help us get your location</string>
+    <string name="update_my_location">Update my location</string>
 </resources>
