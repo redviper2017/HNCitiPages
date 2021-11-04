@@ -74,8 +74,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
                         dismiss();
                         break;
                     case R.id.nav_visit_profile:
-                        if (userProfile.getPostCount() != null) {
-                            if (userProfile.getPostCount() > 0) {
+                        if (userProfile.getPostCount() > 0) {
+
                                 Fragment fragmentSelected = new ProfileSectionFragment();
 
                                 Bundle bundle = new Bundle();
@@ -84,10 +84,11 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 
                                 fragmentSelected.setArguments(bundle);
                                 requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragmentSelected)).addToBackStack(null).commit();
-                            } else
-                                Toast.makeText(getContext(), "You have to make your first post to view this section", Toast.LENGTH_SHORT).show();
-                            dismiss();
                         }
+                        else
+                            Toast.makeText(getContext(), "You have to make your first post to view this section", Toast.LENGTH_SHORT).show();
+
+                        dismiss();
                         break;
 //                    case R.id.nav_random_community:
 //                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new RandomPostsByHNCommunityFragment()).commit();

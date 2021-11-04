@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             if (checkPermission()) {
                 getToken();
-                getLatestPostsListBySingleUser();
+                myUtils.getLatestPostsListBySingleUser(this);
                 Fragment fragment = new HomeFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
             }else{
@@ -298,26 +298,6 @@ public class MainActivity extends AppCompatActivity {
 //            Log.d(TAG,"available version = "+appUpdateInfo.availableVersionCode());
 //            Log.d(TAG,"update req = "+appUpdateInfo.updateAvailability());
 //        });
-    }
-
-    //get initial user posts list
-    public void getLatestPostsListBySingleUser() {
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<PostList> call = service.getLatestPostsBySingleUser(userProfile.getHnid(),userProfile.getHnid());
-        call.enqueue(new Callback<PostList>() {
-            @Override
-            public void onResponse(Call<PostList> call, Response<PostList> response) {
-                if (response.code() == 200){
-                    Log.d(TAG,"total number of post by this user = "+response.body().getResults().size());
-                    PostList postList = response.body();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PostList> call, Throwable t) {
-
-            }
-        });
     }
 
     private void getToken(){

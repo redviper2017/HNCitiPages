@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -26,8 +27,10 @@ import hn.techcom.com.hncitipages.Fragments.LikesFragment;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Models.LikeResponse;
 import hn.techcom.com.hncitipages.Models.Notification;
+import hn.techcom.com.hncitipages.Models.PostList;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.Models.Result;
+import hn.techcom.com.hncitipages.Models.SingleUserInfoResponse;
 import hn.techcom.com.hncitipages.Models.User;
 import hn.techcom.com.hncitipages.Network.RetrofitClientInstance;
 import hn.techcom.com.hncitipages.R;
@@ -227,6 +230,29 @@ public class Utils {
             @Override
             public void onFailure(Call<LikeResponse> call, Throwable t) {
                 Toast.makeText(context,"Sorry, the support request has been failed. Try again..", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    //get initial user posts list
+    public void getLatestPostsListBySingleUser(Context context) {
+        Profile userProfile = getNewUserFromSharedPreference(context);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<PostList> call = service.getLatestPostsBySingleUser(userProfile.getHnid(),userProfile.getHnid());
+        call.enqueue(new Callback<PostList>() {
+            @Override
+            public void onResponse(@NonNull Call<PostList> call, @NonNull Response<PostList> response) {
+                if (response.code() == 200){
+                    Log.d(TAG,"total number of post by this user = "+response.body().getResults().size());
+                    PostList postList = response.body();
+                    userProfile.setPostCount(postList.getCount());
+                    storeNewUserToSharedPref(context,userProfile);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PostList> call, @NonNull Throwable t) {
+
             }
         });
     }
