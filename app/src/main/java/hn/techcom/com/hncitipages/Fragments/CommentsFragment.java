@@ -318,13 +318,13 @@ public class CommentsFragment
                     if (commentListAdapter != null)
                         if(commentsArrayList.size() != 0) {
                             commentsArrayList.add(0, commentResponse);
-                            commentListAdapter.notifyDataSetChanged();
+                            commentListAdapter.notifyItemInserted(0);
                             count++;
                             commentCountText.setText(String.valueOf(count));
                         }
                         else {
                             commentsArrayList.add(commentResponse);
-                            commentListAdapter.notifyDataSetChanged();
+                            commentListAdapter.notifyItemInserted(commentsArrayList.size());
                         }
 
                 postingComment = false;
@@ -397,7 +397,7 @@ public class CommentsFragment
         Call<DeleteResponse> call = service.deleteComment(id);
         call.enqueue(new Callback<DeleteResponse>() {
             @Override
-            public void onResponse(Call<DeleteResponse> call, Response<DeleteResponse> response) {
+            public void onResponse(@NonNull Call<DeleteResponse> call, @NonNull Response<DeleteResponse> response) {
                 DeleteResponse deleteResponse = response.body();
                 Toast.makeText(getActivity(), Objects.requireNonNull(deleteResponse).getSuccess(), Toast.LENGTH_SHORT).show();
                 commentsArrayList.remove(absoluteAdapterPosition);
@@ -406,7 +406,7 @@ public class CommentsFragment
             }
 
             @Override
-            public void onFailure(Call<DeleteResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<DeleteResponse> call, @NonNull Throwable t) {
                 Toast.makeText(getActivity(),"Sorry, unable to delete the comment. Try again..", Toast.LENGTH_LONG).show();
             }
         });
