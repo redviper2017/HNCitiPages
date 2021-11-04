@@ -25,6 +25,7 @@ import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -78,6 +79,7 @@ public class CommentsFragment
     private boolean postingComment = false;
 
     private int commentId = 0;
+    private int replyToCommentPosition = 0;
     private String replyText="";
     private String repliedToUsername;
 
@@ -321,10 +323,14 @@ public class CommentsFragment
                             commentListAdapter.notifyItemInserted(0);
                             count++;
                             commentCountText.setText(String.valueOf(count));
+                            recyclerView.scrollToPosition();
                         }
                         else {
                             commentsArrayList.add(commentResponse);
                             commentListAdapter.notifyItemInserted(commentsArrayList.size());
+                            count++;
+                            commentCountText.setText(String.valueOf(count));
+                            recyclerView.scrollToPosition();
                         }
 
                 postingComment = false;
@@ -366,6 +372,12 @@ public class CommentsFragment
 
                     count++;
                     commentCountText.setText(String.valueOf(count));
+
+                    List<Reply> replyList = commentsArrayList.get(replyToCommentPosition).getReplies();
+                    replyList.add(reply);
+
+                    commentsArrayList.get(replyToCommentPosition).setReplies(replyList);
+                    commentListAdapter.notifyItemChanged(replyToCommentPosition);
                 }
 
                 postingComment = false;
@@ -431,6 +443,7 @@ public class CommentsFragment
         interactWithPostBottomSheetFragment.dismiss();
 
         commentId = commentsArrayList.get(absoluteAdapterPosition).getId();
+        replyToCommentPosition = absoluteAdapterPosition;
 
         postCommentButton.setTag("post reply");
     }
