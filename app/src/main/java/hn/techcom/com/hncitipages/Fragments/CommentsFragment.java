@@ -323,14 +323,14 @@ public class CommentsFragment
                             commentListAdapter.notifyItemInserted(0);
                             count++;
                             commentCountText.setText(String.valueOf(count));
-                            recyclerView.scrollToPosition();
+                            recyclerView.scrollToPosition(0);
                         }
                         else {
                             commentsArrayList.add(commentResponse);
                             commentListAdapter.notifyItemInserted(commentsArrayList.size());
                             count++;
                             commentCountText.setText(String.valueOf(count));
-                            recyclerView.scrollToPosition();
+                            recyclerView.scrollToPosition(0);
                         }
 
                 postingComment = false;
