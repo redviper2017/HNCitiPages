@@ -179,6 +179,15 @@ public interface GetDataService {
             @Part("comment") RequestBody comment
     );
 
+    //Edit comment
+    @Multipart
+    @POST("posts/edit_comment/{comment_id}/")
+    Call<ResultViewComments> editComment(
+            @Path("comment_id") int comment_id,
+            @Part("user") RequestBody user,
+            @Part("comment") RequestBody comment
+    );
+
     //Reply on post
     @Multipart
     @POST("posts/post_comment/")

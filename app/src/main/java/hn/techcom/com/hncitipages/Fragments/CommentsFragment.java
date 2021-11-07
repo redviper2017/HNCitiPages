@@ -32,6 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hncitipages.Adapters.CommentListAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentDeleteListener;
+import hn.techcom.com.hncitipages.Interfaces.OnCommentEditListener;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentReplyListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
@@ -58,7 +59,7 @@ public class CommentsFragment
         ViewProfileListener,
         OnCommentOptionButtonClickListener,
         OnCommentDeleteListener,
-        OnCommentReplyListener {
+        OnCommentReplyListener, OnCommentEditListener {
 
     private ImageButton postCommentButton;
     private MaterialTextView commentCountText;
@@ -80,6 +81,7 @@ public class CommentsFragment
 
     private int commentId = 0;
     private int replyToCommentPosition = 0;
+    private int commentEditedAtPosition = 0;
     private String replyText="";
     private String repliedToUsername;
 
@@ -196,6 +198,15 @@ public class CommentsFragment
 
                 postCommentButton.setTag("post comment");
                 postReply(commentId, replyText);
+            }
+            if (!postingComment && postCommentButton.getTag().equals("edit comment")){
+                postingComment = true;
+                if (!TextUtils.isEmpty(commentEditText.getText()))
+                    editComment(userProfile.getHnid(), commentId);
+                else {
+                    Toast.makeText(getContext(), "Oops! you've forgot to enter your comment..", Toast.LENGTH_SHORT).show();
+                    postingComment = false;
+                }
             }
         }
     }
@@ -344,6 +355,37 @@ public class CommentsFragment
         });
     }
 
+    public void editComment(String hnid, int comment_id){
+        RequestBody user = RequestBody.create(MediaType.parse("text/plain"), hnid);
+
+        RequestBody comment = RequestBody.create(MediaType.parse("text/plain"), commentEditText.getText().toString());
+
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<ResultViewComments> call = service.editComment(comment_id,user,comment);
+
+        call.enqueue(new Callback<ResultViewComments>() {
+            @Override
+            public void onResponse(@NonNull Call<ResultViewComments> call, @NonNull Response<ResultViewComments> response) {
+                ResultViewComments commentResponse = response.body();
+
+                if (commentResponse != null) {
+                    commentEditText.setText("");
+                    commentEditText.clearFocus();
+                    commentsArrayList.get(commentEditedAtPosition).setComment(commentResponse.getComment());
+                    commentListAdapter.notifyItemChanged(commentEditedAtPosition);
+                    recyclerView.scrollToPosition(commentEditedAtPosition);
+                }
+                postingComment = false;
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResultViewComments> call, @NonNull Throwable t) {
+                postingComment = false;
+                Toast.makeText(getContext(),"Oops! something is wrong, please try again later..",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     public void postReply(int commentId, String reply){
         RequestBody user = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
         RequestBody post = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(postId));
@@ -394,7 +436,7 @@ public class CommentsFragment
 
     @Override
     public void onCommentOptionButtonClick(int id, String hnid, int absoluteAdapterPosition) {
-        interactWithPostBottomSheetFragment = new InteractionWithCommentBottomSheetFragmentOwn(id, hnid,this, this,absoluteAdapterPosition);
+        interactWithPostBottomSheetFragment = new InteractionWithCommentBottomSheetFragmentOwn(id, hnid,this, this,this,absoluteAdapterPosition);
         interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
     }
 
@@ -446,5 +488,24 @@ public class CommentsFragment
         replyToCommentPosition = absoluteAdapterPosition;
 
         postCommentButton.setTag("post reply");
+    }
+
+    @Override
+    public void onCommentEdit(int id, int absoluteAdapterPosition) {
+        commentEditText.requestFocus();
+        InputMethodManager keyboard = (InputMethodManager)
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+
+        commentEditText.setText(commentsArrayList.get(absoluteAdapterPosition).getComment());
+        commentEditText.setSelection(commentEditText.length());
+
+        interactWithPostBottomSheetFragment.dismiss();
+
+        commentId = commentsArrayList.get(absoluteAdapterPosition).getId();
+
+        postCommentButton.setTag("edit comment");
+        commentEditedAtPosition = absoluteAdapterPosition;
     }
 }

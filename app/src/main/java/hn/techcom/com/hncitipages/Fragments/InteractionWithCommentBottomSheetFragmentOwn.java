@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import hn.techcom.com.hncitipages.Interfaces.OnCommentDeleteListener;
+import hn.techcom.com.hncitipages.Interfaces.OnCommentEditListener;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentReplyListener;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.R;
@@ -29,12 +30,14 @@ public class InteractionWithCommentBottomSheetFragmentOwn extends BottomSheetDia
     private NavigationView navigationView;
     private OnCommentDeleteListener onCommentDeleteListener;
     private OnCommentReplyListener onCommentReplyListener;
+    private OnCommentEditListener onCommentEditListener;
 
     public InteractionWithCommentBottomSheetFragmentOwn(
             int id,
             String hnid,
             OnCommentDeleteListener onCommentDeleteListener,
             OnCommentReplyListener onCommentReplyListener,
+            OnCommentEditListener onCommentEditListener,
             int absoluteAdapterPosition) {
         // Required empty public constructor
         commentId = id;
@@ -42,6 +45,7 @@ public class InteractionWithCommentBottomSheetFragmentOwn extends BottomSheetDia
         this.onCommentDeleteListener = onCommentDeleteListener;
         this.onCommentReplyListener = onCommentReplyListener;
         this.absoluteAdapterPosition = absoluteAdapterPosition;
+        this.onCommentEditListener = onCommentEditListener;
     }
 
     @Override
@@ -66,6 +70,8 @@ public class InteractionWithCommentBottomSheetFragmentOwn extends BottomSheetDia
                     onCommentDeleteListener.onCommentDelete(commentId, absoluteAdapterPosition);
                 if (item.getItemId() == R.id.reply_comment)
                     onCommentReplyListener.onCommentReply(commentId,absoluteAdapterPosition);
+                if (item.getItemId() == R.id.edit_comment)
+                    onCommentEditListener.onCommentEdit(commentId,absoluteAdapterPosition);
                 return true;
             }
         });
