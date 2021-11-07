@@ -363,13 +363,7 @@ public class UpdateProfileActivity
             String countryName = addresses.get(0).getCountryName();
             String cityName = addresses.get(0).getLocality();
 
-            String userNewLocation = cityName + ", " + countryName;
-
-            Log.d(TAG,"user new location in profile = " + userNewLocation);
-
-            locationText.setText(userNewLocation);
-
-            progressBar.setVisibility(View.GONE);
+            updateLocation(cityName,countryName);
 
 //            Toast.makeText(requireContext(),"user country = "+countryName,Toast.LENGTH_LONG).show();
         } catch (Exception e) {
@@ -400,5 +394,34 @@ public class UpdateProfileActivity
     @Override
     public void onProviderDisabled(@NonNull String provider) {
 
+    }
+
+    public void updateLocation(String city, String country){
+        RequestBody user = RequestBody.create(MediaType.parse("text/plain"), userProfile.getHnid());
+        RequestBody cityName = RequestBody.create(MediaType.parse("text/plain"), city);
+        RequestBody countryName = RequestBody.create(MediaType.parse("text/plain"), country);
+
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<LikeResponse> call = service.updateProfileLocation(user,cityName,countryName);
+
+        call.enqueue(new Callback<LikeResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<LikeResponse> call, @NonNull Response<LikeResponse> response) {
+                if (response.code() == 200) {
+                    String userNewLocation = city + ", " + country;
+                    locationText.setText(userNewLocation);
+                    userProfile.setCity(city);
+                    userProfile.setCountry(country);
+                    myUtils.storeNewUserToSharedPref(getApplicationContext(),userProfile);
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<LikeResponse> call, @NonNull Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),"Sorry, your request for changing location cannot be served now, please try again later.",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

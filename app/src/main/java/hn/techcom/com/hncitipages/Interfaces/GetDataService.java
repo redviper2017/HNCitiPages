@@ -269,6 +269,15 @@ public interface GetDataService {
             @Part MultipartBody.Part profile_img
     );
 
+    //Update Profile Location
+    @Multipart
+    @POST("users/user_location_update_api/")
+    Call<LikeResponse> updateProfileLocation(
+            @Part("user") RequestBody user,
+            @Part("city") RequestBody city,
+            @Part("country") RequestBody country
+    );
+
     //Get single user info
     @GET("users/single_userinfo/{hnid}/")
     Call<SingleUserInfoResponse> getUserInfo(@Path("hnid") String hnid);
