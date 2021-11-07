@@ -1,18 +1,32 @@
 package hn.techcom.com.hncitipages.Activities;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -27,6 +41,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -44,7 +60,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UpdateProfileActivity extends AppCompatActivity implements View.OnClickListener{
+public class UpdateProfileActivity
+        extends AppCompatActivity
+        implements View.OnClickListener, LocationListener {
 
     private static final String TAG = "UpdateProfileFragment";
     private Utils myUtils;
@@ -53,12 +71,13 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
     private File newImageFile;
     private CircleImageView profilePhoto;
     private ProgressBar progressBar;
-    private MaterialCardView updateProfileButton;
+    private MaterialCardView updateProfileButton, updateLocationButton;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_PICK = 2;
     private AlertDialog dialog;
     private LinearLayout titleLayout;
-    private MaterialTextView titleText;
+    private MaterialTextView titleText, locationText;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,17 +90,24 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
         MaterialTextView email               = findViewById(R.id.textview_email_view_profile);
         MaterialTextView phone               = findViewById(R.id.textview_phone_view_profile);
         MaterialTextView hnid                = findViewById(R.id.textview_hnid_view_profile);
+        locationText                         = findViewById(R.id.textview_location);
 
         profilePhoto                         = findViewById(R.id.circleimageview_user_profile);
         progressBar                          = findViewById(R.id.user_profile_photo_progressbar);
         View updatePhotoButton               = findViewById(R.id.fab_update_image);
         updateProfileButton                  = findViewById(R.id.update_profile_button);
-
+        updateLocationButton                 = findViewById(R.id.button_get_current_location);
         titleLayout                          = findViewById(R.id.title_text_layout);
         titleText                            = findViewById(R.id.textView_title_view_profile);
 
         myUtils = new Utils();
         userProfile = myUtils.getNewUserFromSharedPreference(this);
+
+        //Runtime Permission
+        if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{ACCESS_FINE_LOCATION},100);
+        }
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if(!userProfile.getTitle().equals("User")){
             String title = userProfile.getTitle() + ", HN CitiPages";
@@ -100,6 +126,10 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
         phone.setText(userProfile.getMobileNumber());
         hnid.setText(userProfile.getHnid());
 
+        String userLocation = userProfile.getCity() + ", " + userProfile.getCountry();
+        Log.d(TAG,"user location in profile = "+userLocation);
+        locationText.setText(userLocation);
+
         String profilePhotoUrl = userProfile.getProfileImgThumbnail();
         Log.d(TAG,"loaded profile photo url = "+profilePhotoUrl);
 //        Picasso
@@ -113,6 +143,7 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
 
         updatePhotoButton.setOnClickListener(this);
         updateProfileButton.setOnClickListener(this);
+        updateLocationButton.setOnClickListener(this);
     }
 
     @Override
@@ -121,6 +152,28 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
             updatePhotoDialog();
         if (view.getId() == R.id.update_profile_button)
             updateProfilePhoto();
+        if (view.getId() == R.id.button_get_current_location){
+            progressBar.setVisibility(View.VISIBLE);
+            boolean network_enabled;
+            network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            if (network_enabled)
+                getLocation();
+            else {
+                progressBar.setVisibility(View.GONE);
+                new AlertDialog.Builder(this)
+                        .setTitle("Enable Location!")
+                        .setMessage("Please enable your device's location first then come back.")
+                        .setCancelable(false)
+                        .setPositiveButton("Enable", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            }
+                        }).setNegativeButton("Cancel",null)
+                        .show();
+//                    Toast.makeText(requireContext(), "Please turn on your device's location from settings then come back.", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -291,4 +344,61 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private void getLocation(){
+        Log.d(TAG,"getLocation() called = YES");
+        try {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,5000,5,this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        Log.d(TAG,"onLocationChanged() called = YES");
+        try {
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+            String countryName = addresses.get(0).getCountryName();
+            String cityName = addresses.get(0).getLocality();
+
+            String userNewLocation = cityName + ", " + countryName;
+
+            Log.d(TAG,"user new location in profile = " + userNewLocation);
+
+            locationText.setText(userNewLocation);
+
+            progressBar.setVisibility(View.GONE);
+
+//            Toast.makeText(requireContext(),"user country = "+countryName,Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull List<Location> locations) {
+
+    }
+
+    @Override
+    public void onFlushComplete(int requestCode) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
 }

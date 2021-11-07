@@ -134,6 +134,25 @@
                     android:textSize="@dimen/_14ssp" />
             </LinearLayout>
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/location_ic"
+                    app:tint="@color/colorCenterLinearGradient"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textview_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_rounded_regular"
+                    android:text="Dhaka, Bangladesh"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:textSize="@dimen/_14ssp" />
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/title_text_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -212,8 +231,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:visibility="gone"
-            android:layout_centerInParent="true"/>
+            android:visibility="visible"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/button_get_current_location"/>
     </RelativeLayout>
 
 </RelativeLayout>

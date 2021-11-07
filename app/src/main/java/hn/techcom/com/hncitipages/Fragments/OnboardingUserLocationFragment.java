@@ -98,8 +98,8 @@ public class OnboardingUserLocationFragment
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
 
-                boolean network_enabled = false;
-                network_enabled = locationManager.isProviderEnabled(LocationManager. NETWORK_PROVIDER );
+                boolean network_enabled;
+                network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
                 if (network_enabled)
                     getLocation();
                 else {
