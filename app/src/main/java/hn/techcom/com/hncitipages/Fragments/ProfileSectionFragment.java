@@ -265,7 +265,7 @@ public class ProfileSectionFragment
         Call<Result> call = service.getSinglePost(postId);
         call.enqueue(new Callback<Result>() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
+            public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
                 if (response.code() == 200){
                     initialPostList.clear();
                     Result post = response.body();
@@ -277,7 +277,7 @@ public class ProfileSectionFragment
             }
 
             @Override
-            public void onFailure(Call<Result> call, Throwable t) {
+            public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
 
             }
         });
@@ -420,7 +420,7 @@ public class ProfileSectionFragment
 
         call.enqueue(new Callback<LikeResponse>() {
             @Override
-            public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
+            public void onResponse(@NonNull Call<LikeResponse> call, @NonNull Response<LikeResponse> response) {
 
                     LikeResponse likeResponse = response.body();
 //                    Toast.makeText(getContext(), likeResponse.getMessage(), Toast.LENGTH_LONG).show();
@@ -438,7 +438,7 @@ public class ProfileSectionFragment
             }
 
             @Override
-            public void onFailure(Call<LikeResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<LikeResponse> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(), "Your request has been failed! Please check your internet connection.", Toast.LENGTH_LONG).show();
             }
         });

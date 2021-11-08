@@ -40,8 +40,9 @@
                 android:textSize="@dimen/_10ssp"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
+
             <ImageButton
-                android:id="@+id/options_icon_comment"
+                android:id="@+id/options_icon_reply"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_alignParentEnd="true"

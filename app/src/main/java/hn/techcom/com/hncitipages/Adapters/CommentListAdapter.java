@@ -31,6 +31,7 @@ import hn.techcom.com.hncitipages.Interfaces.OnCommentOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentReplyListener;
 import hn.techcom.com.hncitipages.Interfaces.OnLoadMoreListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
+import hn.techcom.com.hncitipages.Interfaces.OnReplyOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.Reply;
 import hn.techcom.com.hncitipages.Models.ResultViewComments;
@@ -54,6 +55,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private OnReplyClickListener onReplyClickListener;
     private ViewProfileListener viewProfileListener;
     private OnCommentOptionButtonClickListener onCommentOptionButtonClickListener;
+    private OnReplyOptionButtonClickListener onReplyOptionButtonClickListener;
 
     private LinearLayoutManager linearLayoutManager;
 
@@ -63,13 +65,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             Context context,
             OnReplyClickListener onReplyClickListener,
             ViewProfileListener viewProfileListener,
-            OnCommentOptionButtonClickListener onCommentOptionButtonClickListener) {
+            OnCommentOptionButtonClickListener onCommentOptionButtonClickListener, OnReplyOptionButtonClickListener onReplyOptionButtonClickListener) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.allComments = allComments;
         this.onReplyClickListener = onReplyClickListener;
         this.viewProfileListener = viewProfileListener;
         this.onCommentOptionButtonClickListener = onCommentOptionButtonClickListener;
+        this.onReplyOptionButtonClickListener = onReplyOptionButtonClickListener;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -197,7 +200,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             if(comment.getReplies().size() > 0) {
                 ArrayList<Reply> replyList = new ArrayList<>(comment.getReplies());
-                setRecyclerView(replyList, repliesRecyclerview);
+                setRecyclerView(replyList, repliesRecyclerview, comment.getId());
             }
         }
 
@@ -217,10 +220,10 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 onCommentOptionButtonClickListener.onCommentOptionButtonClick(allComments.get(getAbsoluteAdapterPosition()).getId(),allComments.get(getAbsoluteAdapterPosition()).getUser().getHnid(),getAbsoluteAdapterPosition());
         }
 
-        public void setRecyclerView(ArrayList<Reply> replyList, RecyclerView repliesRecyclerview){
+        public void setRecyclerView(ArrayList<Reply> replyList, RecyclerView repliesRecyclerview, int commentId){
             linearLayoutManager = new LinearLayoutManager(context);
             repliesRecyclerview.setLayoutManager(linearLayoutManager);
-            replyListAdapter = new ReplyListAdapter(context, this.repliesRecyclerview, replyList, this);
+            replyListAdapter = new ReplyListAdapter(context, this.repliesRecyclerview, replyList, this, onReplyOptionButtonClickListener, getAbsoluteAdapterPosition());
             repliesRecyclerview.setAdapter(replyListAdapter);
         }
 

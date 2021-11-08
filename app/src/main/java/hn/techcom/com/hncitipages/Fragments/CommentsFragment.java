@@ -36,6 +36,8 @@ import hn.techcom.com.hncitipages.Interfaces.OnCommentEditListener;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentReplyListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
+import hn.techcom.com.hncitipages.Interfaces.OnReplyDeleteListener;
+import hn.techcom.com.hncitipages.Interfaces.OnReplyOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.DeleteResponse;
 import hn.techcom.com.hncitipages.Models.Profile;
@@ -59,7 +61,10 @@ public class CommentsFragment
         ViewProfileListener,
         OnCommentOptionButtonClickListener,
         OnCommentDeleteListener,
-        OnCommentReplyListener, OnCommentEditListener {
+        OnCommentReplyListener,
+        OnCommentEditListener,
+        OnReplyOptionButtonClickListener,
+        OnReplyDeleteListener {
 
     private ImageButton postCommentButton;
     private MaterialTextView commentCountText;
@@ -88,6 +93,7 @@ public class CommentsFragment
 
     private LinearLayoutManager linearLayoutManager;
     private InteractionWithCommentBottomSheetFragmentOwn interactWithPostBottomSheetFragment;
+    private InteractionWithReplyBottomSheet interactionWithReplyBottomSheet;
 
     public CommentsFragment() {
         // Required empty public constructor
@@ -223,14 +229,13 @@ public class CommentsFragment
 
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        commentListAdapter = new CommentListAdapter(recyclerView, commentList, getContext(), this, this,this);
+        commentListAdapter = new CommentListAdapter(recyclerView, commentList, getContext(), this, this,this,this);
         recyclerView.setAdapter(commentListAdapter);
         swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void viewProfile(String hnid, String name, boolean isSupported) {
-
         Fragment fragment = new ProfileSectionFragment();
         Bundle bundle = new Bundle();
         bundle.putString("hnid",hnid);
@@ -350,7 +355,7 @@ public class CommentsFragment
             @Override
             public void onFailure(@NonNull Call<ResultViewComments> call, @NonNull Throwable t) {
                 postingComment = false;
-                Toast.makeText(getContext(),"Oops! something is wrong, please try again later..",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"Oops! something is wrong, please try again later..",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -381,7 +386,7 @@ public class CommentsFragment
             @Override
             public void onFailure(@NonNull Call<ResultViewComments> call, @NonNull Throwable t) {
                 postingComment = false;
-                Toast.makeText(getContext(),"Oops! something is wrong, please try again later..",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"Oops! something is wrong, please try again later..",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -420,6 +425,7 @@ public class CommentsFragment
 
                     commentsArrayList.get(replyToCommentPosition).setReplies(replyList);
                     commentListAdapter.notifyItemChanged(replyToCommentPosition);
+                    recyclerView.scrollToPosition(replyToCommentPosition);
                 }
 
                 postingComment = false;
@@ -429,20 +435,9 @@ public class CommentsFragment
             @Override
             public void onFailure(@NonNull Call<Reply> call, @NonNull Throwable t) {
                 postingComment = false;
-                Toast.makeText(getContext(),"Oops! something is wrong, please try again later..",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"Oops! something is wrong, please try again later..",Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onCommentOptionButtonClick(int id, String hnid, int absoluteAdapterPosition) {
-        interactWithPostBottomSheetFragment = new InteractionWithCommentBottomSheetFragmentOwn(id, hnid,this, this,this,absoluteAdapterPosition);
-        interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
-    }
-
-    @Override
-    public void onCommentDelete(int id, int absoluteAdapterPosition) {
-        deleteThisComment(id,absoluteAdapterPosition);
     }
 
     public void deleteThisComment(int id, int absoluteAdapterPosition){
@@ -461,11 +456,42 @@ public class CommentsFragment
 
             @Override
             public void onFailure(@NonNull Call<DeleteResponse> call, @NonNull Throwable t) {
-                Toast.makeText(getActivity(),"Sorry, unable to delete the comment. Try again..", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Sorry, unable to delete the comment. Try again..", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    public void deleteThisReply(int commentPosition, int replyPosition, int replyID){
+        Log.d(TAG,"delete reply with id = "+replyID);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<DeleteResponse> call = service.deleteComment(replyID);
+        call.enqueue(new Callback<DeleteResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<DeleteResponse> call, @NonNull Response<DeleteResponse> response) {
+                DeleteResponse deleteResponse = response.body();
+                Toast.makeText(getActivity(), Objects.requireNonNull(deleteResponse).getSuccess(), Toast.LENGTH_SHORT).show();
+                commentsArrayList.get(commentPosition).getReplies().remove(replyPosition);
+                commentListAdapter.notifyItemChanged(commentPosition);
+                interactionWithReplyBottomSheet.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DeleteResponse> call, @NonNull Throwable t) {
+                Toast.makeText(getActivity(),"Sorry, unable to delete the reply. Try again..", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onCommentOptionButtonClick(int id, String hnid, int absoluteAdapterPosition) {
+        interactWithPostBottomSheetFragment = new InteractionWithCommentBottomSheetFragmentOwn(id, hnid,this, this,this,absoluteAdapterPosition);
+        interactWithPostBottomSheetFragment.show(getParentFragmentManager(), interactWithPostBottomSheetFragment.getTag());
+    }
+
+    @Override
+    public void onCommentDelete(int id, int absoluteAdapterPosition) {
+        deleteThisComment(id,absoluteAdapterPosition);
+    }
     @Override
     public void onCommentReply(int id, int absoluteAdapterPosition) {
         String commentedUserName = commentsArrayList.get(absoluteAdapterPosition).getUser().getFullName();
@@ -507,5 +533,16 @@ public class CommentsFragment
 
         postCommentButton.setTag("edit comment");
         commentEditedAtPosition = absoluteAdapterPosition;
+    }
+
+    @Override
+    public void onReplyOptionButtonClick(int commentPosition, String hnid, int replyId, int absoluteAdapterPosition) {
+        interactionWithReplyBottomSheet = new InteractionWithReplyBottomSheet(commentPosition, hnid, replyId, this, absoluteAdapterPosition);
+        interactionWithReplyBottomSheet.show(getParentFragmentManager(), interactionWithReplyBottomSheet.getTag());
+    }
+
+    @Override
+    public void onReplyDelete(int commentPosition, int replyPosition, int replyID) {
+        deleteThisReply(commentPosition,replyPosition,replyID);
     }
 }

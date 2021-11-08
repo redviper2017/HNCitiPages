@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_interact_with_reply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:itemTextColor="@color/colorText"
+        android:layout_gravity="bottom"
+        android:padding="@dimen/_10sdp"
+        android:background="@drawable/rounded_cornered_bottomsheet"
+        app:menu="@menu/bottomsheet_interaction_with_reply"
+        app:elevation="0dp"/>
+</LinearLayout>

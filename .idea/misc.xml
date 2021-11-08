@@ -9,9 +9,14 @@
         <entry key="..\:/Ferntech/HN/Codebase (Latest)/HNCitiPages/app/src/main/res/layout/activity_update_profile.xml" value="0.176" />
         <entry key="..\:/Ferntech/HN/Codebase (Latest)/HNCitiPages/app/src/main/res/layout/fragment_comments.xml" value="0.15833333333333333" />
         <entry key="..\:/Ferntech/HN/Codebase (Latest)/HNCitiPages/app/src/main/res/layout/fragment_explore.xml" value="0.2" />
+        <entry key="..\:/Ferntech/HN/Codebase (Latest)/HNCitiPages/app/src/main/res/layout/fragment_interact_with_comment_bottom_sheet_own.xml" value="0.121875" />
+        <entry key="..\:/Ferntech/HN/Codebase (Latest)/HNCitiPages/app/src/main/res/layout/fragment_interaction_with_reply_bottom_sheet.xml" value="0.176" />
         <entry key="..\:/Ferntech/HN/Codebase (Latest)/HNCitiPages/app/src/main/res/layout/fragment_onboarding_user_location.xml" value="0.18020833333333333" />
         <entry key="..\:/Ferntech/HN/Codebase (Latest)/HNCitiPages/app/src/main/res/layout/fragment_support_section.xml" value="0.1671875" />
         <entry key="..\:/Ferntech/HN/Codebase (Latest)/HNCitiPages/app/src/main/res/layout/fragment_supported_profile_section.xml" value="0.1671875" />
+        <entry key="..\:/Ferntech/HN/Codebase (Latest)/HNCitiPages/app/src/main/res/layout/row_replies.xml" value="0.2" />
+        <entry key="..\:/Ferntech/HN/Codebase (Latest)/HNCitiPages/app/src/main/res/menu/bottomsheet_interact_with_comment_own.xml" value="0.121875" />
+        <entry key="..\:/Ferntech/HN/Codebase (Latest)/HNCitiPages/app/src/main/res/menu/bottomsheet_interaction_with_reply.xml" value="0.121875" />
         <entry key="..\:/Users/ASUS/.gradle/caches/transforms-3/36df3f3dede4e762c55770ec80b413b9/transformed/jetified-ccp-2.5.4/res/drawable/ccp_ic_arrow_drop_down.xml" value="0.1" />
         <entry key="..\:/Users/ASUS/.gradle/caches/transforms-3/a18a82128ef5efd0aae4a676051e0b5a/transformed/jetified-MagicalExoPlayer-2.0.6/res/drawable/shape_border.xml" value="0.1" />
         <entry key="..\:/Users/ASUS/Desktop/HNCitiPages/app/src/main/res/drawable/arrow_back_ic.xml" value="0.10230263157894737" />

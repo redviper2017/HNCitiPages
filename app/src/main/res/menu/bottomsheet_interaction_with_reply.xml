@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/delete_reply"
+        android:icon="@drawable/delete_post_ic"
+        android:title="@string/delete_reply"
+        android:enabled="true"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/edit_reply"
+        android:icon="@drawable/edit_ic_white"
+        android:title="@string/edit_reply"
+        android:enabled="true"
+        app:showAsAction="always"/>
+</menu>
