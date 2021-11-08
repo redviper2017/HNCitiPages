@@ -14,18 +14,18 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/avatar_post"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:civ_border_width="0dp"
-                android:src="@drawable/profile_ic"
-                android:padding="5dp"
-                android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="@drawable/circular_ripple"/>
+                android:foreground="@drawable/circular_ripple"
+                android:padding="5dp"
+                android:src="@drawable/profile_ic"
+                app:civ_border_width="0dp" />
             <View
                 android:id="@+id/support_circle_view"
                 android:layout_width="50dp"
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="20dp"
                     android:background="@color/transparent"
                     android:src="@drawable/options_ic" />
             </RelativeLayout>
