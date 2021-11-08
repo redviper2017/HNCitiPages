@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 import hn.techcom.com.hncitipages.Activities.SignInActivity;
+import hn.techcom.com.hncitipages.Activities.UpdateProfileActivity;
 import hn.techcom.com.hncitipages.Fragments.FavoritesFragment;
 import hn.techcom.com.hncitipages.Fragments.NotificationsFragment;
 import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
@@ -136,10 +137,10 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ContactUsFragment()).commit();
 //                        dismiss();
 //                        break;
-//                    case R.id.nav_settings:
-//                        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SettingsFragment()).commit();
-//                        dismiss();
-//                        break;
+                    case R.id.nav_settings:
+                        startActivity(new Intent(getContext(), UpdateProfileActivity.class));
+                        dismiss();
+                        break;
                     case R.id.nav_sign_out:
 //                        Toast.makeText(getContext(),"Signing out...", Toast.LENGTH_LONG).show();
                         FirebaseAuth.getInstance().signOut();
