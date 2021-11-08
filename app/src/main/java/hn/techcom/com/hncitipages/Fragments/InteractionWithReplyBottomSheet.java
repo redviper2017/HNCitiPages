@@ -15,6 +15,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import hn.techcom.com.hncitipages.Interfaces.OnCommentDeleteListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyDeleteListener;
+import hn.techcom.com.hncitipages.Interfaces.OnReplyEditListener;
 import hn.techcom.com.hncitipages.Models.Profile;
 import hn.techcom.com.hncitipages.R;
 import hn.techcom.com.hncitipages.Utils.Utils;
@@ -27,6 +28,7 @@ public class InteractionWithReplyBottomSheet extends BottomSheetDialogFragment {
     private OnCommentDeleteListener onCommentDeleteListener;
     private int commentPosition,replyID,replyPosition;
     private OnReplyDeleteListener onReplyDeleteListener;
+    private OnReplyEditListener onReplyEditListener;
     String hnid;
 
     public InteractionWithReplyBottomSheet(
@@ -34,12 +36,14 @@ public class InteractionWithReplyBottomSheet extends BottomSheetDialogFragment {
             String hnid,
             int replyID,
             OnReplyDeleteListener onReplyDeleteListener,
+            OnReplyEditListener onReplyEditListener,
             int replyPosition) {
         // Required empty public constructor
         this.commentPosition = commentPosition;
         this.hnid = hnid;
         this.replyID = replyID;
         this.onReplyDeleteListener = onReplyDeleteListener;
+        this.onReplyEditListener = onReplyEditListener;
         this.replyPosition = replyPosition;
     }
 
@@ -57,7 +61,8 @@ public class InteractionWithReplyBottomSheet extends BottomSheetDialogFragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.delete_reply)
                     onReplyDeleteListener.onReplyDelete(commentPosition, replyPosition, replyID);
-                if (item.getItemId() == R.id.edit_reply){}
+                if (item.getItemId() == R.id.edit_reply)
+                    onReplyEditListener.onReplyEdit(commentPosition,replyPosition,replyID);
                 return true;
             }
         });

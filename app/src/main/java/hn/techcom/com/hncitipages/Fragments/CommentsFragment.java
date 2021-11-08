@@ -37,6 +37,7 @@ import hn.techcom.com.hncitipages.Interfaces.OnCommentOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnCommentReplyListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyClickListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyDeleteListener;
+import hn.techcom.com.hncitipages.Interfaces.OnReplyEditListener;
 import hn.techcom.com.hncitipages.Interfaces.OnReplyOptionButtonClickListener;
 import hn.techcom.com.hncitipages.Interfaces.ViewProfileListener;
 import hn.techcom.com.hncitipages.Models.DeleteResponse;
@@ -64,7 +65,8 @@ public class CommentsFragment
         OnCommentReplyListener,
         OnCommentEditListener,
         OnReplyOptionButtonClickListener,
-        OnReplyDeleteListener {
+        OnReplyDeleteListener,
+        OnReplyEditListener {
 
     private ImageButton postCommentButton;
     private MaterialTextView commentCountText;
@@ -87,6 +89,7 @@ public class CommentsFragment
     private int commentId = 0;
     private int replyToCommentPosition = 0;
     private int commentEditedAtPosition = 0;
+    private int replyEditedAtPosition = 0;
     private String replyText="";
     private String repliedToUsername;
 
@@ -206,6 +209,15 @@ public class CommentsFragment
                 postReply(commentId, replyText);
             }
             if (!postingComment && postCommentButton.getTag().equals("edit comment")){
+                postingComment = true;
+                if (!TextUtils.isEmpty(commentEditText.getText()))
+                    editComment(userProfile.getHnid(), commentId);
+                else {
+                    Toast.makeText(getContext(), "Oops! you've forgot to enter your comment..", Toast.LENGTH_SHORT).show();
+                    postingComment = false;
+                }
+            }
+            if (!postingComment && postCommentButton.getTag().equals("edit reply")){
                 postingComment = true;
                 if (!TextUtils.isEmpty(commentEditText.getText()))
                     editComment(userProfile.getHnid(), commentId);
@@ -376,7 +388,10 @@ public class CommentsFragment
                 if (commentResponse != null) {
                     commentEditText.setText("");
                     commentEditText.clearFocus();
-                    commentsArrayList.get(commentEditedAtPosition).setComment(commentResponse.getComment());
+                    if (postCommentButton.getTag().equals("edit reply"))
+                        commentsArrayList.get(commentEditedAtPosition).getReplies().get(replyEditedAtPosition).setComment(commentResponse.getComment());
+                    else
+                        commentsArrayList.get(commentEditedAtPosition).setComment(commentResponse.getComment());
                     commentListAdapter.notifyItemChanged(commentEditedAtPosition);
                     recyclerView.scrollToPosition(commentEditedAtPosition);
                 }
@@ -537,12 +552,29 @@ public class CommentsFragment
 
     @Override
     public void onReplyOptionButtonClick(int commentPosition, String hnid, int replyId, int absoluteAdapterPosition) {
-        interactionWithReplyBottomSheet = new InteractionWithReplyBottomSheet(commentPosition, hnid, replyId, this, absoluteAdapterPosition);
+        interactionWithReplyBottomSheet = new InteractionWithReplyBottomSheet(commentPosition, hnid, replyId, this,this, absoluteAdapterPosition);
         interactionWithReplyBottomSheet.show(getParentFragmentManager(), interactionWithReplyBottomSheet.getTag());
     }
 
     @Override
     public void onReplyDelete(int commentPosition, int replyPosition, int replyID) {
         deleteThisReply(commentPosition,replyPosition,replyID);
+    }
+
+    @Override
+    public void onReplyEdit(int commentPosition, int replyPosition, int replyID) {
+        commentEditText.requestFocus();
+        InputMethodManager keyboard = (InputMethodManager)
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+        commentEditText.setText(commentsArrayList.get(commentPosition).getReplies().get(replyPosition).getComment());
+        commentEditText.setSelection(commentEditText.length());
+        interactionWithReplyBottomSheet.dismiss();
+
+        commentId = commentsArrayList.get(commentPosition).getReplies().get(replyPosition).getId();
+        postCommentButton.setTag("edit reply");
+        commentEditedAtPosition = commentPosition;
+        replyEditedAtPosition = replyPosition;
     }
 }
