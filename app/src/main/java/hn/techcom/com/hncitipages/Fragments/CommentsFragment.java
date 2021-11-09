@@ -182,8 +182,12 @@ public class CommentsFragment
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.image_button_back)
-            requireActivity().getSupportFragmentManager().popBackStack();
+        if(v.getId() == R.id.image_button_back){
+            if (requireActivity().getSupportFragmentManager().getBackStackEntryCount()>0)
+                requireActivity().getSupportFragmentManager().popBackStack();
+            else
+                requireActivity().onBackPressed();
+        }
         if(v.getId() == R.id.post_comment_button) {
             Log.d(TAG,"on post button click flag value = "+postingComment);
             Log.d(TAG,"on post button click tag value = "+postCommentButton.getTag());

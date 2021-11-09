@@ -41,8 +41,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import hn.techcom.com.hncitipages.Fragments.CommentsFragment;
 import hn.techcom.com.hncitipages.Fragments.ExploreFragment;
 import hn.techcom.com.hncitipages.Fragments.HomeFragment;
+import hn.techcom.com.hncitipages.Fragments.LikesFragment;
 import hn.techcom.com.hncitipages.Fragments.ProfileSectionFragment;
 import hn.techcom.com.hncitipages.Fragments.SharePostBottomSheetFragment;
 import hn.techcom.com.hncitipages.Fragments.SupportSectionFragment;
@@ -97,14 +99,56 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             if (checkPermission()) {
-                getToken();
-                myUtils.getLatestPostsListBySingleUser(this);
-                Fragment fragment = new HomeFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
+                if (getIntent().hasExtra("from") && getIntent().hasExtra("show")){
+                    Fragment fragment = null;
+                    Bundle bundle = new Bundle();
+                    if (getIntent().getStringExtra("show").equals("likes")){
+                        fragment = new LikesFragment();
+                        bundle.putInt("post_id",getIntent().getIntExtra("postId",-1));
+                    }
+                    if (getIntent().getStringExtra("show").equals("comments")){
+                        fragment = new CommentsFragment();
+                        bundle.putInt("post_id",getIntent().getIntExtra("postId",-1));
+                        bundle.putInt("count",getIntent().getIntExtra("count",-1));
+                    }
+                    Objects.requireNonNull(fragment).setArguments(bundle);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
+                }else {
+                    getToken();
+                    myUtils.getLatestPostsListBySingleUser(this);
+                    Fragment fragment = new HomeFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
+                }
             }else{
                 requestPermission();
             }
         }
+
+        if (getIntent().hasExtra("notification_type")) {
+            Bundle notificationBundle = getIntent().getExtras();
+
+            String type = notificationBundle.get("notification_type").toString();
+            int postId = Integer.parseInt(notificationBundle.get("post_id").toString()); //is -1 for supporting notifications
+            String title = notificationBundle.get("title").toString(); //user whose action has generated the notification for this logged in user
+            String senderHnid = notificationBundle.get("sender_hnid").toString();
+            String message = notificationBundle.get("message").toString();
+            boolean isSupported = Boolean.parseBoolean(notificationBundle.get("isSupported").toString());
+
+
+            Log.d(TAG, "notificaton message when in background = " + message);
+
+            switch (type){
+                case "L":
+                    Intent intent = new Intent(this, NotificationPostActivity.class);
+                    intent.putExtra("type",type);
+                    intent.putExtra("postId",postId);
+                    intent.putExtra("sender_name",title);
+                    intent.putExtra("isSupported",isSupported);
+                    startActivity(intent);
+                    break;
+            }
+        }
+
     }
 
     @Override

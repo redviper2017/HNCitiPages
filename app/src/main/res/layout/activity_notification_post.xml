@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    tools:context=".Activities.NotificationPostActivity">
+    <!-- Title bar -->
+    <RelativeLayout
+        android:id="@+id/layout_screentitle_view_comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSurface"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_like_count_view_comments"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/image_button_back"
+            layout="@layout/custom_image_button_back"/>
+
+        <include
+            android:id="@+id/text_screen_title_view_comments"
+            layout="@layout/screen_title_view"/>
+    </RelativeLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/dataLayout_notification_post"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+            <!-- Layout - user info & options menu button -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/_5sdp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/avatar_notification_post"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="@drawable/circular_ripple"
+                    android:padding="5dp"
+                    android:src="@drawable/profile_ic"
+                    app:civ_border_width="0dp" />
+                <View
+                    android:id="@+id/support_circle_view_notification_post"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/circle_hollow"
+                    android:padding="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/options_icon_post"
+                    android:layout_toEndOf="@id/avatar_notification_post"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/name_notification_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/varela_round"
+                        android:text="John Doe"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"
+                        android:background="?android:attr/selectableItemBackground"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/title_notification_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/varela_round"
+                        android:text="CTO, HN CitiPages"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10ssp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/location_notification_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/varela_round"
+                        android:text="Dhaka, Bangladesh"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/time_notification_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/varela_round"
+                        android:text="just now"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10ssp" />
+                </LinearLayout>
+            </RelativeLayout>
+            <!-- for image post notification -->
+            <ImageView
+                android:id="@+id/imageview_notification_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dummy_image"
+                android:adjustViewBounds="true"
+                android:visibility="gone"/>
+            <!-- for portrait video post notification -->
+            <RelativeLayout
+                android:id="@+id/layout_video_portrait"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+                <com.potyvideo.library.AndExoPlayerView
+                    android:id="@+id/video_player_portrait_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_400sdp"
+                    app:andexo_aspect_ratio="aspect_match"
+                    app:andexo_full_screen="true"
+                    app:andexo_play_when_ready="true"
+                    app:andexo_mute="mute"
+                    app:andexo_show_controller="true"
+                    app:andexo_resize_mode="Zoom"
+                    app:andexo_loop="infinite"
+                    android:visibility="visible"/>
+                <ImageView
+                    android:id="@+id/play_button_portrait"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:src="@drawable/play_video_ci"
+                    android:layout_centerInParent="true"
+                    android:elevation="@dimen/_10sdp"
+                    android:visibility="visible"/>
+                <ImageView
+                    android:id="@+id/imageview_video_portrait"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_400sdp"
+                    android:layout_centerInParent="true"
+                    android:visibility="visible"
+                    android:scaleType="centerCrop"/>
+            </RelativeLayout>
+            <!-- for landscape video post notification -->
+            <RelativeLayout
+                android:id="@+id/layout_video_landscape"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+                <com.potyvideo.library.AndExoPlayerView
+                    android:id="@+id/video_player_landscape_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_200sdp"
+                    app:andexo_aspect_ratio="aspect_match"
+                    app:andexo_full_screen="true"
+                    app:andexo_play_when_ready="true"
+                    app:andexo_mute="mute"
+                    app:andexo_show_controller="true"
+                    app:andexo_resize_mode="Zoom"
+                    app:andexo_loop="infinite"
+                    android:visibility="visible"/>
+                <ImageView
+                    android:id="@+id/play_button_landscape"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:src="@drawable/play_video_ci"
+                    android:elevation="@dimen/_10sdp"
+                    android:layout_centerInParent="true"
+                    android:visibility="visible"/>
+                <ImageView
+                    android:id="@+id/imageview_video_landscape"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_200sdp"
+                    android:layout_centerInParent="true"
+                    android:visibility="visible"
+                    android:scaleType="centerCrop"/>
+            </RelativeLayout>
+            <!-- for audio post notification -->
+            <RelativeLayout
+                android:id="@+id/audio_player_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/play_button_audio"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:src="@drawable/play_audio_ic"
+                    android:elevation="@dimen/_10sdp"
+                    android:layout_centerInParent="true"
+                    android:visibility="visible"/>
+                <ImageView
+                    android:id="@+id/imageview_audio"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    android:src="@drawable/audio_placeholder_2"
+                    android:scaleType="centerCrop"/>
+                <com.potyvideo.library.AndExoPlayerView
+                    android:id="@+id/audio_player"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imageview_audio"
+                    app:andexo_aspect_ratio="aspect_mp3"
+                    app:andexo_play_when_ready="true"
+                    app:andexo_mute="mute"
+                    app:andexo_show_controller="true"
+                    app:andexo_loop="finite"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_notification_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tristique, odio nec laoreet rutrum, mauris dolor mattis neque"
+                android:textColor="@color/black"
+                android:fontFamily="@font/sf_pro_rounded_regular"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:autoLink="all"
+                android:maxLines="100"
+                android:ellipsize="end"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="5dp">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_like_count__notification_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dummy_like_count_text"
+                        android:fontFamily="@font/sf_pro_rounded_regular"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10ssp"
+                        android:clickable="true"
+                        android:focusable="true" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_comment_count_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dummy_comment_count_text"
+                        android:fontFamily="@font/sf_pro_rounded_regular"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10ssp"
+                        android:layout_marginStart="15dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <!-- Shimmer Layout for progress -->
+    <LinearLayout
+        android:id="@+id/shimmerLayout_notification_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+        <!-- Layout - user info & options menu button -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/_5sdp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatar_post"
+                android:layout_width="@dimen/_50ssp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:padding="5dp"
+                android:background="@color/colorLightGrey"
+                app:civ_border_width="0dp" />
+            <View
+                android:id="@+id/support_circle_view"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:background="@drawable/circle_hollow"
+                android:padding="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/options_icon_post"
+                android:layout_toEndOf="@id/avatar_post"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/name_post"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:background="@color/colorLightGrey"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/location_post"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@color/colorLightGrey"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/time_post"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@color/colorLightGrey"/>
+            </LinearLayout>
+
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:id="@+id/options_icon_post"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/colorLightGrey" />
+        </RelativeLayout>
+
+        <!-- Layout - text -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_post"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorLightGrey"
+            android:ellipsize="end"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/seemore_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/see_more"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:fontFamily="@font/sf_pro_rounded_regular"
+            android:textSize="@dimen/_12ssp"
+            android:layout_marginEnd="20dp"
+            android:autoLink="all"
+            android:ellipsize="end"
+            android:layout_gravity="end"
+            android:visibility="gone"/>
+
+        <!-- Layout - like,favorite,comment buttons; like count & comment count -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.utils.widget.ImageFilterButton
+                    android:id="@+id/like_button_post"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@color/colorLightGrey" />
+
+                <androidx.constraintlayout.utils.widget.ImageFilterButton
+                    android:id="@+id/favorrite_button_post"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@color/colorLightGrey" />
+
+                <androidx.constraintlayout.utils.widget.ImageFilterButton
+                    android:id="@+id/comment_button_post"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@color/colorLightGrey" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="5dp">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_like_count_post"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@color/colorLightGrey"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_comment_count_post"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorLightGrey" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
