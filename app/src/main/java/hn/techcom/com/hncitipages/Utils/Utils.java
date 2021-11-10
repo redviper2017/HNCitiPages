@@ -221,15 +221,15 @@ public class Utils {
             public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
                 if(response.code() == 201){
                     LikeResponse supportResponse = response.body();
-                    Toast.makeText(context, Objects.requireNonNull(supportResponse).getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, Objects.requireNonNull(supportResponse).getMessage(), Toast.LENGTH_LONG).show();
                 }else {
-                    Toast.makeText(context, "Sorry, the user cannot be supported at this moment. Try again..", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, "Sorry, the user cannot be supported at this moment. Try again..", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LikeResponse> call, Throwable t) {
-                Toast.makeText(context,"Sorry, the support request has been failed. Try again..", Toast.LENGTH_LONG).show();
+//                Toast.makeText(context,"Sorry, the support request has been failed. Try again..", Toast.LENGTH_LONG).show();
             }
         });
     }

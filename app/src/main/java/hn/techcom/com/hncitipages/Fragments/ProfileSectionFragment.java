@@ -66,7 +66,7 @@ public class ProfileSectionFragment
         OnPlayerPlayedListener,
         OnUpdateProfileClickListener,
         OnPostCountClickListener,
-        OnSupporterSupportingCountClickListener {
+        OnSupporterSupportingCountClickListener, View.OnClickListener {
 
     private static final String TAG = "ProfileSectionFragment";
     private Utils myUtils;
@@ -133,12 +133,38 @@ public class ProfileSectionFragment
 
 
         hnid = bundle.getString("hnid");
+        isSupported = bundle.getBoolean("isSupported");
         nameText.setText(hnid);
 
         getUserProfile();
 
+        //On Click Listeners
+        updateProfileButton.setOnClickListener(this);
+
         // Inflate the layout for this fragment
         return view;
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.update_profile_button_section){
+            if (updateProfileButton.getTag().equals("update"))
+                onUpdateProfileClick();
+            else {
+                if (isSupported) {
+                    profilePhotoRing.setVisibility(View.GONE);
+                    updateProfileButton.setText("Support");
+                    isSupported = false;
+                }
+                else {
+                    profilePhotoRing.setVisibility(View.VISIBLE);
+                    updateProfileButton.setText("Stop Supporting");
+                    isSupported = true;
+                }
+                myUtils.supportOrUnsupport(profile.getHnid(), userProfile.getHnid(), requireContext());
+            }
+        }
     }
 
     //get user profile
@@ -158,8 +184,9 @@ public class ProfileSectionFragment
                         swipeRefreshLayout.setVisibility(View.GONE);
                         if (userProfile.getHnid().equals(profile.getHnid()))
                             screenTitle.setText(R.string.my_profile);
-                        else
+                        else {
                             screenTitle.setText(profile.getFullName());
+                        }
 
                         //removing all layouts except for profile info layout
                         shimmerFrameLayout.setVisibility(View.GONE);
@@ -309,6 +336,7 @@ public class ProfileSectionFragment
     public void setRecyclerView(ArrayList<Result> postList){
         shimmerFrameLayout.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         profilePostAdapter = new ProfilePostAdapter(
                 postList,
