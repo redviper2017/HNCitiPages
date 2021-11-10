@@ -92,6 +92,7 @@ public class ProfileSectionFragment
     private MaterialTextView postCountText, supportingCountText, supporterCountText, nameText, locationText, usernameText, updateProfileButton;
     private CircleImageView profilePhoto;
     private View profilePhotoRing, shimmerProfileInfoLayout;
+    private LinearLayout postCountLayout, supporterCountLayout, supportingCountLayout;
 
     public ProfileSectionFragment() {
         // Required empty public constructor
@@ -128,6 +129,9 @@ public class ProfileSectionFragment
         updateProfileButton   = view.findViewById(R.id.update_profile_button_section);
         profilePhoto          = view.findViewById(R.id.circleimageview_profile_view_section);
         profilePhotoRing      = view.findViewById(R.id.profile_circle_view_section);
+        postCountLayout       = view.findViewById(R.id.post_count_layout_section);
+        supporterCountLayout  = view.findViewById(R.id.supporter_count_layout_section);
+        supportingCountLayout = view.findViewById(R.id.supporting_count_layout_section);
 
         Bundle bundle = this.getArguments();
 
@@ -140,6 +144,9 @@ public class ProfileSectionFragment
 
         //On Click Listeners
         updateProfileButton.setOnClickListener(this);
+        postCountLayout.setOnClickListener(this);
+        supporterCountLayout.setOnClickListener(this);
+        supportingCountLayout.setOnClickListener(this);
 
         // Inflate the layout for this fragment
         return view;
@@ -165,6 +172,12 @@ public class ProfileSectionFragment
                 myUtils.supportOrUnsupport(profile.getHnid(), userProfile.getHnid(), requireContext());
             }
         }
+        if (v.getId() == R.id.post_count_layout_section)
+            onPostCountClick();
+        if (v.getId() == R.id.supporter_count_layout_section)
+            onSupporterSupportingCountClick("Supporters",String.valueOf(profile.getSupporterCount()),String.valueOf(profile.getHnid()));
+        if (v.getId() == R.id.supporting_count_layout_section)
+            onSupporterSupportingCountClick("Supporting",String.valueOf(profile.getSupportingCount()),String.valueOf(profile.getHnid()));
     }
 
     //get user profile
@@ -413,7 +426,7 @@ public class ProfileSectionFragment
     @Override
     public void onPostCountClick() {
         initialPostList.clear();
-        getLatestPostsListBySingleUser();
+        getUserProfile();
     }
 
 

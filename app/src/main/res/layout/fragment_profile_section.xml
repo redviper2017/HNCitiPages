@@ -100,7 +100,7 @@
 
             </RelativeLayout>
             <LinearLayout
-                android:id="@+id/post_count_layout"
+                android:id="@+id/post_count_layout_section"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -126,7 +126,7 @@
                     android:layout_gravity="center"/>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/supporter_count_layout"
+                android:id="@+id/supporter_count_layout_section"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -149,7 +149,7 @@
                     android:layout_gravity="center"/>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/supporting_count_layout"
+                android:id="@+id/supporting_count_layout_section"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
