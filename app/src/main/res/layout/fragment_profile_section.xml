@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     tools:context=".Fragments.ProfileSectionFragment">
 
+    <!-- Title Layout -->
     <LinearLayout
         android:id="@+id/layout_screentitle_profile"
         android:layout_width="match_parent"
@@ -20,27 +21,14 @@
             layout="@layout/screen_title_view"/>
     </LinearLayout>
 
-<!--    <EditText-->
-<!--        android:id="@+id/searchview_profile_section"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:layout_marginEnd="10dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:padding="10dp"-->
-<!--        android:drawableStart="@drawable/search_ic"-->
-<!--        android:drawablePadding="5dp"-->
-<!--        android:hint="Search..."-->
-<!--        android:textColor="@color/black"-->
-<!--        android:textColorHint="@color/black"-->
-<!--        android:background="@drawable/rounded_corner_rectangle"/>-->
-
+    <!-- Shimmer Layout Progress -->
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,11 +43,13 @@
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
+    <!-- Swipe Refresh Layout Data -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_posts_profile_section"
             android:layout_width="match_parent"
@@ -70,5 +60,172 @@
             android:nestedScrollingEnabled="false"
             android:visibility="gone"/>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- Shimmer Profile Info Layout for users with no posts -->
+    <include
+        android:id="@+id/shimmer_profileinfo_layout"
+        layout="@layout/row_profile_shimmer"
+        android:visibility="gone"/>
+
+    <!-- Profile Info Layout for users with no posts -->
+    <LinearLayout
+        android:id="@+id/profileinfo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/circleimageview_profile_view_section"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:civ_border_width="0dp"
+                    android:padding="5dp"
+                    app:civ_border_color="@android:color/white"
+                    android:src="@drawable/dummy_profile_avatar"/>
+
+                <View
+                    android:id="@+id/profile_circle_view_section"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/circle_hollow_1"
+                    android:padding="5dp"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/post_count_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:focusable="true">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/post_count_viewprofile_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1,380"
+                    android:textColor="@color/colorText"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Posts"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/supporter_count_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_20sdp">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/supporter_count_viewprofile_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="103K"
+                    android:textColor="@color/colorText"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Supporters"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/supporting_count_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_20sdp">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/supporting_count_viewprofile_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="339"
+                    android:textColor="@color/colorText"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Supporting"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp">
+
+            <LinearLayout
+                android:id="@+id/layout_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_name_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yasir Ahmed"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_location_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dhaka, Bangladesh"
+                    android:textSize="16sp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_username_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HNDev #KUWL126B"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/update_profile_button_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:drawableStart="@drawable/update_ic"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/colorCenterLinearGradient"
+                android:focusable="true"
+                android:gravity="center"
+                android:tag="update"
+                android:text="@string/update_profile"
+                android:textAlignment="center"
+                android:textColor="@color/colorCenterLinearGradient"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>
