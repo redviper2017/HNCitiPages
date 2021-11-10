@@ -59,6 +59,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     break;
                 case "L":
                     showLikeNotification(type,postId,title,message,isSupported);
+                    break;
+                case "C":
+                    showCommentNotification(type,postId,title,message);
+                    break;
             }
         }
     }
@@ -104,6 +108,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("postId",postId);
         intent.putExtra("sender_name",title);
         intent.putExtra("isSupported",isSupported);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.newlogo)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        if (am.getRingerMode() != AudioManager.RINGER_MODE_SILENT)
+            builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(1, builder.build());
+    }
+
+    private void showCommentNotification(String type,int postId, String title, String message){
+        Log.d(TAG,"showCommentNotification() called = "+"YES");
+        Intent intent = new Intent(this, MainActivity.class);
+
+        intent.putExtra("type",type);
+        intent.putExtra("postId",postId);
+        intent.putExtra("sender_name",title);
+        intent.putExtra("count",-1);
+        intent.putExtra("show","comments");
+        intent.putExtra("from","notificationPostActivity");
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 

@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new CommentsFragment();
                         bundle.putInt("post_id",getIntent().getIntExtra("postId",-1));
                         bundle.putInt("count",getIntent().getIntExtra("count",-1));
+                        bundle.putString("sender_name",getIntent().getStringExtra("sender_name"));
                     }
                     if (getIntent().getStringExtra("show").equals("supporter_profile")){
                         fragment = new ProfileSectionFragment();
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             boolean isSupported = Boolean.parseBoolean(notificationBundle.get("isSupported").toString());
 
 
-            Log.d(TAG, "notificaton message when in background = " + message);
+            Log.d(TAG, "notificaton message when in background = " + type);
 
             Intent intent = null;
             switch (type){
@@ -164,6 +165,16 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("isSupported",isSupported);
                     intent.putExtra("from","notificationPostActivity");
                     intent.putExtra("show","supporter_profile");
+                    break;
+                case "C":
+                    intent = new Intent(this, MainActivity.class);
+                    intent.putExtra("type",type);
+                    intent.putExtra("postId",postId);
+                    intent.putExtra("sender_name",title);
+                    intent.putExtra("hnid",senderHnid);
+                    intent.putExtra("isSupported",isSupported);
+                    intent.putExtra("from","notificationPostActivity");
+                    intent.putExtra("show","comments");
                     break;
             }
             startActivity(intent);

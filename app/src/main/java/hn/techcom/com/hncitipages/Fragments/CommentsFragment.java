@@ -132,11 +132,20 @@ public class CommentsFragment
         hnid = userProfile.getHnid();
 
         viewCommentsOnPost();
-        commentCountText.setText(String.valueOf(count));
-        if(count == 1)
-            screenTitle.setText(R.string.comment);
-        else
-            screenTitle.setText(R.string.comments);
+
+        if (count == -1){
+            String name = bundle.get("sender_name").toString();
+            commentCountText.setVisibility(View.GONE);
+            String screenTitleText = name + " commented";
+            screenTitle.setText(screenTitleText);
+        }
+        else {
+            commentCountText.setText(String.valueOf(count));
+            if(count == 1)
+                screenTitle.setText(R.string.comment);
+            else
+                screenTitle.setText(R.string.comments);
+        }
 
         String profilePhotoUrl = userProfile.getProfileImgThumbnail();
         Picasso
