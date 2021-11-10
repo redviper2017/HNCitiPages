@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
                         bundle.putString("sender_name",getIntent().getStringExtra("sender_name"));
                         bundle.putString("hnid",getIntent().getStringExtra("hnid"));
                         bundle.putBoolean("isSupported",getIntent().getBooleanExtra("isSupported",false));
-
                     }
                     Objects.requireNonNull(fragment).setArguments(bundle);
                     getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
@@ -147,19 +146,37 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d(TAG, "notificaton message when in background = " + message);
 
+            Intent intent = null;
             switch (type){
                 case "L":
-                    Intent intent = new Intent(this, NotificationPostActivity.class);
+                    intent = new Intent(this, NotificationPostActivity.class);
                     intent.putExtra("type",type);
                     intent.putExtra("postId",postId);
                     intent.putExtra("sender_name",title);
                     intent.putExtra("isSupported",isSupported);
-                    startActivity(intent);
+                    break;
+                case "S":
+                    intent = new Intent(this, MainActivity.class);
+                    intent.putExtra("type",type);
+                    intent.putExtra("postId",postId);
+                    intent.putExtra("sender_name",title);
+                    intent.putExtra("hnid", senderHnid);
+                    intent.putExtra("isSupported",isSupported);
+                    intent.putExtra("from","notificationPostActivity");
+                    intent.putExtra("show","supporter_profile");
                     break;
             }
+            startActivity(intent);
         }
-
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        if (getSupportFragmentManager().getBackStackEntryCount()>0)
+//            getSupportFragmentManager().popBackStack();
+//        else
+//            super.onBackPressed();
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
