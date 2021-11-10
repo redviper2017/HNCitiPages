@@ -109,7 +109,7 @@ public class ProfileSectionFragment
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             hnid = bundle.getString("hnid");
-            name = bundle.getString("name");
+            name = bundle.getString("sender_name");
             isSupported = bundle.getBoolean("isSupported");
             type = bundle.getString("type");
             postId = bundle.getString("postId");

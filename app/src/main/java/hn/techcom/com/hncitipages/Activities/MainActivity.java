@@ -111,6 +111,16 @@ public class MainActivity extends AppCompatActivity {
                         bundle.putInt("post_id",getIntent().getIntExtra("postId",-1));
                         bundle.putInt("count",getIntent().getIntExtra("count",-1));
                     }
+                    if (getIntent().getStringExtra("show").equals("supporter_profile")){
+                        fragment = new ProfileSectionFragment();
+
+                        bundle.putString("type",getIntent().getStringExtra("type"));
+                        bundle.putInt("postId",getIntent().getIntExtra("postId",-1));
+                        bundle.putString("sender_name",getIntent().getStringExtra("sender_name"));
+                        bundle.putString("hnid",getIntent().getStringExtra("hnid"));
+                        bundle.putBoolean("isSupported",getIntent().getBooleanExtra("isSupported",false));
+
+                    }
                     Objects.requireNonNull(fragment).setArguments(bundle);
                     getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_main, Objects.requireNonNull(fragment)).commit();
                 }else {
