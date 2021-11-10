@@ -148,6 +148,35 @@ public class ProfileSectionFragment
         supporterCountLayout.setOnClickListener(this);
         supportingCountLayout.setOnClickListener(this);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initialPostList.clear();
+                getUserProfile();
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (!recyclerView.canScrollVertically(1) && dy>0){
+                    //scrolled to bottom
+                    Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
+                    if (initialPostList.get(initialPostList.size()-1) == null) {
+                        initialPostList.remove(initialPostList.size() - 1);
+                        getPostsListBySingleUserFromPage(nextPageUrl);
+                    }
+                }
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }
