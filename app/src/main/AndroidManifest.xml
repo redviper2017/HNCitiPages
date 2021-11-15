@@ -27,6 +27,9 @@
         tools:ignore="LockedOrientationActivity"
         tools:targetApi="m">
         <activity
+            android:name=".Activities.NotificationPostActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.UpdateProfileActivity"
             android:exported="true" />
         <activity
@@ -72,9 +75,9 @@
 
         <activity
             android:name=".Activities.MainActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

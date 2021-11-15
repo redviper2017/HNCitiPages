@@ -132,11 +132,20 @@ public class CommentsFragment
         hnid = userProfile.getHnid();
 
         viewCommentsOnPost();
-        commentCountText.setText(String.valueOf(count));
-        if(count == 1)
-            screenTitle.setText(R.string.comment);
-        else
-            screenTitle.setText(R.string.comments);
+
+        if (count == -1){
+            String name = bundle.get("sender_name").toString();
+            commentCountText.setVisibility(View.GONE);
+            String screenTitleText = name + " commented";
+            screenTitle.setText(screenTitleText);
+        }
+        else {
+            commentCountText.setText(String.valueOf(count));
+            if(count == 1)
+                screenTitle.setText(R.string.comment);
+            else
+                screenTitle.setText(R.string.comments);
+        }
 
         String profilePhotoUrl = userProfile.getProfileImgThumbnail();
         Picasso
@@ -182,8 +191,12 @@ public class CommentsFragment
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.image_button_back)
-            requireActivity().getSupportFragmentManager().popBackStack();
+        if(v.getId() == R.id.image_button_back){
+            if (requireActivity().getSupportFragmentManager().getBackStackEntryCount()>0)
+                requireActivity().getSupportFragmentManager().popBackStack();
+            else
+                requireActivity().onBackPressed();
+        }
         if(v.getId() == R.id.post_comment_button) {
             Log.d(TAG,"on post button click flag value = "+postingComment);
             Log.d(TAG,"on post button click tag value = "+postCommentButton.getTag());

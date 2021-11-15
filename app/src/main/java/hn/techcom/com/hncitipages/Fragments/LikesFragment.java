@@ -97,8 +97,12 @@ public class LikesFragment extends Fragment
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.image_button_back)
-            requireActivity().getSupportFragmentManager().popBackStack();
+        if(v.getId() == R.id.image_button_back) {
+            if (requireActivity().getSupportFragmentManager().getBackStackEntryCount()>0)
+                requireActivity().getSupportFragmentManager().popBackStack();
+            else
+                requireActivity().onBackPressed();
+        }
     }
 
     public void viewLikesOnPost(){

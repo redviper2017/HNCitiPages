@@ -7,15 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.potyvideo.library.AndExoPlayerView;
@@ -23,6 +26,7 @@ import com.potyvideo.library.AndExoPlayerView;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import hn.techcom.com.hncitipages.Activities.UpdateProfileActivity;
 import hn.techcom.com.hncitipages.Adapters.ProfilePostAdapter;
 import hn.techcom.com.hncitipages.Interfaces.GetDataService;
@@ -62,7 +66,7 @@ public class ProfileSectionFragment
         OnPlayerPlayedListener,
         OnUpdateProfileClickListener,
         OnPostCountClickListener,
-        OnSupporterSupportingCountClickListener {
+        OnSupporterSupportingCountClickListener, View.OnClickListener {
 
     private static final String TAG = "ProfileSectionFragment";
     private Utils myUtils;
@@ -79,9 +83,16 @@ public class ProfileSectionFragment
     private AndExoPlayerView playerView;
     private ImageView imageView, playButton;
     private ShimmerFrameLayout shimmerFrameLayout;
-
+    private LinearLayout profileInfoLayout;
     private SingleUserInfoResponse profile;
     private Profile userProfile;
+    private MaterialTextView screenTitle;
+
+    //for users with no posts
+    private MaterialTextView postCountText, supportingCountText, supporterCountText, nameText, locationText, usernameText, updateProfileButton;
+    private CircleImageView profilePhoto;
+    private View profilePhotoRing, shimmerProfileInfoLayout;
+    private LinearLayout postCountLayout, supporterCountLayout, supportingCountLayout;
 
     public ProfileSectionFragment() {
         // Required empty public constructor
@@ -100,67 +111,102 @@ public class ProfileSectionFragment
         initialPostList             = new ArrayList<>();
 
         //Hooks
-        MaterialTextView screenTitle = view.findViewById(R.id.text_screen_title_profile);
+        screenTitle                  = view.findViewById(R.id.text_screen_title_profile);
 
         recyclerView                 = view.findViewById(R.id.recyclerview_posts_profile_section);
         swipeRefreshLayout           = view.findViewById(R.id.swipeRefresh);
         shimmerFrameLayout           = view.findViewById(R.id.shimmerLayout);
+        profileInfoLayout            = view.findViewById(R.id.profileinfo_layout);
+        shimmerProfileInfoLayout     = view.findViewById(R.id.shimmer_profileinfo_layout);
+
+        //for users with no posts
+        postCountText         = view.findViewById(R.id.post_count_viewprofile_section);
+        supporterCountText    = view.findViewById(R.id.supporter_count_viewprofile_section);
+        supportingCountText   = view.findViewById(R.id.supporting_count_viewprofile_section);
+        nameText              = view.findViewById(R.id.profile_name_section);
+        locationText          = view.findViewById(R.id.profile_location_section);
+        usernameText          = view.findViewById(R.id.profile_username_section);
+        updateProfileButton   = view.findViewById(R.id.update_profile_button_section);
+        profilePhoto          = view.findViewById(R.id.circleimageview_profile_view_section);
+        profilePhotoRing      = view.findViewById(R.id.profile_circle_view_section);
+        postCountLayout       = view.findViewById(R.id.post_count_layout_section);
+        supporterCountLayout  = view.findViewById(R.id.supporter_count_layout_section);
+        supportingCountLayout = view.findViewById(R.id.supporting_count_layout_section);
 
         Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            hnid = bundle.getString("hnid");
-            name = bundle.getString("name");
-            isSupported = bundle.getBoolean("isSupported");
-            type = bundle.getString("type");
-            postId = bundle.getString("postId");
-        }
 
-        if (postId == null || postId.equals("0")){
-            getUserProfile();
-            getLatestPostsListBySingleUser();
 
-            if (hnid.equals(userProfile.getHnid())) {
-                screenTitle.setText(R.string.my_profile);
-            }else {
-                screenTitle.setText(myUtils.capitalizeName(name));
+        hnid = bundle.getString("hnid");
+        isSupported = bundle.getBoolean("isSupported");
+        nameText.setText(hnid);
+
+        getUserProfile();
+
+        //On Click Listeners
+        updateProfileButton.setOnClickListener(this);
+        postCountLayout.setOnClickListener(this);
+        supporterCountLayout.setOnClickListener(this);
+        supportingCountLayout.setOnClickListener(this);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initialPostList.clear();
+                getUserProfile();
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
             }
 
-            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    initialPostList.clear();
-                    getLatestPostsListBySingleUser();
-                }
-            });
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
-            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                }
-
-                @Override
-                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-
-                    if (!recyclerView.canScrollVertically(1) && dy>0){
-                        //scrolled to bottom
-                        Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
-                        if (initialPostList.get(initialPostList.size()-1) == null) {
-                            initialPostList.remove(initialPostList.size() - 1);
-                            getPostsListBySingleUserFromPage(nextPageUrl);
-                        }
+                if (!recyclerView.canScrollVertically(1) && dy>0){
+                    //scrolled to bottom
+                    Log.d(TAG,"Recycler view scroll position = "+"BOTTOM");
+                    if (initialPostList.get(initialPostList.size()-1) == null) {
+                        initialPostList.remove(initialPostList.size() - 1);
+                        getPostsListBySingleUserFromPage(nextPageUrl);
                     }
                 }
-            });
-        }
-        else {
-            getUserProfile();
-            getSinglePostNotified();
-        }
+            }
+        });
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.update_profile_button_section){
+            if (updateProfileButton.getTag().equals("update"))
+                onUpdateProfileClick();
+            else {
+                if (isSupported) {
+                    profilePhotoRing.setVisibility(View.GONE);
+                    updateProfileButton.setText("Support");
+                    isSupported = false;
+                }
+                else {
+                    profilePhotoRing.setVisibility(View.VISIBLE);
+                    updateProfileButton.setText("Stop Supporting");
+                    isSupported = true;
+                }
+                myUtils.supportOrUnsupport(profile.getHnid(), userProfile.getHnid(), requireContext());
+            }
+        }
+        if (v.getId() == R.id.post_count_layout_section)
+            onPostCountClick();
+        if (v.getId() == R.id.supporter_count_layout_section)
+            onSupporterSupportingCountClick("Supporters",String.valueOf(profile.getSupporterCount()),String.valueOf(profile.getHnid()));
+        if (v.getId() == R.id.supporting_count_layout_section)
+            onSupporterSupportingCountClick("Supporting",String.valueOf(profile.getSupportingCount()),String.valueOf(profile.getHnid()));
     }
 
     //get user profile
@@ -172,8 +218,25 @@ public class ProfileSectionFragment
             public void onResponse(@NonNull Call<SingleUserInfoResponse> call, @NonNull Response<SingleUserInfoResponse> response) {
                 if (response.code() == 200) {
                     profile = response.body();
+
+                    if (profile.getPostCount()>0)
+                        getLatestPostsListBySingleUser();
+                    else {
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        swipeRefreshLayout.setVisibility(View.GONE);
+                        if (userProfile.getHnid().equals(profile.getHnid()))
+                            screenTitle.setText(R.string.my_profile);
+                        else {
+                            screenTitle.setText(profile.getFullName());
+                        }
+
+                        //removing all layouts except for profile info layout
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        swipeRefreshLayout.setVisibility(View.GONE);
+                        shimmerProfileInfoLayout.setVisibility(View.VISIBLE);
+                        setUserProfileInfo(profile);
+                    }
                 }
-//                Log.d(TAG,"user profile code got in profile section = "+profile.getSupporterCount());
             }
 
             @Override
@@ -181,6 +244,40 @@ public class ProfileSectionFragment
 
             }
         });
+    }
+
+    //for users with no post
+    public void setUserProfileInfo(SingleUserInfoResponse profile){
+        Log.d(TAG,"set user profile called = "+profile.getCountry());
+        postCountText.setText(String.valueOf(profile.getPostCount()));
+        supporterCountText.setText(String.valueOf(profile.getSupporterCount()));
+        supportingCountText.setText(String.valueOf(profile.getSupportingCount()));
+        nameText.setText(profile.getFullName());
+
+        String location = profile.getCity() + ", " + profile.getCountry();
+        locationText.setText(location);
+
+        usernameText.setText(profile.getUsername());
+        Glide.with(requireContext()).load(profile.getProfileImgThumbnail()).centerCrop().into(profilePhoto);
+
+        if (profile.getHnid().equals(userProfile.getHnid())){
+            updateProfileButton.setText(R.string.update_profile);
+            updateProfileButton.setTag("update");
+        }else {
+            if (isSupported) {
+                profilePhotoRing.setVisibility(View.VISIBLE);
+                profilePhotoRing.setBackground(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.circle_hollow,requireContext().getTheme()));
+                updateProfileButton.setText(R.string.un_support_user);
+            }
+            else{
+//                    profilePhotoRing.setBackground(ResourcesCompat.getDrawable(context.getResources(),R.drawable.circle_hollow_1,context.getTheme()));
+                profilePhotoRing.setVisibility(View.GONE);
+                updateProfileButton.setText(R.string.support_user);
+            }
+            updateProfileButton.setTag("support");
+        }
+        shimmerProfileInfoLayout.setVisibility(View.GONE);
+        profileInfoLayout.setVisibility(View.VISIBLE);
     }
 
     //get initial user posts list
@@ -193,32 +290,26 @@ public class ProfileSectionFragment
         Call<PostList> call = service.getLatestPostsBySingleUser(hnid,userProfile.getHnid());
         call.enqueue(new Callback<PostList>() {
             @Override
-            public void onResponse(Call<PostList> call, Response<PostList> response) {
+            public void onResponse(@NonNull Call<PostList> call, @NonNull Response<PostList> response) {
                 if (response.code() == 200){
                     Log.d(TAG,"total number of post by this user = "+response.body().getResults().size());
                     PostList latestPostListByUser = response.body();
 
-                    if (latestPostListByUser.getCount() > 0) {
-                        ArrayList<Result> postList = new ArrayList<>(latestPostListByUser.getResults());
-                        postList = myUtils.setPostRelativeTime(postList);
-
-                        initialPostList.clear();
-                        initialPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
-                        initialPostList.add(0, initialPostList.get(0));
-                        if (latestPostListByUser.getNext() != null) {
-                            nextPageUrl = latestPostListByUser.getNext();
-                            initialPostList.add(null);
-                        }
-                        setRecyclerView(initialPostList);
-                    }else {
-                        requireActivity().getSupportFragmentManager().popBackStack();
-                        Toast.makeText(getContext(),"As this user hasn't made any posts yet you won't be able to visit their profile.",Toast.LENGTH_SHORT).show();
+                    ArrayList<Result> postList = new ArrayList<>(latestPostListByUser.getResults());
+                    postList = myUtils.setPostRelativeTime(postList);
+                    initialPostList.clear();
+                    initialPostList.addAll(myUtils.removeMediaPostsWithoutFilePath(postList));
+                    initialPostList.add(0, initialPostList.get(0));
+                    if (latestPostListByUser.getNext() != null) {
+                        nextPageUrl = latestPostListByUser.getNext();
+                        initialPostList.add(null);
                     }
+                    setRecyclerView(initialPostList);
                 }
             }
 
             @Override
-            public void onFailure(Call<PostList> call, Throwable t) {
+            public void onFailure(@NonNull Call<PostList> call, @NonNull Throwable t) {
 
             }
         });
@@ -287,6 +378,7 @@ public class ProfileSectionFragment
     public void setRecyclerView(ArrayList<Result> postList){
         shimmerFrameLayout.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         profilePostAdapter = new ProfilePostAdapter(
                 postList,
@@ -363,7 +455,7 @@ public class ProfileSectionFragment
     @Override
     public void onPostCountClick() {
         initialPostList.clear();
-        getLatestPostsListBySingleUser();
+        getUserProfile();
     }
 
 

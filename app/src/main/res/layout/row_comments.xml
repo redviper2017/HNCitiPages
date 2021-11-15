@@ -19,6 +19,9 @@
                 android:id="@+id/avatar_post"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -34,6 +37,8 @@
                 android:padding="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:visibility="gone"/>
     </RelativeLayout>
         <LinearLayout
@@ -63,7 +68,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="20dp"
                     android:background="@color/transparent"
                     android:src="@drawable/options_ic" />
@@ -110,7 +114,7 @@
             android:layout_toStartOf="@id/reply_button_comment"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="10dp"/>
 
         <androidx.constraintlayout.utils.widget.ImageFilterButton
             android:id="@+id/reply_button_comment"
