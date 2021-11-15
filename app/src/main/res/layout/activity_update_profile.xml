@@ -206,6 +206,7 @@
             android:layout_below="@id/update_profile_button"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:cardCornerRadius="15dp"
             app:cardElevation="10dp">
 
